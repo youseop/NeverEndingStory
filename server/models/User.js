@@ -4,6 +4,11 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const moment = require("moment");
 
+const { playingSchema } = require('./Game_Components');
+
+const Schema = mongoose.Schema;
+
+
 const userSchema = mongoose.Schema({
     name: {
         type:String,
@@ -25,6 +30,11 @@ const userSchema = mongoose.Schema({
     role : {
         type:Number,
         default: 0 
+    },
+    gameHistory : [playingSchema],
+    gamePlaying : {
+        type: Schema.Types.ObjectId,
+        ref: 'playing',
     },
     image: String,
     token : {

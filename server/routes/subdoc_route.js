@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
 const {Teacher, Student, Class} = require("../models/Subdoc_test");
+const { Game } = require("../models/Game");
 
 
 router.get('/uploadClass', (req, res) => {
@@ -24,6 +26,23 @@ router.get('/uploadClass', (req, res) => {
     if(err) return res.json({success: false, err})
     res.status(200).json({success: true})
   })
+})
+
+router.get('/getClass', (req,res) => {
+  Class.find().exec((err, classes) => {
+    if(err) return res.status(400).send(err);
+    res.status(200).json({success: true, classes})
+  })
+})
+
+router.post('/updateClass', (req,res) => {
+  Class.findOne({"_id" : mongoose.Types.ObjectId(req.body.gameId)})
+    .populate('game_creater')
+    .exec((err, gameDetail) => {
+      if(err) return res.status(400).send(err)
+      return res.status(200).json({success: true, gameDetail})
+    })
+
 })
 
 module.exports = router;
