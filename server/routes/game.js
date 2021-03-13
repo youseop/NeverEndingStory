@@ -44,6 +44,7 @@ router.post('/uploadfiles', (req, res) => {
 })
 
 const { characterSchema, Character } = require('../models/Game_Components');
+const { User } = require('../models/User');
 
 router.post('/uploadgame', (req, res) => {
 
@@ -74,6 +75,24 @@ router.get('/getgames', (req, res) => {
       res.status(200).json({success:true, games})
     })
 })
+
+
+router.get('/getscene', auth, async (req, res) => {
+  // 로그인 중인 유저 가지고 오기..
+  const user_id = req.user._id;
+  // 로그인 중인 유저의 객체 가지고 오기
+  const user = await User.findOne({_id: user_id});
+
+  user.
+
+  Game.find()
+    .populate('game_creater')
+    .exec((err, games) => {
+      if(err) return res.status(400).send(err);
+      res.status(200).json({success:true, games})
+    })
+})
+
 
 router.post('/getgamedetail', (req, res) => {
   Game.findOne({"_id" : req.body.gameId})
