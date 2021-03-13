@@ -77,23 +77,29 @@ function GameUploadPage(props) {
 
   const onSubmit = (event) => {
     event.preventDefault();
-
+    if(videoTitle==="" || description==="" || filePath===""){
+      alert("모든 정보를 입력해주세요.");
+      return
+    }
     const variables = {
       game_creater: user.userData._id,
       game_title: videoTitle,
       game_detail: description,
+      game_thumbnail: filePath,
       game_privacy: isPrivate,
       game_category: category,
-      game_thumbnail: filePath
+      game_writer: [],
+      game_character: [],
+      game_background: [],
     }
 
     Axios.post('/api/game/uploadgame', variables)
     .then(response => {
       if(response.data.success) {
-        message.success('업로드 성공! 감사합니다.');
+        message.success('첫 Scene을 생성해주세요. 오른쪽의 +버튼을 활용해 이미지들을 추가할 수 있습니다.');
 
         setTimeout(() => {
-          props.history.push('/');
+          props.history.push('/game/upload2');
         },2000);
       } else {
         alert('업로드 실패')
@@ -162,7 +168,7 @@ function GameUploadPage(props) {
         <br/>
         <br/>
         <Button type="primary" size="large" onClick={onSubmit}>
-          submit
+          Next Step
         </Button>
 
       </Form>

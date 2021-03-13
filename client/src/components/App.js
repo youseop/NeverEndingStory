@@ -6,6 +6,7 @@ import LandingPage from "./views/LandingPage/LandingPage.js";
 import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import GameUploadPage from "./views/GameUploadPage/GameUploadPage.js";
+import GameUploadPage2 from "./views/GameUploadPage/GameUploadPage2.js";
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
 import GameDetailPage from './views/GameDetailPage/GameDetailPage';
@@ -24,6 +25,7 @@ function App() {
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
+          <Route exact path="/game/upload2" component={Auth(GameUploadPage2, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
         </Switch>
       </div>
