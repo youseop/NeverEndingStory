@@ -7,8 +7,8 @@ import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import GameDetailPage from './views/GameDetailPage/GameDetailPage.js';
 import GameUploadPage from "./views/GameUploadPage/GameUploadPage.js";
+import GameBuildUpPage from "./views/GameUploadPage/GameBuildUpPage.js";
 import GamePlayPage from "./views/GamePlayPage/GamePlayPage.js";
-import GameUploadPage2 from "./views/GameUploadPage/GameUploadPage2.js";
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
 
@@ -26,7 +26,7 @@ function App() {
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
-          <Route exact path="/game/upload2" component={Auth(GameUploadPage2, true)} />
+          <Route path="/game/upload/:gameId" component={Auth(GameBuildUpPage, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
           <Route path="/gameplay/:gameId" component={Auth(GamePlayPage, null)} />
         </Switch>

@@ -6,11 +6,10 @@ const playingSchema = mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Game'
   },
-  //?scene아직 안만들었습니다.
-  // sceneId: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Game'
-  // }
+  sceneId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Scene'
+  }
 })
 
 const Playing = mongoose.model('playing', playingSchema);
@@ -30,10 +29,26 @@ const backgroundSchema = mongoose.Schema({
 
 const Background = mongoose.model('background', backgroundSchema);
 
+const bgmSchema = mongoose.Schema({
+  name: String,
+  url: String 
+});
+
+const Bgm = mongoose.model('bgm', bgmSchema);
+
+const soundSchema = mongoose.Schema({
+  name: String,
+  url: String 
+});
+
+const Sound = mongoose.model('sound', soundSchema);
+
 module.exports = {
+  Playing, playingSchema,
   Character, characterSchema, 
   Background, backgroundSchema,
-  Playing, playingSchema
+  Bgm, bgmSchema,
+  Sound, soundSchema
 }
 
 

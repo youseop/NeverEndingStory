@@ -10,7 +10,7 @@ const Schema = mongoose.Schema;
 
 
 const userSchema = mongoose.Schema({
-    name: {
+    nickname: {
         type:String,
         maxlength:50
     },
@@ -23,18 +23,26 @@ const userSchema = mongoose.Schema({
         type: String,
         minglength: 5
     },
-    lastname: {
-        type:String,
-        maxlength: 50
-    },
     role : {
         type:Number,
         default: 0 
+    },
+    reputation: {
+        type: Number,
+        default: 0
     },
     gameHistory : [playingSchema],
     gamePlaying : {
         type: Schema.Types.ObjectId,
         ref: 'playing',
+    },
+    gameFavorite :{
+        type: Array,
+        default: []
+    },
+    friendIdList : {
+        type: Array,
+        default: []
     },
     image: String,
     token : {

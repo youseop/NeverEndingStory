@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { Typography, Button, Form, Icon } from 'antd';
 import Dropzone from 'react-dropzone';
 import Axios from 'axios';
-import './GameUploadPage2';
+import './GameBuildUpPage';
 
 const {Title} = Typography
 
-function GameUploadPage2(props) {
+function GameBuildUpPage(props) {
 
   const [filePath, setFilePath] = useState("")
 
@@ -77,4 +77,4 @@ function GameUploadPage2(props) {
   )
 }
 
-export default GameUploadPage2
+export default GameBuildUpPage

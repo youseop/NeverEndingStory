@@ -81,28 +81,29 @@ function GameUploadPage(props) {
       alert("모든 정보를 입력해주세요.");
       return
     }
-    const variables = {
-      game_creater: user.userData._id,
-      game_title: videoTitle,
-      game_detail: description,
-      game_thumbnail: filePath,
-      game_privacy: isPrivate,
-      game_category: category,
-      game_writer: [],
-      game_character: [],
-      game_background: [],
+    const game_variables = {
+      creator: user.userData._id,
+      title: videoTitle,
+      description: description,
+      thumbnail: filePath,
+      privacy: isPrivate,
+      category: category,
+      writer: [],
+      character: [],
+      background: [],
+      bgm: [],
+      sound: []
     }
 
-    Axios.post('/api/game/uploadgame', variables)
+    Axios.post('/api/game/uploadgame', game_variables)
     .then(response => {
       if(response.data.success) {
         message.success('첫 Scene을 생성해주세요. 오른쪽의 +버튼을 활용해 이미지들을 추가할 수 있습니다.');
-
         setTimeout(() => {
-          props.history.push('/game/upload2');
-        },2000);
+          props.history.push(`/game/upload/${response.data.game._id}`);
+        },1000);
       } else {
-        alert('업로드 실패')
+        alert('game제작 실패');
       }
     })
   }

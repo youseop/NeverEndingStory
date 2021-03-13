@@ -1,42 +1,51 @@
 const mongoose = require('mongoose');
-const { characterSchema, backgroundSchema } = require('./Game_Components');
+const { 
+        characterSchema, backgroundSchema,
+        bgmSchema, soundSchema 
+      } = require('./Game_Components');
 const { userSchema } = require("./User");
 
 const Schema = mongoose.Schema;
 
 
 const gameSchema = mongoose.Schema({
-  game_view : {
+  view : {
     type: Number,
     default: 0
   },
-  game_title : {
+  title : {
     type: String,
     maxlength: 50
   },
-  game_detail : {
+  description : {
     type: String
   },
-  game_creater: {
+  creator: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  game_first_scene: {
+  first_scene: {
     type: Schema.Types.ObjectId,
     ref: 'Scene'
   },
-  game_writer: [userSchema],
-  game_character: [characterSchema],
-  game_background: [backgroundSchema],
-  game_thumbnail : {
+  writer: [userSchema],
+  character: [characterSchema],
+  background: [backgroundSchema],
+  bgm: [bgmSchema],
+  sound: [soundSchema],
+  thumbnail : {
     type: String
   },
-  game_category : {
+  category : {
     type: String
   },
-  game_privacy : {
+  privacy : {
     type: String
   },
+  ready: {
+    type: Number,
+    default: 0
+  }
 }, {timestamps: true})
 
 const Game = mongoose.model('Game', gameSchema);
