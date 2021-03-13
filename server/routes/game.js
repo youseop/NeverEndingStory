@@ -43,12 +43,22 @@ router.post('/uploadfiles', (req, res) => {
   })
 })
 
+const { characterSchema, Character } = require('../models/Game_Components');
+
 router.post('/uploadgame', (req, res) => {
 
   const game = new Game(req.body)
-
+  console.log(req.body)
+  console.log("here")
   game.save((err, doc) => {
     if(err) return res.json({success: false, err})
+    // console.log('success in backed')
+    // game.game_character.push(new Character({
+    //   name: "new character",
+    //   image: req.body.game_thumbnail
+    // }))
+    // console.log('here1')
+    // game.save()
     res.status(200).json({success: true})
   })
 })

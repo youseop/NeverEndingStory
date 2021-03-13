@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const { characterSchema, backgroundSchema } = require('./Game_Components');
+const { userSchema } = require("./User");
+
 const Schema = mongoose.Schema;
 
-const { userSchema } = require("./User");
 
 const gameSchema = mongoose.Schema({
   game_view : {
