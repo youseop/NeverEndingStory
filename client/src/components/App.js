@@ -7,8 +7,8 @@ import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import GameDetailPage from './views/GameDetailPage/GameDetailPage.js';
 import GameUploadPage from "./views/GameUploadPage/GameUploadPage.js";
-import GamePlayPage from "./views/GamePlayPage/GamePlayPage.js";
 import GameUploadPage2 from "./views/GameUploadPage/GameUploadPage2.js";
+import GamePlayPage from "./views/GamePlayPage/GamePlayPage.js";
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
 
