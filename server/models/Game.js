@@ -21,6 +21,10 @@ const gameSchema = mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  game_first_scene: {
+    type: Schema.Types.ObjectId,
+    ref: 'Scene'
+  },
   game_writer: [userSchema],
   game_character: [characterSchema],
   game_background: [backgroundSchema],

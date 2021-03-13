@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path')
+
 const { Game } = require("../models/Game");
 const mongoose = require("mongoose");
 const { auth } = require("../middleware/auth");
@@ -13,17 +15,22 @@ let storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}_${file.originalname}`);
-  },
-  fileFilter: (req, file, cb) => {
-    const ext = path.extname(file.originalname)
-    if (ext !== '.mp4') {
-      return cb(res.status(400).end('only mp4 is allowed'), false);
-    }
-    cb(null, true)
   }
 });
 
-const upload = multer({ storage: storage }).single("file");
+// uploadFilter 정의
+const uploadFilter = (req,file, cb) => {
+  const ext = path.extname(file.originalname).toLowerCase()
+  if(ext !== '.jpg' && ext !== '.png'){
+      return  cb(new Error('Only jpg and png is allowed'),false)
+      // return cb(res.status(400).end('only jpg and png is allowed') , false)
+  }
+  console.log ("NOT ERROR")
+  cb(null, true)
+}
+
+const upload = multer({ storage: storage,
+                        fileFilter : uploadFilter }).single("file");
 
 //=================================
 //             Video
