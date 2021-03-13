@@ -131,7 +131,24 @@ router.get('/gamestart/:id', auth, async (req, res) => {
         script: "(눈을 부릅 뜬다...)",
       }
     ],
-    nextList: [1, 2, 3, 4]
+    nextList: [
+      {
+        id: 1,
+        text: "죽어.."
+      },
+      {
+        id: 2,
+        text: "사랑해.."
+      },
+      {
+        id: 3,
+        text: "변태.."
+      },
+      {
+        id: 4,
+        text: "코로스.."
+      },
+    ]
   }
   return res.status(200).json({ success: true, scene });
 
