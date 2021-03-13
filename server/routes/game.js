@@ -81,47 +81,54 @@ router.get('/gamestart/:id', auth, async (req, res) => {
 
   const scene = {
     cutList: [
-      {
-        background_img: "/back1.png",
-        character_img: "/iu.png",
+      { characterCnt: 1,
+
+        background: "/back1.png",
+        characterList: ["/iu.png"],
         name: "IU",
-        text: "사랑해요... 통키씨....",
+        script: "사랑해요... 통키씨....",
       },
-      {
-        background_img: "/back1.png",
-        character_img: "/iu.png",
+      { characterCnt: 1,
+
+        background: "/back1.png",
+        characterList: ["/iu.png"],
         name: "IU",
-        text: "햝고싶어요...",
+        script: "햝고싶어요...",
       },
-      {
-        background_img: "/back1.png",
-        character_img: "/iu.png",
+      { characterCnt: 1,
+
+        background: "/back1.png",
+        characterList: ["/iu.png"],
         name: "나",
-        text: "(조금 무서워진다...)",
+        script: "(조금 무서워진다...)",
       },
-      {
-        background_img: "/back1.png",
-        character_img: "/iu.png",
+      { characterCnt: 1,
+
+        background: "/back1.png",
+        characterList: ["/iu.png"],
         name: "IU",
-        text: "이런 저라도 사랑해주실 수 있나요?",
+        script: "이런 저라도 사랑해주실 수 있나요?",
       },
-      {
-        background_img: "/back1.png",
-        character_img: "/iu.png",
+      { characterCnt: 1,
+
+        background: "/back1.png",
+        characterList: ["/iu.png"],
         name: "IU",
-        text: "당신만은 절 버리지 마세요",
+        script: "당신만은 절 버리지 마세요",
       },
-      {
-        background_img: "/back1.png",
-        character_img: "/iu.png",
+      { characterCnt: 1,
+
+        background: "/back1.png",
+        characterList: ["/iu.png"],
         name: "IU",
-        text: "안그러면 죽일거에요",
+        script: "안그러면 죽일거에요",
       },
-      {
-        background_img: "/back1.png",
-        character_img: "/iu.png",
+      { characterCnt: 1,
+
+        background: "/back1.png",
+        characterList: ["/iu.png"],
         name: "IU",
-        text: "(눈을 부릅 뜬다...)",
+        script: "(눈을 부릅 뜬다...)",
       }
     ],
     nextList: [1, 2, 3, 4]
