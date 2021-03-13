@@ -6,6 +6,7 @@ const { auth } = require("../middleware/auth");
 
 const multer = require("multer");
 
+//?어디에 쓰이는거지
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -15,7 +16,6 @@ let storage = multer.diskStorage({
   },
   fileFilter: (req, file, cb) => {
     const ext = path.extname(file.originalname)
-    console.log(ext)
     if (ext !== '.mp4') {
       return cb(res.status(400).end('only mp4 is allowed'),false);
     }
@@ -69,7 +69,6 @@ router.post('/getgamedetail', (req, res) => {
   Game.findOne({"_id" : req.body.gameId})
     .populate('game_creater')
     .exec((err, gameDetail) => {
-      console.log(gameDetail)
       if(err) return res.status(400).send(err)
       return res.status(200).json({success: true, gameDetail})
     })

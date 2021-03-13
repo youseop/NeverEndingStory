@@ -83,7 +83,6 @@ function GameUploadPage(props) {
       game_title: videoTitle,
       game_detail: description,
       game_privacy: isPrivate,
-      game_filePath: filePath,
       game_category: category,
       game_thumbnail: filePath
     }

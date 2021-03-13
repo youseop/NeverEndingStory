@@ -23,7 +23,6 @@ function LandingPage() {
     }, [])
 
     const renderCards = games.map((game, index) => {
-        console.log(game._id)
         return <Col key={index} lg={6} md={8} xs={24}>
         <div style={{position: 'relative'}}>
             <a href={`/game/${game._id}`}>
@@ -39,7 +38,7 @@ function LandingPage() {
             description=""
         />
         <span>{game.game_creater.name}</span><br/>
-        <span style={{marginLeft: '3rem'}}>{game.game_views}</span> - <span>{moment(game.createdAt).format("MMM Do YY")}</span>
+        <span style={{marginLeft: '3rem'}}>{game.game_view}</span> - <span>{moment(game.createdAt).format("MMM Do YY")}</span>
     </Col>
     })
 
