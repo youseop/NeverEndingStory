@@ -78,103 +78,25 @@ router.get('/getgames', (req, res) => {
 
 
 router.get('/gamestart/:id', auth, async (req, res) => {
-
-  const scene = {
-    cutList: [
-      { characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "사랑해요... 통키씨....",
-      },
-      { characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "햝고싶어요...",
-      },
-      { characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "나",
-        script: "(조금 무서워진다...)",
-      },
-      { characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "이런 저라도 사랑해주실 수 있나요?",
-      },
-      { characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "당신만은 절 버리지 마세요",
-      },
-      { characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "안그러면 죽일거에요",
-      },
-      { characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "(눈을 부릅 뜬다...)",
-      }
-    ],
-    nextList: [
-      {
-        id: 1,
-        text: "죽어.."
-      },
-      {
-        id: 2,
-        text: "사랑해.."
-      },
-      {
-        id: 3,
-        text: "변태.."
-      },
-      {
-        id: 4,
-        text: "코로스.."
-      },
-    ]
-  }
-  return res.status(200).json({ success: true, scene });
-
   // 로그인 중인 유저 가지고 오기..
+  return res.status(200).json({ success: true, sceneId: 1 });
   const gameId = mongoose.Types.ObjectId(req.params.id);
   const userId = req.user._id;
-
+  console.log("assssssssssssssssssssssssssssssssssssssssssssssssssss")
   try {
     const user = await User.findOne({ _id: userId });
     const playingList = user.gameHistory;
-    for (let i = 0; i < playingList.length; i++) {
+    for (let i = 0; i < playingList.length(); i++) {
       const playingGame = playingList[i];
       if (playingGame.gameId === gameId) {
         const sceneId = playingGame.sceneId;
-        try {
-          const scene = await Scene.findOne({ _id: sceneId });
-          return res.status(200).json({ success: true, scene });
-        } catch (err) {
-          console.log(err);
-        }
+        return res.status(200).json({ success: true, sceneId });
       }
     }
 
     try {
-      const scene = await Game.findOne({ _id: gameId }).game_first_scene;
-      return res.status(200).json({ success: true, scene })
+      const sceneId = await Game.findOne({ _id: gameId }).game_first_scene;
+      return res.status(200).json({ success: true, sceneId })
     } catch (err) {
       console.log(err);
     }
@@ -184,6 +106,80 @@ router.get('/gamestart/:id', auth, async (req, res) => {
 })
 
 router.get('/getnextscene/:id', auth, async (req, res) => {
+
+  // const scene = {
+  //   cutList: [
+  //     { characterCnt: 1,
+
+  //       background: "/back1.png",
+  //       characterList: ["/iu.png"],
+  //       name: "IU",
+  //       script: "사랑해요... 통키씨....",
+  //     },
+  //     { characterCnt: 1,
+
+  //       background: "/back1.png",
+  //       characterList: ["/iu.png"],
+  //       name: "IU",
+  //       script: "햝고싶어요...",
+  //     },
+  //     { characterCnt: 1,
+
+  //       background: "/back1.png",
+  //       characterList: ["/iu.png"],
+  //       name: "나",
+  //       script: "(조금 무서워진다...)",
+  //     },
+  //     { characterCnt: 1,
+
+  //       background: "/back1.png",
+  //       characterList: ["/iu.png"],
+  //       name: "IU",
+  //       script: "이런 저라도 사랑해주실 수 있나요?",
+  //     },
+  //     { characterCnt: 1,
+
+  //       background: "/back1.png",
+  //       characterList: ["/iu.png"],
+  //       name: "IU",
+  //       script: "당신만은 절 버리지 마세요",
+  //     },
+  //     { characterCnt: 1,
+
+  //       background: "/back1.png",
+  //       characterList: ["/iu.png"],
+  //       name: "IU",
+  //       script: "안그러면 죽일거에요",
+  //     },
+  //     { characterCnt: 1,
+
+  //       background: "/back1.png",
+  //       characterList: ["/iu.png"],
+  //       name: "IU",
+  //       script: "(눈을 부릅 뜬다...)",
+  //     }
+  //   ],
+  //   nextList: [
+  //     {
+  //       id: 1,
+  //       text: "죽어.."
+  //     },
+  //     {
+  //       id: 2,
+  //       text: "사랑해.."
+  //     },
+  //     {
+  //       id: 3,
+  //       text: "변태.."
+  //     },
+  //     {
+  //       id: 4,
+  //       text: "코로스.."
+  //     },
+  //   ]
+  // }
+  // return res.status(200).json({ success: true, scene });
+
   const sceneId = mongoose.Types.ObjectId(req.params.id);
   try {
     const scene = await Scene.findOne({ _id: sceneId });
