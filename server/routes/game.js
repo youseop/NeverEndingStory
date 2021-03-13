@@ -114,78 +114,78 @@ router.get('/gamestart/:id', auth, async (req, res) => {
 
 router.get('/getnextscene/:id', auth, async (req, res) => {
 
-  // const scene = {
-  //   cutList: [
-  //     { characterCnt: 1,
+  const scene = {
+    cutList: [
+      { characterCnt: 1,
 
-  //       background: "/back1.png",
-  //       characterList: ["/iu.png"],
-  //       name: "IU",
-  //       script: "사랑해요... 통키씨....",
-  //     },
-  //     { characterCnt: 1,
+        background: "/back1.png",
+        characterList: ["/iu.png"],
+        name: "IU",
+        script: "사랑해요... 통키씨....",
+      },
+      { characterCnt: 1,
 
-  //       background: "/back1.png",
-  //       characterList: ["/iu.png"],
-  //       name: "IU",
-  //       script: "햝고싶어요...",
-  //     },
-  //     { characterCnt: 1,
+        background: "/back1.png",
+        characterList: ["/iu.png"],
+        name: "IU",
+        script: "햝고싶어요...",
+      },
+      { characterCnt: 1,
 
-  //       background: "/back1.png",
-  //       characterList: ["/iu.png"],
-  //       name: "나",
-  //       script: "(조금 무서워진다...)",
-  //     },
-  //     { characterCnt: 1,
+        background: "/back1.png",
+        characterList: ["/iu.png"],
+        name: "나",
+        script: "(조금 무서워진다...)",
+      },
+      { characterCnt: 1,
 
-  //       background: "/back1.png",
-  //       characterList: ["/iu.png"],
-  //       name: "IU",
-  //       script: "이런 저라도 사랑해주실 수 있나요?",
-  //     },
-  //     { characterCnt: 1,
+        background: "/back1.png",
+        characterList: ["/iu.png"],
+        name: "IU",
+        script: "이런 저라도 사랑해주실 수 있나요?",
+      },
+      { characterCnt: 1,
 
-  //       background: "/back1.png",
-  //       characterList: ["/iu.png"],
-  //       name: "IU",
-  //       script: "당신만은 절 버리지 마세요",
-  //     },
-  //     { characterCnt: 1,
+        background: "/back1.png",
+        characterList: ["/iu.png"],
+        name: "IU",
+        script: "당신만은 절 버리지 마세요",
+      },
+      { characterCnt: 1,
 
-  //       background: "/back1.png",
-  //       characterList: ["/iu.png"],
-  //       name: "IU",
-  //       script: "안그러면 죽일거에요",
-  //     },
-  //     { characterCnt: 1,
+        background: "/back1.png",
+        characterList: ["/iu.png"],
+        name: "IU",
+        script: "안그러면 죽일거에요",
+      },
+      { characterCnt: 1,
 
-  //       background: "/back1.png",
-  //       characterList: ["/iu.png"],
-  //       name: "IU",
-  //       script: "(눈을 부릅 뜬다...)",
-  //     }
-  //   ],
-  //   nextList: [
-  //     {
-  //       id: 1,
-  //       text: "죽어.."
-  //     },
-  //     {
-  //       id: 2,
-  //       text: "사랑해.."
-  //     },
-  //     {
-  //       id: 3,
-  //       text: "변태.."
-  //     },
-  //     {
-  //       id: 4,
-  //       text: "코로스.."
-  //     },
-  //   ]
-  // }
-  // return res.status(200).json({ success: true, scene });
+        background: "/back1.png",
+        characterList: ["/iu.png"],
+        name: "IU",
+        script: "(눈을 부릅 뜬다...)",
+      }
+    ],
+    nextList: [
+      {
+        id: 1,
+        text: "죽어.."
+      },
+      {
+        id: 2,
+        text: "사랑해.."
+      },
+      {
+        id: 3,
+        text: "변태.."
+      },
+      {
+        id: 4,
+        text: null
+      },
+    ]
+  }
+  return res.status(200).json({ success: true, scene });
 
   const sceneId = mongoose.Types.ObjectId(req.params.id);
   try {

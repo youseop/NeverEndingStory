@@ -1,9 +1,9 @@
 import './CharacterBlock.css';
 import React from 'react'
 const CharacterBlock = (props) => {
-    const {url} = props;
+    const {characterCnt, characterList} = props;
   return (
-      <img className="characterblock" src={url}/>
+      <img className="characterblock" src={characterList[0]}/>
   );
 }
 

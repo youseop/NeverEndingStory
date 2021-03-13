@@ -25,103 +25,32 @@ function useKey(key, cb) {
 
 // playscreen
 const ProductScreen = (props) => {
-  // const { gameId } = props.match.params;
+  const { sceneId } = props.match.params;
 
-  let [i, setI] = useState(0);
+  const [i, setI] = useState(0);
+  const [Scene, setScene] = useState({});
 
   function handleEnter() {
     if (i < Scene.cutList.length -1) {
-      setI(++i);
+      setI(i+1);
     }
     console.log(i);
   }
 
   useKey("Enter", handleEnter);
 
-  // const [Scene, setScene] = useState({});
-  // const startScene = () => {
-  //   Axios.get(`/api/game/gamestart/${gameId}`)
-  //   .then((response) => {
-  //     if (response.data.scene) {
-  //       return response.data.scene;
-  //     } else {
-  //       return null;
-  //     }
-  //   });
-  // }
+  useEffect(() => {
+    Axios.get(`/api/game/getnextscene/${sceneId}`).then((response) => {
+      if (response.data.success) {
+        setI(0);
+        setScene(response.data.scene);
+      } else {
+        alert("Scene 정보가 없습니다.");
+      }
+    });
+  }, []);
 
-  const Scene = {
-    cutList: [
-      {
-        characterCnt: 1,
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "사랑해요... 통키씨....",
-      },
-      {
-        characterCnt: 1,
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "햝고싶어요...",
-      },
-      {
-        characterCnt: 1,
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "나",
-        script: "(조금 무서워진다...)",
-      },
-      {
-        characterCnt: 1,
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "이런 저라도 사랑해주실 수 있나요?",
-      },
-      {
-        characterCnt: 1,
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "당신만은 절 버리지 마세요",
-      },
-      {
-        characterCnt: 1,
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "안그러면 죽일거에요",
-      },
-      {
-        characterCnt: 1,
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "(눈을 부릅 뜬다...)",
-      },
-    ],
-    nextList: [1, 2, 3, 4],
-  };
-
-  // let scene = startScene()
-  // setScene(0);
-  // console.log("scene", Scene);
-
-  // useEffect(() => {
-  //   console.log(working?)
-  //   Axios.get(`/api/game/getnextscene/${1}`).then((response) => {
-  //     if (response.data.success) {
-  //       i = 0;
-  //       setScene(response.data);
-  //     } else {
-  //       alert("Scene 정보가 없습니다.");
-  //     }
-  //   });
-  // }, [Scene]);
-  console.log(Scene);
-  if (Scene) {
+  if (Scene.cutList) {
     return (
       <div className="productscreen">
         <div className="background_img_container">

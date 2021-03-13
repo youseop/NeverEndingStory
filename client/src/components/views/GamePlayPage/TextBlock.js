@@ -14,15 +14,14 @@ export const TextBlock = (props) => {
 };
 
 export const TextBlockChoice = (props) => {
-  const { cut_name, cut_text, scene_next_list } = props;
-
+  const { cut_name, cut_script, scene_next_list } = props;
   const choices = scene_next_list.map((choice) => {
     return choice.text ? (
-      <Link to={`/gameplay/${choice.id}`}>
+      <Link to={`/gameplay/${choice.id}`} key={`${choice.id}`}>
         {choice.text} <br />
       </Link>
     ) : (
-      <Link to={`/make/${choice.id}`}>
+      <Link to={`/make/${choice.id}`} key={`${choice.id}`}>
         선택의길... <br />
       </Link>
     );
@@ -33,7 +32,7 @@ export const TextBlockChoice = (props) => {
       <div className="name_block">{cut_name}</div>
       <hr className="text_line"></hr>
       <div className="text_block">
-        {cut_text}
+        {cut_script}
         <div>{choices}</div>
       </div>
     </div>
