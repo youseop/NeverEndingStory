@@ -1,0 +1,38 @@
+.text_container {
+    z-index: 99;
+    background-color: rgba(128, 128, 128, 0.815);
+  
+    padding: 5%;
+    border-radius: 1em;
+  
+    bottom: 0%;
+    left: 15%;
+    height: 40%;
+    width: 67%;
+  
+    position: absolute;
+  }
+  
+  .name_block {
+    font-size: 1.2em;
+    font-weight: bold;
+    top: 10%;
+    position: absolute;
+  }
+  
+  .text_line {
+    top:26%;
+    width: 80%;
+    height: 1px;
+    border-bottom: 2px solid rgb(235, 235, 235);
+    position: absolute;
+  }
+  
+  
+  .text_block {
+    font-size: 1em;
+    font-weight: bold;
+    top: 30%;
+    position: absolute;
+  }
+  

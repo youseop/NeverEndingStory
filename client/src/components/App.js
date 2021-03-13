@@ -5,11 +5,12 @@ import Auth from "../hoc/auth";
 import LandingPage from "./views/LandingPage/LandingPage.js";
 import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
+import GameDetailPage from './views/GameDetailPage/GameDetailPage.js';
 import GameUploadPage from "./views/GameUploadPage/GameUploadPage.js";
+import GamePlayPage from "./views/GamePlayPage/GamePlayPage.js";
 import GameUploadPage2 from "./views/GameUploadPage/GameUploadPage2.js";
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
-import GameDetailPage from './views/GameDetailPage/GameDetailPage';
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -27,6 +28,7 @@ function App() {
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           <Route exact path="/game/upload2" component={Auth(GameUploadPage2, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
+          <Route path="/gameplay/:gameId" component={Auth(GamePlayPage, null)} />
         </Switch>
       </div>
       <Footer />
