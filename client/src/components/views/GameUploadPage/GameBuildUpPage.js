@@ -34,11 +34,20 @@ function GameBuildUpPage(props) {
     })
   }
 
+  const gameId = props.match.params.gameId
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    console.log(props.match.params)
+    console.log(gameId)
+    props.history.push(`/scene/make/${gameId}`);
+  }
+
 
   return (
     <div style={{ maxWidth:'700px', margin:'2rem auto'}}>
       <div style={{textAlign:'center', marginBottom:'2rem'}}>
-        <Title level={2}>Make Game(..사진 추가 구현중)edit해도 상관없습니다.</Title>
+        <Title level={2}>게임에 필요한 사진, 캐릭터를 추가해주세요</Title>
       </div>
       <Form>
         <div style={{display:'flex', justifyContent:'space-between'}}>
@@ -68,8 +77,8 @@ function GameBuildUpPage(props) {
 
         <br/>
         <br/>
-        <Button type="primary" size="large">
-          Finish
+        <Button type="primary" size="large" onClick={onSubmit}>
+          Go to Last Step!!
         </Button>
 
       </Form>

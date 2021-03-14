@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const path = require('path')
 
+const mongoose = require('mongoose');
+
+const {Background} = require("../models/Game_Components");
 const { Game } = require("../models/Game");
 
 const { auth } = require("../middleware/auth");
@@ -76,12 +79,29 @@ router.get('/getgames', (req, res) => {
 
 router.post('/getgamedetail', (req, res) => {
   Game.findOne({"_id" : req.body.gameId})
-    .populate('creator')
     .exec((err, gameDetail) => {
       if(err) return res.status(400).send(err)
       return res.status(200).json({success: true, gameDetail})
     })
 
+})
+
+router.post('/putBackgroundImg', (req,res) => {
+  Game.findOne({"_id" : mongoose.Types.ObjectId(req.body.gameId)})
+    .populate('creator')
+    .exec((err, gameDetail) => {
+      if(err) return res.status(400).send(err)
+      console.log(req.body)
+
+      const background = new Background(req.body.background);
+      gameDetail.background.push(background);
+
+      gameDetail.save((err, doc) => {
+        if(err) return res.json({success: false, err})
+        
+        return res.status(200).json({success: true, gameDetail})
+      })
+    })
 })
 
 module.exports = router;

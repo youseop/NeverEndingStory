@@ -5,10 +5,14 @@ import Auth from "../hoc/auth";
 import LandingPage from "./views/LandingPage/LandingPage.js";
 import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
+
 import GameDetailPage from './views/GameDetailPage/GameDetailPage.js';
 import GameUploadPage from "./views/GameUploadPage/GameUploadPage.js";
 import GameBuildUpPage from "./views/GameUploadPage/GameBuildUpPage.js";
 import GamePlayPage from "./views/GamePlayPage/GamePlayPage.js";
+
+import SceneMakePage from "./views/Scene/SceneMakePage/SceneMakePage";
+
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
 
@@ -29,6 +33,7 @@ function App() {
           <Route path="/game/upload/:gameId" component={Auth(GameBuildUpPage, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
           <Route path="/gameplay/:gameId" component={Auth(GamePlayPage, null)} />
+          <Route exact path="/scene/make/:gameId" component={Auth(SceneMakePage, true)} />
         </Switch>
       </div>
       <Footer />
