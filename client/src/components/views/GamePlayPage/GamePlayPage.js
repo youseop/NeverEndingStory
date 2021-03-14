@@ -27,6 +27,7 @@ function useKey(key, cb) {
 
 // playscreen
 const ProductScreen = (props) => {
+  const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
 
   const [i, setI] = useState(0);
@@ -44,7 +45,7 @@ const ProductScreen = (props) => {
   useKey("Enter", handleEnter);
 
   useEffect(() => {
-    Axios.get(`/api/game/getnextscene/${sceneId}`).then((response) => {
+    Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then((response) => {
       if (response.data.success) {
         setI(0);
         setScene(response.data.scene);
@@ -72,6 +73,7 @@ const ProductScreen = (props) => {
 
             {i === Scene.cutList.length - 1 ? (
               <TextBlockChoice
+                gameId={gameId}
                 cut_name={Scene.cutList[i].name}
                 cut_script={Scene.cutList[i].script}
                 scene_next_list={Scene.nextList}

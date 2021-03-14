@@ -42,7 +42,7 @@ function GameDetailPage(props) {
       <h2>game detail page</h2>
       console창 보시면 정보 받아지고 있습니다! (전부 다 보내진 않고 있음)
       정리해서 사용하세요.<br/>
-      <Link to={`/gameplay/${sceneId}`}>
+      <Link to={`/gameplay/${gameId}/${sceneId}`}>
         게임 시작하기.. <br />
       </Link>
     </div>

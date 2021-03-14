@@ -14,10 +14,10 @@ export const TextBlock = (props) => {
 };
 
 export const TextBlockChoice = (props) => {
-  const { cut_name, cut_script, scene_next_list } = props;
+  const { gameId,cut_name, cut_script, scene_next_list } = props;
   const choices = scene_next_list.map((choice) => {
     return choice.text ? (
-      <Link to={`/gameplay/${choice.id}`} key={`${choice.id}`}>
+      <Link to={`/gameplay/${gameId}/${choice.id}`} key={`${choice.id}`}>
         {choice.text} <br />
       </Link>
     ) : (
