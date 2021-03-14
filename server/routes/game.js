@@ -19,18 +19,20 @@ let storage = multer.diskStorage({
 });
 
 // uploadFilter 정의
-const uploadFilter = (req,file, cb) => {
+const uploadFilter = (req, file, cb) => {
   const ext = path.extname(file.originalname).toLowerCase()
-  if(ext !== '.jpg' && ext !== '.png'){
-      return  cb(new Error('Only jpg and png is allowed'),false)
-      // return cb(res.status(400).end('only jpg and png is allowed') , false)
+  if (ext !== '.jpg' && ext !== '.png') {
+    return cb(new Error('Only jpg and png is allowed'), false)
+    // return cb(res.status(400).end('only jpg and png is allowed') , false)
   }
-  console.log ("NOT ERROR")
+  console.log("NOT ERROR")
   cb(null, true)
 }
 
-const upload = multer({ storage: storage,
-                        fileFilter : uploadFilter }).single("file");
+const upload = multer({
+  storage: storage,
+  fileFilter: uploadFilter
+}).single("file");
 
 //=================================
 //             Video
@@ -84,20 +86,38 @@ router.get('/getgames', (req, res) => {
 })
 
 
+// const updateHistory = (user) => {
+//   const { gamePlaying: { gameId, sceneId }, gameHistory } = user;
+
+//   for (let i = 0; i < gameHistory.length; i++) {
+//     if (gameHistory[i].gameId === gameId)
+//       user.gameHistory[i].sceneId = sceneId;
+//     user.save();
+//     return;
+//   }
+
+//   user.gameHistory.push({ gameId, sceneId });
+//   user.save();
+// }
+
+
 router.get('/gamestart/:id', auth, async (req, res) => {
   // 로그인 중인 유저 가지고 오기..
   return res.status(200).json({ success: true, sceneId: 1 });
   const gameId = mongoose.Types.ObjectId(req.params.id);
   const userId = req.user._id;
-  console.log("assssssssssssssssssssssssssssssssssssssssssssssssssss")
   try {
     const user = await User.findOne({ _id: userId });
+
+    // if (gameId === user.gamePlaying.gameId) {
+    //   return res.status(200).json({ success: true, sceneId: user.gamePlaying.sceneId });
+    // }
+
+    // updateHistory();
     const playingList = user.gameHistory;
     for (let i = 0; i < playingList.length(); i++) {
-      const playingGame = playingList[i];
-      if (playingGame.gameId === gameId) {
-        const sceneId = playingGame.sceneId;
-        return res.status(200).json({ success: true, sceneId });
+      if (playingList[i].gameId === gameId) {
+        return res.status(200).json({ success: true, sceneId: playingList[i].sceneId });
       }
     }
 
@@ -106,9 +126,11 @@ router.get('/gamestart/:id', auth, async (req, res) => {
       return res.status(200).json({ success: true, sceneId })
     } catch (err) {
       console.log(err);
+      return res.status(200).json({ success: false });
     }
   } catch (err) {
     console.log(err);
+    return res.status(200).json({ success: false });
   }
 })
 
@@ -193,8 +215,29 @@ router.get('/getnextscene/:id', auth, async (req, res) => {
     return res.status(200).json({ success: true, scene });
   } catch (err) {
     console.log(err);
+    return res.status(200).json({ success: false });
   }
 })
+
+// router.post('/updategameplaying', auth, async (req, res) => {
+//   if (!req.user) {
+//     return res.status(200).json({ success: false, msg: "Not a user" });
+//   }
+
+//   const userId = req.user._id;
+//   try {
+//     const user = await User.findOne({ _id: userId });
+//     const { gameId, sceneId } = req.body;
+//     user.gamePlaying = { gameId, sceneId };
+//     user.save();
+//     return res.status(200).json({ success: true });
+//   }
+//   catch {
+//     console.log(err);
+//     return res.status(200).json({ success: false });
+//   }
+// })
+
 
 router.post('/updatescenestatus', auth, async (req, res) => {
   if (!req.user) {

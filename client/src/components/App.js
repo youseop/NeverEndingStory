@@ -28,7 +28,7 @@ function App() {
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           <Route exact path="/game/upload2" component={Auth(GameUploadPage2, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
-          <Route path="/gameplay/:sceneId" component={Auth(GamePlayPage, null)} />
+          <Route path="/gameplay/:gameId/:sceneId" component={Auth(GamePlayPage, null)} />
         </Switch>
       </div>
       <Footer />
