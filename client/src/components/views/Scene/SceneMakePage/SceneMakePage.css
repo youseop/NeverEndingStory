@@ -45,9 +45,6 @@
 }
 
 .scenemake__imgWrapper {
-  width: 100%;
-  aspect-ratio: 16/9;
-  object-fit: cover;
 }
 
 .scenemake__img {
@@ -55,17 +52,13 @@
   width: auto;
   left: 0;
   top: 0;
-  object-fit: cover;
-  /* padding: 50px; */
-  position: absolute;
-  left: 50%;
-  /* bottom: 100%; */
-  transform: translate(-50%, 20%);
-  transform-origin: center center;
-  overflow: hidden;
 }
 
 .main_character {
-  margin: 0 auto;
-  padding: 0;
+  position : relative;
+  top: 10%;
+  left: -20%;
+  width: 200px;
+  display: flex;
+  justify-content: space-around;
 }
