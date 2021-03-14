@@ -86,17 +86,17 @@ router.get('/getgames', (req, res) => {
 })
 
 
-const updateHistory = (user) => {
-  const { gamePlaying: { gameId, sceneId }, gameHistory } = user;
+const updateHistoryFromPlaying = (user) => {
+  const { gamePlaying: { gameId, sceneIdList }, gameHistory } = user;
 
   for (let i = 0; i < gameHistory.length; i++) {
     if (gameHistory[i].gameId === gameId)
-      user.gameHistory[i].sceneId = sceneId;
+      user.gameHistory[i].sceneIdList = [ ...user.gameHistory[i].sceneIdList, ...sceneIdList ] ;
     user.save();
     return;
   }
 
-  user.gameHistory.push({ gameId, sceneId });
+  user.gameHistory.push({ gameId, sceneIdList });
   user.save();
 }
 
@@ -110,14 +110,14 @@ router.get('/gamestart/:id', auth, async (req, res) => {
     const user = await User.findOne({ _id: userId });
 
     if (gameId === user.gamePlaying.gameId) {
-      return res.status(200).json({ success: true, sceneId: user.gamePlaying.sceneId });
+      return res.status(200).json({ success: true, sceneId: user.gamePlaying.sceneIdList[-1] });
     }
 
-    updateHistory();
+    updateHistoryFromPlaying();
     const playingList = user.gameHistory;
     for (let i = 0; i < playingList.length(); i++) {
       if (playingList[i].gameId === gameId) {
-        return res.status(200).json({ success: true, sceneId: playingList[i].sceneId });
+        return res.status(200).json({ success: true, sceneId: playingList[i].sceneIdList[-1] });
       }
     }
 
@@ -135,7 +135,6 @@ router.get('/gamestart/:id', auth, async (req, res) => {
 })
 
 router.get('/getnextscene/:gameId/:sceneId', auth, async (req, res) => {
-
   const scene = {
     cutList: [
       {
@@ -224,7 +223,7 @@ router.get('/getnextscene/:gameId/:sceneId', auth, async (req, res) => {
     const scene = await Scene.findOne({ _id: sceneId });
     try {
       const user = await User.findOne({ _id: userId });
-      user.gamePlaying = { gameId, sceneId };
+      user.gamePlaying = { gameId, sceneIdList: [...user.gamePlaying.sceneIdList, sceneId] };
       user.save();
     }
     catch {
@@ -237,6 +236,48 @@ router.get('/getnextscene/:gameId/:sceneId', auth, async (req, res) => {
     return res.status(200).json({ success: false });
   }
 })
+
+router.get('/getsceneidlist/:gameId', auth, async (req, res) => {
+  if (!req.user) {
+    return res.status(200).json({ success: false, msg: "Not a user" });
+  }
+  const gameId = mongoose.Types.ObjectId(req.params.gameId);
+  const userId = req.user._id;
+  try {
+    const user = await User.findOne({ _id: userId });
+    updateHistoryFromPlaying()
+    .then(() => { 
+      const playingList = user.gameHistory;
+      for (let i = 0; i < playingList.length(); i++) {
+        if (playingList[i].gameId === gameId) {
+          return res.status(200).json({ success: true, sceneId: playingList[i].sceneIdList });
+        }
+      return res.status(200).json({ success: false });
+      }
+    });
+  } catch {
+    console.log(err);
+    return res.status(200).json({ success: false });
+  }
+})
+
+router.post('/getSceneInfo/:sceneId', auth, async (req, res) => {
+  if (!req.user) {
+    return res.status(200).json({ success: false, msg: "Not a user" });
+  }
+
+  sceneId = mongoose.Types.ObjectId(sceneId);
+  try {
+    const scene = await Scene.findOne({ _id: sceneId });
+    return res.status(200).json({ success: true, scene });
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({ success: false });
+  }
+
+})
+
+
 
 router.post('/updatescenestatus', auth, async (req, res) => {
   if (!req.user) {

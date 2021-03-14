@@ -22,6 +22,10 @@ function LandingPage() {
         })
     }, [])
 
+
+    
+
+
     const renderCards = games.map((game, index) => {
         return <Col key={index} lg={6} md={8} xs={24}>
         <div style={{position: 'relative'}}>
