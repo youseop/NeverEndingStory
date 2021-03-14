@@ -86,19 +86,19 @@ router.get('/getgames', (req, res) => {
 })
 
 
-// const updateHistory = (user) => {
-//   const { gamePlaying: { gameId, sceneId }, gameHistory } = user;
+const updateHistory = (user) => {
+  const { gamePlaying: { gameId, sceneId }, gameHistory } = user;
 
-//   for (let i = 0; i < gameHistory.length; i++) {
-//     if (gameHistory[i].gameId === gameId)
-//       user.gameHistory[i].sceneId = sceneId;
-//     user.save();
-//     return;
-//   }
+  for (let i = 0; i < gameHistory.length; i++) {
+    if (gameHistory[i].gameId === gameId)
+      user.gameHistory[i].sceneId = sceneId;
+    user.save();
+    return;
+  }
 
-//   user.gameHistory.push({ gameId, sceneId });
-//   user.save();
-// }
+  user.gameHistory.push({ gameId, sceneId });
+  user.save();
+}
 
 
 router.get('/gamestart/:id', auth, async (req, res) => {
@@ -109,11 +109,11 @@ router.get('/gamestart/:id', auth, async (req, res) => {
   try {
     const user = await User.findOne({ _id: userId });
 
-    // if (gameId === user.gamePlaying.gameId) {
-    //   return res.status(200).json({ success: true, sceneId: user.gamePlaying.sceneId });
-    // }
+    if (gameId === user.gamePlaying.gameId) {
+      return res.status(200).json({ success: true, sceneId: user.gamePlaying.sceneId });
+    }
 
-    // updateHistory();
+    updateHistory();
     const playingList = user.gameHistory;
     for (let i = 0; i < playingList.length(); i++) {
       if (playingList[i].gameId === gameId) {
@@ -219,24 +219,24 @@ router.get('/getnextscene/:id', auth, async (req, res) => {
   }
 })
 
-// router.post('/updategameplaying', auth, async (req, res) => {
-//   if (!req.user) {
-//     return res.status(200).json({ success: false, msg: "Not a user" });
-//   }
+router.post('/updategameplaying', auth, async (req, res) => {
+  if (!req.user) {
+    return res.status(200).json({ success: false, msg: "Not a user" });
+  }
 
-//   const userId = req.user._id;
-//   try {
-//     const user = await User.findOne({ _id: userId });
-//     const { gameId, sceneId } = req.body;
-//     user.gamePlaying = { gameId, sceneId };
-//     user.save();
-//     return res.status(200).json({ success: true });
-//   }
-//   catch {
-//     console.log(err);
-//     return res.status(200).json({ success: false });
-//   }
-// })
+  const userId = req.user._id;
+  try {
+    const user = await User.findOne({ _id: userId });
+    const { gameId, sceneId } = req.body;
+    user.gamePlaying = { gameId, sceneId };
+    user.save();
+    return res.status(200).json({ success: true });
+  }
+  catch {
+    console.log(err);
+    return res.status(200).json({ success: false });
+  }
+})
 
 
 router.post('/updatescenestatus', auth, async (req, res) => {
