@@ -3,6 +3,8 @@ import CharacterBlock from "./CharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
 import React, { useEffect, useRef, useState } from "react";
 import Axios from "axios";
+import DislikePopup from "./Dislike";
+import HistoryMapPopup from "./HistoryMap";
 
 // Use keyboard input
 function useKey(key, cb) {
@@ -29,10 +31,12 @@ const ProductScreen = (props) => {
 
   const [i, setI] = useState(0);
   const [Scene, setScene] = useState({});
+  const [Dislike, setDislike] = useState(false);
+  const [HistoryMap, setHistoryMap] = useState(false);
 
   function handleEnter() {
-    if (i < Scene.cutList.length -1) {
-      setI(i+1);
+    if (i < Scene.cutList.length - 1) {
+      setI(i + 1);
     }
     console.log(i);
   }
@@ -52,30 +56,38 @@ const ProductScreen = (props) => {
 
   if (Scene.cutList) {
     return (
-      <div className="productscreen">
-        <div className="background_img_container">
-          <img
-            className="background_img"
-            src={Scene.cutList[i].background}
-            alt="Network Error"
-          />
-          <CharacterBlock
-            characterCnt={Scene.cutList[i].characterCnt}
-            characterList={Scene.cutList[i].characterList}
-          />
-          {i === Scene.cutList.length -1 ? (
-            <TextBlockChoice
-              cut_name={Scene.cutList[i].name}
-              cut_script={Scene.cutList[i].script}
-              scene_next_list={Scene.nextList}
+      <div>
+        <div className="productscreen">
+          <div className="background_img_container">
+            <button className="HistoryMap_btn" onClick={() => setHistoryMap(true)}>미니맵</button>
+            <img
+              className="background_img"
+              src={Scene.cutList[i].background}
+              alt="Network Error"
             />
-          ) : (
-            <TextBlock
-              cut_name={Scene.cutList[i].name}
-              cut_script={Scene.cutList[i].script}
+            <CharacterBlock
+              characterCnt={Scene.cutList[i].characterCnt}
+              characterList={Scene.cutList[i].characterList}
             />
-          )}
+
+            {i === Scene.cutList.length - 1 ? (
+              <TextBlockChoice
+                cut_name={Scene.cutList[i].name}
+                cut_script={Scene.cutList[i].script}
+                scene_next_list={Scene.nextList}
+              />
+            ) : (
+              <TextBlock
+                cut_name={Scene.cutList[i].name}
+                cut_script={Scene.cutList[i].script}
+              />
+            )}
+            <HistoryMapPopup trigger={HistoryMap} setTrigger={setHistoryMap} />
+          </div>
         </div>
+        <button onClick={() => setDislike(true)}>신고</button>
+
+        <DislikePopup trigger={Dislike} setTrigger={setDislike} />
       </div>
     );
   } else {

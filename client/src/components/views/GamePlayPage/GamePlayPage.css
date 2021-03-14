@@ -57,3 +57,13 @@ body {
   width: 100%;
   object-fit: cover;
 }
+
+.HistoryMap_btn{
+  z-index: 98;
+  position: absolute;
+
+  top: 2%;
+  left: 1%;
+  /* height: 40%; */
+  /* width: 67%;  */
+}
