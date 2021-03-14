@@ -1,9 +1,9 @@
 import React from 'react'
 
-function BackgroundImg({imgUrl, setImg}) {
+function BackgroundImg({imgUrl, setBackgroundImg}) {
 
   const onClick_img = () => {
-    setImg(imgUrl);
+    setBackgroundImg(imgUrl);
   }
 
   return (

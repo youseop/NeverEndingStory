@@ -4,7 +4,7 @@ const path = require('path')
 
 const mongoose = require('mongoose');
 
-const {Background} = require("../models/Game_Components");
+const {Background,Character,characterSchema} = require("../models/Game_Components");
 const { Game } = require("../models/Game");
 
 const { auth } = require("../middleware/auth");
@@ -53,12 +53,9 @@ router.post('/uploadfiles', (req, res) => {
   })
 })
 
-const { characterSchema, Character } = require('../models/Game_Components');
-
 router.post('/uploadgame', (req, res) => {
   const game = new Game(req.body)
   game.save((err, game) => {
-    // console.log(err)
     if(err) return res.json({success: false, err})
 
     res.status(200).json({success: true, game})
@@ -83,18 +80,34 @@ router.post('/getgamedetail', (req, res) => {
       if(err) return res.status(400).send(err)
       return res.status(200).json({success: true, gameDetail})
     })
-
 })
 
+// gameId, background
 router.post('/putBackgroundImg', (req,res) => {
   Game.findOne({"_id" : mongoose.Types.ObjectId(req.body.gameId)})
     .populate('creator')
     .exec((err, gameDetail) => {
       if(err) return res.status(400).send(err)
-      console.log(req.body)
 
       const background = new Background(req.body.background);
       gameDetail.background.push(background);
+
+      gameDetail.save((err, doc) => {
+        if(err) return res.json({success: false, err})
+        
+        return res.status(200).json({success: true, gameDetail})
+      })
+    })
+})
+
+router.post('/putCharacterImg', (req,res) => {
+  Game.findOne({"_id" : mongoose.Types.ObjectId(req.body.gameId)})
+    .populate('creator')
+    .exec((err, gameDetail) => {
+      if(err) return res.status(400).send(err)
+
+      const character = new Character(req.body.character);
+      gameDetail.character.push(character);
 
       gameDetail.save((err, doc) => {
         if(err) return res.json({success: false, err})
