@@ -2,7 +2,11 @@ import "./GamePlayPage.css";
 import CharacterBlock from "./CharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
 import React, { useEffect, useRef, useState } from "react";
+import Axios from "axios";
+import DislikePopup from "./Dislike";
+import HistoryMapPopup from "./HistoryMap";
 
+// Use keyboard input
 function useKey(key, cb) {
   const callbackRef = useRef(cb);
 
@@ -21,61 +25,76 @@ function useKey(key, cb) {
   }, [key]);
 }
 
-const ProductScreen = () => {
-  // axios
-  let [i, setI] = useState(0);
+// playscreen
+const ProductScreen = (props) => {
+  const { gameId } = props.match.params;
+  const { sceneId } = props.match.params;
+
+  const [i, setI] = useState(0);
+  const [Scene, setScene] = useState({});
+  const [Dislike, setDislike] = useState(false);
+  const [HistoryMap, setHistoryMap] = useState(false);
 
   function handleEnter() {
-    if (i < scene.length - 1) {
-      setI(++i);
+    if (i < Scene.cutList.length - 1) {
+      setI(i + 1);
     }
     console.log(i);
   }
 
   useKey("Enter", handleEnter);
 
-  const scene = [
-    {
-      background_img: "/back1.png",
-      character_img: "/iu.png",
-      text: "사랑해요... 통키씨....",
-    },
-    {
-      background_img: "/back1.png",
-      character_img: "/iu2.png",
-      text: "정말로....",
-    },
-  ];
+  useEffect(() => {
+    Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then((response) => {
+      if (response.data.success) {
+        setI(0);
+        setScene(response.data.scene);
+      } else {
+        alert("Scene 정보가 없습니다.");
+      }
+    });
+  }, []);
 
-  const scene_hole = 3;
+  if (Scene.cutList) {
+    return (
+      <div>
+        <div className="productscreen">
+          <div className="background_img_container">
+            <button className="HistoryMap_btn" onClick={() => setHistoryMap(true)}>미니맵</button>
+            <img
+              className="background_img"
+              src={Scene.cutList[i].background}
+              alt="Network Error"
+            />
+            <CharacterBlock
+              characterCnt={Scene.cutList[i].characterCnt}
+              characterList={Scene.cutList[i].characterList}
+            />
 
-  const scene_next_list = [
-    { id: 1, text: "나도 널...." },
-    { id: 2, text: "사실 난...." },
-    { id: 3, text: "난 통키가 아니야..." },
-    { id: 4, text: null },
-  ];
+            {i === Scene.cutList.length - 1 ? (
+              <TextBlockChoice
+                gameId={gameId}
+                cut_name={Scene.cutList[i].name}
+                cut_script={Scene.cutList[i].script}
+                scene_next_list={Scene.nextList}
+              />
+            ) : (
+              <TextBlock
+                cut_name={Scene.cutList[i].name}
+                cut_script={Scene.cutList[i].script}
+              />
+            )}
+            <HistoryMapPopup trigger={HistoryMap} setTrigger={setHistoryMap} />
+          </div>
+        </div>
+        <button onClick={() => setDislike(true)}>신고</button>
 
-  return (
-    <div className="productscreen">
-      <div className="background_img_container">
-        <img
-          className="background_img"
-          src={scene[i].background_img}
-          alt="good"
-        />
-        <CharacterBlock url={scene[i].character_img} />
-        {i === scene.length - 1 ? (
-          <TextBlockChoice
-            line_text={scene[i].text}
-            scene_next_list={scene_next_list}
-          />
-        ) : (
-          <TextBlock line_text={scene[i].text} />
-        )}
+        <DislikePopup trigger={Dislike} setTrigger={setDislike} />
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <div>now loading..</div>;
+  }
 };
 
 export default ProductScreen;

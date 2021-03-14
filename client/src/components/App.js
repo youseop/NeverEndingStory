@@ -19,7 +19,7 @@ import Footer from "./views/Footer/Footer"
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
-
+ 
 function App() {
   return (
     <Suspense fallback={(<div>Loading...</div>)}>
@@ -32,8 +32,8 @@ function App() {
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           <Route path="/game/upload/:gameId" component={Auth(GameBuildUpPage, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
-          <Route path="/gameplay/:gameId" component={Auth(GamePlayPage, null)} />
           <Route exact path="/scene/make/:gameId" component={Auth(SceneMakePage, true)} />
+          <Route path="/gameplay/:gameId/:sceneId" component={Auth(GamePlayPage, null)} />
         </Switch>
       </div>
       <Footer />

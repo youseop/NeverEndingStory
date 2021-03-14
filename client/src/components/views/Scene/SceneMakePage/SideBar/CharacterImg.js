@@ -1,4 +1,5 @@
 import React from 'react'
+import './CharacterImg.css'
 
 function CharacterImg({imgUrl, setCharacterList, CharacterList}) {
 
@@ -8,11 +9,10 @@ function CharacterImg({imgUrl, setCharacterList, CharacterList}) {
     }
   }
 
-
   return (
     <div>
-    <div onClick={onClick_setCharacter}>
-      <img src={`${imgUrl}`} alt="img"/>
+    <div className="character__wrapper" onClick={onClick_setCharacter}>
+      <img className="character__main" src={`${imgUrl}`} alt="img"/>
     </div>
     </div>
   )

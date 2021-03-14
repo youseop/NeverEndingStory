@@ -44,16 +44,28 @@
   
 }
 
-.main_img {
-  width: 500px;
-  height: 350px;
-  background-color: brown;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.scenemake__imgWrapper {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
 }
 
-.img {
+.scenemake__img {
+  height: 60vh;
   width: auto;
-  height: 100%;
+  left: 0;
+  top: 0;
+  object-fit: cover;
+  /* padding: 50px; */
+  position: absolute;
+  left: 50%;
+  /* bottom: 100%; */
+  transform: translate(-50%, 20%);
+  transform-origin: center center;
+  overflow: hidden;
+}
+
+.main_character {
+  margin: 0 auto;
+  padding: 0;
 }

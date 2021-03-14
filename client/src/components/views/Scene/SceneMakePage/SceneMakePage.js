@@ -39,9 +39,9 @@ function SceneMakePage(props) {
   return (
     <div className="scenemake__container">
       <div className="scenemake__main">
-        <div className="main_img">
+        <div className="scenemake__imgWrapper">
           {BackgroundImg ? 
-          <img className="img" src={`${BackgroundImg}`} alt="img"/>
+          <img className="scenemake__img" src={`${BackgroundImg}`} alt="img"/>
           :
           <div>오른쪽의 이미지를 클릭하세요</div>
           }
