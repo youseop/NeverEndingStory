@@ -134,53 +134,60 @@ router.get('/gamestart/:id', auth, async (req, res) => {
   }
 })
 
-router.get('/getnextscene/:id', auth, async (req, res) => {
+router.get('/getnextscene/:gameId/:sceneId', auth, async (req, res) => {
 
   const scene = {
     cutList: [
-      { characterCnt: 1,
+      {
+        characterCnt: 1,
 
         background: "/back1.png",
         characterList: ["/iu.png"],
         name: "IU",
         script: "사랑해요... 통키씨....",
       },
-      { characterCnt: 1,
+      {
+        characterCnt: 1,
 
         background: "/back1.png",
         characterList: ["/iu.png"],
         name: "IU",
         script: "햝고싶어요...",
       },
-      { characterCnt: 1,
+      {
+        characterCnt: 1,
 
         background: "/back1.png",
         characterList: ["/iu.png"],
         name: "나",
         script: "(조금 무서워진다...)",
       },
-      { characterCnt: 1,
+      {
+        characterCnt: 1,
 
         background: "/back1.png",
         characterList: ["/iu.png"],
         name: "IU",
         script: "이런 저라도 사랑해주실 수 있나요?",
       },
-      { characterCnt: 1,
+      {
+        characterCnt: 1,
 
         background: "/back1.png",
         characterList: ["/iu.png"],
         name: "IU",
         script: "당신만은 절 버리지 마세요",
       },
-      { characterCnt: 1,
+      {
+        characterCnt: 1,
 
         background: "/back1.png",
         characterList: ["/iu.png"],
         name: "IU",
         script: "안그러면 죽일거에요",
       },
-      { characterCnt: 1,
+      {
+        characterCnt: 1,
 
         background: "/back1.png",
         characterList: ["/iu.png"],
@@ -209,35 +216,27 @@ router.get('/getnextscene/:id', auth, async (req, res) => {
   }
   return res.status(200).json({ success: true, scene });
 
-  const sceneId = mongoose.Types.ObjectId(req.params.id);
+  const userId = req.user._id;
+  const { gameId, sceneId } = req.params;
+  gameId = mongoose.Types.ObjectId(gameId);
+  sceneId = mongoose.Types.ObjectId(sceneId);
   try {
     const scene = await Scene.findOne({ _id: sceneId });
+    try {
+      const user = await User.findOne({ _id: userId });
+      user.gamePlaying = { gameId, sceneId };
+      user.save();
+    }
+    catch {
+      console.log(err);
+      return res.status(200).json({ success: false });
+    }
     return res.status(200).json({ success: true, scene });
   } catch (err) {
     console.log(err);
     return res.status(200).json({ success: false });
   }
 })
-
-router.post('/updategameplaying', auth, async (req, res) => {
-  if (!req.user) {
-    return res.status(200).json({ success: false, msg: "Not a user" });
-  }
-
-  const userId = req.user._id;
-  try {
-    const user = await User.findOne({ _id: userId });
-    const { gameId, sceneId } = req.body;
-    user.gamePlaying = { gameId, sceneId };
-    user.save();
-    return res.status(200).json({ success: true });
-  }
-  catch {
-    console.log(err);
-    return res.status(200).json({ success: false });
-  }
-})
-
 
 router.post('/updatescenestatus', auth, async (req, res) => {
   if (!req.user) {
