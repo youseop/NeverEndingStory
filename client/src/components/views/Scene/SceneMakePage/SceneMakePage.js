@@ -11,11 +11,9 @@ const {TextArea} = Input
 
 
 function SceneMakePage(props) {
-  // const firstUpdate = useRef(true);
-
   const gameId = props.match.params.gameId;
   const userId = useSelector(state=>state.user);
-  console.log(userId)
+
   const [SidBar_b, setSidBar_b] = useState(false);
   const [SidBar_c, setSidBar_c] = useState(false);
   const [SidBar_script, setSidBar_script] = useState(false);
@@ -28,6 +26,7 @@ function SceneMakePage(props) {
   const [CutNumber, setCutNumber] = useState(0);
 
   const [CutList, setCutList] = useState([]);
+  const [EmptyCutList, setEmptyCutList] = useState(Array.from({length: 30}, () => 0));
 
   const onScriptChange = (event) => {
     setScript(event.currentTarget.value)
@@ -65,6 +64,12 @@ function SceneMakePage(props) {
     setCutList(oldArray => [
       ...oldArray.slice(0,CutNumber), Cut, ...oldArray.slice(CutNumber+1,30)
     ])
+    console.log(CutList.length , CutNumber)
+    if (CutList.length === CutNumber){
+      setEmptyCutList(oldArray => [
+        ...oldArray.slice(0,EmptyCutList.length-1)
+      ])
+    }
   }
 
   const displayCut = (index) => {
@@ -75,7 +80,12 @@ function SceneMakePage(props) {
   }
 
   const onClick_GotoCut = (index) => {
-    console.log("CutNumber :" ,CutNumber ,"Index :", index)
+    console.log(CutNumber)
+    if (CutNumber > 29){
+      displayCut(index);
+      setCutNumber(index);
+      return;
+    }
     if(CutNumber !== index){
       saveCut();
       displayCut(index);
@@ -91,9 +101,14 @@ function SceneMakePage(props) {
  };
 
   const onSubmit_nextCut = (event) => {
-    console.log("submit!! Cutnumber : ",CutNumber)
     event.preventDefault();
-    
+    if (CutNumber > 29){
+      message.error("더이상 Cut을 생성할 수 없습니다.");
+      return;
+    } else if (CutNumber === 24) {
+      message.warning("생성 가능한 Cut이 5개 남았습니다.");
+    }
+
     saveCut();
     
     if(CutNumber < CutList.length-1){
@@ -108,7 +123,6 @@ function SceneMakePage(props) {
 
   const onSubmit_saveScene = (event) => {
     event.preventDefault();
-    // saveCut();
 
     const submitCut = {
       background: BackgroundImg,
@@ -119,8 +133,7 @@ function SceneMakePage(props) {
     const submitCutList = [...CutList.slice(0,CutNumber), submitCut,
       ...CutList.slice(CutNumber+1,30)]
 
-    if(window.confirm("하이~ ㅋㅋ")){
-      // alert("제출합니다")
+    if(window.confirm("게임 제작을 완료하시겠습니까?")){
       const variable = {
         gameId : gameId,
         writer : userId.userData._id,
@@ -128,11 +141,11 @@ function SceneMakePage(props) {
         cutList : submitCutList,
         isFirst : 1
       }
-      console.log(variable.writer)
       Axios.post('/api/scene/save',variable)
       .then(response => {
         if(response.data.success){
-          message.success("제출이 완료되었습니다.")
+          message.loading('게임 업로드 중..', 1.5)
+          .then(() => message.success('게임 제작이 완료되었습니다.', 1.5));
           setTimeout(() => {
             props.history.push('/');
           },1000);
@@ -141,24 +154,46 @@ function SceneMakePage(props) {
           message.error("DB에 문제가 있습니다.")
         }
       })
-
     }
     else{
-      alert("제출 취소요")
-    }
-    
- 
+      message.error("제출 취소요")
+    } 
   }
-  
-  // useEffect(() => {
-  //   console.log(CutList)
-  // },[CutList])
+  var elem = document.getElementsByClassName('scene__SceneBox_container');
+  if(elem.children){
+    console.log("EEE")
+    var child = elem.children[CutNumber];
+    child.style.backgroundColor='blue';
+  }
 
 
   const display_SceneBox = CutList.map((Cut, index) => {
+    if(CutNumber === index){
+      return(
+        <div className="scene__CurrentSceneBox" key={`${index}`}></div>
+      )
+    }
+    else{
+      
+      return (
+          <div className="scene__SceneBox" key={`${index}`} onClick={() => onClick_GotoCut(index)}></div>
+      )
+    }
+  })
+
+  const display_EmptyBox = EmptyCutList.map((EmptyCut, index) => {
+    if(CutNumber - CutList.length === index){
+    console.log(111, CutNumber , index)
+      return(
+        <div className="scene__CurrentSceneBox" key={`${index}`}></div>
+      )
+    }
+  else{
+    console.log(222, CutNumber , index)
     return (
-        <div className="scene__SceneBox" key={`${index}`} onClick={() => onClick_GotoCut(index)}></div>
-    )
+        <div className="scene__EmptySceneBox" key={`${index}`}></div>
+      )
+    }
   })
 
   const display_Character = CharacterList.map((characterUrl, index) => {
@@ -173,7 +208,12 @@ function SceneMakePage(props) {
     <div className="scenemake__container">
     {/* //?main Screen */}
       <div className="scenemake__main">
-        <div className="scene__SceneBox_container">{display_SceneBox}</div>
+        <div className="scene__SceneBox_container">
+          {CutNumber}
+          {display_SceneBox}
+          {display_EmptyBox}
+          {CutList.length}
+        </div>
         <div className="scenemake__main_img">
           {BackgroundImg ? 
           <img className="scenemake__background" src={`${BackgroundImg}`} alt="img"/>
@@ -197,9 +237,11 @@ function SceneMakePage(props) {
           }
         </div>
         <div className="scenemake__btn_container">
-          <Button type="primary" onClick={onSubmit_nextCut}>
-          Next(Cut)
-          </Button>
+          {(CutNumber < 29) &&
+            <Button type="primary" onClick={onSubmit_nextCut}>
+            Next(Cut)
+            </Button>
+          }
           <Button type="primary" onClick={onSubmit_saveScene}>
           Submit
           </Button>

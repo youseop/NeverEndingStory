@@ -1,6 +1,7 @@
 import "./TextBlock.css";
 import React from 'react'
 import { Link } from "react-router-dom";
+import { message } from "antd";
 
 export const TextBlock = (props) => {
   const { cut_name, cut_script } = props;
@@ -21,7 +22,7 @@ export const TextBlockChoice = (props) => {
         {choice.text} <br />
       </Link>
     ) : (
-      <Link to={`/make/${choice.id}`} key={`${choice.id}`}>
+      <Link to={`/scene/make/${choice.id}`} key={`${choice.id}`} onClick={() => message.info('게임을 제작해주세요.')}>
         선택의길... <br />
       </Link>
     );

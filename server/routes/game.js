@@ -32,7 +32,6 @@ const uploadFilter = (req, file, cb) => {
   const ext = path.extname(file.originalname).toLowerCase()
   if (ext !== '.jpg' && ext !== '.png') {
     return cb(new Error('Only jpg and png is allowed'), false)
-    // return cb(res.status(400).end('only jpg and png is allowed') , false)
   }
   console.log("NOT ERROR")
   cb(null, true)
@@ -65,8 +64,14 @@ router.post("/uploadfiles", (req, res) => {
 
 router.post("/uploadgame", (req, res) => {
   const game = new Game(req.body);
+  console.log("game : ", game)
+  console.log("req.body : ", req.body)
+
   game.save((err, game) => {
-      if (err) return res.json({ success: false, err });
+      if (err) {
+        console.log(err)
+        return res.json({ success: false, err });
+      }
 
       res.status(200).json({ success: true, game });
   });

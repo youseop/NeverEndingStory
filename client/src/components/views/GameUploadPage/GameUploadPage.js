@@ -88,7 +88,7 @@ function GameUploadPage(props) {
             thumbnail: filePath,
             privacy: isPrivate,
             category: category,
-            writer: [],
+            writer: [user.userData._id],
             character: [],
             background: [],
             bgm: [],

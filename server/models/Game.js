@@ -28,7 +28,10 @@ const gameSchema = mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Scene'
   },
-  writer: [userSchema],
+  writer: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   character: [characterSchema],
   background: [backgroundSchema],
   bgm: [bgmSchema],
