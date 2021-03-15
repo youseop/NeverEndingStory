@@ -30,19 +30,19 @@ function LandingPage() {
         return <Col key={index} lg={6} md={8} xs={24}>
         <div style={{position: 'relative'}}>
             <a href={`/game/${game._id}`}>
-                <img style={{width:'100%'}} src={`http://localhost:5000/${game.game_thumbnail}`} alt="thumbnail" />
+                <img style={{width:'100%'}} src={`http://localhost:5000/${game.thumbnail}`} alt="thumbnail" />
             </a>
         </div>
         <br />
         <Meta
             avatar={
-                <Avatar src={game.game_creater.image} />
+                <Avatar src={game.creator.image} />
             }
-            title={game.game_title}
+            title={game.title}
             description=""
         />
-        <span>{game.game_creater.name}</span><br/>
-        <span style={{marginLeft: '3rem'}}>{game.game_view}</span> - <span>{moment(game.createdAt).format("MMM Do YY")}</span>
+        <span>{game.creator.name}</span><br/>
+        <span style={{marginLeft: '3rem'}}>{game.view}</span> - <span>{moment(game.createdAt).format("MMM Do YY")}</span>
     </Col>
     })
 

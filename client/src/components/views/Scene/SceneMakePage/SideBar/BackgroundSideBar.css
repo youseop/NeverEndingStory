@@ -1,0 +1,14 @@
+.background {
+  height: 100%;
+  width: 150px;
+}
+img{
+  height: 100%;
+  width: 110px;
+  margin: 5px;
+  border-radius: 10px;
+}
+
+.sidebar__container{
+  height: 84vh;
+}

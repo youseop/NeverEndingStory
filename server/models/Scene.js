@@ -1,42 +1,81 @@
 const mongoose = require('mongoose');
+const { 
+  characterSchema, backgroundSchema,
+  bgmSchema, soundSchema 
+} = require('./Game_Components');
 
 const Schema = mongoose.Schema;
 
-const objectIdSchema = mongoose.Schema({
-  objectId: {
-    type: Schema.Types.ObjectId,
-    //? 가능할까
+const nextSceneSchema = mongoose.Schema({
+  sceneId: {
+    type: String
+  },
+  script: {
+    type: String
   }
 })
 
+const cutSchema = mongoose.Schema({
+  name: {
+    type: String
+  },
+  script: {
+    type: String
+  },
+  characterList: [{
+    type: String
+  }],
+  background: {
+    type: String,
+  },
+  // bgm: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'bgm'
+  // },
+  // sound: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'sound'
+  // }
+})
+
+const Cut = mongoose.model('cut', cutSchema);
+
 const sceneSchema = mongoose.Schema({
-  scene_gameId: {
+  gameId: {
     type: Schema.Types.ObjectId,
     ref: 'Game'
   },
-  scene_writer: {
+  writer: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  scene_recommend: {
+  recommend: {
     type: Number,
     default: 0
   },
-  scene_notRecommend: {
+  notRecommend: {
     type: Number,
     default: 0
   },
-  scene_depth: {
+  depth: {
     type: Number,
     default: 0
   },
-  scene_nextList: [objectIdSchema],
-  scene_status: {
+  nextList: [nextSceneSchema],
+  cutList: [cutSchema],
+  status: {
     type: Number,
     default: 0 //? 0:껍데기 1:내용이 들어있는 상태
+  },
+  isFirst: {
+    type: Number,
+    default: 0,
   }
 })
 
 const Scene = mongoose.model('Scene', sceneSchema);
 
-module.exports = { Scene }
+module.exports = { 
+  Scene, sceneSchema,
+  Cut, cutSchema 
+}
