@@ -6,7 +6,6 @@ import './GameDetailPage.css';
 
 function GameDetailPage(props) {
 
-  // url에 적혀있는 gameId 가져오자
   const gameId = props.match.params.gameId
   const variable = { gameId: gameId }
   
