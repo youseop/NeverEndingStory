@@ -4,27 +4,28 @@ const path = require("path");
 
 
 const {
-    Background,
-    Character,
-    Bgm,
-    Sound,
-    characterSchema,
+  Background,
+  Character,
+  Bgm,
+  Sound,
+  characterSchema,
 } = require("../models/Game_Components");
 const { Game } = require("../models/Game");
+const { User } = require('../models/User');
+const { Scene } = require('../models/Scene');
 const mongoose = require("mongoose");
 const { auth } = require("../middleware/auth");
 
 const multer = require("multer");
-const { User } = require('../models/User');
 
 //?어디에 쓰이는거지
 let storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}_${file.originalname}`);
-    },
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
 });
 
 // uploadFilter 정의
@@ -34,7 +35,7 @@ const uploadFilter = (req, file, cb) => {
     return cb(new Error('Only jpg and png is allowed'), false)
     // return cb(res.status(400).end('only jpg and png is allowed') , false)
   }
-  console.log("NOT ERROR")
+  // console.log("NOT ERROR")
   cb(null, true)
 }
 
@@ -48,17 +49,17 @@ const upload = multer({
 //=================================
 
 router.post("/uploadfiles", (req, res) => {
-  console.log("upload");
+  // console.log("upload");
   //비디오를 서버에 저장
   upload(req, res, (err) => {
-      if (err) {
-          return res.json({ success: false, err });
-      }
-      return res.json({
-          success: true,
-          url: res.req.file.path,
-          fileName: res.req.file.filename,
-      });
+    if (err) {
+      return res.json({ success: false, err });
+    }
+    return res.json({
+      success: true,
+      url: res.req.file.path,
+      fileName: res.req.file.filename,
+    });
   });
 });
 
@@ -66,9 +67,9 @@ router.post("/uploadfiles", (req, res) => {
 router.post("/uploadgame", (req, res) => {
   const game = new Game(req.body);
   game.save((err, game) => {
-      if (err) return res.json({ success: false, err });
+    if (err) return res.json({ success: false, err });
 
-      res.status(200).json({ success: true, game });
+    res.status(200).json({ success: true, game });
   });
 });
 
@@ -77,86 +78,86 @@ router.get("/getgames", (req, res) => {
   //populate를 해줘야 그 정보를 채워서 받을 수 있다.
   //안쓰면 그냥 id만 존재함
   Game.find()
-      .populate("creator")
-      .exec((err, games) => {
-          if (err) return res.status(400).send(err);
-          res.status(200).json({ success: true, games });
-      });
+    .populate("creator")
+    .exec((err, games) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).json({ success: true, games });
+    });
 });
 
 router.post("/getgamedetail", (req, res) => {
   Game.findOne({ _id: req.body.gameId }).exec((err, gameDetail) => {
-      if (err) return res.status(400).send(err);
-      return res.status(200).json({ success: true, gameDetail });
+    if (err) return res.status(400).send(err);
+    return res.status(200).json({ success: true, gameDetail });
   });
 });
 
 router.post("/putBackgroundImg", (req, res) => {
   Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
-      .populate("creator")
-      .exec((err, gameDetail) => {
-          if (err) return res.status(400).send(err);
+    .populate("creator")
+    .exec((err, gameDetail) => {
+      if (err) return res.status(400).send(err);
 
-          const background = new Background(req.body.background);
-          gameDetail.background.push(background);
+      const background = new Background(req.body.background);
+      gameDetail.background.push(background);
 
-          gameDetail.save((err, doc) => {
-              if (err) return res.json({ success: false, err });
+      gameDetail.save((err, doc) => {
+        if (err) return res.json({ success: false, err });
 
-              return res.status(200).json({ success: true, gameDetail });
-          });
+        return res.status(200).json({ success: true, gameDetail });
       });
+    });
 });
 
 router.post("/putCharacterImg", (req, res) => {
   Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
-      .populate("creator")
-      .exec((err, gameDetail) => {
-          if (err) return res.status(400).send(err);
+    .populate("creator")
+    .exec((err, gameDetail) => {
+      if (err) return res.status(400).send(err);
 
-          const character = new Character(req.body.character);
-          gameDetail.character.push(character);
+      const character = new Character(req.body.character);
+      gameDetail.character.push(character);
 
-          gameDetail.save((err, doc) => {
-              if (err) return res.json({ success: false, err });
+      gameDetail.save((err, doc) => {
+        if (err) return res.json({ success: false, err });
 
-              return res.status(200).json({ success: true, gameDetail });
-          });
+        return res.status(200).json({ success: true, gameDetail });
       });
+    });
 });
 
 router.post("/putBgm", (req, res) => {
   Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
-      .populate("creator")
-      .exec((err, gameDetail) => {
-          if (err) return res.status(400).send(err);
+    .populate("creator")
+    .exec((err, gameDetail) => {
+      if (err) return res.status(400).send(err);
 
-          const bgm = new Bgm(req.body.bgm);
-          gameDetail.bgm.push(bgm);
+      const bgm = new Bgm(req.body.bgm);
+      gameDetail.bgm.push(bgm);
 
-          gameDetail.save((err, doc) => {
-              if (err) return res.json({ success: false, err });
+      gameDetail.save((err, doc) => {
+        if (err) return res.json({ success: false, err });
 
-              return res.status(200).json({ success: true, gameDetail });
-          });
+        return res.status(200).json({ success: true, gameDetail });
       });
+    });
 });
 
 router.post("/putSound", (req, res) => {
   Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
-      .populate("creator")
-      .exec((err, gameDetail) => {
-          if (err) return res.status(400).send(err);
+    .populate("creator")
+    .exec((err, gameDetail) => {
+      if (err) return res.status(400).send(err);
 
-          const sound = new Sound(req.body.sound);
-          gameDetail.sound.push(sound);
+      const sound = new Sound(req.body.sound);
+      gameDetail.sound.push(sound);
 
-          gameDetail.save((err, doc) => {
-              if (err) return res.json({ success: false, err });
+      gameDetail.save((err, doc) => {
+        if (err) return res.json({ success: false, err });
 
-              return res.status(200).json({ success: true, gameDetail });
-          });
+        return res.status(200).json({ success: true, gameDetail });
       });
+    });
 });
 
 const updateHistoryFromPlaying = (user) => {
@@ -180,19 +181,29 @@ const updateHistoryFromPlaying = (user) => {
 
 router.get('/gamestart/:id', auth, async (req, res) => {
   // 로그인 중인 유저 가지고 오기..
-  return res.status(200).json({ success: true, sceneId: 1 });
+  // return res.status(200).json({ success: true, sceneId: 1 });
   const gameId = mongoose.Types.ObjectId(req.params.id);
   const userId = req.user._id;
   try {
     const user = await User.findOne({ _id: userId });
 
+    if (!user.gamePlaying) {
+      // console.log(user.gamePlaying)
+      user = {
+        ...user, gamePlaying: {
+          gameId: null,
+          sceneIdList: []
+        }
+      }
+    }
+
     if (gameId === user.gamePlaying.gameId) {
       return res.status(200).json({ success: true, sceneId: user.gamePlaying.sceneIdList[-1] });
     }
 
-    updateHistoryFromPlaying();
+    updateHistoryFromPlaying(user);
     const playingList = user.gameHistory;
-    for (let i = 0; i < playingList.length(); i++) {
+    for (let i = 0; i < playingList.length; i++) {
       if (playingList[i].gameId === gameId) {
         user.gamePlaying = {
           gameId: gameId,
@@ -203,7 +214,8 @@ router.get('/gamestart/:id', auth, async (req, res) => {
     }
 
     try {
-      const sceneId = await Game.findOne({ _id: gameId }).game_first_scene;
+      const game = await Game.findOne({ _id: gameId });
+      const sceneId = game.first_scene;
       user.gamePlaying = {
         gameId: gameId,
         sceneIdList: []
@@ -220,8 +232,7 @@ router.get('/gamestart/:id', auth, async (req, res) => {
 })
 
 const validateScene = async (gamePlaying, sceneId, gameId) => {
-  if (gamePlaying.gameId === gameId)
-  {
+  if (gamePlaying.gameId === gameId) {
     const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[-1] });
     for (let i = 0; i < 4; i++) {
       if (scene.nextList[i] === sceneId) {
@@ -233,106 +244,30 @@ const validateScene = async (gamePlaying, sceneId, gameId) => {
 }
 
 router.get('/getnextscene/:gameId/:sceneId', auth, async (req, res) => {
-  const scene = {
-    cutList: [
-      {
-        characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "사랑해요... 통키씨....",
-      },
-      {
-        characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "햝고싶어요...",
-      },
-      {
-        characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "나",
-        script: "(조금 무서워진다...)",
-      },
-      {
-        characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "이런 저라도 사랑해주실 수 있나요?",
-      },
-      {
-        characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "당신만은 절 버리지 마세요",
-      },
-      {
-        characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "안그러면 죽일거에요",
-      },
-      {
-        characterCnt: 1,
-
-        background: "/back1.png",
-        characterList: ["/iu.png"],
-        name: "IU",
-        script: "(눈을 부릅 뜬다...)",
-      }
-    ],
-    nextList: [
-      {
-        id: 1,
-        text: "죽어.."
-      },
-      {
-        id: 2,
-        text: "사랑해.."
-      },
-      {
-        id: 3,
-        text: "변태.."
-      },
-      {
-        id: 4,
-        text: null
-      },
-    ]
-  }
-  return res.status(200).json({ success: true, scene });
 
   const userId = req.user._id;
-  const { gameId, sceneId } = req.params;
+  let { gameId, sceneId } = req.params;
   gameId = mongoose.Types.ObjectId(gameId);
   sceneId = mongoose.Types.ObjectId(sceneId);
+
   try {
-    const scene = await Scene.findOne({ _id: sceneId });
-    if (!validateScene(user.gamePlaying, sceneId, gameId)) {
-      return res.status(200).json({ success: false });
-    }
+    const user = await User.findOne({ _id: userId });
     try {
-      const user = await User.findOne({ _id: userId });
+      const scene = await Scene.findOne({ _id: sceneId });
+      if (!validateScene(user.gamePlaying, sceneId, gameId)) {
+        // console.log("fuck");
+        return res.status(200).json({ success: false });
+      }
       user.gamePlaying = { gameId, sceneIdList: [...user.gamePlaying.sceneIdList, sceneId] };
       user.save();
-    }
-    catch {
+
+      return res.status(200).json({ success: true, scene, sceneIdList: user.gamePlaying.sceneIdList });
+    } catch (err) {
       console.log(err);
       return res.status(200).json({ success: false });
     }
-    return res.status(200).json({ success: true, scene, sceneIdList: user.gamePlaying.sceneIdList });
-  } catch (err) {
+
+  } catch {
     console.log(err);
     return res.status(200).json({ success: false });
   }

@@ -15,7 +15,7 @@ function SceneMakePage(props) {
 
   const gameId = props.match.params.gameId;
   const userId = useSelector(state=>state.user);
-  console.log(userId)
+  // console.log(userId)
   const [SidBar_b, setSidBar_b] = useState(false);
   const [SidBar_c, setSidBar_c] = useState(false);
   const [SidBar_script, setSidBar_script] = useState(false);
@@ -75,7 +75,7 @@ function SceneMakePage(props) {
   }
 
   const onClick_GotoCut = (index) => {
-    console.log("CutNumber :" ,CutNumber ,"Index :", index)
+    // console.log("CutNumber :" ,CutNumber ,"Index :", index)
     if(CutNumber !== index){
       saveCut();
       displayCut(index);
@@ -91,7 +91,7 @@ function SceneMakePage(props) {
  };
 
   const onSubmit_nextCut = (event) => {
-    console.log("submit!! Cutnumber : ",CutNumber)
+    // console.log("submit!! Cutnumber : ",CutNumber)
     event.preventDefault();
     
     saveCut();
@@ -128,7 +128,7 @@ function SceneMakePage(props) {
         cutList : submitCutList,
         isFirst : 1
       }
-      console.log(variable.writer)
+      // console.log(variable.writer)
       Axios.post('/api/scene/save',variable)
       .then(response => {
         if(response.data.success){
