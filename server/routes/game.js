@@ -268,7 +268,7 @@ router.get('/getnextscene/:gameId/:sceneId', auth, async (req, res) => {
 
 router.post('/refreshHistory', auth, async (req, res) => {
   // req.body 에서 인덱스 가지고 오기
-  const sceneIndex = req.body.sceneIndex;
+  const sceneIndex = req.body.data.sceneIndex;
   // 유저 정보로 gamePlaying 가지고 오기
   const user_id = req.user._id;
   try {
