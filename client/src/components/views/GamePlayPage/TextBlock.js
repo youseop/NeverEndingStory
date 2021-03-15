@@ -25,15 +25,7 @@ export const TextBlockChoice = (props) => {
       <Link to={`/gameplay/${gameId}/${choice.id}`} key={`${choice.id}`}>
         {choice.text} <br />
       </Link>
-<<<<<<< HEAD
     )
-=======
-    ) : (
-      <Link to={`/scene/make/${choice.id}`} key={`${choice.id}`} onClick={() => message.info('게임을 제작해주세요.')}>
-        선택의길... <br />
-      </Link>
-    );
->>>>>>> 54ae982b87311f3759dbd09fe2abc758a653105a
   });
 
   return (

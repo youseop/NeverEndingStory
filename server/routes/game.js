@@ -69,14 +69,7 @@ router.post("/uploadgame", (req, res) => {
   console.log("req.body : ", req.body)
 
   game.save((err, game) => {
-<<<<<<< HEAD
     if (err) return res.json({ success: false, err });
-=======
-      if (err) {
-        console.log(err)
-        return res.json({ success: false, err });
-      }
->>>>>>> 54ae982b87311f3759dbd09fe2abc758a653105a
 
     res.status(200).json({ success: true, game });
   });
