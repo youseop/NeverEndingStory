@@ -34,5 +34,13 @@
   "devDependencies": {
     "concurrently": "^4.1.0",
     "nodemon": "^1.19.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youseop/NeverEndingStory.git"
+  },
+  "bugs": {
+    "url": "https://github.com/youseop/NeverEndingStory/issues"
+  },
+  "homepage": "https://github.com/youseop/NeverEndingStory#readme"
 }
