@@ -36,11 +36,21 @@ router.get('/getClass', (req,res) => {
 })
 
 router.post('/updateClass', (req,res) => {
+  console.log("start")
   Class.findOne({"_id" : mongoose.Types.ObjectId(req.body.gameId)})
-    .populate('game_creater')
-    .exec((err, gameDetail) => {
+    .populate('creator')
+    .exec((err, find_class) => {
       if(err) return res.status(400).send(err)
-      return res.status(200).json({success: true, gameDetail})
+
+      console.log(req.body)
+      const student = new Student(req.body.student);
+      find_class.student.push(student);
+
+      find_class.save((err,doc) => {
+        if(err) return res.json({success: false, err})
+
+        res.status(200).json({success: true})
+      })
     })
 
 })

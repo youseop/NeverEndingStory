@@ -41,16 +41,13 @@ function RegisterPage(props) {
     <Formik
       initialValues={{
         email: '',
-        lastName: '',
-        name: '',
+        nickname: '',
         password: '',
         confirmPassword: ''
       }}
       validationSchema={Yup.object().shape({
-        name: Yup.string()
+        nickname: Yup.string()
           .required('Name is required'),
-        lastName: Yup.string()
-          .required('Last Name is required'),
         email: Yup.string()
           .email('Email is invalid')
           .required('Email is required'),
@@ -67,8 +64,7 @@ function RegisterPage(props) {
           let dataToSubmit = {
             email: values.email,
             password: values.password,
-            name: values.name,
-            lastname: values.lastname,
+            nickname: values.nickname,
             image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
           };
 
@@ -103,35 +99,18 @@ function RegisterPage(props) {
 
               <Form.Item required label="Name">
                 <Input
-                  id="name"
+                  id="nickname"
                   placeholder="Enter your name"
                   type="text"
-                  value={values.name}
+                  value={values.nickname}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={
-                    errors.name && touched.name ? 'text-input error' : 'text-input'
+                    errors.nickname && touched.nickname ? 'text-input error' : 'text-input'
                   }
                 />
-                {errors.name && touched.name && (
-                  <div className="input-feedback">{errors.name}</div>
-                )}
-              </Form.Item>
-
-              <Form.Item required label="Last Name">
-                <Input
-                  id="lastName"
-                  placeholder="Enter your Last Name"
-                  type="text"
-                  value={values.lastName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className={
-                    errors.lastName && touched.lastName ? 'text-input error' : 'text-input'
-                  }
-                />
-                {errors.lastName && touched.lastName && (
-                  <div className="input-feedback">{errors.lastName}</div>
+                {errors.nickname && touched.nickname && (
+                  <div className="input-feedback">{errors.nickname}</div>
                 )}
               </Form.Item>
 
