@@ -1,0 +1,112 @@
+.scenemake__container {
+  height: 84vh;
+  width: 100vw;
+  display: flex;
+  background-color: antiquewhite;
+}
+.scenemake__main {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.scenemake__toggleBar {
+  height: 84vh;
+  width: 150px;
+  background-color: rgb(252, 156, 156);
+  overflow: auto;
+  -ms-overflow-style: none;
+}
+.scenemake__toggleBar::-webkit-scrollbar{ 
+  display:none;
+}
+.scenemake__toggleButton_container {
+  height: 100%;
+  width: 60px;
+  background-color: rgb(251, 203, 203);
+}
+.scenemake__btn_sidebar{
+  width: 60px;
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.scenemake__main_img {
+  width: 500px;
+  height: 350px;
+  /* background-color: brown; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position : relative;
+  overflow : hidden;
+}
+.scenemake__background {
+  position : absolute;
+  top : 5%;
+  width: auto;
+  height: 100%;
+}
+.scenemake__character_container{
+  position : absolute;
+  bottom : 2%;
+  width : 600px;
+  height : 300px;
+  /* background-color: black; */
+  display : flex;
+  justify-content: center;
+  align-items : flex-end;
+}
+
+.scene__characterBox {
+  /* background-color: aquamarine;
+  height: 60%; */
+  width: 28%;
+  height: auto;
+  margin: 5px;
+}
+
+.scene__character {
+  width: 100%;
+
+}
+
+.scenemake__main_script{
+  position : absolute;
+  bottom : 2%;
+  width: 90%;
+  height: 18vh;
+  background-color: rgba(82, 82, 82, 0.685);
+  border-radius: 3px;
+}
+
+.scenemake__btn_container {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
+.scene__SceneBox {
+  margin-top: 10px;
+  width: 10px;
+  height: 20px;
+  background-color: crimson;
+  border:1px solid rgb(70, 70, 70);
+  cursor: pointer;
+}
+
+.scene__SceneBox_container {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  
+}
