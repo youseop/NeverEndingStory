@@ -14,13 +14,56 @@
 }
 
 .HistoryMap_inner {
+  z-index: 98;
   position: relative;
   background-color: gold;
+  /* overflow: hidden; */
+  width: 3000px;
+  left: 20%;
+  transition-duration: 1s;
+
+  /* margin-left: -100px; */
+  /* top: 400px; */
+  /* transform: translate(-50%, 20%); */
+  /* transform-origin: center center; */
 }
 
-.close_btn{
+.HistoryMap_scene {
+  /* position: absolute; */
+  /* top :50%; */
+  /* right :50%; */
+  width: 10vw;
+  height: 10vh;
+  list-style: none;
+  float: left;
+  text-align: center;
+  background-color: indigo;
+  border: 5px red solid;
+}
+
+.HistoryMap_scene:hover{
+  transform:scale(1.8);
+  transition-duration: 0.7s;
+}
+
+.close_btn {
     position: absolute;
-    top :5%;
-    right :5%;
+    top: 5%;
+    right: 5%;
+  }
 
-}
+  .warning_popup{
+    z-index:100;
+    /* position: relative; */
+    position: absolute;
+    top:25%;
+    left:25%;
+
+    width: 33vw;
+    height: 33vh;
+    
+    background-color: aqua;
+    /* transform: translate(-100%, 0%); */
+    /* transform-origin: center center; */
+  }
+  

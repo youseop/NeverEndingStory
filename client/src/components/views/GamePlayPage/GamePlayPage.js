@@ -30,6 +30,36 @@ const ProductScreen = (props) => {
   const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
 
+  //! history 데이터 가정
+  let history = {};
+  const gameHistory = [
+    {
+      gameId: 1,
+      sceneId: [101, 102, 103],
+    },
+    {
+      gameId: 2,
+      sceneId: [201, 202, 203],
+    },
+    {
+      gameId: 3,
+      sceneId: [301, 302, 303],
+    },
+  ];
+
+  if (props.user) {
+    // console.log(props.user.userData.gameHistory)
+    // const { gameHistory } = (props.user.userData.gameHistory)
+
+    for (let i = 0; i < gameHistory.length; i++) {
+      if (gameId == gameHistory[i].gameId) {
+        history = gameHistory[i];
+      }
+    }
+  }
+
+  history = gameHistory[0];
+
   const [i, setI] = useState(0);
   const [Scene, setScene] = useState({});
   const [Dislike, setDislike] = useState(false);
@@ -39,28 +69,34 @@ const ProductScreen = (props) => {
     if (i < Scene.cutList.length - 1) {
       setI(i + 1);
     }
-    console.log(i);
   }
 
   useKey("Enter", handleEnter);
 
   useEffect(() => {
-    Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then((response) => {
-      if (response.data.success) {
-        setI(0);
-        setScene(response.data.scene);
-      } else {
-        alert("Scene 정보가 없습니다.");
+    Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
+      (response) => {
+        if (response.data.success) {
+          setI(0);
+          setScene(response.data.scene);
+        } else {
+          alert("Scene 정보가 없습니다.");
+        }
       }
-    });
-  }, []);
+    );
+  }, [sceneId]);
 
   if (Scene.cutList) {
     return (
       <div>
         <div className="productscreen">
           <div className="background_img_container">
-            <button className="HistoryMap_btn" onClick={() => setHistoryMap(true)}>미니맵</button>
+            <button
+              className="HistoryMap_btn"
+              onClick={() => setHistoryMap(true)}
+            >
+              미니맵
+            </button>
             <img
               className="background_img"
               src={Scene.cutList[i].background}
@@ -84,7 +120,11 @@ const ProductScreen = (props) => {
                 cut_script={Scene.cutList[i].script}
               />
             )}
-            <HistoryMapPopup trigger={HistoryMap} setTrigger={setHistoryMap} />
+            <HistoryMapPopup
+              history={history}
+              trigger={HistoryMap}
+              setTrigger={setHistoryMap}
+            />
           </div>
         </div>
         <button onClick={() => setDislike(true)}>신고</button>
