@@ -16,37 +16,26 @@ const nextSceneSchema = mongoose.Schema({
 })
 
 const cutSchema = mongoose.Schema({
-  gameId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Game'
-  },
-  sceneId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Scene'
-  },
-  characterCnt : {
-    type: Number,
-    default: 0
-  },
   name: {
     type: String
   },
   script: {
     type: String
   },
-  characterList: [characterSchema],
-  bgm: {
-    type: Schema.Types.ObjectId,
-    ref: 'bgm'
-  },
+  characterList: [{
+    type: String
+  }],
   background: {
-    type: Schema.Types.ObjectId,
-    ref: 'background'
+    type: String,
   },
-  sound: {
-    type: Schema.Types.ObjectId,
-    ref: 'sound'
-  }
+  // bgm: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'bgm'
+  // },
+  // sound: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'sound'
+  // }
 })
 
 const Cut = mongoose.model('cut', cutSchema);

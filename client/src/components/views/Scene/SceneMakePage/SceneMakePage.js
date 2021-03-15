@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import BackgroundSideBar from './SideBar/BackgroundSideBar'
 import CharacterSideBar from './SideBar/CharacterSideBar'
 import './SceneMakePage.css'
-
+import {useSelector} from 'react-redux'
 import { Input, message, Button } from 'antd';
+import Axios from 'axios';
 const {TextArea} = Input
 
 
@@ -11,7 +12,8 @@ function SceneMakePage(props) {
   // const firstUpdate = useRef(true);
 
   const gameId = props.match.params.gameId;
-
+  const userId = useSelector(state=>state.user);
+  console.log(userId)
   const [SidBar_b, setSidBar_b] = useState(false);
   const [SidBar_c, setSidBar_c] = useState(false);
   const [SidBar_script, setSidBar_script] = useState(false);
@@ -51,12 +53,33 @@ function SceneMakePage(props) {
     }
   }
 
+  const saveCut = () => {
+    const Cut = {
+      background: BackgroundImg,
+      characterList: CharacterList,
+      script: Script,
+      name: Name
+    }
+    setCutList(oldArray => [
+      ...oldArray.slice(0,CutNumber), Cut, ...oldArray.slice(CutNumber+1,30)
+    ])
+  }
+
+  const displayCut = (index) => {
+    setBackgroundImg(CutList[index].background);
+    setCharacterList(CutList[index].characterList);
+    setScript(CutList[index].script);
+    setName(CutList[index].name);
+  }
+
   const onClick_GotoCut = (index) => {
-  // setCutNumber(index);
-    setBackgroundImg(CutList[index].BackgroundImg);
-    setCharacterList(CutList[index].CharacterList);
-    setScript(CutList[index].Script);
-    setName(CutList[index].Name);
+    console.log("CutNumber :" ,CutNumber ,"Index :", index)
+    if(CutNumber !== index){
+      saveCut();
+      displayCut(index);
+      setCutNumber(index);
+    }
+
   }
 
   const onRemove_character = (index) => {
@@ -69,17 +92,60 @@ function SceneMakePage(props) {
     console.log("submit!! Cutnumber : ",CutNumber)
     event.preventDefault();
     
-    const Cut = {
-      BackgroundImg: BackgroundImg,
-      CharacterList: CharacterList,
-      Script: Script,
-      Name: Name
+    saveCut();
+    
+    if(CutNumber < CutList.length-1){
+      displayCut(CutNumber+1)
     }
-    setCutList(oldArray => [
-      ...oldArray.slice(0,CutNumber), Cut, ...oldArray.slice(CutNumber+1,30)
-    ])
+    else{
+      setScript("");
+      
+    }
     setCutNumber(oldNumber => oldNumber+1);
-    setScript("");
+  }
+
+  const onSubmit_saveScene = (event) => {
+    event.preventDefault();
+    // saveCut();
+
+    const submitCut = {
+      background: BackgroundImg,
+      characterList: CharacterList,
+      script: Script,
+      name: Name
+    }
+    const submitCutList = [...CutList.slice(0,CutNumber), submitCut,
+      ...CutList.slice(CutNumber+1,30)]
+
+    if(window.confirm("하이~ ㅋㅋ")){
+      // alert("제출합니다")
+      const variable = {
+        gameId : gameId,
+        writer : userId.userData._id,
+        nextList :[],
+        cutList : submitCutList,
+        isFirst : 1
+      }
+      console.log(variable.writer)
+      Axios.post('/api/scene/save',variable)
+      .then(response => {
+        if(response.data.success){
+          message.success("제출이 완료되었습니다.")
+          setTimeout(() => {
+            props.history.push('/');
+          },1000);
+        }
+        else{
+          message.error("DB에 문제가 있습니다.")
+        }
+      })
+
+    }
+    else{
+      alert("제출 취소요")
+    }
+    
+ 
   }
   
   // useEffect(() => {
@@ -132,6 +198,11 @@ function SceneMakePage(props) {
           <Button type="primary" onClick={onSubmit_nextCut}>
           Next(Cut)
           </Button>
+          <Button type="primary" onClick={onSubmit_saveScene}>
+          Submit
+          </Button>
+          {/* <ModalSubmit/> */}
+          
         </div>
       </div>
       {/* //?toggleBar */}
