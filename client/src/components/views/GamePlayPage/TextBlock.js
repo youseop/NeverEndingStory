@@ -1,6 +1,7 @@
 import "./TextBlock.css";
 import React from 'react'
 import { Link } from "react-router-dom";
+import { message } from "antd";
 
 // 일단 4 나중에 어떻게 할지 다시 결정..
 const CHOICE_NUM = 4;
@@ -24,7 +25,15 @@ export const TextBlockChoice = (props) => {
       <Link to={`/gameplay/${gameId}/${choice.id}`} key={`${choice.id}`}>
         {choice.text} <br />
       </Link>
+<<<<<<< HEAD
     )
+=======
+    ) : (
+      <Link to={`/scene/make/${choice.id}`} key={`${choice.id}`} onClick={() => message.info('게임을 제작해주세요.')}>
+        선택의길... <br />
+      </Link>
+    );
+>>>>>>> 54ae982b87311f3759dbd09fe2abc758a653105a
   });
 
   return (

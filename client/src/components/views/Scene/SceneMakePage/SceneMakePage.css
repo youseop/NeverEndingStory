@@ -99,8 +99,24 @@
   width: 10px;
   height: 20px;
   background-color: crimson;
-  border:1px solid rgb(70, 70, 70);
+  border:1px solid rgba(70, 70, 70, 0.404);
   cursor: pointer;
+}
+
+.scene__EmptySceneBox {
+  margin-top: 10px;
+  width: 10px;
+  height: 20px;
+  background-color: white;
+  border:1px solid rgba(70, 70, 70, 0.26);
+}
+
+.scene__CurrentSceneBox {
+  margin-top: 10px;
+  width: 10px;
+  height: 20px;
+  background-color: rgb(21, 86, 228);
+  border:1px solid rgba(70, 70, 70, 0.26);
 }
 
 .scene__SceneBox_container {
