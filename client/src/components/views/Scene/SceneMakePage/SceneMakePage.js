@@ -4,11 +4,12 @@ import CharacterSideBar from './SideBar/CharacterSideBar'
 import './SceneMakePage.css'
 
 import { Input, message, Button } from 'antd';
-import { STATES } from 'mongoose';
 const {TextArea} = Input
 
 
 function SceneMakePage(props) {
+  // const firstUpdate = useRef(true);
+
   const gameId = props.match.params.gameId;
 
   const [SidBar_b, setSidBar_b] = useState(false);
@@ -20,14 +21,7 @@ function SceneMakePage(props) {
   const [Script, setScript] = useState("");
   const [Name, setName] = useState("");
 
-  const [CutNumber, setCutNumber] = useState(-1);
-
-  const [Cut, setCut] = useState({
-    BackgroundImg: "",
-    CharacterList: [],
-    Script: "",
-    Name: ""
-  });
+  const [CutNumber, setCutNumber] = useState(0);
 
   const [CutList, setCutList] = useState([]);
 
@@ -58,7 +52,7 @@ function SceneMakePage(props) {
   }
 
   const onClick_GotoCut = (index) => {
-    // setCutNumber(index);
+  // setCutNumber(index);
     setBackgroundImg(CutList[index].BackgroundImg);
     setCharacterList(CutList[index].CharacterList);
     setScript(CutList[index].Script);
@@ -72,27 +66,22 @@ function SceneMakePage(props) {
  };
 
   const onSubmit_nextCut = (event) => {
+    console.log("submit!! Cutnumber : ",CutNumber)
     event.preventDefault();
-    // if(Script==="" || Name ===""){
-    //   message.error('이름과 대사는 필수 항목입니다.');
-    //   return
-    // }
-    setCut({
+    
+    const Cut = {
       BackgroundImg: BackgroundImg,
       CharacterList: CharacterList,
       Script: Script,
       Name: Name
-    })
-    setScript("");
-  }
-  
-  useEffect(()=>{
+    }
     setCutList(oldArray => [
       ...oldArray.slice(0,CutNumber), Cut, ...oldArray.slice(CutNumber+1,30)
     ])
     setCutNumber(oldNumber => oldNumber+1);
-  },[Cut])
-
+    setScript("");
+  }
+  
   // useEffect(() => {
   //   console.log(CutList)
   // },[CutList])
@@ -100,9 +89,7 @@ function SceneMakePage(props) {
 
   const display_SceneBox = CutList.map((Cut, index) => {
     return (
-      <div>
         <div className="scene__SceneBox" key={`${index}`} onClick={() => onClick_GotoCut(index)}></div>
-      </div>
     )
   })
 
