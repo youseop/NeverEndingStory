@@ -53,8 +53,8 @@ const ProductScreen = (props) => {
         alert("Scene 정보가 없습니다.");
       }
     });
-  }, []);
-
+  }, [sceneId]);
+  
   if (Scene.cutList) {
     return (
       <div>

@@ -91,12 +91,16 @@ const updateHistoryFromPlaying = (user) => {
 
   for (let i = 0; i < gameHistory.length; i++) {
     if (gameHistory[i].gameId === gameId)
-      user.gameHistory[i].sceneIdList = [ ...user.gameHistory[i].sceneIdList, ...sceneIdList ] ;
+      user.gameHistory[i].sceneIdList = [...user.gameHistory[i].sceneIdList, ...sceneIdList];
+    user.gamePlaying.sceneIdList = [];
+    user.gamePlaying.gameId = null;
     user.save();
     return;
   }
 
   user.gameHistory.push({ gameId, sceneIdList });
+  user.gamePlaying.sceneIdList = [];
+  user.gamePlaying.gameId = null;
   user.save();
 }
 
@@ -117,12 +121,20 @@ router.get('/gamestart/:id', auth, async (req, res) => {
     const playingList = user.gameHistory;
     for (let i = 0; i < playingList.length(); i++) {
       if (playingList[i].gameId === gameId) {
+        user.gamePlaying = {
+          gameId: gameId,
+          sceneIdList: playingList[i].sceneIdList.length === 1 ? [] : playingList[i].sceneIdList.slice(0, -1)
+        }
         return res.status(200).json({ success: true, sceneId: playingList[i].sceneIdList[-1] });
       }
     }
 
     try {
       const sceneId = await Game.findOne({ _id: gameId }).game_first_scene;
+      user.gamePlaying = {
+        gameId: gameId,
+        sceneIdList: []
+      }
       return res.status(200).json({ success: true, sceneId })
     } catch (err) {
       console.log(err);
@@ -133,6 +145,19 @@ router.get('/gamestart/:id', auth, async (req, res) => {
     return res.status(200).json({ success: false });
   }
 })
+
+const validateScene = (gamePlaying, sceneId, gameId) => {
+  if (gamePlaying.gameId === gameId)
+  {
+    const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[-1] });
+    for (let i = 0; i < 4; i++) {
+      if (scene.nextList[i] === sceneId) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 router.get('/getnextscene/:gameId/:sceneId', auth, async (req, res) => {
   const scene = {
@@ -221,6 +246,9 @@ router.get('/getnextscene/:gameId/:sceneId', auth, async (req, res) => {
   sceneId = mongoose.Types.ObjectId(sceneId);
   try {
     const scene = await Scene.findOne({ _id: sceneId });
+    if (!validateScene(user.gamePlaying, sceneId, gameId)) {
+      return res.status(200).json({ success: false });
+    }
     try {
       const user = await User.findOne({ _id: userId });
       user.gamePlaying = { gameId, sceneIdList: [...user.gamePlaying.sceneIdList, sceneId] };
@@ -230,42 +258,62 @@ router.get('/getnextscene/:gameId/:sceneId', auth, async (req, res) => {
       console.log(err);
       return res.status(200).json({ success: false });
     }
-    return res.status(200).json({ success: true, scene });
+    return res.status(200).json({ success: true, scene, sceneIdList: user.gamePlaying.sceneIdList });
   } catch (err) {
     console.log(err);
     return res.status(200).json({ success: false });
   }
 })
 
-router.get('/getsceneidlist/:gameId', auth, async (req, res) => {
-  if (!req.user) {
-    return res.status(200).json({ success: false, msg: "Not a user" });
-  }
-  const gameId = mongoose.Types.ObjectId(req.params.gameId);
-  const userId = req.user._id;
+
+router.post('/refreshHistory', auth, async (req, res) => {
+  // req.body 에서 인덱스 가지고 오기
+  const sceneIndex = req.body.sceneIndex;
+  // 유저 정보로 gamePlaying 가지고 오기
+  const user_id = req.user._id;
   try {
-    const user = await User.findOne({ _id: userId });
-    updateHistoryFromPlaying()
-    .then(() => { 
-      const playingList = user.gameHistory;
-      for (let i = 0; i < playingList.length(); i++) {
-        if (playingList[i].gameId === gameId) {
-          return res.status(200).json({ success: true, sceneId: playingList[i].sceneIdList });
-        }
-      return res.status(200).json({ success: false });
-      }
-    });
+    const user = User.findOne({ _id: user_id });
+    let { gamePlaying: { sceneIdList } } = user;
+    // 첫번째 씬으로 돌아가려 할 때 이상해질 수 있음...
+    user.gamePlaying.sceneIdList = sceneIdList.slice(0, sceneIndex - 1);
+    return res.status(200).json({ success: true, sceneIdList: user.gamePlaying.sceneIdList });
   } catch {
-    console.log(err);
     return res.status(200).json({ success: false });
   }
+  // gamePlaying 의 sceneIdList를 슬라이스하고 저장
+  return;
 })
 
-router.post('/getSceneInfo/:sceneId', auth, async (req, res) => {
+
+// router.get('/getsceneidlist/:gameId', auth, async (req, res) => {
+//   if (!req.user) {
+//     return res.status(200).json({ success: false, msg: "Not a user" });
+//   }
+//   const gameId = mongoose.Types.ObjectId(req.params.gameId);
+//   const userId = req.user._id;
+//   try {
+//     const user = await User.findOne({ _id: userId });
+//     updateHistoryFromPlaying()
+//       .then(() => {
+//         const playingList = user.gameHistory;
+//         for (let i = 0; i < playingList.length(); i++) {
+//           if (playingList[i].gameId === gameId) {
+
+//             return res.status(200).json({ success: true, sceneId: playingList[i].sceneIdList });
+//           }
+//           return res.status(200).json({ success: false });
+//         }
+//       });
+//   } catch {
+//     console.log(err);
+//     return res.status(200).json({ success: false });
+//   }
+// })
+
+router.get('/getSceneInfo/:sceneId', auth, async (req, res) => {
   if (!req.user) {
     return res.status(200).json({ success: false, msg: "Not a user" });
   }
-
   sceneId = mongoose.Types.ObjectId(sceneId);
   try {
     const scene = await Scene.findOne({ _id: sceneId });
@@ -274,10 +322,7 @@ router.post('/getSceneInfo/:sceneId', auth, async (req, res) => {
     console.log(err);
     return res.status(200).json({ success: false });
   }
-
 })
-
-
 
 router.post('/updatescenestatus', auth, async (req, res) => {
   if (!req.user) {
@@ -285,8 +330,6 @@ router.post('/updatescenestatus', auth, async (req, res) => {
   }
   return;
 })
-
-
 
 router.post('/getgamedetail', (req, res) => {
   Game.findOne({ "_id": req.body.gameId })
