@@ -13,7 +13,6 @@ const {TextArea} = Input
 function SceneMakePage(props) {
   const gameId = props.match.params.gameId;
   const userId = useSelector(state=>state.user);
-
   const [SidBar_b, setSidBar_b] = useState(false);
   const [SidBar_c, setSidBar_c] = useState(false);
   const [SidBar_script, setSidBar_script] = useState(false);

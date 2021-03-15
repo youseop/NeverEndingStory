@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
-
+const mongoose = require('mongoose');
 const { Scene } = require("../models/Scene");
+const { Game } = require("../models/Game");
 
 
-router.post('/save', (req, res) => {
+router.post('/save', async (req, res) => {
   
-  console.log(req.body)
+  // console.log(req.body)
 
   const scene = new Scene({
     gameId : req.body.gameId,
@@ -20,12 +21,17 @@ router.post('/save', (req, res) => {
     scene.cutList[i].characterList = [...req.body.cutList[i].characterList];
   }
 
-  scene.save((err, scene) => {
-    console.log('hey!!!')
+  scene.save( (err, scene) => {
     if(err) return res.json({success: false, err})
-    console.log(scene);
     res.status(200).json({success: true, scene})
   })
+
+  const game = await Game.findOne({_id: scene.gameId});
+  
+  if( !game.first_scene ) {
+    game.first_scene = scene._id;
+    game.save();
+  }
 })
 
 

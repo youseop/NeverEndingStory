@@ -123,7 +123,7 @@ function GameBuildUpPage(props) {
                 (response) => {
                     // console.log(response);
                     if (response.data.success) {
-                        console.log("setFilePath");
+                        // console.log("setFilePath");
                         setFilePath(response.data.url);
 
                         switch (fileState) {
@@ -147,7 +147,7 @@ function GameBuildUpPage(props) {
                                 });
                                 return;
                             case 2: //background
-                                console.log("background");
+                                // console.log("background");
                                 const backgroundForm = {
                                     gameId: gameId,
                                     background: {
@@ -167,7 +167,7 @@ function GameBuildUpPage(props) {
                                 });
                                 return;
                             case 3:
-                                console.log("bgm");
+                                // console.log("bgm");
                                 const bgmForm = {
                                     gameId: gameId,
                                     bgm: {
@@ -187,7 +187,7 @@ function GameBuildUpPage(props) {
                                 return;
 
                             case 4:
-                                console.log("sound");
+                                // console.log("sound");
                                 const soundForm = {
                                     gameId: gameId,
                                     sound: {
