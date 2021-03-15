@@ -146,7 +146,7 @@ router.get('/gamestart/:id', auth, async (req, res) => {
   }
 })
 
-const validateScene = (gamePlaying, sceneId, gameId) => {
+const validateScene = async (gamePlaying, sceneId, gameId) => {
   if (gamePlaying.gameId === gameId)
   {
     const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[-1] });
