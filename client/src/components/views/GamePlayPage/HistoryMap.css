@@ -8,43 +8,67 @@
 
   display: flex;
   /* justify-content: center; */
-  align-items: center;
+  /* align-items: center; */
 
   background-color: rgba(0, 0, 0, 0.616);
 }
 
 .HistoryMap_inner {
   z-index: 98;
-  position: relative;
+  position: absolute;
   background-color: gold;
-  /* overflow: hidden; */
-  width: 3000px;
-  left: 20%;
+  height: 7em;
+  top: 40%;
+  right: 45%;
   transition-duration: 1s;
 }
 
+.slide_wrap{
+  list-style: none;
+  margin-left: 3px;
+  white-space: nowrap;
+}
+
 .HistoryMap_scene {
-  /* position: absolute; */
-  /* top :50%; */
-  /* right :50%; */
+  z-index: 98;
+
   width: 10em;
   height: 7em;
-  list-style: none;
-  float: left;
+  display: inline-block;
+
   text-align: center;
   background-color: indigo;
   border: 5px red solid;
+  color: white;
 }
 .HistoryMap_scene:hover{
   transform:scale(1.8);
   transition-duration: 0.7s;
 }
 
+
+
 .close_btn {
     position: absolute;
     top: 5%;
     right: 5%;
-  }
+}
+
+.toleft_btn{
+  z-index: 100;
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  background-color: aqua;
+}
+
+.toright_btn{
+  z-index: 100;
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  background-color: aqua;
+}
 
 .warning_popup{
   z-index:100;

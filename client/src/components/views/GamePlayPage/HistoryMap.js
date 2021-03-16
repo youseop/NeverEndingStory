@@ -2,14 +2,24 @@ import React, { useState } from "react";
 import Axios from "axios";
 import "./HistoryMap.css";
 
-function click() {
+function MapToLeft() {
   var map = document.getElementsByClassName("HistoryMap_inner")[0];
   var computedStyle = window.getComputedStyle(map);
   var transform = computedStyle.getPropertyValue("transform");
   var new_position =
-    transform != "none" ? parseInt(transform.split(",")[4]) : 0;
+    transform !== "none" ? parseInt(transform.split(",")[4]) : 0;
 
-  map.style.transform = `translate(${new_position - 150}px, 0px)`;
+  map.style.transform = `translate(${new_position + 250}px, 0px)`;
+}
+
+function MapToRight() {
+  var map = document.getElementsByClassName("HistoryMap_inner")[0];
+  var computedStyle = window.getComputedStyle(map);
+  var transform = computedStyle.getPropertyValue("transform");
+  var new_position =
+    transform !== "none" ? parseInt(transform.split(",")[4]) : 0;
+
+  map.style.transform = `translate(${new_position - 250}px, 0px)`;
 }
 
 function GoToScene(props) {
@@ -43,6 +53,11 @@ function HistoryMapPopup(props) {
   const [GoScene, setGoScene] = useState(null);
   const [SceneInfo, setSceneInfo] = useState(null);
 
+  //* set map length
+  // var map = document.getElementsByClassName("HistoryMap_inner")[0];
+  // console.log(map)
+  // map.style.width = `(${sceneId.length * 100}px)`;
+
   const HistoryMap_scenes = sceneId.map((scene, index) => {
     return (
       <li
@@ -57,13 +72,23 @@ function HistoryMapPopup(props) {
   });
 
   return props.trigger ? (
-    <div className="HistoryMap_popup" onClick={click}>
+    <div className="HistoryMap_popup">
       <button className="close_btn" onClick={() => props.setTrigger(false)}>
         close
       </button>
+     
+      <div className="toleft_btn" onClick={MapToLeft}>
+        to left 나중에 이미지로 대체
+      </div>
+
+      <div className="toright_btn" onClick={MapToRight}>
+        to right 나중에 이미지로 대체
+      </div>
+      
       <div className="HistoryMap_inner">
         <ul className="slide_wrap">{HistoryMap_scenes}</ul>
       </div>
+
       {GoScene ? (
         <div className="warning_popup">
           <button
