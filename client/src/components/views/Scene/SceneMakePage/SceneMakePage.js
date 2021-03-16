@@ -104,14 +104,21 @@ function SceneMakePage(props) {
             bgm: BgmFile,
             sound: SoundFile,
         };
-        console.log(123456, BgmFile);
-        console.log(123456, SoundFile);
+        setBgmFile({
+            name: "",
+            music: "",
+        });
+        setSoundFile({
+            name: "",
+            music: "",
+        });
+
         setCutList((oldArray) => [
             ...oldArray.slice(0, CutNumber),
             Cut,
             ...oldArray.slice(CutNumber + 1, 30),
         ]);
-        console.log(CutList.length, CutNumber);
+        // console.log(CutList.length, CutNumber);
         if (CutList.length === CutNumber) {
             setEmptyCutList((oldArray) => [
                 ...oldArray.slice(0, EmptyCutList.length - 1),
@@ -120,7 +127,7 @@ function SceneMakePage(props) {
     };
 
     useEffect(() => {
-        console.log(CutList);
+        // console.log(CutList);
     }, [CutList]);
 
     const displayCut = (index) => {
@@ -129,13 +136,23 @@ function SceneMakePage(props) {
         setScript(CutList[index].script);
         setName(CutList[index].name);
         setBgmFile(CutList[index].bgm);
-        console.log(1234568, CutList[index].bgm);
         setSoundFile(CutList[index].sound);
-        console.log(1234568, CutList[index].sound);
+        if (CutList[index].bgm.music) {
+            bgm_audio.src = CutList[index].bgm.music;
+            bgm_audio.play();
+        } else {
+            bgm_audio.pause();
+        }
+        if (CutList[index].sound.music) {
+            sound_audio.src = CutList[index].sound.music;
+            sound_audio.play();
+        } else {
+            sound_audio.pause();
+        }
     };
 
     const onClick_GotoCut = (index) => {
-        console.log(CutNumber);
+        // console.log(CutNumber);
         if (CutNumber > 29) {
             displayCut(index);
             setCutNumber(index);
@@ -242,12 +259,12 @@ function SceneMakePage(props) {
 
     const display_EmptyBox = EmptyCutList.map((EmptyCut, index) => {
         if (CutNumber - CutList.length === index) {
-            console.log(111, CutNumber, index);
+            // console.log(111, CutNumber, index);
             return (
                 <div className="scene__CurrentSceneBox" key={`${index}`}></div>
             );
         } else {
-            console.log(222, CutNumber, index);
+            // console.log(222, CutNumber, index);
             return (
                 <div className="scene__EmptySceneBox" key={`${index}`}></div>
             );
