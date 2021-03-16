@@ -165,70 +165,55 @@ const updateHistoryFromPlaying = (user) => {
         gamePlaying: { gameId, sceneIdList },
         gameHistory,
     } = user;
-    console.log(gameId, sceneIdList)
-    console.log("working~~~~~~~~~");
     for (let i = 0; i < gameHistory.length; i++) {
-        if (gameHistory[i].gameId === gameId) {
-            user.gameHistory[i].sceneIdList = [
-                ...user.gameHistory[i].sceneIdList,
-                ...sceneIdList,
-            ];
+        if (gameHistory[i].gameId && gameHistory[i].gameId.toHexString() === gameId.toHexString()) {
+            user.gameHistory[i].sceneIdList = [...sceneIdList];
             user.gamePlaying.sceneIdList = [];
             user.gamePlaying.gameId = null;
-            user.save();
+            user.save()
             return;
         }
     }
-    user.gameHistory.push({ gameId, sceneIdList });
+    console.log("저장 작업 실행")
+    user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList] });
     user.gamePlaying.sceneIdList = [];
     user.gamePlaying.gameId = null;
-    user.save();
+    user.save()
+    return;
 };
 
+// 저장된 씬 아이디로 들어감..
+// 저장된 씬이 없는 경우 첫 씬
 router.get("/gamestart/:id", auth, async (req, res) => {
-    // 로그인 중인 유저 가지고 오기..
-    // return res.status(200).json({ success: true, sceneId: 1 });
     const gameId = mongoose.Types.ObjectId(req.params.id);
     const userId = req.user._id;
     try {
-        const user = await User.findOne({ _id: userId });
+        let user = await User.findOne({ _id: userId });
 
-        if (!user.gamePlaying) {
-            // console.log(user.gamePlaying)
-            user = {
-                ...user,
-                gamePlaying: {
-                    gameId: null,
-                    sceneIdList: [],
-                },
-            };
-        }
-
-        if (gameId === user.gamePlaying.gameId) {
+        if (user.gamePlaying.id && gameId.toHexString() === user.gamePlaying.gameId.toHexString()) {
             return res
                 .status(200)
                 .json({
                     success: true,
-                    sceneId: user.gamePlaying.sceneIdList[-1],
+                    sceneId: user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1],
                 });
         }
-
-        updateHistoryFromPlaying(user);
-        const playingList = user.gameHistory;
-        for (let i = 0; i < playingList.length; i++) {
-            if (playingList[i].gameId === gameId) {
+        if (user.gamePlaying.gameId) {
+            updateHistoryFromPlaying(user);
+        }
+        const gameHistory = user.gameHistory;
+        for (let i = 0; i < gameHistory.length; i++) {
+            if (gameHistory[i].gameId && gameHistory[i].gameId.toHexString() === gameId.toHexString()) {
                 user.gamePlaying = {
                     gameId: gameId,
-                    sceneIdList:
-                        playingList[i].sceneIdList.length === 1
-                            ? []
-                            : playingList[i].sceneIdList.slice(0, -1),
+                    sceneIdList: gameHistory[i].sceneIdList.slice(0, gameHistory[i].sceneIdList.length - 1),
                 };
+                user.save();
                 return res
                     .status(200)
                     .json({
                         success: true,
-                        sceneId: playingList[i].sceneIdList[-1],
+                        sceneId: gameHistory[i].sceneIdList[gameHistory[i].sceneIdList.length - 1],
                     });
             }
         }
@@ -240,6 +225,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                 gameId: gameId,
                 sceneIdList: [],
             };
+            user.save();
             return res.status(200).json({ success: true, sceneId });
         } catch (err) {
             console.log(err);
@@ -252,8 +238,11 @@ router.get("/gamestart/:id", auth, async (req, res) => {
 });
 
 const validateScene = async (gamePlaying, sceneId, gameId) => {
-    if (gamePlaying.gameId === gameId) {
-        const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[-1] });
+    if (gamePlaying.gameId.toHexString() === gameId.toHexString()) {
+        const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[gamePlaying.sceneIdList.length-1] });
+        if (gamePlaying.sceneIdList[gamePlaying.sceneIdList.length-1].toHexString() === sceneId.toHexString()){
+            return true;
+        }
         for (let i = 0; i < 4; i++) {
             if (scene.nextList[i] === sceneId) {
                 return true;
@@ -277,6 +266,8 @@ router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
                 // console.log("fuck");
                 return res.status(200).json({ success: false });
             }
+
+            
             user.gamePlaying = {
                 gameId,
                 sceneIdList: [...user.gamePlaying.sceneIdList, sceneId],
@@ -318,34 +309,8 @@ router.post("/refreshHistory", auth, async (req, res) => {
     } catch {
         return res.status(200).json({ success: false });
     }
-    // gamePlaying 의 sceneIdList를 슬라이스하고 저장
-    return;
 });
 
-// router.get('/getsceneidlist/:gameId', auth, async (req, res) => {
-//   if (!req.user) {
-//     return res.status(200).json({ success: false, msg: "Not a user" });
-//   }
-//   const gameId = mongoose.Types.ObjectId(req.params.gameId);
-//   const userId = req.user._id;
-//   try {
-//     const user = await User.findOne({ _id: userId });
-//     updateHistoryFromPlaying()
-//       .then(() => {
-//         const playingList = user.gameHistory;
-//         for (let i = 0; i < playingList.length(); i++) {
-//           if (playingList[i].gameId === gameId) {
-
-//             return res.status(200).json({ success: true, sceneId: playingList[i].sceneIdList });
-//           }
-//           return res.status(200).json({ success: false });
-//         }
-//       });
-//   } catch {
-//     console.log(err);
-//     return res.status(200).json({ success: false });
-//   }
-// })
 
 router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
     if (!req.user) {
