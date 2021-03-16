@@ -7,12 +7,16 @@ import "./SceneMakePage.css";
 import { useSelector } from "react-redux";
 import { Input, message, Button } from "antd";
 import Axios from "axios";
+import { useLocation } from "react-router";
 const { TextArea } = Input;
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
 
 function SceneMakePage(props) {
+    const location = useLocation();
+    const sceneInfo = location.state;
+
     const gameId = props.match.params.gameId;
     const userId = useSelector((state) => state.user);
     const [SidBar_b, setSidBar_b] = useState(false);
@@ -39,6 +43,11 @@ function SceneMakePage(props) {
     const [CutList, setCutList] = useState([]);
     const [EmptyCutList, setEmptyCutList] = useState(
         Array.from({ length: 30 }, () => 0)
+    );
+
+    // 첫 씬과 나머지 씬들의 차이
+    const [SceneOption, setSceneOption] = useState(
+        sceneInfo ? sceneInfo.scene_option : ""
     );
 
     const onScriptChange = (event) => {
@@ -104,14 +113,20 @@ function SceneMakePage(props) {
             bgm: BgmFile,
             sound: SoundFile,
         };
-        console.log(123456, BgmFile);
-        console.log(123456, SoundFile);
+        setBgmFile({
+            name: "",
+            music: "",
+        });
+        setSoundFile({
+            name: "",
+            music: "",
+        });
+
         setCutList((oldArray) => [
             ...oldArray.slice(0, CutNumber),
             Cut,
             ...oldArray.slice(CutNumber + 1, 30),
         ]);
-        console.log(CutList.length, CutNumber);
         if (CutList.length === CutNumber) {
             setEmptyCutList((oldArray) => [
                 ...oldArray.slice(0, EmptyCutList.length - 1),
@@ -119,9 +134,9 @@ function SceneMakePage(props) {
         }
     };
 
-    useEffect(() => {
-        console.log(CutList);
-    }, [CutList]);
+    // useEffect(() => {
+    //     console.log(CutList);
+    // }, [CutList]);
 
     const displayCut = (index) => {
         setBackgroundImg(CutList[index].background);
@@ -129,13 +144,22 @@ function SceneMakePage(props) {
         setScript(CutList[index].script);
         setName(CutList[index].name);
         setBgmFile(CutList[index].bgm);
-        console.log(1234568, CutList[index].bgm);
         setSoundFile(CutList[index].sound);
-        console.log(1234568, CutList[index].sound);
+        if (CutList[index].bgm.music) {
+            bgm_audio.src = CutList[index].bgm.music;
+            bgm_audio.play();
+        } else {
+            bgm_audio.pause();
+        }
+        if (CutList[index].sound.music) {
+            sound_audio.src = CutList[index].sound.music;
+            sound_audio.play();
+        } else {
+            sound_audio.pause();
+        }
     };
 
     const onClick_GotoCut = (index) => {
-        console.log(CutNumber);
         if (CutNumber > 29) {
             displayCut(index);
             setCutNumber(index);
@@ -197,7 +221,10 @@ function SceneMakePage(props) {
                 writer: userId.userData._id,
                 nextList: [],
                 cutList: submitCutList,
-                isFirst: 1,
+                isFirst: sceneInfo ? 0 : 1,
+                depth: sceneInfo ? sceneInfo.depth + 1 : 0,
+                sceneOption: SceneOption,
+                prevSceneId: sceneInfo ? sceneInfo.prev_scene_id : 0,
             };
             Axios.post("/api/scene/save", variable).then((response) => {
                 if (response.data.success) {
@@ -207,7 +234,9 @@ function SceneMakePage(props) {
                             message.success("게임 제작이 완료되었습니다.", 1.5)
                         );
                     setTimeout(() => {
-                        props.history.push("/");
+                        props.history.push(
+                            `/gameplay/${gameId}/${response.data.scene._id}`
+                        );
                     }, 1000);
                 } else {
                     message.error("DB에 문제가 있습니다.");
@@ -219,7 +248,6 @@ function SceneMakePage(props) {
     };
     var elem = document.getElementsByClassName("scene__SceneBox_container");
     if (elem.children) {
-        console.log("EEE");
         var child = elem.children[CutNumber];
         child.style.backgroundColor = "blue";
     }
@@ -242,12 +270,10 @@ function SceneMakePage(props) {
 
     const display_EmptyBox = EmptyCutList.map((EmptyCut, index) => {
         if (CutNumber - CutList.length === index) {
-            console.log(111, CutNumber, index);
             return (
                 <div className="scene__CurrentSceneBox" key={`${index}`}></div>
             );
         } else {
-            console.log(222, CutNumber, index);
             return (
                 <div className="scene__EmptySceneBox" key={`${index}`}></div>
             );

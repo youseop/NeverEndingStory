@@ -14,10 +14,15 @@ const PrivateOptions = [
 ];
 
 const CategoryOptions = [
-    { value: 0, label: "Film & Animation" },
-    { value: 1, label: "Autos & Vehicles" },
-    { value: 2, label: "Music" },
-    { value: 3, label: "Pets & Animals" },
+    // { value: 0, label: "Film & Animation" },
+    // { value: 1, label: "Autos & Vehicles" },
+    // { value: 2, label: "Music" },
+    // { value: 3, label: "Pets & Animals" },
+    { value: 0, label: "살아남기" },
+    { value: 1, label: "로맨스" },
+    { value: 2, label: "스토리" },
+    { value: 3, label: "추리" },
+    { value: 4, label: "병맛" },
 ];
 
 function GameUploadPage(props) {
@@ -25,7 +30,7 @@ function GameUploadPage(props) {
     const [videoTitle, setVideoTitle] = useState("");
     const [description, setDescription] = useState("");
     const [isPrivate, setIsPrivate] = useState(0);
-    const [category, setCategory] = useState("Film & Animation");
+    const [category, setCategory] = useState("");
 
     const [filePath, setFilePath] = useState("");
     // const [duration, setDuration] = useState("")
@@ -36,6 +41,7 @@ function GameUploadPage(props) {
     };
 
     const onDescriptionChange = (event) => {
+        console.log(event.currentTarget.value);
         setDescription(event.currentTarget.value);
     };
 
@@ -44,7 +50,8 @@ function GameUploadPage(props) {
     };
 
     const onCartegoryChange = (event) => {
-        setCategory(event.currentTarget.value);
+        let cat_idx = event.currentTarget.value;
+        setCategory(event.currentTarget[cat_idx].text);
     };
 
     const onDrop = (files) => {
@@ -114,7 +121,7 @@ function GameUploadPage(props) {
     return (
         <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
             <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-                <Title level={2}>Upload Video</Title>
+                <Title level={2}>Upload Game</Title>
             </div>
             <Form onSubmit={onSubmit}>
                 <div
