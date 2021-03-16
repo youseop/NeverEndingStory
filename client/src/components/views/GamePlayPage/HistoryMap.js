@@ -1,5 +1,5 @@
-import { getInputClassName } from "antd/lib/input/Input";
 import React, { useState } from "react";
+import Axios from "axios";
 import "./HistoryMap.css";
 
 function click() {
@@ -12,26 +12,46 @@ function click() {
   map.style.transform = `translate(${new_position - 150}px, 0px)`;
 }
 
-function GoToScene(props){
-  console.log(props)
+function GoToScene(props) {
+  const { gameId, sceneId, GoScene } = props;
+  const data = { data: { sceneIndex: GoScene } };
+  Axios.post("/api/game/refreshHistory", data).then((response) => {
+    if (response.data.success) {
+      window.location.replace(`/gameplay/${gameId}/${sceneId[GoScene]}`);
+    } else {
+      alert("Scene 변경 요청 실패");
+    }
+  });
+}
 
-  // {`/gameplay/${props.gameId}/${GoScene}`}
+function GetSceneInfo(props) {
+  console.log("props");
+
+  const { scene } = props;
+  Axios.get(`/api/game/getSceneInfo/${scene}`).then((response) => {
+    console.log(response);
+    if (response.data.sucess) {
+      // setSceneInfo(scene[index])
+    } else {
+      alert("Scene 정보 없음...");
+    }
+  });
 }
 
 function HistoryMapPopup(props) {
   const { gameId, sceneId } = props.history;
   const [GoScene, setGoScene] = useState(null);
+  const [SceneInfo, setSceneInfo] = useState(null);
 
-  // console.log(sceneId);
-
-  const HistoryMap_scenes = sceneId.map((scene) => {
+  const HistoryMap_scenes = sceneId.map((scene, index) => {
     return (
       <li
         className="HistoryMap_scene"
-        key={scene}
-        onClick={() => setGoScene(scene)}
+        key={index + 1}
+        onMouseOver={() =>GetSceneInfo({scene,setSceneInfo})}
+        onClick={() => setGoScene(index + 1)}
       >
-        {scene}
+        {index + 1}
       </li>
     );
   });
@@ -44,17 +64,24 @@ function HistoryMapPopup(props) {
       <div className="HistoryMap_inner">
         <ul className="slide_wrap">{HistoryMap_scenes}</ul>
       </div>
-      {GoScene ?
-      <div className="warning_popup">
-        <button className="go_btn" onClick={() => GoToScene({gameId,GoScene})}>
-          ok
-        </button>
-        <button className="close_btn" onClick={() => setGoScene(false)}>
-          close
-        </button>
-        <div>are you sure? 다시는 돌아올 수 없다?</div>
-      </div>
-      : ""}
+      {GoScene ? (
+        <div className="warning_popup">
+          <button
+            className="ok_btn"
+            onClick={() => GoToScene({ gameId, sceneId, GoScene })}
+          >
+            ok
+          </button>
+          <button className="close_btn" onClick={() => setGoScene(null)}>
+            close
+          </button>
+          <div className="warning_text">
+            are you sure? 다시는 돌아올 수 없다?
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   ) : (
     ""
