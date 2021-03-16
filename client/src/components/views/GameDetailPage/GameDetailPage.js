@@ -25,7 +25,6 @@ function GameDetailPage(props) {
   useEffect(() => {
     Axios.get(`/api/game/gamestart/${gameId}`)
     .then(response => {
-      // console.log(response.data.sceneId);
       if(response.data.success) {
         setSceneId(response.data.sceneId);
       } else {

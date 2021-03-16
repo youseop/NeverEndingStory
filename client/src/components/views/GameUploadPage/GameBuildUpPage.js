@@ -73,7 +73,6 @@ function GameBuildUpPage(props) {
         //bgm
         if (cur_game.bgm) {
             const bgmCards = cur_game.bgm.map((_, index) => {
-                console.log(cur_game.bgm[index].name);
                 return (
                     <Col key={index} lg={6} md={8} xs={24}>
                         <div style={{ position: "relative" }}>

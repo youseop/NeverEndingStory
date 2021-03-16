@@ -50,9 +50,6 @@ const ProductScreen = (props) => {
   ];
 
   if (props.user) {
-    // console.log(props.user.userData.gameHistory)
-    // const { gameHistory } = (props.user.userData.gameHistory)
-
     for (let i = 0; i < gameHistory.length; i++) {
       if (gameId == gameHistory[i].gameId) {
         history = gameHistory[i];
@@ -87,7 +84,6 @@ const ProductScreen = (props) => {
       }
     );
   }, [sceneId]);
-
   if (Scene.cutList) {
     return (
       <div>
@@ -111,9 +107,11 @@ const ProductScreen = (props) => {
 
             {i === Scene.cutList.length - 1 ? (
               <TextBlockChoice
-                gameId={gameId}
+                game_id={gameId}
                 cut_name={Scene.cutList[i].name}
                 cut_script={Scene.cutList[i].script}
+                scene_depth={Scene.depth}
+                scene_id={Scene._id}
                 scene_next_list={Scene.nextList}
               />
             ) : (
