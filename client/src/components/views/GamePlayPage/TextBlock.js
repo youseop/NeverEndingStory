@@ -20,10 +20,6 @@ export const TextBlock = (props) => {
 
 // 선택지 display
 export const TextBlockChoice = (props) => {
-<<<<<<< HEAD
-  const { gameId, cut_name, cut_script, scene_next_list } = props;
-  const choices = scene_next_list.map((choice) => {
-=======
     const {
         game_id,
         cut_name,
@@ -32,7 +28,6 @@ export const TextBlockChoice = (props) => {
         scene_id,
         scene_depth,
     } = props;
-    console.log(scene_next_list);
     const choices = scene_next_list.map((choice, index) => {
         return (
             <Link
@@ -43,8 +38,6 @@ export const TextBlockChoice = (props) => {
             </Link>
         );
     });
-    console.log(game_id);
->>>>>>> origin/dev
     return (
         <div className="text_container">
             <div className="name_block">{cut_name}</div>

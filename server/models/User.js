@@ -31,19 +31,25 @@ const userSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    gameHistory: {
-        type: Array,
-        default: []
-    },
+    gameHistory: [{
+        gameId: {
+            type: Schema.Types.ObjectId,
+            ref: "Game",
+        },
+        sceneIdList: [{
+            type: Schema.Types.ObjectId,
+            ref: "Scene",
+        }]
+    }],
     gamePlaying: {
         gameId: {
             type: Schema.Types.ObjectId,
             ref: "Game",
         },
-        sceneIdList: {
-            type: Array,
-            default: []
-        }
+        sceneIdList: [{
+            type: Schema.Types.ObjectId,
+            ref: "Scene",
+        }]
     },
     gameFavorite: {
         type: Array,

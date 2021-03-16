@@ -167,7 +167,6 @@ const updateHistoryFromPlaying = (user) => {
             user.gameHistory[i].sceneIdList = [...sceneIdList];
             user.gamePlaying.sceneIdList = [];
             user.gamePlaying.gameId = null;
-            // user.save()
             return;
         }
     }
@@ -175,7 +174,6 @@ const updateHistoryFromPlaying = (user) => {
     user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList] });
     user.gamePlaying.sceneIdList = [];
     user.gamePlaying.gameId = null;
-    // user.save()
     return;
 };
 
@@ -205,7 +203,9 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                     gameId: gameId,
                     sceneIdList: gameHistory[i].sceneIdList.slice(0, gameHistory[i].sceneIdList.length),
                 };
-                user.save();
+                user.save((err) => {
+                    if(err){ console.log(err); return res.status(400).json({success: false})}
+                });
                 return res
                     .status(200)
                     .json({
@@ -241,7 +241,7 @@ const validateScene = async (gamePlaying, sceneId, gameId) => {
             return true;
         }
         for (let i = 0; i < scene.nextList.length; i++) {
-            if (scene.nextList[i].toHexString() === sceneId.toHexString()) {
+            if (scene.nextList[i].sceneId.toHexString() === sceneId.toHexString()) {
                 return true;
             }
         }

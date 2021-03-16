@@ -10,7 +10,8 @@ const Schema = mongoose.Schema;
 
 const nextSceneSchema = mongoose.Schema({
     sceneId: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Scene"
     },
     script: {
         type: String,

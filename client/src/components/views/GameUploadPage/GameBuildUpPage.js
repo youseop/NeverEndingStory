@@ -202,7 +202,6 @@ function GameBuildUpPage(props) {
                                 });
                                 return;
                             case 3:
-                                console.log("bgm");
                                 const bgmForm = {
                                     gameId: gameId,
                                     bgm: {
@@ -222,7 +221,6 @@ function GameBuildUpPage(props) {
                                 return;
 
                             case 4:
-                                console.log("sound");
                                 const soundForm = {
                                     gameId: gameId,
                                     sound: {
