@@ -14,7 +14,6 @@ function GameDetailPage(props) {
     useEffect(() => {
         Axios.post("/api/game/getgamedetail", variable).then((response) => {
             if (response.data.success) {
-                // console.log(response.data.gameDetail);
                 setGameDetail(response.data.gameDetail);
             } else {
                 alert("게임 정보를 로딩하는데 실패했습니다.");
@@ -23,7 +22,6 @@ function GameDetailPage(props) {
     }, []);
     useEffect(() => {
         Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
-            // console.log(response.data.sceneId);
             if (response.data.success) {
                 setSceneId(response.data.sceneId);
             } else {
@@ -37,7 +35,7 @@ function GameDetailPage(props) {
     return (
         <div>
             {/* console창 보시면 정보 받아지고 있습니다! (전부 다 보내진 않고 있음)
-            정리해서 사용하세요. */}
+    정리해서 사용하세요. */}
             <h2>game detail page</h2>
             <h1>제목: {gameDetail.title}</h1>
 

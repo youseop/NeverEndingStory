@@ -35,11 +35,8 @@ function GoToScene(props) {
 }
 
 function GetSceneInfo(props) {
-    console.log("props");
-
     const { scene } = props;
     Axios.get(`/api/game/getSceneInfo/${scene}`).then((response) => {
-        // console.log(response);
         if (response.data.sucess) {
             // setSceneInfo(scene[index])
         } else {
@@ -55,7 +52,6 @@ function HistoryMapPopup(props) {
 
     //* set map length
     // var map = document.getElementsByClassName("HistoryMap_inner")[0];
-    // console.log(map)
     // map.style.width = `(${sceneId.length * 100}px)`;
 
     const HistoryMap_scenes = sceneId.map((scene, index) => {

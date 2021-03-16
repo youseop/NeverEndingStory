@@ -66,9 +66,6 @@ const ProductScreen = (props) => {
     ];
 
     if (props.user) {
-        // console.log(props.user.userData.gameHistory)
-        // const { gameHistory } = (props.user.userData.gameHistory)
-
         for (let i = 0; i < gameHistory.length; i++) {
             if (gameId == gameHistory[i].gameId) {
                 history = gameHistory[i];
@@ -78,7 +75,7 @@ const ProductScreen = (props) => {
 
     history = gameHistory[0];
 
-    const [i, setI] = useState(0);
+    const [i, setI] = useState(0); // 현재 CutNumber
     const [Scene, setScene] = useState({});
     const [Dislike, setDislike] = useState(false);
     const [HistoryMap, setHistoryMap] = useState(false);
@@ -125,9 +122,9 @@ const ProductScreen = (props) => {
             }
         );
     }, [sceneId]);
-
     if (Scene.cutList) {
         if (i == 0) playMusic(0);
+
         return (
             <div>
                 <div className="productscreen">
@@ -150,9 +147,11 @@ const ProductScreen = (props) => {
 
                         {i === Scene.cutList.length - 1 ? (
                             <TextBlockChoice
-                                gameId={gameId}
+                                game_id={gameId}
                                 cut_name={Scene.cutList[i].name}
                                 cut_script={Scene.cutList[i].script}
+                                scene_depth={Scene.depth}
+                                scene_id={Scene._id}
                                 scene_next_list={Scene.nextList}
                             />
                         ) : (
