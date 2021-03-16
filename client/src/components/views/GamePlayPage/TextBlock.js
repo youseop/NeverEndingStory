@@ -38,6 +38,8 @@ export const TextBlockChoice = (props) => {
         {cut_script}
         <br/>
         {/* 선택의 길이 등장할 수 있는 경우 */}
+        <div>{choices}</div>
+        <br/>
         {scene_next_list.length < CHOICE_NUM ? 
         // <div onClick={onClick_nextScene}>
         <div>
@@ -52,7 +54,6 @@ export const TextBlockChoice = (props) => {
         <div></div>
         }
         {/* 항상 */}
-        <div>{choices}</div>
       </div>
     </div>
   );

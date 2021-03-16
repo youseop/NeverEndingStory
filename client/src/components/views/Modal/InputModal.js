@@ -39,7 +39,7 @@ const InputModal = ({scene_id, scene_depth, game_id}) => {
 
   return (
     <>
-      <div onClick={() => setVisible(true)}>
+      <div onClick={() => setVisible(true)} style={{color:"red"}}>
         선택의 길...
       </div>
       <ModalForm
