@@ -35,7 +35,9 @@ const ProductScreen = (props) => {
   const gameHistory = [
     {
       gameId: 1,
-      sceneId: [101, 102, 103],
+      // sceneId: [201, 202, 203],
+
+      sceneId: [101, 102, 103,104, 105, 106,107, 108, 109,110, 111, 112],
     },
     {
       gameId: 2,
