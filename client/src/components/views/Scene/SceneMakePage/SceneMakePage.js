@@ -39,6 +39,7 @@ function SceneMakePage(props) {
     });
 
     const [CutNumber, setCutNumber] = useState(0);
+    const [Hover, setHover] = useState(false);
 
     const [CutList, setCutList] = useState([]);
     const [EmptyCutList, setEmptyCutList] = useState(
@@ -246,25 +247,34 @@ function SceneMakePage(props) {
             message.error("제출 취소요");
         }
     };
-    var elem = document.getElementsByClassName("scene__SceneBox_container");
-    if (elem.children) {
-        var child = elem.children[CutNumber];
-        child.style.backgroundColor = "blue";
+    
+    const onClick_isHover = () => {
+        setHover(!Hover);
     }
 
     const display_SceneBox = CutList.map((Cut, index) => {
         if (CutNumber === index) {
             return (
-                <div className="scene__CurrentSceneBox" key={`${index}`}></div>
+                (<div className="scene__CurrentSceneBox" key={`${index}`}></div>)
             );
         } else {
-            return (
-                <div
-                    className="scene__SceneBox"
-                    key={`${index}`}
-                    onClick={() => onClick_GotoCut(index)}
-                ></div>
-            );
+            if (Hover){ 
+                return (
+                    <div
+                        className="scene__SceneBox"
+                        key={`${index}`}
+                        onMouseOver={() => onClick_GotoCut(index)}//?
+                    ></div>
+                )
+            } else {
+                return (
+                    <div
+                        className="scene__SceneBox"
+                        key={`${index}`}
+                        onClick={() => onClick_GotoCut(index)}
+                    ></div>
+                )
+            }
         }
     });
 
@@ -301,10 +311,13 @@ function SceneMakePage(props) {
             {/* //?main Screen */}
             <div className="scenemake__main">
                 <div className="scene__SceneBox_container">
-                    {CutNumber}
+                    <div onClick={onClick_isHover}>
+                        mode : {Hover ? "Hover":" Click "}
+                    </div>
                     {display_SceneBox}
                     {display_EmptyBox}
-                    {CutList.length}
+                    <div style={{width:"20px"}}>{CutNumber}</div>
+                    {/* {CutList.length} */}
                 </div>
                 {BgmFile ? (
                     <div
