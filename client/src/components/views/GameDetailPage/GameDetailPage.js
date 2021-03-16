@@ -14,7 +14,7 @@ function GameDetailPage(props) {
     useEffect(() => {
         Axios.post("/api/game/getgamedetail", variable).then((response) => {
             if (response.data.success) {
-                console.log(response.data.gameDetail);
+                // console.log(response.data.gameDetail);
                 setGameDetail(response.data.gameDetail);
             } else {
                 alert("게임 정보를 로딩하는데 실패했습니다.");
