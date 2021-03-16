@@ -311,7 +311,7 @@ function SceneMakePage(props) {
             {/* //?main Screen */}
             <div className="scenemake__main">
                 <div className="scene__SceneBox_container">
-                    <div onClick={onClick_isHover}>
+                    <div onClick={onClick_isHover} style={{cursor:"pointer"}}>
                         mode : {Hover ? "Hover":" Click "}
                     </div>
                     {display_SceneBox}
