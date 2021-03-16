@@ -13,7 +13,6 @@ const {TextArea} = Input
 function SceneMakePage(props) {
   const gameId = props.match.params.gameId;
   const userId = useSelector(state=>state.user);
-  // console.log(userId)
   const [SidBar_b, setSidBar_b] = useState(false);
   const [SidBar_c, setSidBar_c] = useState(false);
   const [SidBar_script, setSidBar_script] = useState(false);
@@ -80,7 +79,7 @@ function SceneMakePage(props) {
   }
 
   const onClick_GotoCut = (index) => {
-    // console.log(CutNumber)
+    console.log(CutNumber)
     if (CutNumber > 29){
       displayCut(index);
       setCutNumber(index);
@@ -101,7 +100,6 @@ function SceneMakePage(props) {
  };
 
   const onSubmit_nextCut = (event) => {
-    // console.log("submit!! Cutnumber : ",CutNumber)
     event.preventDefault();
     if (CutNumber > 29){
       message.error("더이상 Cut을 생성할 수 없습니다.");
@@ -142,7 +140,6 @@ function SceneMakePage(props) {
         cutList : submitCutList,
         isFirst : 1
       }
-      // console.log(variable.writer)
       Axios.post('/api/scene/save',variable)
       .then(response => {
         if(response.data.success){
