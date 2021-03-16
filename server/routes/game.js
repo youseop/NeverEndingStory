@@ -63,9 +63,6 @@ router.post("/uploadfiles", (req, res) => {
 
 router.post("/uploadgame", (req, res) => {
     const game = new Game(req.body);
-    console.log("game : ", game);
-    console.log("req.body : ", req.body);
-
     game.save((err, game) => {
         if (err) return res.json({ success: false, err });
 
@@ -170,15 +167,15 @@ const updateHistoryFromPlaying = (user) => {
             user.gameHistory[i].sceneIdList = [...sceneIdList];
             user.gamePlaying.sceneIdList = [];
             user.gamePlaying.gameId = null;
-            user.save()
+            // user.save()
             return;
         }
     }
-    console.log("저장 작업 실행")
+
     user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList] });
     user.gamePlaying.sceneIdList = [];
     user.gamePlaying.gameId = null;
-    user.save()
+    // user.save()
     return;
 };
 
@@ -206,7 +203,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
             if (gameHistory[i].gameId && gameHistory[i].gameId.toHexString() === gameId.toHexString()) {
                 user.gamePlaying = {
                     gameId: gameId,
-                    sceneIdList: gameHistory[i].sceneIdList.slice(0, gameHistory[i].sceneIdList.length - 1),
+                    sceneIdList: gameHistory[i].sceneIdList.slice(0, gameHistory[i].sceneIdList.length),
                 };
                 user.save();
                 return res
@@ -223,7 +220,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
             const sceneId = game.first_scene;
             user.gamePlaying = {
                 gameId: gameId,
-                sceneIdList: [],
+                sceneIdList: [sceneId],
             };
             user.save();
             return res.status(200).json({ success: true, sceneId });
@@ -239,12 +236,12 @@ router.get("/gamestart/:id", auth, async (req, res) => {
 
 const validateScene = async (gamePlaying, sceneId, gameId) => {
     if (gamePlaying.gameId.toHexString() === gameId.toHexString()) {
-        const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[gamePlaying.sceneIdList.length-1] });
-        if (gamePlaying.sceneIdList[gamePlaying.sceneIdList.length-1].toHexString() === sceneId.toHexString()){
+        const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[gamePlaying.sceneIdList.length - 1] });
+        if (gamePlaying.sceneIdList[gamePlaying.sceneIdList.length - 1].toHexString() === sceneId.toHexString()) {
             return true;
         }
-        for (let i = 0; i < 4; i++) {
-            if (scene.nextList[i] === sceneId) {
+        for (let i = 0; i < scene.nextList.length; i++) {
+            if (scene.nextList[i].toHexString() === sceneId.toHexString()) {
                 return true;
             }
         }
@@ -262,16 +259,17 @@ router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
         const user = await User.findOne({ _id: userId });
         try {
             const scene = await Scene.findOne({ _id: sceneId });
-            if (!validateScene(user.gamePlaying, sceneId, gameId)) {
-                // console.log("fuck");
+            const val = await validateScene(user.gamePlaying, sceneId, gameId);
+            if (!val) {
                 return res.status(200).json({ success: false });
             }
+            if (user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1].toHexString() !== sceneId.toHexString()) {
+                user.gamePlaying = {
+                    gameId,
+                    sceneIdList: [...user.gamePlaying.sceneIdList, sceneId],
+                };
+            }
 
-            
-            user.gamePlaying = {
-                gameId,
-                sceneIdList: [...user.gamePlaying.sceneIdList, sceneId],
-            };
             user.save();
 
             return res

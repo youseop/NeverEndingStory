@@ -18,7 +18,6 @@ export const TextBlock = (props) => {
 };
 
 export const TextBlockChoice = (props) => {
-  console.log("fuck~~~~~~~~~");
   const { gameId, cut_name, cut_script, scene_next_list } = props;
   const choices = scene_next_list.map((choice) => {
     return (

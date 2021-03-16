@@ -160,7 +160,6 @@ function GameBuildUpPage(props) {
                 (response) => {
                     // console.log(response);
                     if (response.data.success) {
-                        console.log(response.data.url);
                         // console.log("setFilePath");
                         setFilePath(response.data.url);
 
@@ -185,7 +184,6 @@ function GameBuildUpPage(props) {
                                 });
                                 return;
                             case 2: //background
-                                console.log("background");
                                 const backgroundForm = {
                                     gameId: gameId,
                                     background: {
