@@ -165,19 +165,20 @@ const updateHistoryFromPlaying = (user) => {
         gamePlaying: { gameId, sceneIdList },
         gameHistory,
     } = user;
-
+    console.log(gameId, sceneIdList)
+    console.log("working~~~~~~~~~");
     for (let i = 0; i < gameHistory.length; i++) {
-        if (gameHistory[i].gameId === gameId)
+        if (gameHistory[i].gameId === gameId) {
             user.gameHistory[i].sceneIdList = [
                 ...user.gameHistory[i].sceneIdList,
                 ...sceneIdList,
             ];
-        user.gamePlaying.sceneIdList = [];
-        user.gamePlaying.gameId = null;
-        user.save();
-        return;
+            user.gamePlaying.sceneIdList = [];
+            user.gamePlaying.gameId = null;
+            user.save();
+            return;
+        }
     }
-
     user.gameHistory.push({ gameId, sceneIdList });
     user.gamePlaying.sceneIdList = [];
     user.gamePlaying.gameId = null;
