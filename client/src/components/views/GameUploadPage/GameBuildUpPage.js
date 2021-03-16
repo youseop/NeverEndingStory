@@ -17,6 +17,8 @@ function GameBuildUpPage(props) {
     const [cur_game, setGame] = useState([]);
     const [characterCards, setCharacterCards] = useState([]);
     const [backgroundCards, setBackgroundCards] = useState([]);
+    const [bgmCards, setBgmCards] = useState([]);
+    const [soundCards, setSoundCards] = useState([]);
     const gameId = props.match.params.gameId;
 
     const game_form = {
@@ -36,41 +38,76 @@ function GameBuildUpPage(props) {
     useEffect(() => {
         //character
         if (cur_game.character) {
-            const tempCharacterCards = cur_game.character.map(
-                (character, index) => {
-                    return (
-                        <Col key={index} lg={6} md={8} xs={24}>
-                            <div style={{ position: "relative" }}>
-                                <img
-                                    style={{ width: "50px", height: "50px" }}
-                                    src={`${cur_game.character[index].image}`}
-                                />
-                            </div>
-                            <br />
-                        </Col>
-                    );
-                }
-            );
+            const tempCharacterCards = cur_game.character.map((_, index) => {
+                return (
+                    <Col key={index} lg={6} md={8} xs={24}>
+                        <div style={{ position: "relative" }}>
+                            <img
+                                style={{ width: "50px", height: "50px" }}
+                                src={`${cur_game.character[index].image}`}
+                            />
+                        </div>
+                        <br />
+                    </Col>
+                );
+            });
             setCharacterCards(tempCharacterCards);
         }
         //background
         if (cur_game.background) {
-            const backgroundCards = cur_game.background.map(
-                (background, index) => {
-                    return (
-                        <Col key={index} lg={6} md={8} xs={24}>
-                            <div style={{ position: "relative" }}>
-                                <img
-                                    style={{ width: "50px", height: "50px" }}
-                                    src={`${cur_game.background[index].image}`}
-                                />
-                            </div>
-                            <br />
-                        </Col>
-                    );
-                }
-            );
+            const backgroundCards = cur_game.background.map((_, index) => {
+                return (
+                    <Col key={index} lg={6} md={8} xs={24}>
+                        <div style={{ position: "relative" }}>
+                            <img
+                                style={{ width: "50px", height: "50px" }}
+                                src={`${cur_game.background[index].image}`}
+                            />
+                        </div>
+                        <br />
+                    </Col>
+                );
+            });
             setBackgroundCards(backgroundCards);
+        }
+        //bgm
+        if (cur_game.bgm) {
+            const bgmCards = cur_game.bgm.map((_, index) => {
+                console.log(cur_game.bgm[index].name);
+                return (
+                    <Col key={index} lg={6} md={8} xs={24}>
+                        <div style={{ position: "relative" }}>
+                            <img
+                                style={{ width: "20px", height: "20px" }}
+                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                // src="http://localhost:5000/music_icon.jpg"
+                            />
+                            {cur_game.bgm[index].name}
+                        </div>
+                        <br />
+                    </Col>
+                );
+            });
+            setBgmCards(bgmCards);
+        }
+        //sound
+        if (cur_game.sound) {
+            const soundCards = cur_game.sound.map((_, index) => {
+                return (
+                    <Col key={index} lg={6} md={8} xs={24}>
+                        <div style={{ position: "relative" }}>
+                            <img
+                                style={{ width: "20px", height: "20px" }}
+                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                // src="http://localhost:5000/music_icon.jpg"
+                            />
+                            {cur_game.sound[index].name}
+                        </div>
+                        <br />
+                    </Col>
+                );
+            });
+            setSoundCards(soundCards);
         }
     }, [cur_game]);
 
@@ -118,11 +155,12 @@ function GameBuildUpPage(props) {
                 header: { "content-type": "multipart/form-data" }, //content type을 같이 보내줘야한다!
             };
             formData.append("file", files[i]);
-
+            let file_name = files[i].name;
             Axios.post("/api/game/uploadfiles", formData, config).then(
                 (response) => {
                     // console.log(response);
                     if (response.data.success) {
+                        console.log(response.data.url);
                         // console.log("setFilePath");
                         setFilePath(response.data.url);
 
@@ -131,7 +169,7 @@ function GameBuildUpPage(props) {
                                 const characterForm = {
                                     gameId: gameId,
                                     character: {
-                                        name: "default",
+                                        name: file_name,
                                         image: `http://localhost:5000/${response.data.url}`,
                                     },
                                 };
@@ -147,11 +185,11 @@ function GameBuildUpPage(props) {
                                 });
                                 return;
                             case 2: //background
-                                // console.log("background");
+                                console.log("background");
                                 const backgroundForm = {
                                     gameId: gameId,
                                     background: {
-                                        name: "default",
+                                        name: file_name,
                                         image: `http://localhost:5000/${response.data.url}`,
                                     },
                                 };
@@ -167,11 +205,11 @@ function GameBuildUpPage(props) {
                                 });
                                 return;
                             case 3:
-                                // console.log("bgm");
+                                console.log("bgm");
                                 const bgmForm = {
                                     gameId: gameId,
                                     bgm: {
-                                        name: "default",
+                                        name: file_name,
                                         music: `http://localhost:5000/${response.data.url}`,
                                     },
                                 };
@@ -187,11 +225,11 @@ function GameBuildUpPage(props) {
                                 return;
 
                             case 4:
-                                // console.log("sound");
+                                console.log("sound");
                                 const soundForm = {
                                     gameId: gameId,
                                     sound: {
-                                        name: "default",
+                                        name: file_name,
                                         music: `http://localhost:5000/${response.data.url}`,
                                     },
                                 };
@@ -228,7 +266,6 @@ function GameBuildUpPage(props) {
     const onCharacter = () => {
         setFileState(1);
     };
-
     const onBackground = () => {
         setFileState(2);
     };
@@ -385,7 +422,7 @@ function GameBuildUpPage(props) {
                       />
                   </div>
               )} */}
-                    {/* <Row gutter={[32, 16]}>{backgroundCards}</Row> */}
+                    <Row>{bgmCards}</Row>
                 </div>
             </Form>
 
@@ -433,7 +470,7 @@ function GameBuildUpPage(props) {
                       />
                   </div>
               )} */}
-                    {/* <Row gutter={[32, 16]}>{backgroundCards}</Row> */}
+                    <Row>{soundCards}</Row>
                 </div>
 
                 <br />

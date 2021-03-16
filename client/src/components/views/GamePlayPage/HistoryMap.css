@@ -7,63 +7,94 @@
   height: 100%;
 
   display: flex;
-  justify-content: left;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
 
   background-color: rgba(0, 0, 0, 0.616);
 }
 
 .HistoryMap_inner {
   z-index: 98;
-  position: relative;
+  position: absolute;
   background-color: gold;
-  /* overflow: hidden; */
-  width: 3000px;
-  left: 20%;
+  height: 7em;
+  top: 40%;
+  right: 45%;
   transition-duration: 1s;
+}
 
-  /* margin-left: -100px; */
-  /* top: 400px; */
-  /* transform: translate(-50%, 20%); */
-  /* transform-origin: center center; */
+.slide_wrap{
+  list-style: none;
+  margin-left: 3px;
+  white-space: nowrap;
 }
 
 .HistoryMap_scene {
-  /* position: absolute; */
-  /* top :50%; */
-  /* right :50%; */
-  width: 10vw;
-  height: 10vh;
-  list-style: none;
-  float: left;
+  z-index: 98;
+
+  width: 10em;
+  height: 7em;
+  display: inline-block;
+
   text-align: center;
   background-color: indigo;
   border: 5px red solid;
+  color: white;
 }
-
 .HistoryMap_scene:hover{
   transform:scale(1.8);
   transition-duration: 0.7s;
 }
 
+
+
 .close_btn {
     position: absolute;
     top: 5%;
     right: 5%;
-  }
+}
 
-  .warning_popup{
-    z-index:100;
-    /* position: relative; */
-    position: absolute;
-    top:25%;
-    left:25%;
+.toleft_btn{
+  z-index: 100;
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  background-color: aqua;
+}
 
-    width: 33vw;
-    height: 33vh;
-    
-    background-color: aqua;
-    /* transform: translate(-100%, 0%); */
-    /* transform-origin: center center; */
-  }
+.toright_btn{
+  z-index: 100;
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  background-color: aqua;
+}
+
+.warning_popup{
+  z-index:100;
+  /* position: relative; */
+  position: absolute;
+  top:35%;
+  left:35%;
+  margin: auto;
+
+  width: 33%;
+  height: 33%;
   
+  background-color: aqua;
+  /* transform: translate(50%, 50%); */
+  /* transform-origin: center center; */
+}
+
+.warning_text{
+  position: absolute;
+  bottom: 40%;
+  left: 15%;
+}
+
+.ok_btn{
+  position: absolute;
+  bottom: 10%;
+  left: 45%;
+  border-radius: 0.3em;
+}
