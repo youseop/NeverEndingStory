@@ -17,6 +17,7 @@ export const TextBlock = (props) => {
   );
 };
 
+            // 선택지 display
 export const TextBlockChoice = (props) => {
   console.log("fuck~~~~~~~~~");
   const { gameId, cut_name, cut_script, scene_next_list } = props;

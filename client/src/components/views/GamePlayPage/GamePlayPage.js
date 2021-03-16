@@ -60,7 +60,7 @@ const ProductScreen = (props) => {
 
   history = gameHistory[0];
 
-  const [i, setI] = useState(0);
+  const [i, setI] = useState(0);  // 현재 CutNumber
   const [Scene, setScene] = useState({});
   const [Dislike, setDislike] = useState(false);
   const [HistoryMap, setHistoryMap] = useState(false);
