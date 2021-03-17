@@ -126,6 +126,30 @@ function SceneMakePage(props) {
         else sound_audio.pause();
     };
 
+    function useKey(key, cb) {
+        const callbackRef = useRef(cb);
+    
+        useEffect(() => {
+            callbackRef.current = cb;
+        });
+    
+        useEffect(() => {
+            function handle(event) {
+                if (event.code === key) {
+                    callbackRef.current(event);
+                }
+            }
+            document.addEventListener("keypress", handle);
+            return () => document.removeEventListener("keypress", handle);
+        }, [key]);
+    }
+    
+    function handleEnter(event) {
+        onSubmit_nextCut(event);
+    }
+    
+    useKey("Enter", handleEnter);
+
     const saveCut = () => {
         const Cut = {
             background: BackgroundImg,
@@ -218,7 +242,11 @@ function SceneMakePage(props) {
 
     const onSubmit_saveScene = (event) => {
         event.preventDefault();
-
+        console.log(CutList.length);
+        if (CutList.length < 2) {
+            message.error("최소 2개의 컷을 생성해주세요.");
+            return;
+        }
         const submitCut = {
             background: BackgroundImg,
             characterList: CharacterList,
@@ -253,9 +281,15 @@ function SceneMakePage(props) {
                             message.success("게임 제작이 완료되었습니다.", 1.5)
                         );
                     setTimeout(() => {
-                        props.history.push(
-                            `/gameplay/${gameId}/${response.data.scene._id}`
-                        );
+                        if (sceneInfo) {
+                            props.history.push(
+                                `/gameplay/${gameId}/${response.data.scene._id}`
+                            );
+                        } else {
+                            props.history.push(
+                                `/game/${gameId}`
+                            );
+                        }
                     }, 1000);
                 } else {
                     message.error("DB에 문제가 있습니다.");

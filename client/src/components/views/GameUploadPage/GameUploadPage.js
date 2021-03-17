@@ -41,7 +41,6 @@ function GameUploadPage(props) {
     };
 
     const onDescriptionChange = (event) => {
-        console.log(event.currentTarget.value);
         setDescription(event.currentTarget.value);
     };
 
@@ -69,11 +68,6 @@ function GameUploadPage(props) {
         Axios.post("/api/game/uploadfiles", formData, config).then(
             (response) => {
                 if (response.data.success) {
-                    // console.log(response.data);
-                    // let variable = {
-                    //   url: response.data.url,
-                    //   fileName: response.data.fileName
-                    // }
                     setFilePath(response.data.url);
                 } else {
                     alert("업로드 실패");

@@ -10,8 +10,12 @@ function GameDetailPage(props) {
 
     const [gameDetail, setGameDetail] = useState([]);
     const [sceneId, setSceneId] = useState([]);
+    console.log('start gamedetailpage')
+    console.log(sceneId)
 
     useEffect(() => {
+    console.log('start first useeffect')
+
         Axios.post("/api/game/getgamedetail", variable).then((response) => {
             if (response.data.success) {
                 setGameDetail(response.data.gameDetail);
@@ -21,14 +25,19 @@ function GameDetailPage(props) {
         });
     }, []);
     useEffect(() => {
-        Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
+    console.log('start second useeffect')
+    Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
             if (response.data.success) {
+                console.log(response.data)
                 setSceneId(response.data.sceneId);
             } else {
                 message.error("게임 정보를 로딩하는데 실패했습니다.");
             }
         });
-    }, []);
+    console.log('end second useeffect')
+}, []);
+    console.log('before return')
+    console.log(sceneId)
 
     //? gameDetail에 정보 담겨있습니다!
 

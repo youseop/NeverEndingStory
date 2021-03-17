@@ -69,6 +69,7 @@ const ProductScreen = (props) => {
     }
 
     useKey("Enter", handleEnter);
+    useKey("Space", handleEnter);
 
     useEffect(() => {
         Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
