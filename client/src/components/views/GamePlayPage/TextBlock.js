@@ -40,6 +40,7 @@ export const TextBlockChoice = (props) => {
     scene_next_list,
     scene_id,
     scene_depth,
+    setClickable
   } = props;
   const choices = scene_next_list.map((choice, index) => {
     return (
@@ -66,6 +67,7 @@ export const TextBlockChoice = (props) => {
               scene_id={scene_id}
               scene_depth={scene_depth}
               game_id={game_id}
+              setClickable={setClickable}
             />
           </div>
         ) : (

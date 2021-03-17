@@ -24,13 +24,17 @@ function MapToRight() {
 }
 
 function GoToScene(props) {
-  const { gameId, sceneId, GoScene } = props;
+  const { userhistory, gameId, sceneId, GoScene } = props;
   const data = { data: { sceneIndex: GoScene - 1 } };
   Axios.post("/api/game/refreshHistory", data).then((response) => {
     if (!response.data.success) {
-      alert("Scene 변경 요청 실패");
+      message.error("Scene 변경 요청 실패");
     } else {
-      window.location.replace(`/gameplay/${gameId}/${sceneId[GoScene - 1]}`);
+      userhistory.push(`/gameplay/${gameId}/${sceneId[GoScene - 1]}`);
+      const close = document.getElementsByClassName("close_btn");
+      for (let i = close.length - 1; i >= 0; i--) {
+        close[i].click();
+      }
     }
   });
 }
@@ -55,6 +59,7 @@ function GetSceneInfo(props) {
 }
 
 function HistoryMapPopup(props) {
+  const { userhistory ,setTrigger,setClickable} = props;
   const { gameId, sceneId } = props.history;
   const [GoScene, setGoScene] = useState(null);
   const [DelayHandler, setDelayHandler] = useState(null);
@@ -71,6 +76,11 @@ function HistoryMapPopup(props) {
   function delay_reset() {
     setSceneInfo(null);
     clearTimeout(DelayHandler);
+  }
+
+  function close_button(){
+    setClickable(false)
+    setTrigger(false)
   }
 
   const HistoryMap_scenes = sceneId.map((scene, index) => {
@@ -100,7 +110,7 @@ function HistoryMapPopup(props) {
 
   return props.trigger ? (
     <div className="HistoryMap_popup">
-      <button className="close_btn" onClick={() => props.setTrigger(false)}>
+      <button className="close_btn" onClick={() =>close_button()}>
         close
       </button>
 
@@ -118,7 +128,7 @@ function HistoryMapPopup(props) {
         <div className="warning_popup">
           <button
             className="ok_btn"
-            onClick={() => GoToScene({ gameId, sceneId, GoScene })}
+            onClick={() => GoToScene({ userhistory, gameId, sceneId, GoScene })}
           >
             ok
           </button>

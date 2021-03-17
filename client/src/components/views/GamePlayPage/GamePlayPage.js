@@ -6,7 +6,6 @@ import Axios from "axios";
 import DislikePopup from "./Dislike";
 import HistoryMapPopup from "./HistoryMap";
 import { message } from "antd";
-import InputModal from "../Modal/InputModal";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -41,6 +40,7 @@ const ProductScreen = (props) => {
   const [Dislike, setDislike] = useState(false);
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
+  const [Clickable, setClickable] = useState(false);
 
   useKey("Enter", handleEnter);
   useKey("Space", handleEnter);
@@ -68,16 +68,14 @@ const ProductScreen = (props) => {
   }
 
   function handleEnter() {
-    if (i < Scene.cutList.length - 1) {
+    if (i < Scene.cutList.length - 1 &&!Clickable) {
       playMusic(i + 1);
       setI(i + 1);
     }
   }
 
   function handleChoice(event) {
-    if (i === Scene.cutList.length - 1) {
-      console.log(event);
-      console.log(parseInt(event.key));
+    if (i === Scene.cutList.length - 1 && !Clickable) {
       if (Scene.nextList[parseInt(event.key) - 1]) {
         userHistory.push(
           `/gameplay/${gameId}/${
@@ -85,13 +83,18 @@ const ProductScreen = (props) => {
           }`
         );
       } else {
+        setClickable(true)
         if (parseInt(event.key) - 1 === Scene.nextList.length) {
+        //   event.preventDefault();
           var choice = document.getElementById("choice");
           choice.click();
+        //   event.preventDefault();
+
         }
       }
     }
   }
+  
 
   useEffect(() => {
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
@@ -145,6 +148,7 @@ const ProductScreen = (props) => {
                 scene_depth={Scene.depth}
                 scene_id={Scene._id}
                 scene_next_list={Scene.nextList}
+                setClickable={setClickable}
               />
             ) : (
               <TextBlock
@@ -153,9 +157,11 @@ const ProductScreen = (props) => {
               />
             )}
             <HistoryMapPopup
+              userhistory={userHistory}
               history={History}
               trigger={HistoryMap}
               setTrigger={setHistoryMap}
+              setClickable={setClickable}
             />
           </div>
         </div>
