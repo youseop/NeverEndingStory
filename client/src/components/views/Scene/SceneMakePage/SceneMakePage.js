@@ -171,7 +171,7 @@ function SceneMakePage(props) {
         setCutList((oldArray) => [
             ...oldArray.slice(0, CutNumber),
             Cut,
-            ...oldArray.slice(CutNumber + 1, 30),
+            ...oldArray.slice(CutNumber + 1, 31),
         ]);
         if (CutList.length === CutNumber) {
             setEmptyCutList((oldArray) => [
