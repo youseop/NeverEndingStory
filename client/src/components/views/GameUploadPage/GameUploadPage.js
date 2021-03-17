@@ -27,7 +27,7 @@ const CategoryOptions = [
 
 function GameUploadPage(props) {
     const user = useSelector((state) => state.user);
-    const [videoTitle, setVideoTitle] = useState("");
+    const [GameTitle, setGameTitle] = useState("");
     const [description, setDescription] = useState("");
     const [isPrivate, setIsPrivate] = useState(0);
     const [category, setCategory] = useState("");
@@ -37,7 +37,7 @@ function GameUploadPage(props) {
     // const [thumbnailPath, setThumbnailPath] = useState("")
 
     const onTitleChange = (event) => {
-        setVideoTitle(event.currentTarget.value);
+        setGameTitle(event.currentTarget.value);
     };
 
     const onDescriptionChange = (event) => {
@@ -84,13 +84,13 @@ function GameUploadPage(props) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        if (videoTitle === "" || description === "" || filePath === "") {
+        if (GameTitle === "" || description === "" || filePath === "") {
             alert("모든 정보를 입력해주세요.");
             return;
         }
         const game_variables = {
             creator: user.userData._id,
-            title: videoTitle,
+            title: GameTitle,
             description: description,
             thumbnail: filePath,
             privacy: isPrivate,
@@ -157,7 +157,7 @@ function GameUploadPage(props) {
                     {filePath && (
                         <div>
                             <img
-                                className="video__img"
+                                className="thumbnail__img"
                                 src={`http://localhost:5000/${filePath}`}
                                 alt="thumbnail"
                             />
@@ -167,7 +167,7 @@ function GameUploadPage(props) {
                 <br />
                 <br />
                 <label>Title</label>
-                <Input onChange={onTitleChange} value={videoTitle} />
+                <Input onChange={onTitleChange} value={GameTitle} />
                 <br />
                 <br />
                 <label>Description</label>

@@ -3,6 +3,7 @@ import React, { useReducer } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { message } from "antd";
 import InputModal from "../Modal/InputModal";
+import Typewriter from 'typewriter-effect';
 
 // 일단 4 나중에 어떻게 할지 다시 결정..
 const CHOICE_NUM = 4;
@@ -13,7 +14,19 @@ export const TextBlock = (props) => {
         <div className="text_container">
             <div className="name_block">{cut_name}</div>
             <hr className="text_line"></hr>
-            <div className="text_block">{cut_script}</div>
+            <br/>
+            <div className="text_block">
+            <Typewriter
+              options={{
+                strings: cut_script,
+                autoStart: true,
+                loop: false,
+                delay: 10,
+                cursor: ""
+              }}
+            />
+              {/* {cut_script} */}
+              </div>
         </div>
     );
 };

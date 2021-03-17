@@ -1,10 +1,20 @@
-import './CharacterBlock.css';
-import React from 'react'
+import "./CharacterBlock.css";
+import React from "react";
 const CharacterBlock = (props) => {
-    const {characterCnt, characterList} = props;
-  return (
-      <img className="characterblock" src={characterList[0]}/>
-  );
-}
+  const { characterList } = props;
+  const position = [[35], [20, 50], [10, 60, 35]];
+  const characterblocks = characterList.map((url, index) => {
+    return (
+      <img
+        className="characterblock"
+        style={{ left: `${position[characterList.length - 1][index]}%` }}
+        src={url}
+        key={index}
+      />
+    );
+  });
 
-export default CharacterBlock
+  return <div>{characterblocks}</div>;
+};
+
+export default CharacterBlock;

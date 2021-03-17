@@ -51,7 +51,6 @@ router.post('/save', async (req, res) => {
   // First가 아닌 scene에 대해서 하는 행위
   else{
     try{
-      console.log(req.body.prev_scene_id)
       const prev_scene = await Scene.findOne({_id : req.body.prevSceneId})
       const insertScene = {
         sceneId : scene._id,

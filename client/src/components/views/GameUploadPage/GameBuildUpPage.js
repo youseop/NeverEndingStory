@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Typography, Button, Form, Icon } from "antd";
+import { Col, Row, Typography, Button, Form, Icon, message } from "antd";
 import Dropzone from "react-dropzone";
 import Axios from "axios";
 import "./GameBuildUpPage";
@@ -30,7 +30,7 @@ function GameBuildUpPage(props) {
             if (response.data.success) {
                 setGame(response.data.gameDetail);
             } else {
-                alert("game load에 실패했습니다.");
+                message.error("game load에 실패했습니다.");
             }
         });
     }, [filePath]);
@@ -114,13 +114,13 @@ function GameBuildUpPage(props) {
         //check is_file ok
         for (var i = 0; i < files.length; i++) {
             if (!files[i]) {
-                alert("손상된 파일입니다.");
+                message.error("손상된 파일입니다.");
                 return;
             }
 
             let dotIdx = files[i].name.lastIndexOf(".");
             if (dotIdx == -1) {
-                alert(files[i].name + "은 확장자가 없는 파일입니다.");
+                message.error(files[i].name + "은 확장자가 없는 파일입니다.");
                 return;
             }
 
@@ -130,7 +130,7 @@ function GameBuildUpPage(props) {
                 (fileState == 1 || fileState == 2) &&
                 extension.image.indexOf(cur_extension) == -1
             ) {
-                alert(
+                message.error(
                     files[i].name + "은 지원하지 않는 이미지 확장자 파일입니다."
                 );
                 return;
@@ -141,7 +141,7 @@ function GameBuildUpPage(props) {
                 (fileState == 3 || fileState == 4) &&
                 extension.music.indexOf(cur_extension) == -1
             ) {
-                alert(
+                message.error(
                     files[i].name + "은 지원하지 않는 음원 확장자 파일입니다."
                 );
                 return;
@@ -178,7 +178,7 @@ function GameBuildUpPage(props) {
                                     if (response.data.success) {
                                         setFilePath(response.data.url);
                                     } else {
-                                        alert("캐릭터 업데이트 실패");
+                                        message.error("캐릭터 업데이트 실패");
                                     }
                                 });
                                 return;
@@ -197,7 +197,7 @@ function GameBuildUpPage(props) {
                                     if (response.data.success) {
                                         setFilePath(response.data.url);
                                     } else {
-                                        alert("배경 업데이트 실패");
+                                        message.error("배경 업데이트 실패");
                                     }
                                 });
                                 return;
@@ -214,7 +214,7 @@ function GameBuildUpPage(props) {
                                         if (response.data.success) {
                                             setFilePath(response.data.url);
                                         } else {
-                                            alert("배경음 업데이트 실패");
+                                            message.error("배경음 업데이트 실패");
                                         }
                                     }
                                 );
@@ -235,16 +235,16 @@ function GameBuildUpPage(props) {
                                     if (response.data.success) {
                                         setFilePath(response.data.url);
                                     } else {
-                                        alert("효과음 업데이트 실패");
+                                        message.error("효과음 업데이트 실패");
                                     }
                                 });
                                 return;
                             default:
-                                alert("정의되지 않은 업로드 버튼입니다.");
+                                message.error("정의되지 않은 업로드 버튼입니다.");
                                 return;
                         }
                     } else {
-                        alert("업로드 실패");
+                        message.error("업로드 실패");
                     }
                 }
             );
@@ -309,16 +309,6 @@ function GameBuildUpPage(props) {
                             </div>
                         )}
                     </Dropzone>
-                    {/* thunb nail */}
-                    {/* {filePath && (
-                  <div>
-                      <img
-                          className="video__img"
-                          src={`http://localhost:5000/${filePath}`}
-                          alt="thumbnail"
-                      />
-                  </div> */}
-                    {/* )} */}
                     <Row>{characterCards}</Row>
                 </div>
             </Form>
@@ -358,17 +348,6 @@ function GameBuildUpPage(props) {
                             </div>
                         )}
                     </Dropzone>
-                    {/* thunb nail */}
-                    {/* {filePath && (
-                  <div>
-                      <img
-                          className="video__img"
-                          src={`http://localhost:5000/${filePath}`}
-                          alt="thumbnail"
-                      />
-                  </div>
-              )} */}
-                    {/* <Row gutter={[32, 16]}>{backgroundCards}</Row> */}
                     <Row>{backgroundCards}</Row>
                 </div>
             </Form>
@@ -407,16 +386,6 @@ function GameBuildUpPage(props) {
                             </div>
                         )}
                     </Dropzone>
-                    {/* thunb nail */}
-                    {/* {filePath && (
-                  <div>
-                      <img
-                          className="video__img"
-                          src={`http://localhost:5000/${filePath}`}
-                          alt="thumbnail"
-                      />
-                  </div>
-              )} */}
                     <Row>{bgmCards}</Row>
                 </div>
             </Form>
@@ -455,16 +424,6 @@ function GameBuildUpPage(props) {
                             </div>
                         )}
                     </Dropzone>
-                    {/* thunb nail */}
-                    {/* {filePath && (
-                  <div>
-                      <img
-                          className="video__img"
-                          src={`http://localhost:5000/${filePath}`}
-                          alt="thumbnail"
-                      />
-                  </div>
-              )} */}
                     <Row>{soundCards}</Row>
                 </div>
 

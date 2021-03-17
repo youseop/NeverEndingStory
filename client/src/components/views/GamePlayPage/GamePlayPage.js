@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Axios from "axios";
 import DislikePopup from "./Dislike";
 import HistoryMapPopup from "./HistoryMap";
+import { message } from "antd";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -30,55 +31,14 @@ function useKey(key, cb) {
 
 // playscreen
 const ProductScreen = (props) => {
-    const { gameId } = props.match.params;
-    const { sceneId } = props.match.params;
+  const { gameId } = props.match.params;
+  const { sceneId } = props.match.params;
 
-    //! history 데이터 가정
-    let history = {};
-    const gameHistory = [
-        {
-            gameId: 1,
-            // sceneId: [201, 202, 203],
-
-            sceneId: [
-                101,
-                102,
-                103,
-                104,
-                105,
-                106,
-                107,
-                108,
-                109,
-                110,
-                111,
-                112,
-            ],
-        },
-        {
-            gameId: 2,
-            sceneId: [201, 202, 203],
-        },
-        {
-            gameId: 3,
-            sceneId: [301, 302, 303],
-        },
-    ];
-
-    if (props.user) {
-        for (let i = 0; i < gameHistory.length; i++) {
-            if (gameId == gameHistory[i].gameId) {
-                history = gameHistory[i];
-            }
-        }
-    }
-
-    history = gameHistory[0];
-
-    const [i, setI] = useState(0); // 현재 CutNumber
-    const [Scene, setScene] = useState({});
-    const [Dislike, setDislike] = useState(false);
-    const [HistoryMap, setHistoryMap] = useState(false);
+  const [i, setI] = useState(0);
+  const [Scene, setScene] = useState({});
+  const [Dislike, setDislike] = useState(false);
+  const [History, setHistory] = useState({})
+  const [HistoryMap, setHistoryMap] = useState(false);
 
     function playMusic(i) {
         if (Scene.cutList[i].bgm.music) {
@@ -114,14 +74,17 @@ const ProductScreen = (props) => {
         Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
             (response) => {
                 if (response.data.success) {
+                    const history = { gameId: gameId, sceneId: response.data.sceneIdList };
+                    setHistory(history)
                     setI(0);
                     setScene(response.data.scene);
                 } else {
-                    alert("Scene 정보가 없습니다.");
+                    message.error("Scene 정보가 없습니다.");
                 }
             }
         );
     }, [sceneId]);
+
     if (Scene.cutList) {
         if (i == 0) playMusic(0);
 
@@ -161,7 +124,7 @@ const ProductScreen = (props) => {
                             />
                         )}
                         <HistoryMapPopup
-                            history={history}
+                            history={History}
                             trigger={HistoryMap}
                             setTrigger={setHistoryMap}
                         />
