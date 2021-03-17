@@ -5,6 +5,7 @@ import ModalForm from "./InputModalForm";
 import { useHistory } from "react-router";
 
 const InputModal = ({scene_id, scene_depth, game_id}) => {
+  console.log({scene_id, scene_depth, game_id})
   let history = useHistory();
 
   const [visible, setVisible] = useState(false);
@@ -39,7 +40,7 @@ const InputModal = ({scene_id, scene_depth, game_id}) => {
 
   return (
     <>
-      <div onClick={() => setVisible(true)} style={{color:"red"}}>
+      <div id="choice" onClick={() => setVisible(true)} style={{color:"red"}}>
         선택의 길...
       </div>
       <ModalForm

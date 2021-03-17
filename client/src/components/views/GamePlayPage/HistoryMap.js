@@ -43,7 +43,7 @@ function GetSceneInfo(props) {
     } else {
       const cutList = response.data.scene.cutList;
       const lastcut = cutList[cutList.length - 1];
-      console.log(lastcut);
+      // console.log(lastcut);
       setSceneInfo({
         sceneindex: index,
         background: lastcut.background,
