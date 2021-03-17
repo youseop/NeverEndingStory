@@ -348,6 +348,7 @@ router.post("/refreshHistory", auth, async (req, res) => {
 // })
 
 router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
+  let {sceneId } = req.params;
     if (!req.user) {
         return res.status(200).json({ success: false, msg: "Not a user" });
     }

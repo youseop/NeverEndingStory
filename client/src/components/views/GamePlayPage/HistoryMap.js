@@ -24,26 +24,32 @@ function MapToRight() {
 
 function GoToScene(props) {
   const { gameId, sceneId, GoScene } = props;
-  const data = { data: { sceneIndex: GoScene } };
+  const data = { data: { sceneIndex: GoScene - 1 } };
+  console.log(sceneId, GoScene);
   Axios.post("/api/game/refreshHistory", data).then((response) => {
     if (response.data.success) {
-      window.location.replace(`/gameplay/${gameId}/${sceneId[GoScene]}`);
-    } else {
       alert("Scene 변경 요청 실패");
+    } else {
+      window.location.replace(`/gameplay/${gameId}/${sceneId[GoScene - 1]}`);
     }
   });
 }
 
 function GetSceneInfo(props) {
-  console.log("props");
-
-  const { scene } = props;
+  const { index, scene, setSceneInfo } = props;
   Axios.get(`/api/game/getSceneInfo/${scene}`).then((response) => {
-    console.log(response);
     if (response.data.sucess) {
-      // setSceneInfo(scene[index])
-    } else {
       alert("Scene 정보 없음...");
+    } else {
+      const cutList = response.data.scene.cutList;
+      const lastcut = cutList[cutList.length - 1];
+      console.log(lastcut);
+      setSceneInfo({
+        sceneindex: index,
+        background: lastcut.background,
+        name: lastcut.name,
+        script: lastcut.script,
+      });
     }
   });
 }
@@ -51,23 +57,44 @@ function GetSceneInfo(props) {
 function HistoryMapPopup(props) {
   const { gameId, sceneId } = props.history;
   const [GoScene, setGoScene] = useState(null);
+  const [DelayHandler, setDelayHandler] = useState(null);
   const [SceneInfo, setSceneInfo] = useState(null);
+  
+  function delay(index, scene, setSceneInfo) {
+    setDelayHandler(
+      setTimeout(() => {
+        GetSceneInfo({ index, scene, setSceneInfo });
+      }, 300)
+    );
+  }
 
-  //* set map length
-  // var map = document.getElementsByClassName("HistoryMap_inner")[0];
-  // console.log(map)
-  // map.style.width = `(${sceneId.length * 100}px)`;
+  function delay_reset() {
+    setSceneInfo(null);
+    clearTimeout(DelayHandler)
+  }
 
   const HistoryMap_scenes = sceneId.map((scene, index) => {
     return (
-      <li
+      <div
         className="HistoryMap_scene"
         key={index + 1}
-        onMouseOver={() =>GetSceneInfo({scene,setSceneInfo})}
+        onMouseEnter={() => delay(index, scene, setSceneInfo)}
+        onMouseLeave={() => delay_reset()}
         onClick={() => setGoScene(index + 1)}
       >
-        {index + 1}
-      </li>
+        {SceneInfo && SceneInfo.sceneindex === index ? (
+          <div>
+            <div className="HistoryMap_scene_num"> #{index + 1}</div>
+            <img className="HistoryMap_scene_img" src={SceneInfo.background} />
+            <div className="HistoryMap_scene_name">{SceneInfo.name}:</div>
+            <div className="HistoryMap_scene_text">"{SceneInfo.script}"</div>
+          </div>
+        ) : (
+          <div>
+            <div className="HistoryMap_scene_num"> #{index + 1}</div>
+          </div>
+        )}
+      </div>
     );
   });
 
@@ -76,7 +103,7 @@ function HistoryMapPopup(props) {
       <button className="close_btn" onClick={() => props.setTrigger(false)}>
         close
       </button>
-     
+
       <div className="toleft_btn" onClick={MapToLeft}>
         to left 나중에 이미지로 대체
       </div>
@@ -84,10 +111,8 @@ function HistoryMapPopup(props) {
       <div className="toright_btn" onClick={MapToRight}>
         to right 나중에 이미지로 대체
       </div>
-      
-      <div className="HistoryMap_inner">
-        <ul className="slide_wrap">{HistoryMap_scenes}</ul>
-      </div>
+
+      <div className="HistoryMap_inner">{HistoryMap_scenes}</div>
 
       {GoScene ? (
         <div className="warning_popup">

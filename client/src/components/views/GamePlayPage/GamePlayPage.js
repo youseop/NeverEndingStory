@@ -30,41 +30,10 @@ const ProductScreen = (props) => {
   const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
 
-  //! history 데이터 가정
-  let history = {};
-  const gameHistory = [
-    {
-      gameId: 1,
-      // sceneId: [201, 202, 203],
-
-      sceneId: [101, 102, 103,104, 105, 106,107, 108, 109,110, 111, 112],
-    },
-    {
-      gameId: 2,
-      sceneId: [201, 202, 203],
-    },
-    {
-      gameId: 3,
-      sceneId: [301, 302, 303],
-    },
-  ];
-
-  if (props.user) {
-    // console.log(props.user.userData.gameHistory)
-    // const { gameHistory } = (props.user.userData.gameHistory)
-
-    for (let i = 0; i < gameHistory.length; i++) {
-      if (gameId == gameHistory[i].gameId) {
-        history = gameHistory[i];
-      }
-    }
-  }
-
-  history = gameHistory[0];
-
   const [i, setI] = useState(0);
   const [Scene, setScene] = useState({});
   const [Dislike, setDislike] = useState(false);
+  const [History, setHistory] = useState({})
   const [HistoryMap, setHistoryMap] = useState(false);
 
   function handleEnter() {
@@ -79,6 +48,8 @@ const ProductScreen = (props) => {
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
       (response) => {
         if (response.data.success) {
+          const history = { gameId: gameId, sceneId: response.data.sceneIdList };
+          setHistory(history)
           setI(0);
           setScene(response.data.scene);
         } else {
@@ -123,7 +94,7 @@ const ProductScreen = (props) => {
               />
             )}
             <HistoryMapPopup
-              history={history}
+              history={History}
               trigger={HistoryMap}
               setTrigger={setHistoryMap}
             />
