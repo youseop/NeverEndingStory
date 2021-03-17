@@ -295,12 +295,14 @@ router.post("/refreshHistory", auth, async (req, res) => {
     // 유저 정보로 gamePlaying 가지고 오기
     const user_id = req.user._id;
     try {
-        const user = User.findOne({ _id: user_id });
+        const user = await User.findOne({ _id: user_id });
+
         let {
             gamePlaying: { sceneIdList },
         } = user;
         // 첫번째 씬으로 돌아가려 할 때 이상해질 수 있음...
-        user.gamePlaying.sceneIdList = sceneIdList.slice(0, sceneIndex - 1);
+        user.gamePlaying.sceneIdList = sceneIdList.slice(0, sceneIndex+1);
+        user.save();
         return res
             .status(200)
             .json({ success: true, sceneIdList: user.gamePlaying.sceneIdList });

@@ -26,9 +26,8 @@ function MapToRight() {
 function GoToScene(props) {
   const { gameId, sceneId, GoScene } = props;
   const data = { data: { sceneIndex: GoScene - 1 } };
-  console.log(sceneId, GoScene);
   Axios.post("/api/game/refreshHistory", data).then((response) => {
-    if (response.data.success) {
+    if (!response.data.success) {
       alert("Scene 변경 요청 실패");
     } else {
       window.location.replace(`/gameplay/${gameId}/${sceneId[GoScene - 1]}`);
@@ -39,7 +38,7 @@ function GoToScene(props) {
 function GetSceneInfo(props) {
   const { index, scene, setSceneInfo } = props;
   Axios.get(`/api/game/getSceneInfo/${scene}`).then((response) => {
-    if (response.data.sucess) {
+    if (!response.data.success) {
       alert("Scene 정보 없음...");
     } else {
       const cutList = response.data.scene.cutList;
