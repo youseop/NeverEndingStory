@@ -243,11 +243,11 @@ router.get("/gamestart/:id", auth, async (req, res) => {
             return res.status(200).json({ success: true, sceneId });
         } catch (err) {
             console.log(err);
-            return res.status(200).json({ success: false });
+            return res.status(400).json({ success: false });
         }
     } catch (err) {
         console.log(err);
-        return res.status(200).json({ success: false });
+        return res.status(400).json({ success: false });
     }
 });
 
@@ -275,7 +275,7 @@ router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
             const scene = await Scene.findOne({ _id: sceneId });
             if (!validateScene(user.gamePlaying, sceneId, gameId)) {
                 // console.log("fuck");
-                return res.status(200).json({ success: false });
+                return res.status(400).json({ success: false });
             }
             user.gamePlaying = {
                 gameId,
@@ -292,11 +292,11 @@ router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
                 });
         } catch (err) {
             console.log(err);
-            return res.status(200).json({ success: false });
+            return res.status(400).json({ success: false });
         }
-    } catch {
+    } catch(err) {
         console.log(err);
-        return res.status(200).json({ success: false });
+        return res.status(400).json({ success: false });
     }
 });
 
@@ -316,7 +316,7 @@ router.post("/refreshHistory", auth, async (req, res) => {
             .status(200)
             .json({ success: true, sceneIdList: user.gamePlaying.sceneIdList });
     } catch {
-        return res.status(200).json({ success: false });
+        return res.status(400).json({ success: false });
     }
     // gamePlaying 의 sceneIdList를 슬라이스하고 저장
     return;
@@ -350,7 +350,7 @@ router.post("/refreshHistory", auth, async (req, res) => {
 router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
   let {sceneId } = req.params;
     if (!req.user) {
-        return res.status(200).json({ success: false, msg: "Not a user" });
+        return res.status(400).json({ success: false, msg: "Not a user" });
     }
     sceneId = mongoose.Types.ObjectId(sceneId);
     try {
@@ -358,13 +358,13 @@ router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
         return res.status(200).json({ success: true, scene });
     } catch (err) {
         console.log(err);
-        return res.status(200).json({ success: false });
+        return res.status(400).json({ success: false });
     }
 });
 
 router.post("/updatescenestatus", auth, async (req, res) => {
     if (!req.user) {
-        return res.status(200).json({ success: false, msg: "Not a user" });
+        return res.status(400).json({ success: false, msg: "Not a user" });
     }
     return;
 });

@@ -59,7 +59,7 @@ function HistoryMapPopup(props) {
   const [GoScene, setGoScene] = useState(null);
   const [DelayHandler, setDelayHandler] = useState(null);
   const [SceneInfo, setSceneInfo] = useState(null);
-  
+
   function delay(index, scene, setSceneInfo) {
     setDelayHandler(
       setTimeout(() => {
@@ -70,7 +70,7 @@ function HistoryMapPopup(props) {
 
   function delay_reset() {
     setSceneInfo(null);
-    clearTimeout(DelayHandler)
+    clearTimeout(DelayHandler);
   }
 
   const HistoryMap_scenes = sceneId.map((scene, index) => {
