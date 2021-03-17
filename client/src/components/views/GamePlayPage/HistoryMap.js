@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import "./HistoryMap.css";
+import { message } from "antd";
 
 function MapToLeft() {
     var map = document.getElementsByClassName("HistoryMap_inner")[0];
@@ -29,7 +30,7 @@ function GoToScene(props) {
         if (response.data.success) {
             window.location.replace(`/gameplay/${gameId}/${sceneId[GoScene]}`);
         } else {
-            alert("Scene 변경 요청 실패");
+            message.error("Scene 변경 요청 실패");
         }
     });
 }
@@ -40,7 +41,7 @@ function GetSceneInfo(props) {
         if (response.data.sucess) {
             // setSceneInfo(scene[index])
         } else {
-            alert("Scene 정보 없음...");
+            message.error("Scene 정보 없음...");
         }
     });
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BackgroundSideBar from "./SideBar/BackgroundSideBar";
 import CharacterSideBar from "./SideBar/CharacterSideBar";
 import BgmSideBar from "./SideBar/BgmSideBar";
@@ -19,11 +19,7 @@ function SceneMakePage(props) {
 
     const gameId = props.match.params.gameId;
     const userId = useSelector((state) => state.user);
-    const [SidBar_b, setSidBar_b] = useState(false);
-    const [SidBar_c, setSidBar_c] = useState(false);
     const [SidBar_script, setSidBar_script] = useState(false);
-    const [SidBar_bgm, setSidBar_bgm] = useState(false);
-    const [SidBar_sound, setSidBar_sound] = useState(false);
 
     const [BackgroundImg, setBackgroundImg] = useState("");
     const [CharacterList, setCharacterList] = useState([]);
@@ -59,32 +55,57 @@ function SceneMakePage(props) {
         setName(event.currentTarget.value);
     };
 
+    const backgroundSidebarElement = useRef();
+    const characterSidebarElement = useRef();
+    const bgmSidebarElement = useRef();
+    const soundSidebarElement = useRef();
+
+    const makeVisible = (element) => {
+        backgroundSidebarElement.current.style.display = 'none'
+        characterSidebarElement.current.style.display = 'none'
+        bgmSidebarElement.current.style.display = 'none'
+        soundSidebarElement.current.style.display = 'none'
+        element.current.style.display = 'block'
+    }
+
+    const makeInvisible = () => {
+        backgroundSidebarElement.current.style.display = 'none'
+        characterSidebarElement.current.style.display = 'none'
+        bgmSidebarElement.current.style.display = 'none'
+        soundSidebarElement.current.style.display = 'none'
+    }
+
+
     const onClick_background = () => {
-        setSidBar_b(true);
-        setSidBar_c(false);
-        setSidBar_bgm(false);
-        setSidBar_sound(false);
+        if (backgroundSidebarElement.current.style.display === 'none') {
+            makeVisible(backgroundSidebarElement);
+        } else {
+            makeInvisible();
+        }
     };
 
     const onClick_character = () => {
-        setSidBar_b(false);
-        setSidBar_c(true);
-        setSidBar_bgm(false);
-        setSidBar_sound(false);
+        if (characterSidebarElement.current.style.display === 'none') {
+            makeVisible(characterSidebarElement);
+        } else {
+            makeInvisible();
+        }
     };
 
     const onClick_bgm = () => {
-        setSidBar_b(false);
-        setSidBar_c(false);
-        setSidBar_bgm(true);
-        setSidBar_sound(false);
+        if (bgmSidebarElement.current.style.display === 'none') {
+            makeVisible(bgmSidebarElement);
+        } else {
+            makeInvisible();
+        }
     };
 
     const onClick_sound = () => {
-        setSidBar_b(false);
-        setSidBar_c(false);
-        setSidBar_bgm(false);
-        setSidBar_sound(true);
+        if (soundSidebarElement.current.style.display === 'none') {
+            makeVisible(soundSidebarElement);
+        } else {
+            makeInvisible();
+        }
     };
 
     const onClick_script = () => {
@@ -134,10 +155,6 @@ function SceneMakePage(props) {
             ]);
         }
     };
-
-    // useEffect(() => {
-    //     console.log(CutList);
-    // }, [CutList]);
 
     const displayCut = (index) => {
         setBackgroundImg(CutList[index].background);
@@ -210,10 +227,11 @@ function SceneMakePage(props) {
             bgm: BgmFile,
             sound: SoundFile,
         };
+        
         const submitCutList = [
             ...CutList.slice(0, CutNumber),
             submitCut,
-            ...CutList.slice(CutNumber + 1, 30),
+            ...CutList.slice(CutNumber + 1, 31),
         ];
 
         if (window.confirm("게임 제작을 완료하시겠습니까?")) {
@@ -376,53 +394,47 @@ function SceneMakePage(props) {
             </div>
             {/* //?toggleBar */}
             <div className="scenemake__toggleBar">
-                {SidBar_b && (
+                <div ref={backgroundSidebarElement}>
                     <BackgroundSideBar
                         gameId={gameId}
                         setBackgroundImg={setBackgroundImg}
                     />
-                )}
-                {SidBar_c && (
+                </div>
+                <div ref={characterSidebarElement} style={{display:'none'}}>
                     <CharacterSideBar
                         gameId={gameId}
                         CharacterList={CharacterList}
                         setCharacterList={setCharacterList}
                     />
-                )}
-                {SidBar_bgm && (
+                </div>
+                <div ref={bgmSidebarElement} style={{display:'none'}}>
                     <BgmSideBar
                         bgm_audio={bgm_audio}
                         gameId={gameId}
                         setBgmFile={setBgmFile}
                     />
-                )}
-                {SidBar_sound && (
+                </div>
+                <div ref={soundSidebarElement} style={{display:'none'}}>
                     <SoundSideBar
                         sound_audio={sound_audio}
                         gameId={gameId}
                         setSoundFile={setSoundFile}
                     />
-                )}
+                </div>
             </div>
             <div className="scenemake__toggleButton_container">
                 <div
                     className="scenemake__btn_sidebar"
                     onClick={onClick_background}
-                >
-                    back
-                </div>
+                >back</div>
                 <div
                     className="scenemake__btn_sidebar"
                     onClick={onClick_character}
-                >
-                    char
-                </div>
+                >char</div>
                 <div
                     className="scenemake__btn_sidebar"
                     onClick={onClick_script}
-                >
-                    script
-                </div>{" "}
+                >script</div>
                 <div className="scenemake__btn_sidebar" onClick={onClick_bgm}>
                     bgm
                 </div>

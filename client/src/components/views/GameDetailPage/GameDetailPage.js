@@ -1,4 +1,4 @@
-import { Col, List, Row } from "antd";
+import { Col, List, message, Row } from "antd";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -16,7 +16,7 @@ function GameDetailPage(props) {
             if (response.data.success) {
                 setGameDetail(response.data.gameDetail);
             } else {
-                alert("게임 정보를 로딩하는데 실패했습니다.");
+                message.error("게임 정보를 로딩하는데 실패했습니다.");
             }
         });
     }, []);
@@ -25,7 +25,7 @@ function GameDetailPage(props) {
             if (response.data.success) {
                 setSceneId(response.data.sceneId);
             } else {
-                alert("게임 정보를 로딩하는데 실패했습니다.");
+                message.error("게임 정보를 로딩하는데 실패했습니다.");
             }
         });
     }, []);

@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Axios from "axios";
 import DislikePopup from "./Dislike";
 import HistoryMapPopup from "./HistoryMap";
+import { message } from "antd";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -117,12 +118,12 @@ const ProductScreen = (props) => {
                     setI(0);
                     setScene(response.data.scene);
                 } else {
-                    alert("Scene 정보가 없습니다.");
+                    message.error("Scene 정보가 없습니다.");
                 }
             }
         );
     }, [sceneId]);
-    
+
     if (Scene.cutList) {
         if (i == 0) playMusic(0);
 
