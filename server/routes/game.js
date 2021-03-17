@@ -30,10 +30,6 @@ let storage = multer.diskStorage({
 // uploadFilter 정의
 const uploadFilter = (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
-    // if (ext !== '.jpg' && ext !== '.png') {
-    //   return cb(new Error('Only jpg and png is allowed'), false)
-    // }
-    // console.log("NOT ERROR")
     cb(null, true);
 };
 
@@ -47,7 +43,6 @@ const upload = multer({
 //=================================
 
 router.post("/uploadfiles", (req, res) => {
-    // console.log("upload");
     //비디오를 서버에 저장
     upload(req, res, (err) => {
         if (err) {

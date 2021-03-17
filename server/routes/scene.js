@@ -69,5 +69,13 @@ router.post('/save', async (req, res) => {
   }
 })
 
+router.post("/scenedetail", (req, res) => {
+  console.log(req.body.sceneId)
+  Scene.findOne({_id: mongoose.Types.ObjectId(req.body.sceneId) }).exec((err, sceneDetail) => {
+    if (err) return res.status(400).send(err);
+    const lastCut = sceneDetail.cutList[sceneDetail.cutList.length-1];
+    return res.status(200).json({ success: true, lastCut})
+  })
+})
 
 module.exports = router;
