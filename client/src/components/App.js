@@ -3,6 +3,8 @@ import { Route, Switch } from "react-router-dom";
 import Auth from "../hoc/auth";
 // pages for this product
 import LandingPage from "./views/LandingPage/LandingPage.js";
+import TestPage from "./views/LandingPage/TestPage.js";
+
 import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 
@@ -20,6 +22,9 @@ import Footer from "./views/Footer/Footer"
 //true   only logged in user can go inside
 //false  logged in user can't go inside
  
+const io = require('socket.io-client');
+export const socket = io('http://localhost:5000');
+
 function App() {
   return (
     <Suspense fallback={(<div>Loading...</div>)}>
