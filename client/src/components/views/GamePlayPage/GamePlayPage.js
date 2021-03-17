@@ -122,6 +122,7 @@ const ProductScreen = (props) => {
             }
         );
     }, [sceneId]);
+    
     if (Scene.cutList) {
         if (i == 0) playMusic(0);
 
