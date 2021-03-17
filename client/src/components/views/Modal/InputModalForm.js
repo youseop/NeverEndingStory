@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Modal, Form, Input, Radio } from "antd";
+import useKey from "../../functions/onClickFunction";
 
 const ModalFormComponent = ({ visible, onCancel, onCreate, form }) => {
   const { getFieldDecorator } = form;
+
+  function handleEnter() {
+    onCreate();
+  }
+
+  useKey("Enter", handleEnter);
 
   return (
     <Modal
@@ -21,7 +28,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form }) => {
                 message: "Please input the title of collection!"
               }
             ]
-          })(<Input />)}
+          })(<Input/>)}
         </Form.Item>
         {/* <Form.Item className="collection-create-form_last-form-item">
           {getFieldDecorator("modifier", {

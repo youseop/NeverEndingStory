@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import ReactDOM from "react-dom";
 import { Button } from "antd";
 import ModalForm from "./InputModalForm";
@@ -15,7 +15,7 @@ const InputModal = ({scene_id, scene_depth, game_id}) => {
       if (err) {
         return;
       }
-      console.log("Received values of form: ", values, scene_id, scene_depth, game_id);
+      // console.log("Received values of form: ", values, scene_id, scene_depth, game_id);
 
       history.push({
         pathname: `/scene/make/${game_id}`,
@@ -27,7 +27,6 @@ const InputModal = ({scene_id, scene_depth, game_id}) => {
       });
 
       formRef.resetFields();
-      setVisible(false);
     });
   };
 
@@ -37,17 +36,23 @@ const InputModal = ({scene_id, scene_depth, game_id}) => {
     }
   }, []);
 
+  const onClick = () => {
+    setVisible(true);
+  }
+
   return (
     <>
-      <div onClick={() => setVisible(true)} style={{color:"red"}}>
+      <div onClick={onClick} style={{color:"red"}}>
         선택의 길...
       </div>
-      <ModalForm
-        ref={saveFormRef}
-        visible={visible}
-        onCancel={() => setVisible(false)}
-        onCreate={() => handleCreate()}
-      />
+      {visible &&
+        <ModalForm
+          ref={saveFormRef}
+          visible={visible}
+          onCancel={() => setVisible(false)}
+          onCreate={() => handleCreate()}
+        />
+      }
     </>
   );
 };

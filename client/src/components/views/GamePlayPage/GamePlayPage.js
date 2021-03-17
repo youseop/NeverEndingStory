@@ -6,28 +6,10 @@ import Axios from "axios";
 import DislikePopup from "./Dislike";
 import HistoryMapPopup from "./HistoryMap";
 import { message } from "antd";
+import useKey from "../../functions/onClickFunction";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
-
-// Use keyboard input
-function useKey(key, cb) {
-    const callbackRef = useRef(cb);
-
-    useEffect(() => {
-        callbackRef.current = cb;
-    });
-
-    useEffect(() => {
-        function handle(event) {
-            if (event.code === key) {
-                callbackRef.current(event);
-            }
-        }
-        document.addEventListener("keypress", handle);
-        return () => document.removeEventListener("keypress", handle);
-    }, [key]);
-}
 
 // playscreen
 const ProductScreen = (props) => {
