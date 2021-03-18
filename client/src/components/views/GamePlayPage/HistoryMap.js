@@ -3,6 +3,7 @@ import Axios from "axios";
 import "./HistoryMap.css";
 import { message } from "antd";
 
+
 function MapToLeft() {
   var map = document.getElementsByClassName("HistoryMap_inner")[0];
   var computedStyle = window.getComputedStyle(map);
@@ -59,7 +60,7 @@ function GetSceneInfo(props) {
 }
 
 function HistoryMapPopup(props) {
-  const { userhistory ,setTrigger,setClickable} = props;
+  const { userhistory, setTrigger, setClickable } = props;
   const { gameId, sceneId } = props.history;
   const [GoScene, setGoScene] = useState(null);
   const [DelayHandler, setDelayHandler] = useState(null);
@@ -78,9 +79,9 @@ function HistoryMapPopup(props) {
     clearTimeout(DelayHandler);
   }
 
-  function close_button(){
-    setClickable(false)
-    setTrigger(false)
+  function close_button() {
+    setClickable(false);
+    setTrigger(false);
   }
 
   const HistoryMap_scenes = sceneId.map((scene, index) => {
@@ -110,7 +111,7 @@ function HistoryMapPopup(props) {
 
   return props.trigger ? (
     <div className="HistoryMap_popup">
-      <button className="close_btn" onClick={() =>close_button()}>
+      <button className="close_btn" onClick={() => close_button()}>
         close
       </button>
 

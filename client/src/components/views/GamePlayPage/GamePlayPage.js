@@ -5,7 +5,11 @@ import React, { useEffect, useRef, useState } from "react";
 import Axios from "axios";
 import DislikePopup from "./Dislike";
 import HistoryMapPopup from "./HistoryMap";
+import LoadingPage from "./LoadingPage";
+// import {gameLoadingPage} from "../../../_actions/gamePlay_actions"
 import { message } from "antd";
+import { useDispatch } from "react-redux";
+import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -34,6 +38,7 @@ const ProductScreen = (props) => {
   const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
   const userHistory = props.history;
+  const dispatch = useDispatch();
 
   const [i, setI] = useState(0);
   const [Scene, setScene] = useState({});
@@ -68,7 +73,7 @@ const ProductScreen = (props) => {
   }
 
   function handleEnter() {
-    if (i < Scene.cutList.length - 1 &&!Clickable) {
+    if (i < Scene.cutList.length - 1 && !Clickable) {
       playMusic(i + 1);
       setI(i + 1);
     }
@@ -83,18 +88,16 @@ const ProductScreen = (props) => {
           }`
         );
       } else {
-        setClickable(true)
+        setClickable(true);
         if (parseInt(event.key) - 1 === Scene.nextList.length) {
-        //   event.preventDefault();
+          //   event.preventDefault();
           var choice = document.getElementById("choice");
           choice.click();
-        //   event.preventDefault();
-
+          //   event.preventDefault();
         }
       }
     }
   }
-  
 
   useEffect(() => {
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
@@ -107,6 +110,8 @@ const ProductScreen = (props) => {
           setHistory(history);
           setI(0);
           setScene(response.data.scene);
+          dispatch(gameLoadingPage(0)); 
+          dispatch(gameLoadingPage(1));
         } else {
           message.error("Scene 정보가 없습니다.");
         }
@@ -119,6 +124,7 @@ const ProductScreen = (props) => {
 
     return (
       <div>
+          <LoadingPage />  
         <div className="productscreen">
           <div
             className="background_img_container"
