@@ -10,6 +10,7 @@ const CharacterBlock = (props) => {
         style={{ left: `${position[characterList.length - 1][index]}%` }}
         src={url}
         key={index}
+        alt="Network Error"
       />
     );
   });

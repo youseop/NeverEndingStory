@@ -84,6 +84,14 @@ router.post("/getgamedetail", (req, res) => {
     });
 });
 
+router.post("/ratio", (req, res) => {
+    Game.findOne({ _id: req.body.gameId }).exec((err, gameDetail) => {
+        if (err) return res.status(400).send(err);
+        const ratio = gameDetail.ratio;
+        return res.status(200).json({ success: true, ratio });
+    });
+});
+
 router.post("/putBackgroundImg", (req, res) => {
     Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
         .populate("creator")

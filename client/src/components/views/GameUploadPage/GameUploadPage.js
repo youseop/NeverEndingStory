@@ -14,10 +14,6 @@ const PrivateOptions = [
 ];
 
 const CategoryOptions = [
-    // { value: 0, label: "Film & Animation" },
-    // { value: 1, label: "Autos & Vehicles" },
-    // { value: 2, label: "Music" },
-    // { value: 3, label: "Pets & Animals" },
     { value: 0, label: "살아남기" },
     { value: 1, label: "로맨스" },
     { value: 2, label: "스토리" },
@@ -25,12 +21,22 @@ const CategoryOptions = [
     { value: 4, label: "병맛" },
 ];
 
+const RatioOptions = [
+    { value: `${9/16}`, label: "16:9"}, 
+    { value: "1", label: "1:1"}, 
+    { value: "0.5", label: "2:1"}, 
+    { value: `${3/4}`, label: "4:3"}, 
+    { value: `${16/9}`, label: "9:16(스마트폰)"}, 
+    { value: `${4/3}`, label: "3:4(패드)"}
+]
+
 function GameUploadPage(props) {
     const user = useSelector((state) => state.user);
     const [GameTitle, setGameTitle] = useState("");
     const [description, setDescription] = useState("");
     const [isPrivate, setIsPrivate] = useState(0);
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState("살아남기");
+    const [ratio, setRatio] = useState(`${9/16}`);
 
     const [filePath, setFilePath] = useState("");
     // const [duration, setDuration] = useState("")
@@ -52,6 +58,10 @@ function GameUploadPage(props) {
         let cat_idx = event.currentTarget.value;
         setCategory(event.currentTarget[cat_idx].text);
     };
+
+    const onRatioChange = (event) => {
+        setRatio(event.currentTarget.value);
+    }
 
     const onDrop = (files) => {
         if (!files[0]) {
@@ -89,6 +99,7 @@ function GameUploadPage(props) {
             thumbnail: filePath,
             privacy: isPrivate,
             category: category,
+            ratio: ratio,
             writer: [user.userData._id],
             character: [],
             background: [],
@@ -179,6 +190,15 @@ function GameUploadPage(props) {
                 <br />
                 <select onChange={onCartegoryChange}>
                     {CategoryOptions.map((item, index) => (
+                        <option key={index} value={item.value}>
+                            {item.label}
+                        </option>
+                    ))}
+                </select>
+                <br />
+                <br />
+                <select onChange={onRatioChange}>
+                    {RatioOptions.map((item, index) => (
                         <option key={index} value={item.value}>
                             {item.label}
                         </option>

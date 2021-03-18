@@ -17,6 +17,7 @@
   display: inline-block;
   font-size: 20px;
   padding: 19px 20px;
+  color: black;
 }
 
 .menu__container .ant-menu-item {
@@ -50,7 +51,7 @@
   padding: 6px;
   margin-top: 8px;
   display: none !important; /* use of important to overwrite ant-btn */
-  background: #3e91f7;
+  background: black;
 }
 
 .menu_drawer .ant-drawer-body {

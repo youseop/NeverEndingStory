@@ -8,8 +8,9 @@ import { useSelector } from "react-redux";
 import { Input, message, Button, Switch } from "antd";
 import Axios from "axios";
 import { useLocation } from "react-router";
-import useKey from "../../../functions/onClickFunction";
-const { TextArea } = Input;
+import useKey from "../../../functions/useKey";
+
+const {TextArea} = Input;
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -46,7 +47,7 @@ function SceneMakePage(props) {
                     const lastCut = response.data.lastCut;
                     setBackgroundImg(lastCut.background);
                     setCharacterList(lastCut.characterList);
-                    setScript(lastCut.script);
+                    // setScript(lastCut.script);
                     setName(lastCut.name);
                 } else {
                     message.error("이전 Scene의 정보를 불러오는데 실패했습니다.")
@@ -83,10 +84,7 @@ function SceneMakePage(props) {
     const soundSidebarElement = useRef();
 
     const makeVisible = (element) => {
-        backgroundSidebarElement.current.style.display = 'none'
-        characterSidebarElement.current.style.display = 'none'
-        bgmSidebarElement.current.style.display = 'none'
-        soundSidebarElement.current.style.display = 'none'
+        makeInvisible()
         element.current.style.display = 'block'
     }
 
@@ -380,6 +378,7 @@ function SceneMakePage(props) {
                             unCheckedChildren={CutNumber}
                             onChange={onClick_isHover}
                             size="small"
+                            color="black"
                         />
                     </div>
                     {BgmFile ? (
@@ -422,6 +421,10 @@ function SceneMakePage(props) {
                                     onChange={onScriptChange}
                                     value={Script}
                                 />
+                                {/* <textarea
+                                    value={Script}
+                                    onChange={onScriptChange}
+                                /> */}
                             </div>
                         )}
                     </div>

@@ -1,6 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
-import ReactDOM from "react-dom";
-import { Button } from "antd";
+import React, { useState, useCallback } from "react";
 import ModalForm from "./InputModalForm";
 import { useHistory } from "react-router";
 

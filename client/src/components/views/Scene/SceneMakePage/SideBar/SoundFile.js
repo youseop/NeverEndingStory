@@ -1,5 +1,4 @@
 import React from "react";
-var audio = new Audio();
 
 function SoundFile({ sound_audio, sound, setSoundFile }) {
     const onClick_music = () => {

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Row, Card, Icon, Avatar, Col, Typography } from "antd";
+import { Row, Card, Avatar, Col, Typography } from "antd";
 import Axios from "axios";
 import moment from "moment";
-import GameDetailPage from "../GameDetailPage/GameDetailPage";
 
 const { Title } = Typography;
 const { Meta } = Card;

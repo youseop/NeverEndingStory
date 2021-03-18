@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import { Modal, Form, Input, Radio } from "antd";
-import useKey from "../../functions/onClickFunction";
+import React from "react";
+import { Modal, Form, Input } from "antd";
+import useKey from "../../functions/useKey";
 
 const ModalFormComponent = ({ visible, onCancel, onCreate, form }) => {
   const { getFieldDecorator } = form;
