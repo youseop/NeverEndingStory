@@ -246,7 +246,7 @@ function SceneMakePage(props) {
         event.preventDefault();
         console.log(CutList.length);
         if (CutList.length < 2) {
-            message.error("최소 2개의 컷을 생성해주세요.");
+            message.error("최소 3개의 컷을 생성해주세요.");
             return;
         }
         const submitCut = {
