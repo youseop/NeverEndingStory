@@ -17,7 +17,6 @@ const { auth } = require("../middleware/auth");
 
 const multer = require("multer");
 
-//?어디에 쓰이는거지
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "uploads/");
@@ -30,45 +29,82 @@ let storage = multer.diskStorage({
 // uploadFilter 정의
 const uploadFilter = (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
+
+    // // 여기서 URL에 따라 이름 바꾸고 이미지나 음원은 압축 및 사이즈처리
     // if (ext !== '.jpg' && ext !== '.png') {
-    //   return cb(new Error('Only jpg and png is allowed'), false)
+    //     console.log("not jpg or png",file)
+    //     file.originalname = "바꿔봤찌롱"+ext
+    //     return cb(new Error('Only jpg and png is allowed'), false)
     // }
     // console.log("NOT ERROR")
     cb(null, true);
 };
 
 const upload = multer({
-    storage: storage,
     fileFilter: uploadFilter,
-}).single("file");
+    storage: storage,
+}).array('files')
 
 //=================================
 //             Video
 //=================================
 
-router.post("/uploadfiles", (req, res) => {
-    // console.log("upload");
-    //비디오를 서버에 저장
+router.post("/uploadfile", (req, res) => {
+
+    //서버에 저장
     upload(req, res, (err) => {
         if (err) {
             return res.json({ success: false, err });
         }
         return res.json({
             success: true,
-            url: res.req.file.path,
-            fileName: res.req.file.filename,
+            files: req.files
         });
     });
 });
 
 router.post("/uploadgame", (req, res) => {
-    const game = new Game(req.body);
+    // const game_variables = {
+    //     creator: user.userData._id,
+    //     title: GameTitle,
+    //     description: description,
+    //     thumbnail: filePath,
+    //     privacy: isPrivate,
+    //     category: category,
+    //     writer: [user.userData._id],
+    //     character: [],
+    //     background: [],
+    //     bgm: [],
+    //     sound: [],
+    // };
+    Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
+        .populate("creator")
+        .exec((err, gameDetail) => {
+            if (err) return res.status(400).send(err);
+            gameDetail.save((err, doc) => {
+                if (err) return res.json({ success: false, err });
+                return res.status(200).json({ success: true, gameDetail });
+            });
+        });
+});
+
+router.post("/uploadgameframe", (req, res) => {
+    const game = new Game();
     game.save((err, game) => {
         if (err) return res.json({ success: false, err });
 
         res.status(200).json({ success: true, game });
     });
 });
+
+// router.post("/uploadgamepage", (req, res) => {
+//     const game = new Game(req.body);
+//     game.save((err, game) => {
+//         if (err) return res.json({ success: false, err });
+
+//         res.status(200).json({ success: true, game });
+//     });
+// });
 
 router.get("/getgames", (req, res) => {
     //game_creater에 Schema.Types.ObjectId라고 써놨는데,
@@ -89,69 +125,31 @@ router.post("/getgamedetail", (req, res) => {
     });
 });
 
-router.post("/putBackgroundImg", (req, res) => {
+router.post("/putDB", (req, res) => {
     Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
         .populate("creator")
         .exec((err, gameDetail) => {
             if (err) return res.status(400).send(err);
 
-            const background = new Background(req.body.background);
-            gameDetail.background.push(background);
-
-            gameDetail.save((err, doc) => {
-                if (err) return res.json({ success: false, err });
-
-                return res.status(200).json({ success: true, gameDetail });
+            req.body.character.forEach(value => {
+                const character = new Character(value);
+                gameDetail.character.push(character);
             });
-        });
-});
-
-router.post("/putCharacterImg", (req, res) => {
-    Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
-        .populate("creator")
-        .exec((err, gameDetail) => {
-            if (err) return res.status(400).send(err);
-
-            const character = new Character(req.body.character);
-            gameDetail.character.push(character);
-
-            gameDetail.save((err, doc) => {
-                if (err) return res.json({ success: false, err });
-
-                return res.status(200).json({ success: true, gameDetail });
+            req.body.background.forEach(value => {
+                const background = new Background(value);
+                gameDetail.background.push(background);
             });
-        });
-});
-
-router.post("/putBgm", (req, res) => {
-    Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
-        .populate("creator")
-        .exec((err, gameDetail) => {
-            if (err) return res.status(400).send(err);
-
-            const bgm = new Bgm(req.body.bgm);
-            gameDetail.bgm.push(bgm);
-
-            gameDetail.save((err, doc) => {
-                if (err) return res.json({ success: false, err });
-
-                return res.status(200).json({ success: true, gameDetail });
+            req.body.bgm.forEach(value => {
+                const bgm = new Bgm(value);
+                gameDetail.bgm.push(bgm);
             });
-        });
-});
-
-router.post("/putSound", (req, res) => {
-    Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
-        .populate("creator")
-        .exec((err, gameDetail) => {
-            if (err) return res.status(400).send(err);
-
-            const sound = new Sound(req.body.sound);
-            gameDetail.sound.push(sound);
+            req.body.sound.forEach(value => {
+                const sound = new Sound(value);
+                gameDetail.sound.push(sound);
+            });
 
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
-
                 return res.status(200).json({ success: true, gameDetail });
             });
         });
@@ -204,7 +202,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                     sceneIdList: gameHistory[i].sceneIdList.slice(0, gameHistory[i].sceneIdList.length),
                 };
                 user.save((err) => {
-                    if(err){ console.log(err); return res.status(400).json({success: false})}
+                    if (err) { console.log(err); return res.status(400).json({ success: false }) }
                 });
                 return res
                     .status(200)
@@ -283,7 +281,7 @@ router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
             console.log(err);
             return res.status(400).json({ success: false });
         }
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         return res.status(400).json({ success: false });
     }
@@ -301,7 +299,7 @@ router.post("/refreshHistory", auth, async (req, res) => {
             gamePlaying: { sceneIdList },
         } = user;
         // 첫번째 씬으로 돌아가려 할 때 이상해질 수 있음...
-        user.gamePlaying.sceneIdList = sceneIdList.slice(0, sceneIndex+1);
+        user.gamePlaying.sceneIdList = sceneIdList.slice(0, sceneIndex + 1);
         user.save();
         return res
             .status(200)
@@ -313,7 +311,7 @@ router.post("/refreshHistory", auth, async (req, res) => {
 
 
 router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
-  let {sceneId } = req.params;
+    let { sceneId } = req.params;
     if (!req.user) {
         return res.status(400).json({ success: false, msg: "Not a user" });
     }

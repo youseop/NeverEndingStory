@@ -3,24 +3,35 @@ import BackgroundSideBar from "./SideBar/BackgroundSideBar";
 import CharacterSideBar from "./SideBar/CharacterSideBar";
 import BgmSideBar from "./SideBar/BgmSideBar";
 import SoundSideBar from "./SideBar/SoundSideBar";
-import "./SceneMakePage.css";
 import { useSelector } from "react-redux";
 import { Input, message, Button } from "antd";
 import Axios from "axios";
 import { useLocation } from "react-router";
+import SceneMakeModal from './SceneMakeModal';
+import UploadModal from './UploadModal';
+
+import "./SceneMakePage.css";
+
 const { TextArea } = Input;
+
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
 
 function SceneMakePage(props) {
+
+    //modal
+    const [makeModalState, setMakeModalState] = useState(0);
+    const [reload, setReload] = useState(1);
+    const [uploadModalState, setUploadModalState] = useState(false);
+
+    //modal end
     const location = useLocation();
     const sceneInfo = location.state;
 
     const gameId = props.match.params.gameId;
     const userId = useSelector((state) => state.user);
     const [SidBar_script, setSidBar_script] = useState(false);
-
     const [BackgroundImg, setBackgroundImg] = useState("");
     const [CharacterList, setCharacterList] = useState([]);
     const [Script, setScript] = useState("");
@@ -48,6 +59,7 @@ function SceneMakePage(props) {
     );
 
     const onScriptChange = (event) => {
+        console.log(123456, SceneOption)
         setScript(event.currentTarget.value);
     };
 
@@ -216,6 +228,10 @@ function SceneMakePage(props) {
         setCutNumber((oldNumber) => oldNumber + 1);
     };
 
+    const onSubmit_first = () => {
+        setUploadModalState(true)
+    }
+
     const onSubmit_saveScene = (event) => {
         event.preventDefault();
 
@@ -227,7 +243,7 @@ function SceneMakePage(props) {
             bgm: BgmFile,
             sound: SoundFile,
         };
-        
+
         const submitCutList = [
             ...CutList.slice(0, CutNumber),
             submitCut,
@@ -265,7 +281,7 @@ function SceneMakePage(props) {
             message.error("제출 취소요");
         }
     };
-    
+
     const onClick_isHover = () => {
         setHover(!Hover);
     }
@@ -276,7 +292,7 @@ function SceneMakePage(props) {
                 (<div className="scene__CurrentSceneBox" key={`${index}`}></div>)
             );
         } else {
-            if (Hover){ 
+            if (Hover) {
                 return (
                     <div
                         className="scene__SceneBox"
@@ -324,17 +340,76 @@ function SceneMakePage(props) {
         );
     });
 
+    const [gameDetail, setGameDetail] = useState([]);
+    const [sideBar, setSideBar] = useState([]);
+
+    const variable = { gameId: gameId }
+    useEffect(() => {
+        Axios.post('/api/game/getgamedetail', variable)
+            .then(response => {
+                if (response.data.success) {
+                    setGameDetail(response.data.gameDetail)
+                } else {
+                    alert('게임 정보를 로딩하는데 실패했습니다.')
+                }
+            })
+    }, [reload])
+
+
+    useEffect(() => {
+        if (gameDetail.character) {
+            const reload_Sidebar = (< div className="scenemake__toggleBar">
+                <div ref={characterSidebarElement}>
+                    <CharacterSideBar
+                        gameDetail={gameDetail}
+                        CharacterList={CharacterList}
+                        setCharacterList={setCharacterList}
+                        setMakeModalState={setMakeModalState}
+                        reload={reload}
+                    />
+                </div>
+                <div ref={backgroundSidebarElement} style={{ display: 'none' }}>
+                    <BackgroundSideBar
+                        gameDetail={gameDetail}
+                        setBackgroundImg={setBackgroundImg}
+                        setMakeModalState={setMakeModalState}
+                        reload={reload}
+                    />
+                </div>
+                <div ref={bgmSidebarElement} style={{ display: 'none' }}>
+                    <BgmSideBar
+                        gameDetail={gameDetail}
+                        bgm_audio={bgm_audio}
+                        setBgmFile={setBgmFile}
+                        setMakeModalState={setMakeModalState}
+                        reload={reload}
+                    />
+                </div>
+                <div ref={soundSidebarElement} style={{ display: 'none' }}>
+                    <SoundSideBar
+                        gameDetail={gameDetail}
+                        sound_audio={sound_audio}
+                        setSoundFile={setSoundFile}
+                        setMakeModalState={setMakeModalState}
+                        reload={reload}
+                    />
+                </div>
+            </div>)
+            setSideBar(reload_Sidebar)
+        }
+    }, [gameDetail])
+
     return (
         <div className="scenemake__container">
             {/* //?main Screen */}
             <div className="scenemake__main">
                 <div className="scene__SceneBox_container">
-                    <div onClick={onClick_isHover} style={{cursor:"pointer"}}>
-                        mode : {Hover ? "Hover":" Click "}
+                    <div onClick={onClick_isHover} style={{ cursor: "pointer" }}>
+                        mode : {Hover ? "Hover" : " Click "}
                     </div>
                     {display_SceneBox}
                     {display_EmptyBox}
-                    <div style={{width:"20px"}}>{CutNumber}</div>
+                    <div style={{ width: "20px" }}>{CutNumber}</div>
                     {/* {CutList.length} */}
                 </div>
                 {BgmFile ? (
@@ -386,63 +461,54 @@ function SceneMakePage(props) {
                             Next(Cut)
                         </Button>
                     )}
-                    <Button type="primary" onClick={onSubmit_saveScene}>
-                        Submit
-                    </Button>
+                    {SceneOption == 0 ?
+                        <Button type="primary" onClick={onSubmit_first}>
+                            Submit First
+                        </Button>
+                        : <Button type="primary" onClick={onSubmit_saveScene}>
+                            Submit
+                        </Button>
+                    }
+
+                    <UploadModal
+                        visible={uploadModalState}
+                        setUploadModalState={setUploadModalState}
+                        onSubmit_saveScene={onSubmit_saveScene}
+                    />
                     {/* <ModalSubmit/> */}
                 </div>
             </div>
-            {/* //?toggleBar */}
-            <div className="scenemake__toggleBar">
-                <div ref={backgroundSidebarElement}>
-                    <BackgroundSideBar
-                        gameId={gameId}
-                        setBackgroundImg={setBackgroundImg}
-                    />
-                </div>
-                <div ref={characterSidebarElement} style={{display:'none'}}>
-                    <CharacterSideBar
-                        gameId={gameId}
-                        CharacterList={CharacterList}
-                        setCharacterList={setCharacterList}
-                    />
-                </div>
-                <div ref={bgmSidebarElement} style={{display:'none'}}>
-                    <BgmSideBar
-                        bgm_audio={bgm_audio}
-                        gameId={gameId}
-                        setBgmFile={setBgmFile}
-                    />
-                </div>
-                <div ref={soundSidebarElement} style={{display:'none'}}>
-                    <SoundSideBar
-                        sound_audio={sound_audio}
-                        gameId={gameId}
-                        setSoundFile={setSoundFile}
-                    />
-                </div>
-            </div>
+            {sideBar !== 0 && sideBar}
             <div className="scenemake__toggleButton_container">
-                <div
-                    className="scenemake__btn_sidebar"
-                    onClick={onClick_background}
-                >back</div>
                 <div
                     className="scenemake__btn_sidebar"
                     onClick={onClick_character}
                 >char</div>
                 <div
                     className="scenemake__btn_sidebar"
-                    onClick={onClick_script}
-                >script</div>
+                    onClick={onClick_background}
+                >back</div>
                 <div className="scenemake__btn_sidebar" onClick={onClick_bgm}>
                     bgm
                 </div>
                 <div className="scenemake__btn_sidebar" onClick={onClick_sound}>
                     sound
                 </div>
+                <div
+                    className="scenemake__btn_sidebar"
+                    onClick={onClick_script}
+                >script</div>
             </div>
-        </div>
+            {
+                makeModalState !== 0 && <SceneMakeModal
+                    gameId={gameId}
+                    visible={Boolean(makeModalState)}
+                    setTag={setMakeModalState}
+                    tag={makeModalState}
+                    setReload={setReload}
+                />
+            }
+        </div >
     );
 }
 

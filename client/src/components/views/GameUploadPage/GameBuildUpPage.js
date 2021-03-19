@@ -7,7 +7,7 @@ import "./GameBuildUpPage";
 const { Title } = Typography;
 
 const extension = {
-    image: [".jpg", ".png", ".jpeg", ".GIF"],
+    image: [".jpg", ".png", ".jpeg", ".gif"],
     music: [".mp3", ".wav", ".wmv", ".wma", ".flac"],
 };
 
@@ -79,7 +79,7 @@ function GameBuildUpPage(props) {
                             <img
                                 style={{ width: "20px", height: "20px" }}
                                 src="http://localhost:5000/uploads\music_icon.jpg"
-                                // src="http://localhost:5000/music_icon.jpg"
+                            // src="http://localhost:5000/music_icon.jpg"
                             />
                             {cur_game.bgm[index].name}
                         </div>
@@ -98,7 +98,6 @@ function GameBuildUpPage(props) {
                             <img
                                 style={{ width: "20px", height: "20px" }}
                                 src="http://localhost:5000/uploads\music_icon.jpg"
-                                // src="http://localhost:5000/music_icon.jpg"
                             />
                             {cur_game.sound[index].name}
                         </div>
@@ -114,12 +113,12 @@ function GameBuildUpPage(props) {
         //check is_file ok
         for (var i = 0; i < files.length; i++) {
             if (!files[i]) {
-                message.error("손상된 파일입니다.");
+                message.error("10MB 이하의 파일을 업로드해주세요.");
                 return;
             }
 
             let dotIdx = files[i].name.lastIndexOf(".");
-            if (dotIdx == -1) {
+            if (dotIdx === -1) {
                 message.error(files[i].name + "은 확장자가 없는 파일입니다.");
                 return;
             }
@@ -127,8 +126,8 @@ function GameBuildUpPage(props) {
             let cur_extension = files[i].name.substr(dotIdx, 10000);
             if (
                 //image check
-                (fileState == 1 || fileState == 2) &&
-                extension.image.indexOf(cur_extension) == -1
+                (fileState === 1 || fileState === 2) &&
+                extension.image.indexOf(cur_extension) === -1
             ) {
                 message.error(
                     files[i].name + "은 지원하지 않는 이미지 확장자 파일입니다."
@@ -138,8 +137,8 @@ function GameBuildUpPage(props) {
 
             if (
                 //sound check
-                (fileState == 3 || fileState == 4) &&
-                extension.music.indexOf(cur_extension) == -1
+                (fileState === 3 || fileState === 4) &&
+                extension.music.indexOf(cur_extension) === -1
             ) {
                 message.error(
                     files[i].name + "은 지원하지 않는 음원 확장자 파일입니다."
@@ -155,7 +154,7 @@ function GameBuildUpPage(props) {
             };
             formData.append("file", files[i]);
             let file_name = files[i].name;
-            Axios.post("/api/game/uploadfiles", formData, config).then(
+            Axios.post("/api/game/uploadfile", formData, config).then(
                 (response) => {
                     // console.log(response);
                     if (response.data.success) {
