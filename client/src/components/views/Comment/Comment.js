@@ -73,6 +73,7 @@ function Comment({gameId}) {
       <div key={index}>
         {comment &&
           <SingleComment 
+            updateToggle_comment={updateToggle}
             gameId={gameId} 
             comment={comment}/>
         }

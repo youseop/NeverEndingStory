@@ -4,7 +4,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import './SingleComment.css';
 
-function SingleComment({gameId, comment}) {
+//Todo : 삭제(자식이 있다면 모두 지우자 deleteMany())
+//Todo : 깊이 2개까지만 하자. 
+//Todo : 아이콘 글자크기 차별화시키자 자식&부모에서
+//Todo : 댓글이 밀린다,,,!
+
+function SingleComment({gameId, comment, updateToggle_comment}) {
   const user = useSelector((state) => state.user);
   const isAuth = useSelector((state) => {
     if (state.user.userData){
@@ -41,7 +46,6 @@ function SingleComment({gameId, comment}) {
     axios.post('/api/comment/getReply', variable).then(response => {
       if (response.data.success) {
         setReplys(response.data.result);
-        console.log(response.data.result);
       } else {
         message.error('대댓글을 불러오는데 실패했습니다.')
       }
@@ -94,7 +98,7 @@ function SingleComment({gameId, comment}) {
     axios.post('/api/comment/removeComment', {commentId: comment._id}).then(response => {
       if(response.data.success) {
         message.success('댓글이 삭제되었습니다.');
-        updateToggle();
+        updateToggle_comment();
       } else {
         message.error('댓글 삭제에 실패했습니다.');
       }
@@ -106,6 +110,7 @@ function SingleComment({gameId, comment}) {
       <div key={index} style={{marginLeft:'10px'}}>
         {reply &&
           <SingleComment 
+            updateToggle_comment={updateToggle}
             gameId={gameId} 
             comment={reply}/>
         }
