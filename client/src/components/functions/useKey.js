@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 function useKey(key, cb) {
-  const callbackRef = useRef(cb);
+    const callbackRef = useRef(cb);
 
   useEffect(() => {
       callbackRef.current = cb;
@@ -13,8 +13,8 @@ function useKey(key, cb) {
               callbackRef.current(event);
           }
       }
-      document.addEventListener("keydown", handle);
-      return () => document.removeEventListener("keydown", handle);
+      document.addEventListener("keypress", handle);
+      return () => document.removeEventListener("keypress", handle);
   }, [key]);
 }
 

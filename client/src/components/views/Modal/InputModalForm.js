@@ -14,7 +14,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form }) => {
   if (visible) {
     return (
       <Modal
-        visible="true"
+        visible={true}
         title="선택지 내용을 입력하세요"
         okText="Submit"
         onCancel={onCancel}

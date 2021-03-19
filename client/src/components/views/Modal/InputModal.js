@@ -1,4 +1,6 @@
 import React, { useState, useCallback } from "react";
+import ReactDOM from "react-dom";
+import { Button } from "antd";
 import ModalForm from "./InputModalForm";
 import { useHistory } from "react-router";
 
@@ -10,9 +12,16 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable }) => {
 
   const handleCreate = () => {
     formRef.validateFields((err, values) => {
-      if (err || values.title==="") {
+      if (err) {
         return;
       }
+      console.log(
+        "Received values of form: ",
+        values,
+        scene_id,
+        scene_depth,
+        game_id
+      );
 
       history.push({
         pathname: `/scene/make/${game_id}`,
@@ -24,6 +33,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable }) => {
       });
 
       formRef.resetFields();
+      setVisible(false);
     });
   };
 
@@ -33,7 +43,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable }) => {
     }
   }, []);
 
-  const cancel = () => {
+  const cancel = () => {   
     setClickable(false);
     setVisible(false);
   };

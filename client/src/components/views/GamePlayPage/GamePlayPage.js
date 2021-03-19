@@ -10,6 +10,7 @@ import { message } from "antd";
 import useKey from "../../functions/useKey";
 import { useDispatch } from "react-redux";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
+import { navbarControl } from "../../../_actions/controlPage_actions";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -60,7 +61,7 @@ const ProductScreen = (props) => {
     }
   }
 
-  function handleEnter() {
+  function handleEnter(event) {
     if (i < Scene.cutList.length - 1 && !Clickable) {
       playMusic(i + 1);
       setI(i + 1);
@@ -78,17 +79,13 @@ const ProductScreen = (props) => {
       } else {
         setClickable(true);
         if (parseInt(event.key) - 1 === Scene.nextList.length) {
-          //   event.preventDefault();
+          event.preventDefault();
           var choice = document.getElementById("choice");
           choice.click();
-          //   event.preventDefault();
         }
       }
     }
   }
-
-  useKey("Enter", handleEnter);
-  useKey("Space", handleEnter);
 
   useEffect(() => {
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
@@ -101,7 +98,7 @@ const ProductScreen = (props) => {
           setHistory(history);
           setI(0);
           setScene(response.data.scene);
-          dispatch(gameLoadingPage(0)); 
+          dispatch(gameLoadingPage(0));
           dispatch(gameLoadingPage(1));
         } else {
           message.error("Scene 정보가 없습니다.");
@@ -148,17 +145,17 @@ const ProductScreen = (props) => {
       minHeight: `${minSize * ratio}px`
       }
   }
+  dispatch(navbarControl(false));
 
   if (Scene.cutList) {
     if (i == 0) playMusic(0);
-
     return (
       <div>
         <div>
           <div
             className="backgroundImg_container"
             style={newScreenSize}
-            onClick={() => handleEnter()}
+            onClick={(event) => handleEnter(event)}
           >
             <LoadingPage />  
             {Scene.cutList[i].background ? 
