@@ -45,6 +45,7 @@ const cutSchema = mongoose.Schema({
 
 const Cut = mongoose.model("cut", cutSchema);
 
+
 const sceneSchema = mongoose.Schema({
     gameId: {
         type: Schema.Types.ObjectId,
@@ -58,6 +59,10 @@ const sceneSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
+    working_num: {
+        type: Number,
+        default: 0,
+    },
     notRecommend: {
         type: Number,
         default: 0,
@@ -65,6 +70,28 @@ const sceneSchema = mongoose.Schema({
     depth: {
         type: Number,
         default: 0,
+    },
+    sceneTmp: {
+        emptyNum: {
+            type: Number,
+            default: 4,
+        },
+        certificationList: [
+            {
+                userId: {
+                    type: String,
+                    ref: "User",
+                },
+                exp: {
+                    type: Date,
+                    default: null, 
+                },
+                timer: {
+                    type: Number,
+                    default: null,
+                }
+            }
+        ],
     },
     nextList: [nextSceneSchema],
     cutList: [cutSchema],

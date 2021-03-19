@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const config = require("./config/key");
 
 const mongoose = require("mongoose");
+const { Scene } = require("./models/Scene");
 const connect = mongoose.connect(config.mongoURI,
   {
     useNewUrlParser: true, useUnifiedTopology: true,
@@ -53,19 +54,48 @@ if (process.env.NODE_ENV === "production") {
 
 const port = process.env.PORT || 5000
 
-var server = require('http').createServer(app);
-var io = require('socket.io')(server, {cors: {origin: '*'}});
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, { cors: { origin: '*' } });
+
+
+let scene_cache = {}
+
+const updateCache = (sceneId, userId, plus)=>{
+
+  scene_cache[sceneId].emptyNum += plus;
+  io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum })
+  const idx = scene_cache[sceneId].certificationList.findIndex(item => item.userId === userId);
+  if (plus >= 0)
+  {
+    clearTimeout(scene_cache[sceneId].certificationList[idx].timer);
+    if (idx > -1) scene_cache[sceneId].certificationList.splice(idx, 1)
+  }
+  else{
+    scene_cache[sceneId].certificationList[idx].timer = setTimeout(() => {
+      console.log("30 초 지남...")
+      if (scene_cache[sceneId].certificationList.some(itme => itme.userId === userId)) {
+        console.log("원상복구...")
+        scene_cache[sceneId].emptyNum += 1;
+        io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
+        if (idx > -1) scene_cache[sceneId].certificationList.splice(idx, 1)
+      }
+    }, 30000)
+  }
+  Scene.updateOne({ _id: mongoose.Types.ObjectId(sceneId) }, { sceneTmp: scene_cache[sceneId] });
+}
+
+
 
 io.on('connection', socket => {
   console.log('a user connected');
-  
+
   socket.on('disconnect', reason => {
+    console.log(reason);
     console.log('user disconnected');
   });
 
   socket.on('room', data => {
     console.log('room join');
-    console.log(data);
     socket.join(data.room);
   });
 
@@ -75,12 +105,52 @@ io.on('connection', socket => {
     socket.leave(data.room)
   });
 
-  socket.on('new message', data => {
-    console.log(data.room);
-    socket.broadcast
-    .to(data.room)
-    .emit('receive message', data)
+  socket.on('empty_num_decrease', async data => {
+    const sceneId = data.scene_id;
+    const userId = data.user_id;
+    if (scene_cache[sceneId] === undefined) {
+      const sceneTmp = await Scene.findOne({ _id: mongoose.Types.ObjectId(sceneId) }).select("sceneTmp");
+      scene_cache[sceneId] = sceneTmp.sceneTmp;
+      // cert 리스트의 모든 녀석을 확인하여 exp가 넘은 친구는 제거
+    }
+
+    if (scene_cache[sceneId].emptyNum === 0) {
+      // 예외 처리
+      return;
+    }
+
+    // 이미 cert에 user가 있는 경우, 예외처리.
+    user_token = {
+      userId,
+      exp: Date.now(),
+      // type: "scene",
+      timer: null,
+    }
+    scene_cache[sceneId].certificationList.push(user_token);
+
+    updateCache(sceneId, userId, -1)
   });
+
+  socket.on('empty_num_increase', async data => {
+    const sceneId = data.scene_id;
+    const userId = data.user_id;
+    if (scene_cache[sceneId] === undefined) {
+      const sceneTmp = await Scene.findOne({ _id: mongoose.Types.ObjectId(sceneId) }).select("sceneTmp");
+      scene_cache[sceneId] = sceneTmp.sceneTmp;
+    }
+
+    if (scene_cache[sceneId].emptyNum === 4) {
+      // 예외 처리
+      return;
+    }
+    updateCache(sceneId, userId, 1)
+  });
+
+  socket.on('created_choice', data => {
+    const sceneId = data.scene_id;
+    const userId = data.user_id;
+    updateCache(sceneId, userId, 0)
+  })
 });
 
 server.listen(port);

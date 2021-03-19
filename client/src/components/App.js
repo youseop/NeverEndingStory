@@ -17,13 +17,14 @@ import SceneMakePage from "./views/Scene/SceneMakePage/SceneMakePage";
 
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
+import { LOCAL_HOST } from './Config';
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
  
 const io = require('socket.io-client');
-export const socket = io('http://localhost:5000');
+export const socket = io(`http://${LOCAL_HOST}:5000`);
 
 function App() {
   return (

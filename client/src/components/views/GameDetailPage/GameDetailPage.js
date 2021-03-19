@@ -3,6 +3,8 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./GameDetailPage.css";
+import { LOCAL_HOST } from"../../Config"
+
 
 function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
@@ -42,7 +44,7 @@ function GameDetailPage(props) {
             {/* 이미지 불러오는게 늦음 디버깅 필요 */}
             <img
                 style={{ width: "30%", height: "30%" }}
-                src={`http://localhost:5000/${gameDetail.thumbnail}`}
+                src={`http://${LOCAL_HOST}:5000/${gameDetail.thumbnail}`}
                 alt="thumbnail"
             />
             <h3>ㅇ 카테고리 : {gameDetail.category}</h3>

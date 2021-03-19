@@ -3,6 +3,7 @@ import { Row, Card, Icon, Avatar, Col, Typography } from "antd";
 import Axios from "axios";
 import moment from "moment";
 import GameDetailPage from "../GameDetailPage/GameDetailPage";
+import {LOCAL_HOST} from"../../Config"
 
 const { Title } = Typography;
 const { Meta } = Card;
@@ -27,7 +28,7 @@ function LandingPage() {
                     <a href={`/game/${game._id}`}>
                         <img
                             style={{ width: "100%" }}
-                            src={`http://localhost:5000/${game.thumbnail}`}
+                            src={`http://${LOCAL_HOST}:5000/${game.thumbnail}`}
                             alt="thumbnail"
                         />
                     </a>

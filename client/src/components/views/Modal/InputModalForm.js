@@ -1,13 +1,12 @@
 import React from "react";
 import { Modal, Form, Input, Radio } from "antd";
 
-const ModalFormComponent = ({ visible, onCancel, onCreate, form }) => {
+const ModalFormComponent = ({ visible, onCancel, onCreate, form, remainTime }) => {
   const { getFieldDecorator } = form;
-
   return (
     <Modal
       visible={visible}
-      title="선택지 내용을 입력하세요"
+      title={`선택지 내용을 입력하세요 (${remainTime})`}
       okText="Submit"
       onCancel={onCancel}
       onOk={onCreate}

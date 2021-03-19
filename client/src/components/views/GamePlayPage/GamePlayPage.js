@@ -2,10 +2,13 @@ import "./GamePlayPage.css";
 import CharacterBlock from "./CharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
 import DislikePopup from "./Dislike";
 import HistoryMapPopup from "./HistoryMap";
 import { message } from "antd";
+import { socket } from "../../App"
+import { loadEmptyNum } from "../../../_actions/sync_actions"
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -13,11 +16,11 @@ var sound_audio = new Audio();
 // Use keyboard input
 function useKey(key, cb) {
     const callbackRef = useRef(cb);
-
+    
     useEffect(() => {
         callbackRef.current = cb;
     });
-
+    
     useEffect(() => {
         function handle(event) {
             if (event.code === key) {
@@ -31,15 +34,31 @@ function useKey(key, cb) {
 
 // playscreen
 const ProductScreen = (props) => {
-  const { gameId } = props.match.params;
-  const { sceneId } = props.match.params;
+    const dispatch = useDispatch()
+    const { gameId } = props.match.params;
+    const { sceneId } = props.match.params;
+    
+    const [i, setI] = useState(0);
+    const [Scene, setScene] = useState({});
+    const [Dislike, setDislike] = useState(false);
+    const [History, setHistory] = useState({})
+    const [HistoryMap, setHistoryMap] = useState(false);
 
-  const [i, setI] = useState(0);
-  const [Scene, setScene] = useState({});
-  const [Dislike, setDislike] = useState(false);
-  const [History, setHistory] = useState({})
-  const [HistoryMap, setHistoryMap] = useState(false);
-
+    useEffect(() => {
+        socket.emit("room", {room: sceneId});
+        socket.on("empty_num_changed", data => {
+            console.log(data.emptyNum);
+            dispatch(loadEmptyNum({
+                sceneId,
+                emptyNum : data.emptyNum
+            }));
+        })
+        dispatch(loadEmptyNum({
+            sceneId,
+        }));
+    }, [])
+    
+    
     function playMusic(i) {
         if (Scene.cutList[i].bgm.music) {
             //이전 곡과 같은 bgm이 아니라면
