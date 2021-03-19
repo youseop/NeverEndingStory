@@ -1,11 +1,45 @@
 @import '~antd/dist/antd.css';
 
+@keyframes hide {
+  0% {
+    opacity : 1;
+    transform: translate(0,-0);
+  }
+  100% {
+    opacity : 0;
+    transform: translate(0,-69px);
+  }
+}
+
+@keyframes show {
+  0% {
+    opacity : 0;
+    transform: translate(0,-69px);
+  }
+  100% {
+    opacity : 1;
+    transform: translate(0,0);
+  }
+}
+
 .menu {
   padding: 0 20px;
   border-bottom: solid 1px #e8e8e8;
   overflow: auto;
   box-shadow: 0 0 30px #f3f1f1;
   background-color: white;
+  transform: opacity(0);
+  transition-duration: 1.0s;
+}
+
+.menu:hover{
+  /* opacity: 1; */
+  transform: opacity(1) !important;
+  transform: translateY(0px);
+  opacity: 1.0 !important;
+  /* animation: 0.8s ease-out 0s 1 show */
+  /* transform: opacity(1); */
+  transition-duration: 1.0s;
 }
 
 .menu__logo {

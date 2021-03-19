@@ -6,10 +6,10 @@ import Axios from "axios";
 import DislikePopup from "./Dislike";
 import HistoryMapPopup from "./HistoryMap";
 import LoadingPage from "./LoadingPage";
-// import {gameLoadingPage} from "../../../_actions/gamePlay_actions"
 import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
+import { navbarControl } from "../../../_actions/controlPage_actions";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -110,7 +110,7 @@ const ProductScreen = (props) => {
           setHistory(history);
           setI(0);
           setScene(response.data.scene);
-          dispatch(gameLoadingPage(0)); 
+          dispatch(gameLoadingPage(0));
           dispatch(gameLoadingPage(1));
         } else {
           message.error("Scene 정보가 없습니다.");
@@ -119,12 +119,12 @@ const ProductScreen = (props) => {
     );
   }, [sceneId]);
 
+  dispatch(navbarControl(false));
+
   if (Scene.cutList) {
     if (i == 0) playMusic(0);
-
     return (
       <div>
-          <LoadingPage />  
         <div className="productscreen">
           <div
             className="background_img_container"
@@ -136,6 +136,7 @@ const ProductScreen = (props) => {
             >
               미니맵
             </button>
+            <LoadingPage />
             <img
               className="background_img"
               src={Scene.cutList[i].background}
