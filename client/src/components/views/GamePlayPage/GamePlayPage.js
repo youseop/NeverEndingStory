@@ -169,6 +169,7 @@ const ProductScreen = (props) => {
             }
             <CharacterBlock
               characterList={Scene.cutList[i].characterList}
+              onRemove_character={()=>{}}
             />
 
             {i === Scene.cutList.length - 1 ? (

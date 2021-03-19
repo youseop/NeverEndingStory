@@ -419,6 +419,7 @@ function SceneMakePage(props) {
                     )}
                     <CharacterBlock
                     characterList={CharacterList}
+                    onRemove_character={onRemove_character}
                     />
                     {SidBar_script && (
                             <div className="sceneMake__text_container">
