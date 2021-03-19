@@ -63,24 +63,20 @@ router.post("/uploadfile", (req, res) => {
     });
 });
 
-router.post("/uploadgame", (req, res) => {
-    // const game_variables = {
-    //     creator: user.userData._id,
-    //     title: GameTitle,
-    //     description: description,
-    //     thumbnail: filePath,
-    //     privacy: isPrivate,
-    //     category: category,
-    //     writer: [user.userData._id],
-    //     character: [],
-    //     background: [],
-    //     bgm: [],
-    //     sound: [],
-    // };
+router.post("/uploadgameInfo", (req, res) => {
     Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
         .populate("creator")
         .exec((err, gameDetail) => {
             if (err) return res.status(400).send(err);
+
+            gameDetail.creator = req.body.creator;
+            gameDetail.title = req.body.title;
+            gameDetail.description = req.body.description;
+            gameDetail.thumbnail = req.body.thumbnail;
+            gameDetail.privacy = req.body.privacy;
+            gameDetail.category = req.body.category;
+            gameDetail.writer = req.body.writer;
+
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
                 return res.status(200).json({ success: true, gameDetail });
@@ -88,7 +84,7 @@ router.post("/uploadgame", (req, res) => {
         });
 });
 
-router.post("/uploadgameframe", (req, res) => {
+router.get("/uploadgameframe", (req, res) => {
     const game = new Game();
     game.save((err, game) => {
         if (err) return res.json({ success: false, err });

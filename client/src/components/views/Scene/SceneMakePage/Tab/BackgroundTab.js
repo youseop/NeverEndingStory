@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
 import "../SceneMakeModal.css";
+import "./BackgroundTab.css";
 
 function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, backBlobList }) {
     const [backgroundCards, setBackgroundCards] = useState([]);
@@ -23,32 +24,26 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
     useEffect(() => {
         if (game.background)
             setBackgroundCards(game.background.map((element, index) => {
-                return <Col key={index} lg={6} md={8} xs={24}>
-                    <div style={{ position: "relative" }}>
-                        <img
-                            style={{ width: "50px", height: "50px" }}
-                            src={element.image}
-                            alt="img"
-                        />
-                    </div>
-                    <br />
-                </Col>
+                return <div className="largeBox1">
+                    <img className="smallBox12"
+                        // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                        src={element.image}
+                        alt="img"
+                    />
+                </div>
             }))
     }, [game]);
 
     useEffect(() => {
         if (backBlobList)
             setBlobCards(backBlobList.map((element, index) => {
-                return <Col key={index} lg={6} md={8} xs={24}>
-                    <div style={{ position: "relative" }}>
-                        <img
-                            style={{ width: "50px", height: "50px" }}
-                            src={element}
-                            alt="img"
-                        />
-                    </div>
-                    <br />
-                </Col>
+                return <div className="largeBox1">
+                    <img className="smallBox12"
+                        // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                        src={element}
+                        alt="img"
+                    />
+                </div>
             }))
     }, [backBlobList]);
 
@@ -61,8 +56,10 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
                 accept="image/*"
             >
             </MyDropzone>
-            {backgroundCards !== 0 && <div>{backgroundCards}</div>}
-            {blobCards !== 0 && <div>{blobCards}</div>}
+            <div className="background-container">
+                {backgroundCards !== 0 && <div>{backgroundCards}</div>}
+                {blobCards !== 0 && <div>{blobCards}</div>}
+            </div>
         </div>
     );
 }

@@ -233,7 +233,7 @@ function SceneMakePage(props) {
     }
 
     const onSubmit_saveScene = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
 
         const submitCut = {
             background: BackgroundImg,
@@ -471,6 +471,7 @@ function SceneMakePage(props) {
                     }
 
                     <UploadModal
+                        gameId={gameId}
                         visible={uploadModalState}
                         setUploadModalState={setUploadModalState}
                         onSubmit_saveScene={onSubmit_saveScene}

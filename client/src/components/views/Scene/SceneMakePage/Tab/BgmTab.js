@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
 import "../SceneMakeModal.css";
+import "./MusicTab.css";
 
 function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList, setBgmBlobNames, bgmBlobNames }) {
     const [bgmCards, setBgmCards] = useState([]);
@@ -25,17 +26,27 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
         if (game.bgm)
             setBgmCards(game.bgm.map((element, index) => {
                 console.log(element)
-                return <Col key={index} lg={6} md={8} xs={24}>
-                    <div style={{ position: "relative" }}>
-                        <img
-                            style={{ width: "50px", height: "50px" }}
-                            src="http://localhost:5000/uploads\music_icon.jpg"
-                            alt="img"
-                        />
-                        {element.name}
-                    </div>
-                    <br />
-                </Col>
+                return <div className="largeBox13">
+                    {(index + 1) % 2 ?
+                        <div>
+                            <img className="smallBox13"
+                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                alt="img"
+                            />
+                            {element.name}
+                        </div>
+                        :
+                        <div>
+                            <img className="smallBox23"
+                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                alt="img"
+                            />
+                            {element.name}
+                        </div>
+                    }
+                </div>
             }))
     }, [game]);
 
@@ -48,17 +59,27 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
     useEffect(() => {
         if (bgmBlobList)
             setBlobCards(bgmBlobList.map((element, index) => {
-                return <Col key={index} lg={6} md={8} xs={24}>
-                    <div style={{ position: "relative" }} onClick={onClick_music}>
-                        <img
-                            style={{ width: "50px", height: "50px" }}
-                            src="http://localhost:5000/uploads\music_icon.jpg"
-                            alt="img"
-                        />
-                        {bgmBlobNames[index].name}
-                    </div>
-                    <br />
-                </Col>
+                return <div className="largeBox13">
+                    {(index + 1) % 2 ?
+                        <div>
+                            <img className="smallBox13"
+                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                alt="img"
+                            />
+                            {bgmBlobNames[index].name}
+                        </div>
+                        :
+                        <div>
+                            <img className="smallBox23"
+                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                alt="img"
+                            />
+                            {bgmBlobNames[index].name}
+                        </div>
+                    }
+                </div>
             }))
     }, [bgmBlobList]);
 
@@ -71,8 +92,10 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
                 accept="audio/*"
             >
             </MyDropzone>
-            {bgmCards !== 0 && <div>{bgmCards}</div>}
-            {blobCards !== 0 && <div>{blobCards}</div>}
+            <div className="music-container">
+                {bgmCards !== 0 && <div>{bgmCards}</div>}
+                {blobCards !== 0 && <div>{blobCards}</div>}
+            </div>
         </div>
     );
 }

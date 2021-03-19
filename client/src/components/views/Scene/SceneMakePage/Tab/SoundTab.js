@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
 import "../SceneMakeModal.css";
+import "./MusicTab.css";
 
 function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlobList, setSoundBlobNames, soundBlobNames }) {
     const [soundCards, setSoundCards] = useState([]);
@@ -24,17 +25,27 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
     useEffect(() => {
         if (game.sound)
             setSoundCards(game.sound.map((element, index) => {
-                return <Col key={index} lg={6} md={8} xs={24}>
-                    <div style={{ position: "relative" }}>
-                        <img
-                            style={{ width: "50px", height: "50px" }}
-                            src="http://localhost:5000/uploads\music_icon.jpg"
-                            alt="img"
-                        />
-                        {element.name}
-                    </div>
-                    <br />
-                </Col>
+                return <div className="largeBox13">
+                    {(index + 1) % 2 ?
+                        <div>
+                            <img className="smallBox13"
+                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                alt="img"
+                            />
+                            {element.name}
+                        </div>
+                        :
+                        <div>
+                            <img className="smallBox23"
+                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                alt="img"
+                            />
+                            {element.name}
+                        </div>
+                    }
+                </div>
             }))
     }, [game]);
 
@@ -47,17 +58,27 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
     useEffect(() => {
         if (soundBlobList)
             setBlobCards(soundBlobList.map((element, index) => {
-                return <Col key={index} lg={6} md={8} xs={24}>
-                    <div style={{ position: "relative" }} onClick={onClick_music}>
-                        <img
-                            style={{ width: "50px", height: "50px" }}
-                            src="http://localhost:5000/uploads\music_icon.jpg"
-                            alt="img"
-                        />
-                        {soundBlobNames[index].name}
-                    </div>
-                    <br />
-                </Col>
+                return <div className="largeBox13">
+                    {(index + 1) % 2 ?
+                        <div>
+                            <img className="smallBox13"
+                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                alt="img"
+                            />
+                            {soundBlobNames[index].name}
+                        </div>
+                        :
+                        <div>
+                            <img className="smallBox23"
+                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                alt="img"
+                            />
+                            {soundBlobNames[index].name}
+                        </div>
+                    }
+                </div>
             }))
     }, [soundBlobList]);
 
@@ -70,8 +91,10 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
                 accept="audio/*"
             >
             </MyDropzone>
-            {soundCards !== 0 && <div>{soundCards}</div>}
-            {blobCards !== 0 && <div>{blobCards}</div>}
+            <div className="music-container">
+                {soundCards !== 0 && <div>{soundCards}</div>}
+                {blobCards !== 0 && <div>{blobCards}</div>}
+            </div>
         </div>
     );
 }

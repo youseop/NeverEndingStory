@@ -19,12 +19,13 @@ const CategoryOptions = [
     { value: 4, label: "병맛" },
 ];
 
-const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
+const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene }) => {
     const user = useSelector((state) => state.user);
     const [GameTitle, setGameTitle] = useState("");
     const [description, setDescription] = useState("");
     const [isPrivate, setIsPrivate] = useState(0);
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState(CategoryOptions[0].label);
+
     const [blobURL, setBlobURL] = useState("");
     const [thumbFile, setThumbFile] = useState([]);
 
@@ -33,7 +34,6 @@ const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
     };
 
     const onDescriptionChange = (event) => {
-        // console.log(event.currentTarget.value);
         setDescription(event.currentTarget.value);
     };
 
@@ -51,8 +51,7 @@ const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
             message.error("10MB 이하의 이미지 파일을 업로드해주세요.");
             return;
         }
-        if (blobURL)
-            URL.revokeObjectURL(blobURL)
+        URL.revokeObjectURL(blobURL)
 
         setBlobURL(URL.createObjectURL(files[0]))
         setThumbFile(files)
@@ -61,10 +60,10 @@ const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
     const cancel = () => {
         if (blobURL)
             URL.revokeObjectURL(blobURL)
-
         setUploadModalState(false)
     }
-    const saveInfo = (event) => {
+
+    const upload = (event) => {
         event.preventDefault();
         if (GameTitle === "" || description === "" || blobURL === "") {
             message.error("모든 정보를 입력해주세요.");
@@ -72,7 +71,8 @@ const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
         }
 
         uploadThumb();
-        setUploadModalState(false)
+        setUploadModalState(false);
+        onSubmit_saveScene()
     }
 
     const uploadThumb = () => {
@@ -101,6 +101,7 @@ const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
 
     const uploadGame = (filePath) => {
         const game_variables = {
+            gameId: gameId,
             creator: user.userData._id,
             title: GameTitle,
             description: description,
@@ -108,24 +109,15 @@ const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
             privacy: isPrivate,
             category: category,
             writer: [user.userData._id],
-            character: [],
-            background: [],
-            bgm: [],
-            sound: [],
         };
 
-        Axios.post("/api/game/uploadgame", game_variables).then((response) => {
+        Axios.post("/api/game/uploadgameInfo", game_variables).then((response) => {
             if (response.data.success) {
 
             } else {
                 message.error("game제작 실패");
             }
         });
-    }
-
-    const upload = () => {
-        saveInfo()
-        onSubmit_saveScene()
     }
 
     return (
@@ -138,14 +130,9 @@ const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
             style={{ top: 20 }}
         >
             <div>
-                <div >
-                    Upload Game
-                </div>
-                <Form onSubmit={saveInfo}>
-                    <div
-                        style={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                        {/* drop zone */}
+                <label>Upload Game</label>
+                <Form onSubmit={upload}>
+                    <div style={{ display: "flex" }}>
                         <MyDropzone
                             onDrop={onDrop}
                             multiple={false}
@@ -153,7 +140,7 @@ const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
                             accept="image/*"
                         >
                         </MyDropzone>
-                        {/* thunb nail */}
+
                         {blobURL && (
                             <div>
                                 <img
@@ -165,7 +152,6 @@ const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
                             </div>
                         )}
                     </div>
-
                     <label>Title</label>
                     <Input onChange={onTitleChange} value={GameTitle} />
 
@@ -188,9 +174,6 @@ const UploadModal = ({ visible, setUploadModalState, onSubmit_saveScene }) => {
                         ))}
                     </select>
 
-                    <Button type="primary" size="large" onClick={upload}>
-                        Save
-                </Button>
                 </Form>
             </div>
         </Modal>
