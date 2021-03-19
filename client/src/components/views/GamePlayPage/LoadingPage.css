@@ -1,0 +1,22 @@
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.gameloading_page {
+  z-index: 300;
+  background-color: black;
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translateX(-100%);
+  animation: 1s ease-out 0s 1 slideInFromLeft;
+}

@@ -49,11 +49,13 @@
     position: relative;
     overflow: hidden;
 }
-.scenemake__background {
-    position: absolute;
-    top: 5%;
-    width: auto;
-    height: 100%;
+.background_img {
+  z-index: 97;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  margin:0;
+  border-radius: 0;
 }
 .scenemake__character_container {
     position: absolute;
@@ -121,8 +123,29 @@
 }
 
 .scene__SceneBox_container {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    z-index: 100;
     width: 50%;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 }
+
+
+.background_img_container {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 10%);
+    transform-origin: center center;
+    overflow: hidden;
+  
+    background-color: black;
+  }
+
+  .scene__sceneBox{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }

@@ -1,6 +1,6 @@
 html,
 body {
-  height: 90%;
+  /* height: 90%; */
   margin: 0;
 }
 
@@ -28,11 +28,7 @@ body {
 }
 
 .HistoryMap_btn{
-  z-index: 98;
   position: absolute;
-
-  top: 2%;
-  left: 1%;
-  /* height: 40%; */
-  /* width: 67%;  */
+  left: 50%;
+  transform: translate(-50%, 10%);
 }

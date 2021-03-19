@@ -23,11 +23,7 @@ const CategoryOptions = [
 
 const RatioOptions = [
     { value: `${9/16}`, label: "16:9"}, 
-    { value: "1", label: "1:1"}, 
-    { value: "0.5", label: "2:1"}, 
-    { value: `${3/4}`, label: "4:3"}, 
     { value: `${16/9}`, label: "9:16(스마트폰)"}, 
-    { value: `${4/3}`, label: "3:4(패드)"}
 ]
 
 function GameUploadPage(props) {
@@ -36,7 +32,7 @@ function GameUploadPage(props) {
     const [description, setDescription] = useState("");
     const [isPrivate, setIsPrivate] = useState(0);
     const [category, setCategory] = useState("살아남기");
-    const [ratio, setRatio] = useState(`${9/16}`);
+    const [ratio, setRatio] = useState(true);
 
     const [filePath, setFilePath] = useState("");
     // const [duration, setDuration] = useState("")
@@ -60,7 +56,8 @@ function GameUploadPage(props) {
     };
 
     const onRatioChange = (event) => {
-        setRatio(event.currentTarget.value);
+        setRatio(state => !state);
+        console.log(event.currentTarget.value);
     }
 
     const onDrop = (files) => {
@@ -92,6 +89,13 @@ function GameUploadPage(props) {
             alert("모든 정보를 입력해주세요.");
             return;
         }
+
+        let floatRatio;
+        if (ratio) {
+            floatRatio = 9/16;
+        } else {
+            floatRatio = 16/9;
+        }
         const game_variables = {
             creator: user.userData._id,
             title: GameTitle,
@@ -99,14 +103,13 @@ function GameUploadPage(props) {
             thumbnail: filePath,
             privacy: isPrivate,
             category: category,
-            ratio: ratio,
+            ratio: floatRatio,
             writer: [user.userData._id],
             character: [],
             background: [],
             bgm: [],
             sound: [],
         };
-
         Axios.post("/api/game/uploadgame", game_variables).then((response) => {
             if (response.data.success) {
                 message.success(
@@ -197,13 +200,17 @@ function GameUploadPage(props) {
                 </select>
                 <br />
                 <br />
-                <select onChange={onRatioChange}>
+                <label><input type="radio" name="ratio" checked={ratio} onChange={onRatioChange}/>컴퓨터</label>
+                <br />
+                <label><input type="radio" name="ratio" checked={!ratio} onChange={onRatioChange}/>스마트폰</label>
+                    
+                {/* <select onChange={onRatioChange}>
                     {RatioOptions.map((item, index) => (
                         <option key={index} value={item.value}>
                             {item.label}
                         </option>
                     ))}
-                </select>
+                </select> */}
                 <br />
                 <br />
                 <Button type="primary" size="large" onClick={onSubmit}>
