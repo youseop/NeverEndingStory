@@ -434,6 +434,7 @@ function SceneMakePage(props) {
             minHeight: `${minSize * ratio}px`
         }
     }
+    
     return (
         <div>
             {/* <LoadingPage />   */}
