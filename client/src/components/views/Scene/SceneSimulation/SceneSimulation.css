@@ -1,0 +1,61 @@
+html,
+body {
+  margin: 0;
+}
+
+.container {
+  z-index: 100;
+  position: relative;
+  right: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+}
+
+.productscreen {
+  z-index: 101;
+  position: fixed;
+  background-color: blanchedalmond;
+  height: 100%;
+  width: auto;
+}
+
+.background_img_container {
+  height: 100%;
+  width: 100%;
+
+  /* padding: 50px; */
+  position: absolute;
+  left: 50%;
+  /* bottom: 100%; */
+  transform: translate(-50%, 20%);
+  transform-origin: center center;
+  overflow: hidden;
+
+  /* align-content: center; */
+
+  /* transform: translate(-50%, -50%); */
+  /* transform-origin: center center; */
+
+  background-color: rgb(253, 236, 226);
+}
+
+.background_img {
+  z-index: 97;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  margin:0;
+  border-radius: 0;
+}
+
+.HistoryMap_btn{
+  z-index: 98;
+  position: absolute;
+
+  top: 2%;
+  left: 1%;
+  /* height: 40%; */
+  /* width: 67%;  */
+}

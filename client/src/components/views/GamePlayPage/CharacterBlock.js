@@ -1,7 +1,7 @@
 import "./CharacterBlock.css";
 import React from "react";
 const CharacterBlock = (props) => {
-  const { characterList } = props;
+  const { characterList, onRemove_character } = props;
   const position = [[35], [20, 50], [10, 60, 35]];
   const characterblocks = characterList.map((url, index) => {
     return (
@@ -10,6 +10,8 @@ const CharacterBlock = (props) => {
         style={{ left: `${position[characterList.length - 1][index]}%` }}
         src={url}
         key={index}
+        onClick={() => onRemove_character(index)}
+        alt="Network Error"
       />
     );
   });

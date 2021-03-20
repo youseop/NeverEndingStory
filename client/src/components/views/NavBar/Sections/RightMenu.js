@@ -55,6 +55,9 @@ function RightMenu(props) {
                     <a onClick={uploadGameFrame}>Game Upload</a>
                     {/* <a href="/game/upload">Game Upload</a> */}
                 </Menu.Item>
+                <Menu.Item key="profile">
+                    <a href="/profile">Profile</a>
+                </Menu.Item>
                 <Menu.Item key="logout">
                     <a onClick={logoutHandler}>Logout</a>
                 </Menu.Item>

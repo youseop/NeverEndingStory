@@ -1,0 +1,254 @@
+.scenemake__container {
+    /* height: 84vh; */
+    width: 100vw;
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+}
+.scenemake__main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.scenemake__btn_sidebar {
+    width: 60px;
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+}
+
+.scenemake__main_img {
+    width: 500px;
+    height: 350px;
+    /* background-color: brown; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+.scenemake__character_container {
+    position: absolute;
+    bottom: 2%;
+    width: 600px;
+    height: 300px;
+    /* background-color: black; */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.scene__characterBox {
+    /* background-color: aquamarine;
+  height: 60%; */
+    width: 28%;
+    height: auto;
+    margin: 5px;
+}
+
+.scene__character {
+    width: 100%;
+}
+
+.scenemake__main_script {
+    position: absolute;
+    bottom: 2%;
+    width: 90%;
+    height: 18vh;
+    background-color: rgba(82, 82, 82, 0.685);
+    border-radius: 3px;
+    z-index: 104;
+}
+
+.scenemake__btn_container {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-right: 20px;
+}
+
+.sceneMake__text_container {
+    z-index: 99;
+    background-color: rgba(128, 128, 128, 0.815);
+  
+    padding: 2% 5% 1% 5%;
+    border-radius: 1em;
+  
+    bottom: 0%;
+    left: 15%;
+    height: 40%;
+    width: 67%;
+  
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    
+  }
+  .sceneMake__name_block {
+    all: unset;
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: rgba(182, 182, 182, 0.815);
+    padding: 5px;
+    border-radius: 2px;
+  }
+
+  .sceneMake__text_line {
+    height: 1px;
+    width: 100%;
+    border-bottom: 2px solid rgb(235, 235, 235);
+  }
+  
+  .sceneMake__text_block {
+    all: unset;
+    font-size: 1em;
+    font-weight: bold;
+    height: 80%;
+    padding: 5px;
+    border-radius: 2px;
+    background-color: rgba(182, 182, 182, 0.815);
+  }
+  
+
+
+  /* !  scenemake  ------------------------start*/
+  .sceneMake__sceneBox_container {
+    padding: 5px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sceneMake__sceneBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.sceneMake__EmptySceneBox {
+    margin-top: 10px;
+    width: 10px;
+    height: 20px;
+    background-color: white;
+    border: 1px solid rgba(70, 70, 70, 0.26);
+}
+
+.sceneMake__SceneBox_color {
+    margin-top: 10px;
+    width: 10px;
+    height: 20px;
+    background-color: rgb(12, 12, 12);
+    border: 1px solid rgba(151, 151, 151, 0.404);
+    cursor: pointer;
+}
+
+.sceneMake__CurrentSceneBox {
+    margin-top: 10px;
+    width: 10px;
+    height: 20px;
+    background-color: rgb(230, 50, 50);
+    border: 1px solid rgba(70, 70, 70, 0.26);
+}
+
+.sceneMake__btn_container {
+    padding: 5px;
+    position: absolute;
+    right: 20%;
+    transform: translate(0%, 0%);
+    margin: 5px;
+}
+
+.sceneMake__btn_container > Button {
+    margin: 3px;
+}
+
+.scenemake__sideBar_container {
+    position: absolute;
+    right: 0%;
+    transform: translate(0%, 0%);
+    display: flex;
+
+}
+
+.scenemake__toggleButton_container {
+    width: 60px;
+    background-color: rgb(44, 44, 44);
+    height: 100%;
+    -ms-overflow-style: none;
+}
+
+.scenemake__toggleButton_container::-webkit-scrollbar {
+    display: none;
+}
+
+.scenemake__toggleBar {
+    height: 100%;
+    width: 150px;
+    z-index: 102;
+    overflow: auto;
+    -ms-overflow-style: none;
+}
+
+.scenemake__toggleBar::-webkit-scrollbar {
+    display: none;
+}
+  
+  /* !  scenemake  ------------------------end*/
+
+  /* !  gameplay  ------------------------start*/
+.gamePlay__btn_container {
+    padding: 5px;
+    position: absolute;
+    left: 0%;
+    transform: translate(0%, 0%);
+}
+
+.gamePlay__complaint_btn {
+    margin: 2px;
+}
+
+.gamePlay__historyMap_btn {
+    margin: 2px;
+}
+
+
+  /* !  gameplay  ------------------------end*/
+
+
+  /* ? scenemake & gameplay 공유 ----------start*/
+
+.backgroundImg_container {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 10%);
+    transform-origin: center center;
+    overflow: hidden;
+    /* background-color: black; */
+  }
+
+  .backgroundImg {
+    z-index: 97;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    margin:0;
+    border-radius: 0;
+  }
+
+
+  /* ? scenemake & gameplay 공유 ----------end*/
+

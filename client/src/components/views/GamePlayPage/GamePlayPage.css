@@ -1,54 +1,21 @@
 html,
 body {
-  height: 90%;
+  /* height: 90%; */
   margin: 0;
-  /* overflow: hidden; */
-  /* background-color: black; */
 }
 
 .productscreen {
-  /* height: 100%; */
-  /* width: 100%; */
-  /* position: absolute; */
-  /* top:0; */
-  /* bottom: 0; */
-  /* max-width: 80vw; */
-  /* max-width: 90vh; */
-  /* max-height: 100vh; */
-  /* overflow: hidden; */
-  /* display: flex; */
-  /* object-fit:inherit; */
-  /* align-content: center; */
-  /* justify-content: center; */
+  background-color: blanchedalmond;
 }
 
 .background_img_container {
-  /* position: absolute;
-  max-height: 80vh;
-  width: 100vw;
-
-  display: flex;
-  overflow: hidden; */
-
-  width: 1000px;
-  height: 65vh;
-  max-width: 80vw;
-  max-height: 600px;
-
-  /* padding: 50px; */
   position: absolute;
   left: 50%;
-  /* bottom: 100%; */
-  transform: translate(-50%, 20%);
+  transform: translate(-50%, 10%);
   transform-origin: center center;
   overflow: hidden;
 
-  /* align-content: center; */
-
-  /* transform: translate(-50%, -50%); */
-  /* transform-origin: center center; */
-
-  background-color: lawngreen;
+  background-color: black;
 }
 
 .background_img {
@@ -61,11 +28,7 @@ body {
 }
 
 .HistoryMap_btn{
-  z-index: 98;
   position: absolute;
-
-  top: 2%;
-  left: 1%;
-  /* height: 40%; */
-  /* width: 67%;  */
+  left: 50%;
+  transform: translate(-50%, 10%);
 }

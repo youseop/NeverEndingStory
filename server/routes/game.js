@@ -29,14 +29,6 @@ let storage = multer.diskStorage({
 // uploadFilter 정의
 const uploadFilter = (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
-
-    // // 여기서 URL에 따라 이름 바꾸고 이미지나 음원은 압축 및 사이즈처리
-    // if (ext !== '.jpg' && ext !== '.png') {
-    //     console.log("not jpg or png",file)
-    //     file.originalname = "바꿔봤찌롱"+ext
-    //     return cb(new Error('Only jpg and png is allowed'), false)
-    // }
-    // console.log("NOT ERROR")
     cb(null, true);
 };
 
@@ -50,7 +42,6 @@ const upload = multer({
 //=================================
 
 router.post("/uploadfile", (req, res) => {
-
     //서버에 저장
     upload(req, res, (err) => {
         if (err) {
@@ -118,6 +109,14 @@ router.post("/getgamedetail", (req, res) => {
     Game.findOne({ _id: req.body.gameId }).exec((err, gameDetail) => {
         if (err) return res.status(400).send(err);
         return res.status(200).json({ success: true, gameDetail });
+    });
+});
+
+router.post("/ratio", (req, res) => {
+    Game.findOne({ _id: req.body.gameId }).exec((err, gameDetail) => {
+        if (err) return res.status(400).send(err);
+        const ratio = gameDetail.ratio;
+        return res.status(200).json({ success: true, ratio });
     });
 });
 

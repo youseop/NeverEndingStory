@@ -4,15 +4,17 @@ import CharacterSideBar from "./SideBar/CharacterSideBar";
 import BgmSideBar from "./SideBar/BgmSideBar";
 import SoundSideBar from "./SideBar/SoundSideBar";
 import { useSelector } from "react-redux";
-import { Input, message, Button } from "antd";
+import { Input, message, Button, Switch } from "antd";
 import Axios from "axios";
 import { useLocation } from "react-router";
 import SceneMakeModal from './SceneMakeModal';
 import UploadModal from './UploadModal';
-
-import "./SceneMakePage.css";
-
-const { TextArea } = Input;
+import useKey from "../../../functions/useKey";
+import CharacterBlock from "../../GamePlayPage/CharacterBlock";
+import { useDispatch } from "react-redux";
+import LoadingPage from "../../GamePlayPage/LoadingPage";
+import { gameLoadingPage } from "../../../../_actions/gamePlay_actions";
+import "./GamePlusScene.css";
 
 
 var bgm_audio = new Audio();
@@ -26,12 +28,16 @@ function SceneMakePage(props) {
     const [uploadModalState, setUploadModalState] = useState(false);
 
     //modal end
+    const dispatch = useDispatch();
     const location = useLocation();
-    const sceneInfo = location.state;
 
+    const sceneInfo = location.state;
     const gameId = props.match.params.gameId;
     const userId = useSelector((state) => state.user);
-    const [SidBar_script, setSidBar_script] = useState(false);
+
+    const [IsLoading, setIsLoading] = useState(false);
+    const [SidBar_script, setSidBar_script] = useState(true);
+
     const [BackgroundImg, setBackgroundImg] = useState("");
     const [CharacterList, setCharacterList] = useState([]);
     const [Script, setScript] = useState("");
@@ -44,6 +50,43 @@ function SceneMakePage(props) {
         name: "",
         music: "",
     });
+
+    useEffect(() => {
+        if (sceneInfo) {
+            const variable = { sceneId: location.state.prev_scene_id };
+            Axios.post("/api/scene/scenedetail", variable)
+                .then((response) => {
+                    if (response.data.success) {
+                        const lastCut = response.data.lastCut;
+                        setBackgroundImg(lastCut.background);
+                        setCharacterList(lastCut.characterList);
+                        // setScript(lastCut.script);
+                        setName(lastCut.name);
+
+                        dispatch(gameLoadingPage(0));
+                        dispatch(gameLoadingPage(1));
+                    } else {
+                        message.error("이전 Scene의 정보를 불러오는데 실패했습니다.")
+                    }
+                })
+        }
+        setIsLoading(true)
+    }, [])
+
+    useEffect(() => {
+        const variable = { gameId: gameId };
+        Axios.post("/api/game/ratio", variable).then((response) => {
+            if (response.data.success) {
+                if (response.data.ratio) {
+                    setRatio(parseFloat(response.data.ratio));
+                } else {
+                    message.error("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
+                }
+            } else {
+                message.error("Scene 정보가 없습니다.");
+            }
+        });
+    }, [])
 
     const [CutNumber, setCutNumber] = useState(0);
     const [Hover, setHover] = useState(false);
@@ -73,10 +116,7 @@ function SceneMakePage(props) {
     const soundSidebarElement = useRef();
 
     const makeVisible = (element) => {
-        backgroundSidebarElement.current.style.display = 'none'
-        characterSidebarElement.current.style.display = 'none'
-        bgmSidebarElement.current.style.display = 'none'
-        soundSidebarElement.current.style.display = 'none'
+        makeInvisible()
         element.current.style.display = 'block'
     }
 
@@ -138,6 +178,12 @@ function SceneMakePage(props) {
         else sound_audio.pause();
     };
 
+    function handleEnter(event) {
+        onSubmit_nextCut(event);
+    }
+
+    useKey("Enter", handleEnter);
+
     const saveCut = () => {
         const Cut = {
             background: BackgroundImg,
@@ -159,7 +205,7 @@ function SceneMakePage(props) {
         setCutList((oldArray) => [
             ...oldArray.slice(0, CutNumber),
             Cut,
-            ...oldArray.slice(CutNumber + 1, 30),
+            ...oldArray.slice(CutNumber + 1, 31),
         ]);
         if (CutList.length === CutNumber) {
             setEmptyCutList((oldArray) => [
@@ -234,7 +280,11 @@ function SceneMakePage(props) {
 
     const onSubmit_saveScene = (event) => {
         // event.preventDefault();
-
+        console.log(CutList.length);
+        if (CutList.length < 2) {
+            message.error("최소 3개의 컷을 생성해주세요.");
+            return;
+        }
         const submitCut = {
             background: BackgroundImg,
             characterList: CharacterList,
@@ -269,9 +319,15 @@ function SceneMakePage(props) {
                             message.success("게임 제작이 완료되었습니다.", 1.5)
                         );
                     setTimeout(() => {
-                        props.history.push(
-                            `/gameplay/${gameId}/${response.data.scene._id}`
-                        );
+                        if (sceneInfo) {
+                            props.history.push(
+                                `/gameplay/${gameId}/${response.data.scene._id}`
+                            );
+                        } else {
+                            props.history.push(
+                                `/game/${gameId}`
+                            );
+                        }
                     }, 1000);
                 } else {
                     message.error("DB에 문제가 있습니다.");
@@ -289,13 +345,13 @@ function SceneMakePage(props) {
     const display_SceneBox = CutList.map((Cut, index) => {
         if (CutNumber === index) {
             return (
-                (<div className="scene__CurrentSceneBox" key={`${index}`}></div>)
+                (<div className="sceneMake__CurrentSceneBox" key={`${index}`}></div>)
             );
         } else {
             if (Hover) {
                 return (
                     <div
-                        className="scene__SceneBox"
+                        className="sceneMake__SceneBox_color"
                         key={`${index}`}
                         onMouseOver={() => onClick_GotoCut(index)}//?
                     ></div>
@@ -303,7 +359,7 @@ function SceneMakePage(props) {
             } else {
                 return (
                     <div
-                        className="scene__SceneBox"
+                        className="sceneMake__SceneBox_color"
                         key={`${index}`}
                         onClick={() => onClick_GotoCut(index)}
                     ></div>
@@ -315,29 +371,13 @@ function SceneMakePage(props) {
     const display_EmptyBox = EmptyCutList.map((EmptyCut, index) => {
         if (CutNumber - CutList.length === index) {
             return (
-                <div className="scene__CurrentSceneBox" key={`${index}`}></div>
+                <div className="sceneMake__CurrentSceneBox" key={`${index}`}></div>
             );
         } else {
             return (
-                <div className="scene__EmptySceneBox" key={`${index}`}></div>
+                <div className="sceneMake__EmptySceneBox" key={`${index}`}></div>
             );
         }
-    });
-
-    const display_Character = CharacterList.map((characterUrl, index) => {
-        return (
-            <div
-                className="scene__characterBox"
-                key={`${index}`}
-                onClick={() => onRemove_character(index)}
-            >
-                <img
-                    className="scene__character"
-                    src={`${characterUrl}`}
-                    alt="character"
-                />
-            </div>
-        );
     });
 
     const [gameDetail, setGameDetail] = useState([]);
@@ -399,106 +439,153 @@ function SceneMakePage(props) {
         }
     }, [gameDetail])
 
+
+    const padding = 0.1;
+    const minSize = 300;
+
+    const [ratio, setRatio] = useState(0.5);
+    const [windowWidth, setwindowWidth] = useState(window.innerWidth);
+    const [windowHeight, setwindowHeight] = useState(window.innerHeight);
+
+    useEffect(() => {
+        function handleResize() {
+            setwindowWidth(window.innerWidth);
+            setwindowHeight(window.innerHeight);
+        }
+        window.addEventListener('resize', handleResize)
+    });
+
+    let newScreenSize;
+    if (windowWidth * ratio > windowHeight) {
+        newScreenSize = {
+            width: `${windowHeight * (1 - 2 * padding) / ratio}px`,
+            height: `${windowHeight * (1 - 2 * padding)}px`,
+            minWidth: `${minSize / ratio}px`,
+            minHeight: `${minSize}px`
+        }
+    } else {
+        newScreenSize = {
+            width: `${windowWidth * (1 - 2 * padding)}px`,
+            height: `${windowWidth * (1 - 2 * padding) * ratio}px`,
+            minWidth: `${minSize}px`,
+            minHeight: `${minSize * ratio}px`
+        }
+    }
+
     return (
-        <div className="scenemake__container">
-            {/* //?main Screen */}
-            <div className="scenemake__main">
-                <div className="scene__SceneBox_container">
-                    <div onClick={onClick_isHover} style={{ cursor: "pointer" }}>
-                        mode : {Hover ? "Hover" : " Click "}
-                    </div>
-                    {display_SceneBox}
-                    {display_EmptyBox}
-                    <div style={{ width: "20px" }}>{CutNumber}</div>
-                    {/* {CutList.length} */}
-                </div>
-                {BgmFile ? (
-                    <div
-                        className="scene__SoundBox_container"
-                        onClick={onClick_bgm_player}
-                    >
-                        {BgmFile.name}
-                    </div>
-                ) : (
-                    <div></div>
-                )}
-                {SoundFile ? (
-                    <div
-                        className="scene__SoundBox_container"
-                        onClick={onClick_sound_player}
-                    >
-                        {SoundFile.name}
-                    </div>
-                ) : (
-                    <div></div>
-                )}
-                <div className="scenemake__main_img">
+        <div>
+            {/* <LoadingPage />   */}
+            <div>
+                <div
+                    className="backgroundImg_container"
+                    style={newScreenSize}
+                >
                     {BackgroundImg ? (
                         <img
-                            className="scenemake__background"
+                            className="backgroundImg"
                             src={`${BackgroundImg}`}
                             alt="img"
                         />
                     ) : (
                         <div></div>
                     )}
-                    <div className="scenemake__character_container">
-                        {display_Character}
-                    </div>
+                    {BgmFile ? (
+                        <div
+                            className="scene__SoundBox_container"
+                            onClick={onClick_bgm_player}
+                        >
+                            {BgmFile.name}
+                        </div>
+                    ) : (
+                        <div></div>
+                    )}
+                    {SoundFile ? (
+                        <div
+                            className="scene__SoundBox_container"
+                            onClick={onClick_sound_player}
+                        >
+                            {SoundFile.name}
+                        </div>
+                    ) : (
+                        <div></div>
+                    )}
+                    <CharacterBlock
+                        characterList={CharacterList}
+                        onRemove_character={onRemove_character}
+                    />
                     {SidBar_script && (
-                        <div className="scenemake__main_script">
-                            <Input onChange={onNameChange} value={Name} />
-                            <TextArea
+                        <div className="sceneMake__text_container">
+                            <input onChange={onNameChange} value={Name} className="sceneMake__name_block" />
+                            <hr className="sceneMake__text_line"></hr>
+                            <textarea
                                 onChange={onScriptChange}
                                 value={Script}
+                                className="sceneMake__text_block"
                             />
                         </div>
                     )}
                 </div>
-                <div className="scenemake__btn_container">
-                    {CutNumber < 29 && (
-                        <Button type="primary" onClick={onSubmit_nextCut}>
-                            Next(Cut)
-                        </Button>
-                    )}
-                    {SceneOption == 0 ?
-                        <Button type="primary" onClick={onSubmit_first}>
-                            Submit First
-                        </Button>
-                        : <Button type="primary" onClick={onSubmit_saveScene}>
-                            Submit
-                        </Button>
-                    }
-
-                    <UploadModal
-                        gameId={gameId}
-                        visible={uploadModalState}
-                        setUploadModalState={setUploadModalState}
-                        onSubmit_saveScene={onSubmit_saveScene}
+            </div>
+            <div className="sceneMake__sceneBox_container">
+                <div className="sceneMake__sceneBox">
+                    {display_SceneBox}
+                    {display_EmptyBox}
+                </div>
+                <div>
+                    <Switch
+                        checked={Hover}
+                        checkedChildren={CutNumber}
+                        unCheckedChildren={CutNumber}
+                        onChange={onClick_isHover}
+                        size="small"
+                        color="black"
                     />
-                    {/* <ModalSubmit/> */}
                 </div>
             </div>
-            {sideBar !== 0 && sideBar}
-            <div className="scenemake__toggleButton_container">
-                <div
-                    className="scenemake__btn_sidebar"
-                    onClick={onClick_character}
-                >char</div>
-                <div
-                    className="scenemake__btn_sidebar"
-                    onClick={onClick_background}
-                >back</div>
-                <div className="scenemake__btn_sidebar" onClick={onClick_bgm}>
-                    bgm
+            <div className="sceneMake__btn_container">
+                {CutNumber < 29 && (
+                    <Button type="primary" onClick={onSubmit_nextCut}>
+                        Next(Cut)
+                    </Button>
+                )}
+                {SceneOption == 0 ?
+                    <Button type="primary" onClick={onSubmit_first}>
+                        Submit First
+                        </Button>
+                    : <Button type="primary" onClick={onSubmit_saveScene}>
+                        Submit
+                        </Button>
+                }
+                <UploadModal
+                    gameId={gameId}
+                    visible={uploadModalState}
+                    setUploadModalState={setUploadModalState}
+                    onSubmit_saveScene={onSubmit_saveScene}
+                />
+            </div>
+            <div className="scenemake__sideBar_container">
+                {sideBar !== 0 && sideBar}
+
+                <div className="scenemake__toggleButton_container">
+                    <div
+                        className="scenemake__btn_sidebar"
+                        onClick={onClick_background}
+                    >back</div>
+                    <div
+                        className="scenemake__btn_sidebar"
+                        onClick={onClick_character}
+                    >char</div>
+                    <div
+                        className="scenemake__btn_sidebar"
+                        onClick={onClick_script}
+                    >script</div>
+                    <div className="scenemake__btn_sidebar" onClick={onClick_bgm}>
+                        bgm
+                    </div>
+                    <div className="scenemake__btn_sidebar" onClick={onClick_sound}>
+                        sound
+                    </div>
                 </div>
-                <div className="scenemake__btn_sidebar" onClick={onClick_sound}>
-                    sound
-                </div>
-                <div
-                    className="scenemake__btn_sidebar"
-                    onClick={onClick_script}
-                >script</div>
             </div>
             {
                 makeModalState !== 0 && <SceneMakeModal
@@ -509,7 +596,7 @@ function SceneMakePage(props) {
                     setReload={setReload}
                 />
             }
-        </div >
+        </div>
     );
 }
 

@@ -45,6 +45,7 @@ function GameBuildUpPage(props) {
                             <img
                                 style={{ width: "50px", height: "50px" }}
                                 src={`${cur_game.character[index].image}`}
+                                alt="img not found"
                             />
                         </div>
                         <br />
@@ -62,6 +63,7 @@ function GameBuildUpPage(props) {
                             <img
                                 style={{ width: "50px", height: "50px" }}
                                 src={`${cur_game.background[index].image}`}
+                                alt="img not found"
                             />
                         </div>
                         <br />
@@ -79,7 +81,7 @@ function GameBuildUpPage(props) {
                             <img
                                 style={{ width: "20px", height: "20px" }}
                                 src="http://localhost:5000/uploads\music_icon.jpg"
-                            // src="http://localhost:5000/music_icon.jpg"
+                                alt="img not found"
                             />
                             {cur_game.bgm[index].name}
                         </div>
@@ -98,6 +100,7 @@ function GameBuildUpPage(props) {
                             <img
                                 style={{ width: "20px", height: "20px" }}
                                 src="http://localhost:5000/uploads\music_icon.jpg"
+                                alt="img not found"
                             />
                             {cur_game.sound[index].name}
                         </div>
@@ -111,7 +114,7 @@ function GameBuildUpPage(props) {
 
     const onDrop = (files) => {
         //check is_file ok
-        for (var i = 0; i < files.length; i++) {
+        for (let i = 0; i < files.length; i++) {
             if (!files[i]) {
                 message.error("10MB 이하의 파일을 업로드해주세요.");
                 return;
@@ -127,7 +130,7 @@ function GameBuildUpPage(props) {
             if (
                 //image check
                 (fileState === 1 || fileState === 2) &&
-                extension.image.indexOf(cur_extension) === -1
+                extension.image.indexOf(cur_extension) == -1
             ) {
                 message.error(
                     files[i].name + "은 지원하지 않는 이미지 확장자 파일입니다."
@@ -138,7 +141,7 @@ function GameBuildUpPage(props) {
             if (
                 //sound check
                 (fileState === 3 || fileState === 4) &&
-                extension.music.indexOf(cur_extension) === -1
+                extension.music.indexOf(cur_extension) == -1
             ) {
                 message.error(
                     files[i].name + "은 지원하지 않는 음원 확장자 파일입니다."
@@ -147,7 +150,7 @@ function GameBuildUpPage(props) {
             }
         }
 
-        for (var i = 0; i < files.length; i++) {
+        for (let i = 0; i < files.length; i++) {
             let formData = new FormData();
             const config = {
                 header: { "content-type": "multipart/form-data" }, //content type을 같이 보내줘야한다!
@@ -156,9 +159,7 @@ function GameBuildUpPage(props) {
             let file_name = files[i].name;
             Axios.post("/api/game/uploadfile", formData, config).then(
                 (response) => {
-                    // console.log(response);
                     if (response.data.success) {
-                        // console.log("setFilePath");
                         setFilePath(response.data.url);
 
                         switch (fileState) {
@@ -249,11 +250,9 @@ function GameBuildUpPage(props) {
             );
         }
     };
-    // console.log(filePath);
+
     const onSubmit = (event) => {
         event.preventDefault();
-        // console.log(props.match.params);
-        // console.log(gameId);
         props.history.push(`/scene/make/${gameId}`);
     };
 

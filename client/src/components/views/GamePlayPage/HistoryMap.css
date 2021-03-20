@@ -25,6 +25,8 @@
   list-style: none;
   /* float:right; */
   white-space: nowrap;
+  transition-duration: 0.5s;
+
   /* margin-left: 3px; */
 }
 
