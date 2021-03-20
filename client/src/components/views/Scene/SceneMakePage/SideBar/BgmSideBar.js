@@ -25,7 +25,7 @@ function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, setMakeModalState }) {
 
     return (
         <div className="sidebar__container">
-            <Button onClick={setModal} type="primary">
+            <Button onClick={setModal} type="primary" style={{ background: "black" }}>
                 추가
             </Button>
             <div>{renderBgm}</div>

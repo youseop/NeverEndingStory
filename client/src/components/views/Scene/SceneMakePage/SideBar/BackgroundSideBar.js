@@ -17,7 +17,7 @@ function BackgroundSideBar({ gameDetail, setBackgroundImg, setMakeModalState }) 
 
   return (
     <div className="sidebar__container">
-      <Button onClick={setModal} type="primary">
+      <Button onClick={setModal} type="primary" style={{ background: "black" }}>
         추가
       </Button>
       <div>{renderBackground}</div>
