@@ -1,15 +1,6 @@
-import { message } from 'antd';
-import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import './SingleComment.css';
+import React from 'react'
 
-//Todo : 삭제(자식이 있다면 모두 지우자 deleteMany())
-//Todo : 깊이 2개까지만 하자. 
-//Todo : 아이콘 글자크기 차별화시키자 자식&부모에서
-//Todo : 댓글이 밀린다,,,!
-
-function SingleComment({gameId, comment, updateToggle_comment}) {
+function SingleReply() {
   const user = useSelector((state) => state.user);
   const isAuth = useSelector((state) => {
     if (state.user.userData){
@@ -105,19 +96,6 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
     })
   }
 
-  const mapReply = Replys.map((reply, index) => {
-    return (
-      <div key={index} style={{marginLeft:'10px'}}>
-        {reply &&
-          <SingleComment 
-            updateToggle_comment={updateToggle}
-            gameId={gameId} 
-            comment={reply}/>
-        }
-      </div>
-    )
-  })
-
   return (
     <div className="container_box">
       <div className="comment_container">
@@ -128,36 +106,14 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
           <div className="comment_info">
             <div className="comment_like">좋아요 : 0 {}</div>
             <div className="comment_dislike">싫어요 : 0 {}</div>
-            { Replys.length ? 
-            <div onClick={onClick_displayReply} className="comment_displayReplyToggle">댓글 {Replys.length}개 보기</div>
-            :
-            <div></div>
-            }
-            <div onClick={onClick_writeReply} className="comment_writeReplyToggle">댓글 작성</div>
             { comment.writer._id === user_id&&
             <div onClick={onClick_removeComment} className="comment_delete">댓글 삭제</div>
             }
           </div>
-          {(isAuth & writeReply) ?
-          <form className="form">
-            <textarea
-              className="textarea"
-              onChange={onChange_comment}
-              value={commentContent}
-              placeholder="코멘트를 작성해 주세요."
-              />
-            <button className="btn" onClick={onSubmit_response}>댓글 작성</button>
-          </form> 
-          :
-          <div></div>
-          }
         </div>
-      </div>
-      <div ref={reference} className="reply_container">
-        {mapReply}
       </div>
     </div>
   )
 }
 
-export default SingleComment
+export default SingleReply

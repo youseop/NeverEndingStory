@@ -57,7 +57,6 @@ function GameUploadPage(props) {
 
     const onRatioChange = (event) => {
         setRatio(state => !state);
-        console.log(event.currentTarget.value);
     }
 
     const onDrop = (files) => {

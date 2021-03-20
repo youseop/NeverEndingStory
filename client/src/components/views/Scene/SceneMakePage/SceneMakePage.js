@@ -14,6 +14,7 @@ import { TextBlock } from "../../GamePlayPage/TextBlock";
 import { useDispatch } from "react-redux";
 import LoadingPage from "../../GamePlayPage/LoadingPage";
 import { gameLoadingPage } from "../../../../_actions/gamePlay_actions";
+import SceneBox from "./SceneBox/SceneBox";
 
 const {TextArea} = Input;
 
@@ -228,19 +229,6 @@ function SceneMakePage(props) {
         }
     };
 
-    const onClick_GotoCut = (index) => {
-        if (CutNumber > 29) {
-            displayCut(index);
-            setCutNumber(index);
-            return;
-        }
-        if (CutNumber !== index) {
-            saveCut();
-            displayCut(index);
-            setCutNumber(index);
-        }
-    };
-
     const onRemove_character = (index) => {
         setCharacterList((oldArray) => [
             ...oldArray.slice(0, index),
@@ -326,48 +314,6 @@ function SceneMakePage(props) {
             message.error("제출 취소요");
         }
     };
-    
-    const onClick_isHover = () => {
-        setHover(!Hover);
-    }
-
-    const display_SceneBox = CutList.map((Cut, index) => {
-        if (CutNumber === index) {
-            return (
-                (<div className="sceneMake__CurrentSceneBox" key={`${index}`}></div>)
-            );
-        } else {
-            if (Hover){ 
-                return (
-                    <div
-                        className="sceneMake__SceneBox_color"
-                        key={`${index}`}
-                        onMouseOver={() => onClick_GotoCut(index)}//?
-                    ></div>
-                )
-            } else {
-                return (
-                    <div
-                        className="sceneMake__SceneBox_color"
-                        key={`${index}`}
-                        onClick={() => onClick_GotoCut(index)}
-                    ></div>
-                )
-            }
-        }
-    });
-
-    const display_EmptyBox = EmptyCutList.map((EmptyCut, index) => {
-        if (CutNumber - CutList.length === index) {
-            return (
-                <div className="sceneMake__CurrentSceneBox" key={`${index}`}></div>
-            );
-        } else {
-            return (
-                <div className="sceneMake__EmptySceneBox" key={`${index}`}></div>
-            );
-        }
-    });
 
     const padding = 0.1;
     const minSize = 300;
@@ -400,6 +346,7 @@ function SceneMakePage(props) {
         minHeight: `${minSize * ratio}px`
         }
     }
+    
     return (
         <div>
             {/* <LoadingPage />   */}
@@ -418,8 +365,8 @@ function SceneMakePage(props) {
                         <div></div>
                     )}
                     <CharacterBlock
-                    characterList={CharacterList}
-                    onRemove_character={onRemove_character}
+                        characterList={CharacterList}
+                        onRemove_character={onRemove_character}
                     />
                     {SidBar_script && (
                             <div className="sceneMake__text_container">
@@ -434,22 +381,16 @@ function SceneMakePage(props) {
                         )}
                 </div>
             </div>
-            <div className="sceneMake__sceneBox_container">
-                <div className="sceneMake__sceneBox">
-                    {display_SceneBox}
-                    {display_EmptyBox}
-                </div>
-                <div>
-                    <Switch
-                        checked={Hover}
-                        checkedChildren={CutNumber}
-                        unCheckedChildren={CutNumber}
-                        onChange={onClick_isHover}
-                        size="small"
-                        color="black"
-                    />
-                </div>
-            </div>
+            <SceneBox
+                CutList={CutList}
+                CutNumber={CutNumber}
+                displayCut={displayCut} 
+                setCutNumber={setCutNumber}
+                Hover={Hover}
+                setHover={setHover} 
+                EmptyCutList={EmptyCutList}
+                saveCut={saveCut}
+            />
             <div className="sceneMake__btn_container">
                 {CutNumber < 29 && (
                     <Button type="primary" onClick={onSubmit_nextCut}>

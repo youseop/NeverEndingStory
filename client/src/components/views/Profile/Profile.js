@@ -4,7 +4,6 @@ import './Profile.css';
 
 function Profile() {
   const userData = useSelector((state) => state.user.userData);
-  console.log(userData)
   if (userData) {
     return (
       <div>
