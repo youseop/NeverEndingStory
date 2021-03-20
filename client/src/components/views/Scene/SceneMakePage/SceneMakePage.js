@@ -105,7 +105,6 @@ function SceneMakePage(props) {
     );
 
     const onScriptChange = (event) => {
-        console.log(123456, SceneOption)
         setScript(event.currentTarget.value);
     };
 
@@ -263,6 +262,22 @@ function SceneMakePage(props) {
         }
         setCutNumber((oldNumber) => oldNumber + 1);
     };
+
+    const onRemove_cut = () => {
+        if (CutList.length-1 <= CutNumber){
+            message.info('마지막 컷 입니다.');
+            return;
+        }
+        message.success(`${CutNumber+1}번째 컷이 삭제되었습니다.`);
+        setCutList((oldArray) => [
+            ...oldArray.slice(0, CutNumber),
+            ...oldArray.slice(CutNumber + 1, 31),
+        ]);
+        setEmptyCutList((oldArray) => [
+            0,...oldArray
+        ]);
+        displayCut(CutNumber + 1);
+    }
 
     const onSubmit_first = () => {
         setUploadModalState(true)
@@ -484,6 +499,9 @@ function SceneMakePage(props) {
                 saveCut={saveCut}
             />
             <div className="sceneMake__btn_container">
+                <Button type="primary" onClick={onRemove_cut}>
+                    Remove Cut
+                </Button>
                 {CutNumber < 29 && (
                     <Button type="primary" onClick={onSubmit_nextCut}>
                         Next(Cut)

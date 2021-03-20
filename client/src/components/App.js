@@ -34,8 +34,8 @@ function App() {
           <Route exact path="/profile" component={Auth(Profile, true)} />
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           {/* <Route path="/game/upload/:gameId" component={Auth(GameBuildUpPage, true)} /> */}
-          <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
-          <Route path="/gameplay/:gameId/:sceneId" component={Auth(GamePlayPage, null)} />
+          <Route path="/game/:gameId" component={Auth(GameDetailPage, true)} />
+          <Route path="/gameplay/:gameId/:sceneId" component={Auth(GamePlayPage, true)} />
           <Route exact path="/scene/make/:gameId" component={Auth(SceneMakePage, true)} />
         </Switch>
       </div>

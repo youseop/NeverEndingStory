@@ -69,7 +69,6 @@ function SceneBox(props) {
                   unCheckedChildren={CutNumber}
                   onChange={() => {setHover((state) => !state)}}
                   size="small"
-                  color="black"
               />
           </div>
       </div>

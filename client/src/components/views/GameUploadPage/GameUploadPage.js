@@ -109,6 +109,7 @@ function GameUploadPage(props) {
             bgm: [],
             sound: [],
         };
+        
         Axios.post("/api/game/uploadgame", game_variables).then((response) => {
             if (response.data.success) {
                 message.success(
