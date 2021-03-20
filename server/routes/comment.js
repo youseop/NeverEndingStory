@@ -4,7 +4,6 @@ const router = express.Router();
 const { Comment } = require("../models/Comment");
 
 router.post('/saveComment', async (req, res) => {
-  console.log(req.body.responseTo)
   const comment = new Comment({
     content : req.body.content,
     writer : req.body.writer,

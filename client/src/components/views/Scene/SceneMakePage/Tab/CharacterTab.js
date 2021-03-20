@@ -37,7 +37,7 @@ function CharacterTab({ game, setFileQueue, setTypeQueue, setCharBlobList, charB
     useEffect(() => {
         if (charBlobList)
             setBlobCards(charBlobList.map((element, index) => {
-                return <div className="largeBox">
+                return <div className="largeBox" key={index}>
                     <img className="smallBox"
                         // style={index == 0 ? { position: "flex" } : { position: "flex" }}
                         src={element}

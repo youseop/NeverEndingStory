@@ -244,7 +244,6 @@ function SceneMakePage(props) {
 
     const onSubmit_saveScene = (event) => {
         event.preventDefault();
-        console.log(CutList.length);
         if (CutList.length < 2) {
             message.error("최소 3개의 컷을 생성해주세요.");
             return;

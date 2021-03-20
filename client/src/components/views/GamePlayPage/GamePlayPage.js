@@ -124,7 +124,6 @@ const ProductScreen = (props) => {
     function handleResize() {
       setwindowWidth(window.innerWidth);
       setwindowHeight(window.innerHeight);
-    //   console.log(windowWidth,windowHeight,'/',window.innerWidth,window.innerHeight)
     }
     window.addEventListener('resize', handleResize)
   });

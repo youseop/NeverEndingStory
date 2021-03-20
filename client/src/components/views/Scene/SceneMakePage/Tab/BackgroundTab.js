@@ -37,7 +37,7 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
     useEffect(() => {
         if (backBlobList)
             setBlobCards(backBlobList.map((element, index) => {
-                return <div className="largeBox1">
+                return <div className="largeBox1" key={index}>
                     <img className="smallBox12"
                         // style={index == 0 ? { position: "flex" } : { position: "flex" }}
                         src={element}
