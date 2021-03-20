@@ -4,7 +4,7 @@ import CharacterSideBar from "./SideBar/CharacterSideBar";
 import BgmSideBar from "./SideBar/BgmSideBar";
 import SoundSideBar from "./SideBar/SoundSideBar";
 import { useSelector } from "react-redux";
-import { Input, message, Button, Switch } from "antd";
+import { message, Button } from "antd";
 import Axios from "axios";
 import { useLocation } from "react-router";
 import SceneMakeModal from './SceneMakeModal';

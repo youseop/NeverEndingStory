@@ -126,7 +126,7 @@ const ProductScreen = (props) => {
       setwindowHeight(window.innerHeight);
     }
     window.addEventListener('resize', handleResize)
-  });
+  },[window.innerWidth, window.innerHeight]);
   
   let newScreenSize;
   if ( windowWidth * ratio > windowHeight  ) {

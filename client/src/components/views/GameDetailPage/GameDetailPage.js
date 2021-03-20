@@ -22,6 +22,7 @@ function GameDetailPage(props) {
             }
         });
     }, []);
+
     useEffect(() => {
     Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
             if (response.data.success) {
@@ -30,7 +31,7 @@ function GameDetailPage(props) {
                 message.error("게임 정보를 로딩하는데 실패했습니다.");
             }
         });
-}, []);
+    }, []);
 
     return (
         <div className="detailPage__container">
