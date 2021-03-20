@@ -10,7 +10,7 @@ import Axios from "axios";
 import { useLocation } from "react-router";
 import useKey from "../../../functions/useKey";
 
-const {TextArea} = Input;
+const { TextArea } = Input;
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -22,7 +22,7 @@ function SceneMakePage(props) {
     const userId = useSelector((state) => state.user);
 
     const [IsLoading, setIsLoading] = useState(false);
-    
+
     const [SidBar_script, setSidBar_script] = useState(true);
 
     const [BackgroundImg, setBackgroundImg] = useState("");
@@ -39,23 +39,23 @@ function SceneMakePage(props) {
     });
 
     useEffect(() => {
-        if (sceneInfo){
-            const variable = { sceneId : location.state.prev_scene_id};
+        if (sceneInfo) {
+            const variable = { sceneId: location.state.prev_scene_id };
             Axios.post("/api/scene/scenedetail", variable)
-            .then((response) => {
-                if (response.data.success) {
-                    const lastCut = response.data.lastCut;
-                    setBackgroundImg(lastCut.background);
-                    setCharacterList(lastCut.characterList);
-                    // setScript(lastCut.script);
-                    setName(lastCut.name);
-                } else {
-                    message.error("이전 Scene의 정보를 불러오는데 실패했습니다.")
-                }
-            })
+                .then((response) => {
+                    if (response.data.success) {
+                        const lastCut = response.data.lastCut;
+                        setBackgroundImg(lastCut.background);
+                        setCharacterList(lastCut.characterList);
+                        // setScript(lastCut.script);
+                        setName(lastCut.name);
+                    } else {
+                        message.error("이전 Scene의 정보를 불러오는데 실패했습니다.")
+                    }
+                })
         }
         setIsLoading(true)
-    },[])
+    }, [])
 
     const [CutNumber, setCutNumber] = useState(0);
     const [Hover, setHover] = useState(false);
@@ -145,11 +145,11 @@ function SceneMakePage(props) {
         if (sound_audio.paused) sound_audio.play();
         else sound_audio.pause();
     };
-    
+
     function handleEnter(event) {
         onSubmit_nextCut(event);
     }
-    
+
     useKey("Enter", handleEnter);
 
     const saveCut = () => {
@@ -257,7 +257,7 @@ function SceneMakePage(props) {
             bgm: BgmFile,
             sound: SoundFile,
         };
-        
+
         const submitCutList = [
             ...CutList.slice(0, CutNumber),
             submitCut,
@@ -301,7 +301,7 @@ function SceneMakePage(props) {
             message.error("제출 취소요");
         }
     };
-    
+
     const onClick_isHover = () => {
         setHover(!Hover);
     }
@@ -312,7 +312,7 @@ function SceneMakePage(props) {
                 (<div className="scene__CurrentSceneBox" key={`${index}`}></div>)
             );
         } else {
-            if (Hover){ 
+            if (Hover) {
                 return (
                     <div
                         className="scene__SceneBox"
@@ -367,7 +367,7 @@ function SceneMakePage(props) {
                 {/* //?main Screen */}
                 <div className="scenemake__main">
                     <div className="scene__SceneBox_container">
-                        
+
                         {display_SceneBox}
                         {display_EmptyBox}
                     </div>
@@ -448,21 +448,21 @@ function SceneMakePage(props) {
                             setBackgroundImg={setBackgroundImg}
                         />
                     </div>
-                    <div ref={characterSidebarElement} style={{display:'none'}}>
+                    <div ref={characterSidebarElement} style={{ display: 'none' }}>
                         <CharacterSideBar
                             gameId={gameId}
                             CharacterList={CharacterList}
                             setCharacterList={setCharacterList}
                         />
                     </div>
-                    <div ref={bgmSidebarElement} style={{display:'none'}}>
+                    <div ref={bgmSidebarElement} style={{ display: 'none' }}>
                         <BgmSideBar
                             bgm_audio={bgm_audio}
                             gameId={gameId}
                             setBgmFile={setBgmFile}
                         />
                     </div>
-                    <div ref={soundSidebarElement} style={{display:'none'}}>
+                    <div ref={soundSidebarElement} style={{ display: 'none' }}>
                         <SoundSideBar
                             sound_audio={sound_audio}
                             gameId={gameId}

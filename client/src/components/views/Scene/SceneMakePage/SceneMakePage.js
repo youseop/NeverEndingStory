@@ -14,6 +14,7 @@ import CharacterBlock from "../../GamePlayPage/CharacterBlock";
 import { useDispatch } from "react-redux";
 import LoadingPage from "../../GamePlayPage/LoadingPage";
 import { gameLoadingPage } from "../../../../_actions/gamePlay_actions";
+import { navbarControl } from "../../../../_actions/controlPage_actions";
 import "./GamePlusScene.css";
 
 
@@ -29,6 +30,7 @@ function SceneMakePage(props) {
 
     //modal end
     const dispatch = useDispatch();
+    // dispatch(navbarControl(false));
     const location = useLocation();
 
     const sceneInfo = location.state;
@@ -38,8 +40,8 @@ function SceneMakePage(props) {
     const [IsLoading, setIsLoading] = useState(false);
     const [SidBar_script, setSidBar_script] = useState(true);
 
-    const [BackgroundImg, setBackgroundImg] = useState("");
     const [CharacterList, setCharacterList] = useState([]);
+    const [BackgroundImg, setBackgroundImg] = useState("");
     const [Script, setScript] = useState("");
     const [Name, setName] = useState("");
     const [BgmFile, setBgmFile] = useState({
@@ -58,8 +60,8 @@ function SceneMakePage(props) {
                 .then((response) => {
                     if (response.data.success) {
                         const lastCut = response.data.lastCut;
-                        setBackgroundImg(lastCut.background);
                         setCharacterList(lastCut.characterList);
+                        setBackgroundImg(lastCut.background);
                         // setScript(lastCut.script);
                         setName(lastCut.name);
 
@@ -110,8 +112,8 @@ function SceneMakePage(props) {
         setName(event.currentTarget.value);
     };
 
-    const backgroundSidebarElement = useRef();
     const characterSidebarElement = useRef();
+    const backgroundSidebarElement = useRef();
     const bgmSidebarElement = useRef();
     const soundSidebarElement = useRef();
 
@@ -121,12 +123,19 @@ function SceneMakePage(props) {
     }
 
     const makeInvisible = () => {
-        backgroundSidebarElement.current.style.display = 'none'
         characterSidebarElement.current.style.display = 'none'
+        backgroundSidebarElement.current.style.display = 'none'
         bgmSidebarElement.current.style.display = 'none'
         soundSidebarElement.current.style.display = 'none'
     }
 
+    const onClick_character = () => {
+        if (characterSidebarElement.current.style.display === 'none') {
+            makeVisible(characterSidebarElement);
+        } else {
+            makeInvisible();
+        }
+    };
 
     const onClick_background = () => {
         if (backgroundSidebarElement.current.style.display === 'none') {
@@ -136,13 +145,6 @@ function SceneMakePage(props) {
         }
     };
 
-    const onClick_character = () => {
-        if (characterSidebarElement.current.style.display === 'none') {
-            makeVisible(characterSidebarElement);
-        } else {
-            makeInvisible();
-        }
-    };
 
     const onClick_bgm = () => {
         if (bgmSidebarElement.current.style.display === 'none') {
@@ -186,8 +188,8 @@ function SceneMakePage(props) {
 
     const saveCut = () => {
         const Cut = {
-            background: BackgroundImg,
             characterList: CharacterList,
+            background: BackgroundImg,
             script: Script,
             name: Name,
             bgm: BgmFile,
@@ -215,8 +217,8 @@ function SceneMakePage(props) {
     };
 
     const displayCut = (index) => {
-        setBackgroundImg(CutList[index].background);
         setCharacterList(CutList[index].characterList);
+        setBackgroundImg(CutList[index].background);
         setScript(CutList[index].script);
         setName(CutList[index].name);
         setBgmFile(CutList[index].bgm);
@@ -286,8 +288,8 @@ function SceneMakePage(props) {
             return;
         }
         const submitCut = {
-            background: BackgroundImg,
             characterList: CharacterList,
+            background: BackgroundImg,
             script: Script,
             name: Name,
             bgm: BgmFile,
@@ -569,12 +571,12 @@ function SceneMakePage(props) {
                 <div className="scenemake__toggleButton_container">
                     <div
                         className="scenemake__btn_sidebar"
-                        onClick={onClick_background}
-                    >back</div>
-                    <div
-                        className="scenemake__btn_sidebar"
                         onClick={onClick_character}
                     >char</div>
+                    <div
+                        className="scenemake__btn_sidebar"
+                        onClick={onClick_background}
+                    >back</div>
                     <div
                         className="scenemake__btn_sidebar"
                         onClick={onClick_script}
