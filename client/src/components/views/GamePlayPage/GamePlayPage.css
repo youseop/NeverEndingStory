@@ -1,3 +1,4 @@
+
 .gamePlay__container_fullscreen{
   width: 100vw;
   height: calc(100vh);
@@ -8,7 +9,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition-duration: 0.5s;
 }
 .gamePlay__mainContainer_fullscreen{
   width: 100%;
@@ -16,14 +16,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition-duration: 0.5s;
 }
 .gamePlay__container{
   width: 100vw;
   height: calc(100vh + 15%);
   position: absolute;
   top: -15%;
-  transition-duration: 0.5s;
 }
 .gamePlay__mainContainer{
   width: 100%;
@@ -31,7 +29,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition-duration: 0.5s;
 }
 
 /*toggle full screen*/
@@ -57,13 +54,13 @@
   border-radius: 3px;
   margin: 2px;
   font-size: bold;
-  transition-duration: 0.5s;
+  transition-duration: 0.2s;
   font-size: 0.9rem;
 }
 
 .gamePlay__btn:hover {
   color: rgb(63, 63, 63);
-  transition-duration: 0.5s;
+  transition-duration: 0.2s;
   cursor: pointer;
 }
 .backgroundImg_container_fullscreen{
@@ -73,14 +70,14 @@
   transform: translate(-50%, 10%);
   transform-origin: center center;
   overflow: hidden;
-  transition-duration: 0.5s;
+  transition-duration: 0.05s;
 
 }
 .backgroundImg_container {
   transform: translate(-50%, 10%);
   transform-origin: center center;
   overflow: hidden;
-  transition-duration: 0.5s;
+  transition-duration: 0.05s;
 }
 
 .backgroundImg {
