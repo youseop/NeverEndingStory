@@ -21,11 +21,11 @@
   }
   
   .text_line {
-    top:26%;
+    position: absolute;
+    top:20%;
     width: 80%;
     height: 1px;
     border-bottom: 2px solid rgb(235, 235, 235);
-    position: absolute;
   }
   
   

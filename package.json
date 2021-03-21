@@ -9,7 +9,7 @@
     },
     "scripts": {
         "start": "node server/index.js",
-        "backend": "nodemon server/index.js",
+      "backend": "nodemon server/index.js",
         "frontend": "npm run start --prefix client",
         "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\""
     },
@@ -31,7 +31,6 @@
         "react-redux": "^5.0.7",
         "saslprep": "^1.0.3",
         "socket.io": "^4.0.0",
-        "socket.io-client": "^4.0.0",
         "supports-color": "^7.1.0"
     },
     "devDependencies": {

@@ -7,7 +7,7 @@ export function loadEmptyNum(dataToSubmit){
     const request = dataToSubmit.emptyNum ? dataToSubmit.emptyNum : axios.get(`/api/game/getSceneInfo/${dataToSubmit.sceneId}`)
         .then(response => {
             const scene = response.data.scene;
-            console.log(scene);
+            // console.log(scene);
             return scene.sceneTmp.emptyNum;
         });
 

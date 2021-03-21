@@ -1,0 +1,23 @@
+.character-container{
+    margin-top: 2rem;
+    margin-left: 2rem;
+    /* background-color: aqua; */
+}
+.largeBox{
+    top: 0;
+    left: 0;
+    display: inline;
+    max-width: 20%;
+    height: 100%;
+  
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+  
+    /* background-color: rgba(0, 0, 0, 0.616); */
+}
+
+.smallBox{
+    background-color:gainsboro;
+
+}

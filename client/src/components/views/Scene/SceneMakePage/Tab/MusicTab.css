@@ -1,0 +1,35 @@
+.music-container{
+    margin-top: 2rem;
+    margin-left: 2rem;
+    /* background-color: aqua; */
+}
+.largeBox13{
+    top: 0;
+    left: 0;
+    width:200rem;
+    font-size: 2rem;
+    /* display: inline; */
+    /* max-width: 20%; */
+    /* height: 5rem; */
+    /* width:5rem; */
+    
+  
+    /* display:flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+  
+    /* background-color: rgba(0, 0, 0, 0.616); */
+}
+
+.smallBox13{
+    background-color:gainsboro;
+    width:5rem;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+}
+.smallBox23{
+    background-color:gainsboro;
+    width:5rem;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+}

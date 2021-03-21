@@ -15,10 +15,6 @@ const PrivateOptions = [
 ];
 
 const CategoryOptions = [
-    // { value: 0, label: "Film & Animation" },
-    // { value: 1, label: "Autos & Vehicles" },
-    // { value: 2, label: "Music" },
-    // { value: 3, label: "Pets & Animals" },
     { value: 0, label: "살아남기" },
     { value: 1, label: "로맨스" },
     { value: 2, label: "스토리" },
@@ -26,12 +22,19 @@ const CategoryOptions = [
     { value: 4, label: "병맛" },
 ];
 
+const RatioOptions = [
+    { value: `${9/16}`, label: "16:9"}, 
+    { value: `${16/9}`, label: "9:16(스마트폰)"}, 
+]
+
 function GameUploadPage(props) {
+    console.log("Asdfasdfasdfasdf")
     const user = useSelector((state) => state.user);
     const [GameTitle, setGameTitle] = useState("");
     const [description, setDescription] = useState("");
     const [isPrivate, setIsPrivate] = useState(0);
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState("살아남기");
+    const [ratio, setRatio] = useState(true);
 
     const [filePath, setFilePath] = useState("");
     // const [duration, setDuration] = useState("")
@@ -53,6 +56,10 @@ function GameUploadPage(props) {
         let cat_idx = event.currentTarget.value;
         setCategory(event.currentTarget[cat_idx].text);
     };
+
+    const onRatioChange = (event) => {
+        setRatio(state => !state);
+    }
 
     const onDrop = (files) => {
         if (!files[0]) {
@@ -83,6 +90,13 @@ function GameUploadPage(props) {
             alert("모든 정보를 입력해주세요.");
             return;
         }
+
+        let floatRatio;
+        if (ratio) {
+            floatRatio = 9/16;
+        } else {
+            floatRatio = 16/9;
+        }
         const game_variables = {
             creator: user.userData._id,
             title: GameTitle,
@@ -90,13 +104,14 @@ function GameUploadPage(props) {
             thumbnail: filePath,
             privacy: isPrivate,
             category: category,
+            ratio: floatRatio,
             writer: [user.userData._id],
             character: [],
             background: [],
             bgm: [],
             sound: [],
         };
-
+        
         Axios.post("/api/game/uploadgame", game_variables).then((response) => {
             if (response.data.success) {
                 message.success(
@@ -185,6 +200,19 @@ function GameUploadPage(props) {
                         </option>
                     ))}
                 </select>
+                <br />
+                <br />
+                <label><input type="radio" name="ratio" checked={ratio} onChange={onRatioChange}/>컴퓨터</label>
+                <br />
+                <label><input type="radio" name="ratio" checked={!ratio} onChange={onRatioChange}/>스마트폰</label>
+                    
+                {/* <select onChange={onRatioChange}>
+                    {RatioOptions.map((item, index) => (
+                        <option key={index} value={item.value}>
+                            {item.label}
+                        </option>
+                    ))}
+                </select> */}
                 <br />
                 <br />
                 <Button type="primary" size="large" onClick={onSubmit}>

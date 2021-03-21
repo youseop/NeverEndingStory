@@ -7,7 +7,7 @@ import { useHistory } from "react-router";
 import { socket } from "../../App";
 import axios from "axios";
 
-const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
+const InputModal = ({ scene_id, scene_depth, game_id, setClickable }) => {
   let history = useHistory();
   const user = useSelector((state) => state.user);
   const emptyNum = useSelector((state) => state.sync.emptyNum);
@@ -34,20 +34,23 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
       const data = {
         gameId: game_id,
         prevSceneId: scene_id,
+        isFirst : 0,
         sceneDepth: scene_depth + 1,
         title: values.title,
       };
-
-      const res = await axios("/api/scene/create", data);
+      
+      formRef.resetFields();
+      setVisible(false);
+      const res = await axios.post("/api/scene/create", data);
+      console.log(res);
       history.push({
-        pathname: `/scene/make/${game_id}/${res.sceneId}`,
+        pathname: `/scene/make/${game_id}/${res.data.sceneId}`,
       });
 
-      formRef.resetFields();
     });
   };
 
-  const saveFormRef = useCallback(node => {
+  const saveFormRef = useCallback((node) => {
     if (node !== null) {
       setFormRef(node);
     }
@@ -68,6 +71,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
     socket.emit("empty_num_increase", { scene_id, user_id });
     clearTimeout(increaseTimer);
     clearTimeout(decreaseTimer);
+    setClickable(false);
     return setVisible(false)
   }
 
@@ -99,6 +103,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
         emptyNum > 0 &&
           <>
             <div
+              id = "choice"
               onClick={onClickHandler}
               style={{ color: "red" }}
             >

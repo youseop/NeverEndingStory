@@ -8,7 +8,7 @@ import {LOCAL_HOST} from"../../Config"
 const { Title } = Typography;
 
 const extension = {
-    image: [".jpg", ".png", ".jpeg", ".GIF"],
+    image: [".jpg", ".png", ".jpeg", ".gif"],
     music: [".mp3", ".wav", ".wmv", ".wma", ".flac"],
 };
 
@@ -46,6 +46,7 @@ function GameBuildUpPage(props) {
                             <img
                                 style={{ width: "50px", height: "50px" }}
                                 src={`${cur_game.character[index].image}`}
+                                alt="img not found"
                             />
                         </div>
                         <br />
@@ -63,6 +64,7 @@ function GameBuildUpPage(props) {
                             <img
                                 style={{ width: "50px", height: "50px" }}
                                 src={`${cur_game.background[index].image}`}
+                                alt="img not found"
                             />
                         </div>
                         <br />
@@ -80,7 +82,7 @@ function GameBuildUpPage(props) {
                             <img
                                 style={{ width: "20px", height: "20px" }}
                                 src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
-                                // src="http://localhost:5000/music_icon.jpg"
+                                alt="img not found"
                             />
                             {cur_game.bgm[index].name}
                         </div>
@@ -99,7 +101,7 @@ function GameBuildUpPage(props) {
                             <img
                                 style={{ width: "20px", height: "20px" }}
                                 src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
-                                // src="http://localhost:5000/music_icon.jpg"
+                                alt="img not found"
                             />
                             {cur_game.sound[index].name}
                         </div>
@@ -113,14 +115,14 @@ function GameBuildUpPage(props) {
 
     const onDrop = (files) => {
         //check is_file ok
-        for (var i = 0; i < files.length; i++) {
+        for (let i = 0; i < files.length; i++) {
             if (!files[i]) {
-                message.error("손상된 파일입니다.");
+                message.error("10MB 이하의 파일을 업로드해주세요.");
                 return;
             }
 
             let dotIdx = files[i].name.lastIndexOf(".");
-            if (dotIdx == -1) {
+            if (dotIdx === -1) {
                 message.error(files[i].name + "은 확장자가 없는 파일입니다.");
                 return;
             }
@@ -128,7 +130,7 @@ function GameBuildUpPage(props) {
             let cur_extension = files[i].name.substr(dotIdx, 10000);
             if (
                 //image check
-                (fileState == 1 || fileState == 2) &&
+                (fileState === 1 || fileState === 2) &&
                 extension.image.indexOf(cur_extension) == -1
             ) {
                 message.error(
@@ -139,7 +141,7 @@ function GameBuildUpPage(props) {
 
             if (
                 //sound check
-                (fileState == 3 || fileState == 4) &&
+                (fileState === 3 || fileState === 4) &&
                 extension.music.indexOf(cur_extension) == -1
             ) {
                 message.error(
@@ -149,14 +151,14 @@ function GameBuildUpPage(props) {
             }
         }
 
-        for (var i = 0; i < files.length; i++) {
+        for (let i = 0; i < files.length; i++) {
             let formData = new FormData();
             const config = {
                 header: { "content-type": "multipart/form-data" }, //content type을 같이 보내줘야한다!
             };
             formData.append("file", files[i]);
             let file_name = files[i].name;
-            Axios.post("/api/game/uploadfiles", formData, config).then(
+            Axios.post("/api/game/uploadfile", formData, config).then(
                 (response) => {
                     if (response.data.success) {
                         setFilePath(response.data.url);

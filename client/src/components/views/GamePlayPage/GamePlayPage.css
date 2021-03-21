@@ -1,71 +1,90 @@
-html,
-body {
-  height: 90%;
-  margin: 0;
-  /* overflow: hidden; */
-  /* background-color: black; */
-}
 
-.productscreen {
-  /* height: 100%; */
-  /* width: 100%; */
-  /* position: absolute; */
-  /* top:0; */
-  /* bottom: 0; */
-  /* max-width: 80vw; */
-  /* max-width: 90vh; */
-  /* max-height: 100vh; */
-  /* overflow: hidden; */
-  /* display: flex; */
-  /* object-fit:inherit; */
-  /* align-content: center; */
-  /* justify-content: center; */
-}
-
-.background_img_container {
-  /* position: absolute;
-  max-height: 80vh;
+.gamePlay__container_fullscreen{
   width: 100vw;
-
+  height: calc(100vh);
+  background-color: black;
+  position: absolute;
+  top: 0%;
+  z-index: 00;
   display: flex;
-  overflow: hidden; */
+  align-items: center;
+  justify-content: center;
+}
+.gamePlay__mainContainer_fullscreen{
+  width: 100%;
+  height: calc(100vh + 15%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gamePlay__container{
+  width: 100vw;
+  height: calc(100vh + 15%);
+  position: absolute;
+  top: -15%;
+}
+.gamePlay__mainContainer{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  width: 1000px;
-  height: 65vh;
-  max-width: 80vw;
-  max-height: 600px;
+/*toggle full screen*/
 
-  /* padding: 50px; */
+.gamePlay__btn_container {
+    padding: 5px;
+    position: absolute;
+    left: 0%;
+    bottom: 0%;
+    transform: translate(0%, 0%);
+    z-index: 200;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+
+.gamePlay__btn {
+  all: unset;
+  color: rgb(182, 182, 182);
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin: 2px;
+  font-size: bold;
+  transition-duration: 0.2s;
+  font-size: 0.9rem;
+}
+
+.gamePlay__btn:hover {
+  color: rgb(63, 63, 63);
+  transition-duration: 0.2s;
+  cursor: pointer;
+}
+.backgroundImg_container_fullscreen{
   position: absolute;
   left: 50%;
-  /* bottom: 100%; */
-  transform: translate(-50%, 20%);
+  top: -3%;
+  transform: translate(-50%, 10%);
   transform-origin: center center;
   overflow: hidden;
+  transition-duration: 0.05s;
 
-  /* align-content: center; */
-
-  /* transform: translate(-50%, -50%); */
-  /* transform-origin: center center; */
-
-  background-color: lawngreen;
+}
+.backgroundImg_container {
+  transform: translate(-50%, 10%);
+  transform-origin: center center;
+  overflow: hidden;
+  transition-duration: 0.05s;
 }
 
-.background_img {
+.backgroundImg {
   z-index: 97;
   height: 100%;
   width: 100%;
   object-fit: cover;
   margin:0;
   border-radius: 0;
-}
-
-.HistoryMap_btn{
-  z-index: 98;
-  position: absolute;
-
-  top: 2%;
-  left: 1%;
-  /* height: 40%; */
-  /* width: 67%;  */
 }

@@ -45,6 +45,9 @@ const gameSchema = mongoose.Schema({
   privacy : {
     type: String
   },
+  ratio : {
+    type: String
+  },
   ready: {
     type: Number,
     default: 0

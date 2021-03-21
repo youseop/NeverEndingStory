@@ -1,0 +1,26 @@
+.background-container{
+    margin-top: 2rem;
+    margin-left: 2rem;
+    /* background-color: aqua; */
+}
+.largeBox1{
+    top: 0;
+    left: 0;
+    display: inline;
+    max-width: 20%;
+    height: 100%;
+    width:50%;
+  
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+  
+    /* background-color: rgba(0, 0, 0, 0.616); */
+}
+
+.smallBox12{
+    background-color:gainsboro;
+    width:20%;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+}

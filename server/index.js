@@ -31,6 +31,8 @@ app.use(cookieParser());
 app.use('/api/users', require('./routes/users'));
 app.use('/api/game', require('./routes/game'));
 app.use('/api/scene', require('./routes/scene'));
+app.use('/api/complaint', require('./routes/complaint'));
+app.use('/api/comment', require('./routes/comment'));
 
 app.use('/api/test', require('./routes/subdoc_route'));
 

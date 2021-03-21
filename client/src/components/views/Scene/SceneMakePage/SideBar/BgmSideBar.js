@@ -1,30 +1,12 @@
-import Axios from "axios";
-import { message } from "antd";
-import React, { useEffect, useState } from "react";
+import { Button } from 'antd';
+import React from "react";
 import "./BgmSideBar.css";
 
 import BgmFile from "./BgmFile";
 
-function BgmSideBar({ bgm_audio, gameId, setBgmFile }) {
-    const [Bgm, setBgm] = useState([]);
+function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, setMakeModalState }) {
 
-    const variable = { gameId: gameId };
-    useEffect(() => {
-        Axios.post("/api/game/getgamedetail", variable).then((response) => {
-            if (response.data.success) {
-                if (response.data.gameDetail.bgm.length === 0) {
-                    // TODO: 이 메세지가 아얘 찍히지 않도록 처리해줍시다.
-                    message.error("배경음악이 없습니다.");
-                } else {
-                    setBgm(response.data.gameDetail.bgm);
-                }
-            } else {
-                alert("게임 정보를 로딩하는데 실패했습니다.");
-            }
-        });
-    }, []);
-
-    const renderBgm = Bgm.map((bgm, index) => {
+    const renderBgm = gameDetail.bgm.map((bgm, index) => {
         return (
             <div className="bgm" key={`${index}`}>
                 <BgmFile
@@ -37,9 +19,16 @@ function BgmSideBar({ bgm_audio, gameId, setBgmFile }) {
         );
     });
 
+    const setModal = () => {
+        setMakeModalState(3);
+    }
+
     return (
         <div className="sidebar__container">
-            {Bgm && <div>{renderBgm}</div>}
+            <Button onClick={setModal} type="primary" style={{ background: "black" }}>
+                추가
+            </Button>
+            <div>{renderBgm}</div>
         </div>
     );
 }

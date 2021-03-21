@@ -1,8 +1,6 @@
 import React from "react";
 import {LOCAL_HOST} from"../../../../Config"
 
-var audio = new Audio();
-
 function SoundFile({ sound_audio, sound, setSoundFile }) {
     const onClick_music = () => {
         setSoundFile(sound);

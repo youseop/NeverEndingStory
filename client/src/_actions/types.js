@@ -4,3 +4,6 @@ export const AUTH_USER = 'auth_user';
 export const LOGOUT_USER = 'logout_user';
 
 export const LOAD_EMPTY_NUM = 'load_empty_num';
+export const LOADINGPAGE_GAMEPLAY = "gameLoading_gamePlay"
+
+export const NAVBAR_CONTROL = "navbar_control"
