@@ -12,20 +12,21 @@ import { useDispatch } from "react-redux";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../_actions/controlPage_actions";
 
-var bgm_audio = new Audio();
-var sound_audio = new Audio();
+const bgm_audio = new Audio();
+const sound_audio = new Audio();
 
 // playscreen
 const ProductScreen = (props) => {
+
   const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
-  
+
   const padding = 0.1;
   const minSize = 300;
 
   const [ratio, setRatio] = useState(0.5);
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
-  const [windowHeight, setwindowHeight] = useState(window.innerHeight);  
+  const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const userHistory = props.history;
   const dispatch = useDispatch();
 
@@ -43,19 +44,25 @@ const ProductScreen = (props) => {
   useKey("Digit3", handleChoice);
   useKey("Digit4", handleChoice);
 
+
+  const [isFirstCut, setIsFirstCut] = useState(true);
   function playMusic(i) {
+    if (isFirstCut)
+      setIsFirstCut(false)
     if (Scene.cutList[i].bgm.music) {
       //이전 곡과 같은 bgm이 아니라면
       if (
         !(i > 0 && Scene.cutList[i - 1].bgm.music == Scene.cutList[i].bgm.music)
       ) {
         bgm_audio.pause();
-        bgm_audio.src = Scene.cutList[i].bgm.music;
+        bgm_audio.src = Scene.cutList[i].bgm.music
         bgm_audio.play();
       }
     }
     if (Scene.cutList[i].sound.music) {
       sound_audio.pause();
+
+
       sound_audio.src = Scene.cutList[i].sound.music;
       sound_audio.play();
     }
@@ -72,8 +79,7 @@ const ProductScreen = (props) => {
     if (i === Scene.cutList.length - 1 && !Clickable) {
       if (Scene.nextList[parseInt(event.key) - 1]) {
         userHistory.push(
-          `/gameplay/${gameId}/${
-            Scene.nextList[parseInt(event.key) - 1].sceneId
+          `/gameplay/${gameId}/${Scene.nextList[parseInt(event.key) - 1].sceneId
           }`
         );
       } else {
@@ -97,6 +103,9 @@ const ProductScreen = (props) => {
           };
           setHistory(history);
           setI(0);
+          bgm_audio.pause()
+          sound_audio.pause()
+          setIsFirstCut(true)
           setScene(response.data.scene);
           dispatch(gameLoadingPage(0));
           dispatch(gameLoadingPage(1));
@@ -105,18 +114,18 @@ const ProductScreen = (props) => {
         }
       }
     );
-    
+
     const variable = { gameId: gameId };
     Axios.post("/api/game/ratio", variable).then((response) => {
-        if (response.data.success) {
-            if (response.data.ratio) {
-                setRatio(parseFloat(response.data.ratio));
-            } else {
-                message.error("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
-            }
+      if (response.data.success) {
+        if (response.data.ratio) {
+          setRatio(parseFloat(response.data.ratio));
         } else {
-            message.error("Scene 정보가 없습니다.");
+          message.error("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
         }
+      } else {
+        message.error("Scene 정보가 없습니다.");
+      }
     });
   }, [sceneId]);
 
@@ -124,31 +133,38 @@ const ProductScreen = (props) => {
     function handleResize() {
       setwindowWidth(window.innerWidth);
       setwindowHeight(window.innerHeight);
-    //   console.log(windowWidth,windowHeight,'/',window.innerWidth,window.innerHeight)
+      //   console.log(windowWidth,windowHeight,'/',window.innerWidth,window.innerHeight)
     }
     window.addEventListener('resize', handleResize)
   });
-  
+
   let newScreenSize;
-  if ( windowWidth * ratio > windowHeight  ) {
-      newScreenSize = {
-      width:`${windowHeight * (1-2*padding) / ratio}px`,
-      height:`${windowHeight * (1-2*padding)}px`,
+  if (windowWidth * ratio > windowHeight) {
+    newScreenSize = {
+      width: `${windowHeight * (1 - 2 * padding) / ratio}px`,
+      height: `${windowHeight * (1 - 2 * padding)}px`,
       minWidth: `${minSize / ratio}px`,
       minHeight: `${minSize}px`
-      }
+    }
   } else {
-      newScreenSize = {
-      width:`${windowWidth * (1-2*padding)}px`,
-      height:`${windowWidth * (1-2*padding) * ratio}px`,
+    newScreenSize = {
+      width: `${windowWidth * (1 - 2 * padding)}px`,
+      height: `${windowWidth * (1 - 2 * padding) * ratio}px`,
       minWidth: `${minSize}px`,
       minHeight: `${minSize * ratio}px`
-      }
+    }
   }
   dispatch(navbarControl(false));
 
+  useEffect(() => {
+    return () => {
+      bgm_audio.pause()
+      sound_audio.pause()
+    }
+  }, [])
+
   if (Scene.cutList) {
-    if (i == 0) playMusic(0);
+    if (i == 0 && isFirstCut) playMusic(0);
     return (
       <div>
         <div>
@@ -157,19 +173,19 @@ const ProductScreen = (props) => {
             style={newScreenSize}
             onClick={(event) => handleEnter(event)}
           >
-            <LoadingPage />  
-            {Scene.cutList[i].background ? 
-            <img
-              className="backgroundImg"
-              src={Scene.cutList[i].background}
-              alt="Network Error"
-            /> 
-            :
-            <div></div>
+            <LoadingPage />
+            {Scene.cutList[i].background ?
+              <img
+                className="backgroundImg"
+                src={Scene.cutList[i].background}
+                alt="Network Error"
+              />
+              :
+              <div></div>
             }
             <CharacterBlock
               characterList={Scene.cutList[i].characterList}
-              onRemove_character={()=>{}}
+              onRemove_character={() => { }}
             />
 
             {i === Scene.cutList.length - 1 ? (
@@ -198,23 +214,23 @@ const ProductScreen = (props) => {
           </div>
         </div>
         <div className="gamePlay__btn_container">
-            <button
-                className="gamePlay__complaint_btn" 
-                onClick={() => setDislike(state => !state)}>
-                신고
+          <button
+            className="gamePlay__complaint_btn"
+            onClick={() => setDislike(state => !state)}>
+            신고
             </button>
-            <button
-                className="gamePlay__historyMap_btn"
-                onClick={() => setHistoryMap(state => !state)}
-            >
-                미니맵
+          <button
+            className="gamePlay__historyMap_btn"
+            onClick={() => setHistoryMap(state => !state)}
+          >
+            미니맵
             </button>
         </div>
-        <DislikePopup 
-            sceneId={sceneId}
-            gameId={gameId}
-            trigger={Dislike} 
-            setTrigger={setDislike} />
+        <DislikePopup
+          sceneId={sceneId}
+          gameId={gameId}
+          trigger={Dislike}
+          setTrigger={setDislike} />
       </div>
     );
   } else {

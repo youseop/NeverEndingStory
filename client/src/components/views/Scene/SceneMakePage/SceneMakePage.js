@@ -17,12 +17,9 @@ import { gameLoadingPage } from "../../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../../_actions/controlPage_actions";
 import "./GamePlusScene.css";
 
-
-var bgm_audio = new Audio();
-var sound_audio = new Audio();
-
+let bgm_audio = new Audio();
+let sound_audio = new Audio();
 function SceneMakePage(props) {
-
     //modal
     const [makeModalState, setMakeModalState] = useState(0);
     const [reload, setReload] = useState(1);
@@ -104,7 +101,6 @@ function SceneMakePage(props) {
     );
 
     const onScriptChange = (event) => {
-        console.log(123456, SceneOption)
         setScript(event.currentTarget.value);
     };
 
@@ -282,7 +278,7 @@ function SceneMakePage(props) {
 
     const onSubmit_saveScene = (event) => {
         // event.preventDefault();
-        console.log(CutList.length);
+        // console.log(CutList.length);
         if (CutList.length < 2) {
             message.error("최소 3개의 컷을 생성해주세요.");
             return;
@@ -474,6 +470,13 @@ function SceneMakePage(props) {
         }
     }
 
+    useEffect(() => {
+        return () => {
+            bgm_audio.pause()
+            sound_audio.pause()
+        }
+    }, [])
+
     return (
         <div>
             {/* <LoadingPage />   */}
@@ -482,16 +485,7 @@ function SceneMakePage(props) {
                     className="backgroundImg_container"
                     style={newScreenSize}
                 >
-                    {BackgroundImg ? (
-                        <img
-                            className="backgroundImg"
-                            src={`${BackgroundImg}`}
-                            alt="img"
-                        />
-                    ) : (
-                        <div></div>
-                    )}
-                    {BgmFile ? (
+                    {BgmFile.name ? (
                         <div
                             className="scene__SoundBox_container"
                             onClick={onClick_bgm_player}
@@ -499,15 +493,24 @@ function SceneMakePage(props) {
                             {BgmFile.name}
                         </div>
                     ) : (
-                        <div></div>
+                        <div>BGM</div>
                     )}
-                    {SoundFile ? (
+                    {SoundFile.name ? (
                         <div
                             className="scene__SoundBox_container"
                             onClick={onClick_sound_player}
                         >
                             {SoundFile.name}
                         </div>
+                    ) : (
+                        <div>Sound</div>
+                    )}
+                    {BackgroundImg ? (
+                        <img
+                            className="backgroundImg"
+                            src={`${BackgroundImg}`}
+                            alt="img"
+                        />
                     ) : (
                         <div></div>
                     )}

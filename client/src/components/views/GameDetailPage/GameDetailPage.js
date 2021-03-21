@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./GameDetailPage.css";
 import Comment from '../Comment/Comment';
+import useSound from 'use-sound'
 
 function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
@@ -23,14 +24,14 @@ function GameDetailPage(props) {
         });
     }, []);
     useEffect(() => {
-    Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
+        Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
             if (response.data.success) {
                 setSceneId(response.data.sceneId);
             } else {
-                message.error("게임 정보를 로딩하는데 실패했습니다.");
+                message.error("로그인 해주세요.");
             }
         });
-}, []);
+    }, []);
 
     return (
         <div className="detailPage__container">
@@ -38,20 +39,21 @@ function GameDetailPage(props) {
             <h1>제목: {gameDetail.title}</h1>
 
             {/* 이미지 불러오는게 늦음 디버깅 필요 */}
-            {gameDetail.thumbnail && 
-            <img
-                style={{ width: "30%", height: "30%" }}
-                src={`http://localhost:5000/${gameDetail.thumbnail}`}
-                alt="thumbnail"
-            />}
+            {gameDetail.thumbnail &&
+                <img
+                    style={{ width: "30%", height: "30%" }}
+                    src={`http://localhost:5000/${gameDetail.thumbnail}`}
+                    alt="thumbnail"
+                />}
             <div>카테고리 : {gameDetail.category}</div>
             <div>크리에이터: {gameDetail.creator}</div>
             <div>{gameDetail.description}</div>
             <br />
+            {/* <a href={`/gameplay/${gameId}/${sceneId}`}>게임 시작하기..</a> */}
             <Link to={`/gameplay/${gameId}/${sceneId}`}>
-                게임 시작하기..
+                게임 시작하기
             </Link>
-            <Comment gameId={gameId}/>
+            <Comment gameId={gameId} />
         </div>
     );
 }

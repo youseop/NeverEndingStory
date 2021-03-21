@@ -8,7 +8,7 @@ function Profile() {
   if (userData) {
     return (
       <div>
-        <img src={userData.image} alt=""/>
+        <img src={userData.image} alt="" />
         <div>{userData.email}</div>
         <div>{userData.nickname}</div>
         <div>{userData.gameHistory}</div>

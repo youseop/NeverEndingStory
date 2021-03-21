@@ -25,7 +25,6 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
     useEffect(() => {
         if (game.bgm)
             setBgmCards(game.bgm.map((element, index) => {
-                console.log(element)
                 return <div className="largeBox13">
                     {(index + 1) % 2 ?
                         <div>
