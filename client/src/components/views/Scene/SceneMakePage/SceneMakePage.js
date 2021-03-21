@@ -7,17 +7,19 @@ import "./SceneMakePage.css";
 import { useSelector } from "react-redux";
 import { Input, message, Button } from "antd";
 import Axios from "axios";
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
 const { TextArea } = Input;
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
 
 function SceneMakePage(props) {
-    const location = useLocation();
-    const sceneInfo = location.state;
+
+    // const location = useLocation();
+    // const sceneInfo = location.state;
 
     const gameId = props.match.params.gameId;
+    const sceneId = props.match.params.sceneId;
     const userId = useSelector((state) => state.user);
     const [SidBar_script, setSidBar_script] = useState(false);
 
@@ -42,10 +44,10 @@ function SceneMakePage(props) {
         Array.from({ length: 30 }, () => 0)
     );
 
-    // 첫 씬과 나머지 씬들의 차이
-    const [SceneOption, setSceneOption] = useState(
-        sceneInfo ? sceneInfo.scene_option : ""
-    );
+    // // 첫 씬과 나머지 씬들의 차이
+    // const [SceneOption, setSceneOption] = useState(
+    //     sceneInfo ? sceneInfo.scene_option : ""
+    // );
 
     const onScriptChange = (event) => {
         setScript(event.currentTarget.value);
@@ -237,15 +239,18 @@ function SceneMakePage(props) {
         if (window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,
-                writer: userId.userData._id,
-                nextList: [],
+                sceneId: sceneId,
+                
+                // writer: userId.userData._id,
+                // nextList: [],
                 cutList: submitCutList,
-                isFirst: sceneInfo ? 0 : 1,
-                depth: sceneInfo ? sceneInfo.depth + 1 : 0,
-                sceneOption: SceneOption,
-                prevSceneId: sceneInfo ? sceneInfo.prev_scene_id : 0,
+
+                // isFirst: sceneInfo ? 0 : 1,
+                // depth: sceneInfo ? sceneInfo.depth + 1 : 0,
+                // sceneOption: SceneOption,
+                // prevSceneId: sceneInfo ? sceneInfo.prev_scene_id : 0,
             };
-            Axios.post("/api/scene/save", variable).then((response) => {
+            Axios.post(`/api/scene/save`, variable).then((response) => {
                 if (response.data.success) {
                     message
                         .loading("게임 업로드 중..", 1.5)

@@ -12,6 +12,7 @@ function GameDetailPage(props) {
 
     const [gameDetail, setGameDetail] = useState([]);
     const [sceneId, setSceneId] = useState([]);
+    const [isMaking, setIsMaking] = useState(false);
 
     useEffect(() => {
         Axios.post("/api/game/getgamedetail", variable).then((response) => {
@@ -26,6 +27,7 @@ function GameDetailPage(props) {
         Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
             if (response.data.success) {
                 setSceneId(response.data.sceneId);
+                setIsMaking(response.data.isMaking);
             } else {
                 message.error("게임 정보를 로딩하는데 실패했습니다.");
             }
@@ -53,7 +55,11 @@ function GameDetailPage(props) {
             <pre>{gameDetail.description}</pre>
             <h2>------------------------</h2>
             <br />
-            <Link to={`/gameplay/${gameId}/${sceneId}`}>
+            <Link to={
+                isMaking ? 
+                2 
+                : `/gameplay/${gameId}/${sceneId}
+                `}>
                 게임 시작하기.. <br />
             </Link>
         </div>

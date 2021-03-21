@@ -59,6 +59,10 @@ const sceneSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
+    title: {
+        type: String,
+        default: "",
+    },
     working_num: {
         type: Number,
         default: 0,
@@ -93,6 +97,10 @@ const sceneSchema = mongoose.Schema({
             }
         ],
     },
+    prevSceneId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Scene",
+    },
     nextList: [nextSceneSchema],
     cutList: [cutSchema],
     status: {
@@ -101,7 +109,7 @@ const sceneSchema = mongoose.Schema({
     },
     isFirst: {
         type: Number,
-        default: 0,
+        default: 1,
     },
 });
 

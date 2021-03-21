@@ -5,6 +5,7 @@ import { Button } from "antd";
 import ModalForm from "./InputModalForm";
 import { useHistory } from "react-router";
 import { socket } from "../../App";
+import axios from "axios";
 
 const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
   let history = useHistory();
@@ -20,23 +21,26 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
 
 
   const handleCreate = () => {
-    formRef.validateFields((err, values) => {
+    formRef.validateFields( async (err, values) => {
       if (err) {
         return;
       }
-      console.log("Received values of form: ", values, scene_id, scene_depth, game_id);
 
       clearTimeout(increaseTimer);
       clearTimeout(decreaseTimer);
       socket.emit("created_choice", { scene_id, user_id })
 
+      // tmp scene create
+      const data = {
+        gameId: game_id,
+        prevSceneId: scene_id,
+        sceneDepth: scene_depth + 1,
+        title: values.title,
+      };
+
+      const res = await axios("/api/scene/create", data);
       history.push({
-        pathname: `/scene/make/${game_id}`,
-        state: {
-          scene_option: values.title,
-          prev_scene_id: scene_id,
-          prev_scene_depth: scene_depth,
-        }
+        pathname: `/scene/make/${game_id}/${res.sceneId}`,
       });
 
       formRef.resetFields();

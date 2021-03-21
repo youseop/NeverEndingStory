@@ -32,6 +32,10 @@ const userSchema = mongoose.Schema({
         default: 0
     },
     gameHistory: [{
+        isMaking: {
+            type: Boolean,
+            default: false,
+        },
         gameId: {
             type: Schema.Types.ObjectId,
             ref: "Game",
@@ -42,6 +46,10 @@ const userSchema = mongoose.Schema({
         }]
     }],
     gamePlaying: {
+        isMaking: {
+            type: Boolean,
+            default: false,
+        },
         gameId: {
             type: Schema.Types.ObjectId,
             ref: "Game",

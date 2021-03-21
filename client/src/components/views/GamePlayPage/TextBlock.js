@@ -56,7 +56,7 @@ export const TextBlockChoice = (props) => {
             <div className="name_block">{cut_name}</div>
             <hr className="text_line"></hr>
             <div className="text_block">
-                {cut_script}
+                {cut_script} {/* 넥스트 인데 making이면 작업중으로 뜨게 */}
                 <br />
                 {/* 선택의 길이 등장할 수 있는 경우 */}
                 <div>{choices}</div>

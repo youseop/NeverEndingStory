@@ -185,17 +185,20 @@ router.get("/gamestart/:id", auth, async (req, res) => {
     try {
         let user = await User.findOne({ _id: userId });
 
+
         if (user.gamePlaying.id && gameId.toHexString() === user.gamePlaying.gameId.toHexString()) {
             return res
                 .status(200)
                 .json({
                     success: true,
                     sceneId: user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1],
+                    isMaking: user.gamePlaying.isMaking,
                 });
         }
         if (user.gamePlaying.gameId) {
             updateHistoryFromPlaying(user);
         }
+
         const gameHistory = user.gameHistory;
         for (let i = 0; i < gameHistory.length; i++) {
             if (gameHistory[i].gameId && gameHistory[i].gameId.toHexString() === gameId.toHexString()) {
@@ -211,6 +214,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                     .json({
                         success: true,
                         sceneId: gameHistory[i].sceneIdList[gameHistory[i].sceneIdList.length - 1],
+                        isMaking: user.gamePlaying.isMaking,
                     });
             }
         }
@@ -221,9 +225,10 @@ router.get("/gamestart/:id", auth, async (req, res) => {
             user.gamePlaying = {
                 gameId: gameId,
                 sceneIdList: [sceneId],
+                isMaking: false,
             };
             user.save();
-            return res.status(200).json({ success: true, sceneId });
+            return res.status(200).json({ success: true, sceneId , isMaking: user.gamePlaying.isMaking,});
         } catch (err) {
             console.log(err);
             return res.status(400).json({ success: false });

@@ -3,20 +3,32 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const { Scene } = require("../models/Scene");
 const { Game } = require("../models/Game");
+const { auth } = require("../middleware/auth");
 
+router.post('/create', auth, async (req, res) => {
+  const userId = req.user._id
+  const scene = new Scene ({
+    gameId: req.body.data.gameId,
+    writer: userId,
+    title: req.body.data.title,
+    nextList: [],
+    cutList: [],
+    isFirst: 0,
+    depth: req.body.data.sceneDepth,
+    prevSceneId: req.body.data.prevSceneId,
+  })
+  console.log("asdfasdfasdf")
+  scene.save( (err, scene) => {
+    if(err) return res.json({success: false, err})
+    return res.status(200).json({success: true, sceneId: scene._id})
+  })
+})
 
 router.post('/save', async (req, res) => {
   
-  // console.log(req.body)
-
-  const scene = new Scene({
-    gameId : req.body.gameId,
-    writer : req.body.writer,
-    nextList : req.body.nextList,
-    cutList : req.body.cutList,
-    isFirst : req.body.isFirst,
-    depth : req.body.depth
-  })
+  const sceneId = req.body.sceneId;
+  const scene = findOne({_id: sceneId});
+  scene.cutList = [...req.body.cutList];
 
   // object in object , 자동으로 안들어가서 charaterList 직접 삽입
   for(let i = 0 ; i < req.body.cutList.length; i++){
@@ -51,10 +63,10 @@ router.post('/save', async (req, res) => {
   // First가 아닌 scene에 대해서 하는 행위
   else{
     try{
-      const prev_scene = await Scene.findOne({_id : req.body.prevSceneId})
+      const prev_scene = await Scene.findOne({_id : scene.prevSceneId})
       const insertScene = {
         sceneId : scene._id,
-        script : req.body.sceneOption
+        script : scene.title,
       }
       prev_scene.nextList.push(insertScene)
       prev_scene.save((err,prev_scene) =>{
