@@ -13,6 +13,8 @@ import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../_actions/controlPage_actions";
 import classNames from 'classnames/bind';
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckSquare, faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -222,18 +224,6 @@ const ProductScreen = (props) => {
           </div>
         </div>
         <div className="gamePlay__btn_container">
-            {errorMessage ? (
-            <button
-              onClick={() =>alert("Fullscreen is unsupported by this browser, please try another browser.")}
-              className="gamePlay__btn"
-            >
-              {errorMessage}
-            </button>
-            ) : isFullscreen ? (
-              <button onClick={handleExitFullscreen} className="gamePlay__btn">Exit Fullscreen</button>
-            ) : (
-              <button onClick={setIsFullscreen} className="gamePlay__btn">Fullscreen</button>
-            )}
             <div>
               <button
                   className="gamePlay__btn"
@@ -247,6 +237,22 @@ const ProductScreen = (props) => {
                   신고
               </button>
             </div>
+            {errorMessage ? (
+            <button
+              onClick={() =>alert("Fullscreen is unsupported by this browser, please try another browser.")}
+              className="gamePlay__btn"
+            >
+              {errorMessage}
+            </button>
+            ) : isFullscreen ? (
+              <button onClick={handleExitFullscreen} className="gamePlay__btn">
+                <FontAwesomeIcon icon={faCompress}/>
+                </button>
+            ) : (
+              <button onClick={setIsFullscreen} className="gamePlay__btn">
+                <FontAwesomeIcon icon={faExpand}/>
+              </button>
+            )}
         </div>
         <DislikePopup 
             sceneId={sceneId}
