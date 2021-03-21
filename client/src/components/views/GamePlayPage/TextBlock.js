@@ -69,6 +69,7 @@ export const TextBlockChoice = (props) => {
                             scene_id={scene_id}
                             scene_depth={scene_depth}
                             game_id={game_id}
+                            scene_next_list= {scene_next_list}
                         />
                     </div>
                 ) : (

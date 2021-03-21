@@ -6,17 +6,16 @@ import ModalForm from "./InputModalForm";
 import { useHistory } from "react-router";
 import { socket } from "../../App";
 
-const InputModal = ({ scene_id, scene_depth, game_id }) => {
+const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
   let history = useHistory();
   const user = useSelector((state) => state.user);
   const emptyNum = useSelector((state) => state.sync.emptyNum);
-  console.log(emptyNum)
   const user_id = user.userData._id.toString();
   const [visible, setVisible] = useState(false);
   const [formRef, setFormRef] = useState(null);
-  const [increaseTimer, setIncreaseTimer] = useState(null);
   const [remainTime, setRemainTime] = useState(0);
   const [selecting, setSelecting] = useState(1);
+  const [increaseTimer, setIncreaseTimer] = useState(null);
   const [decreaseTimer, setDecreaseTimer] = useState(false);
 
 
@@ -26,6 +25,10 @@ const InputModal = ({ scene_id, scene_depth, game_id }) => {
         return;
       }
       console.log("Received values of form: ", values, scene_id, scene_depth, game_id);
+
+      clearTimeout(increaseTimer);
+      clearTimeout(decreaseTimer);
+      socket.emit("created_choice", { scene_id, user_id })
 
       history.push({
         pathname: `/scene/make/${game_id}`,
@@ -53,7 +56,7 @@ const InputModal = ({ scene_id, scene_depth, game_id }) => {
       cancelHandler();
     }, 30000));
     setRemainTime(29);
-    setSelecting(selecting*-1);
+    setSelecting(selecting * -1);
 
     return setVisible(true);
   }
@@ -62,18 +65,21 @@ const InputModal = ({ scene_id, scene_depth, game_id }) => {
     socket.emit("empty_num_increase", { scene_id, user_id });
     clearTimeout(increaseTimer);
     clearTimeout(decreaseTimer);
-
     return setVisible(false)
   }
 
   const createHandler = () => {
-    clearTimeout(increaseTimer);
-    clearTimeout(decreaseTimer);
-
-    socket.emit("created_choice", { scene_id, user_id })
     return handleCreate();
   }
 
+  const working = () => {
+    console.log(emptyNum);
+    if (emptyNum>=0){
+      return [...Array(4 - emptyNum)].map((n, index) => {
+        return <div key={index}>작업중..<br /></div>
+      })
+    }
+  }
   useEffect(() => {
     if (remainTime > 0) {
       setDecreaseTimer(setTimeout(() => {
@@ -84,23 +90,25 @@ const InputModal = ({ scene_id, scene_depth, game_id }) => {
 
   return (
     <>
+      {working()}
+      <div>------------------</div>
       {
-        emptyNum ? 
-        <>
-          <div
-            onClick={onClickHandler}
-            style={{ color: "red" }}
-          >
-            선택의 길...
-          </div>
-          <ModalForm
-            ref={saveFormRef}
-            visible={visible}
-            onCancel={cancelHandler}
-            onCreate={createHandler}
-            remainTime={remainTime}
-          />
-        </> : <div>작업중</div>
+        emptyNum > 0 &&
+          <>
+            <div
+              onClick={onClickHandler}
+              style={{ color: "red" }}
+            >
+              선택의 길...
+            </div>
+            <ModalForm
+              ref={saveFormRef}
+              visible={visible}
+              onCancel={cancelHandler}
+              onCreate={createHandler}
+              remainTime={remainTime}
+            />
+          </>
       }
     </>
   );

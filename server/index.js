@@ -58,19 +58,18 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server, { cors: { origin: '*' } });
 
 
-let scene_cache = {}
+let scene_cache = {} // {empty: 2, cert: [{ userID: ??, }]}
 
-const updateCache = (sceneId, userId, plus)=>{
-
+const updateCache = async (sceneId, userId, plus) => {
+  console.log("before update..", scene_cache[sceneId].emptyNum);
   scene_cache[sceneId].emptyNum += plus;
   io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum })
   const idx = scene_cache[sceneId].certificationList.findIndex(item => item.userId === userId);
-  if (plus >= 0)
-  {
+  if (plus >= 0) {
     clearTimeout(scene_cache[sceneId].certificationList[idx].timer);
     if (idx > -1) scene_cache[sceneId].certificationList.splice(idx, 1)
   }
-  else{
+  else {
     scene_cache[sceneId].certificationList[idx].timer = setTimeout(() => {
       console.log("30 초 지남...")
       if (scene_cache[sceneId].certificationList.some(itme => itme.userId === userId)) {
@@ -81,7 +80,15 @@ const updateCache = (sceneId, userId, plus)=>{
       }
     }, 30000)
   }
-  Scene.updateOne({ _id: mongoose.Types.ObjectId(sceneId) }, { sceneTmp: scene_cache[sceneId] });
+
+  Scene.findOneAndUpdate(
+    { _id: mongoose.Types.ObjectId(sceneId) },
+    {
+      "$set": {
+        "sceneTmp": scene_cache[sceneId],
+      }
+    }
+  ).exec();
 }
 
 
@@ -116,6 +123,7 @@ io.on('connection', socket => {
 
     if (scene_cache[sceneId].emptyNum === 0) {
       // 예외 처리
+      // 키 제거
       return;
     }
 
