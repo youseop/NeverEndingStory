@@ -13,7 +13,6 @@ const LOADING_TYPE = {
 
 const LoadingPage = () => {
   const loadingType = useSelector((state) => state.gameplay.loadingType);
-  // console.log(loadingType);
   switch (loadingType) {
     case LOADING_TYPE.NONE:
       return "";

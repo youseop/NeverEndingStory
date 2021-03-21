@@ -57,7 +57,6 @@ function GameUploadPage(props) {
 
     const onRatioChange = (event) => {
         setRatio(state => !state);
-        console.log(event.currentTarget.value);
     }
 
     const onDrop = (files) => {
@@ -110,6 +109,7 @@ function GameUploadPage(props) {
             bgm: [],
             sound: [],
         };
+        
         Axios.post("/api/game/uploadgame", game_variables).then((response) => {
             if (response.data.success) {
                 message.success(

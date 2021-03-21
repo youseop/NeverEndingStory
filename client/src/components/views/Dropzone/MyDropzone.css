@@ -1,0 +1,14 @@
+.dropzone{
+    margin-top: 2rem;
+    margin-left: 2rem;
+    width: 10rem;
+    height: 10rem;
+    border: 0.1rem solid lightgray;
+    display: flex;
+    align-items: center;
+    justify-Content: center;
+}
+
+.dropzone-icon{
+   font-size: 7rem;
+}

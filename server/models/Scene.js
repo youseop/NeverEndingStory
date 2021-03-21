@@ -76,7 +76,7 @@ const sceneSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
-});
+}, {timestamps: true});
 
 const Scene = mongoose.model("Scene", sceneSchema);
 

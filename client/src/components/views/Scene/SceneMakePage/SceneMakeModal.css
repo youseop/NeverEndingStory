@@ -1,0 +1,22 @@
+.tabs {
+  display: flex;
+  flex-flow: row nowrap;
+  text-align: center;
+  color: #fff;
+  background-color: #94ebcd;
+  border-bottom: 4px solid #6ddccf;
+
+}
+.tab {
+  flex: 1 0 auto;
+  padding: 1rem 1.5rem calc(1rem - 4px);
+  /* border-bottom: 4px solid transparent; */
+  /* &:hover {
+    cursor: pointer;
+    border-bottom: 4px solid #fbc2eb;
+  } */
+  
+}
+.is-selected {
+  background-color: #6ddccf;
+}

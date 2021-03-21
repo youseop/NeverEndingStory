@@ -1,34 +1,93 @@
-html,
-body {
-  /* height: 90%; */
-  margin: 0;
+.gamePlay__container_fullscreen{
+  width: 100vw;
+  height: calc(100vh);
+  background-color: black;
+  position: absolute;
+  top: 0%;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: 0.1s;
+}
+.gamePlay__mainContainer_fullscreen{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: 0.1s;
+}
+.gamePlay__container{
+  width: 100vw;
+  height: calc(100vh + 15%);
+  position: absolute;
+  top: -15%;
+  transition-duration: 0.5s;
+}
+.gamePlay__mainContainer{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: 0.5s;
 }
 
-.productscreen {
-  background-color: blanchedalmond;
+/*toggle full screen*/
+
+.gamePlay__btn_container {
+    padding: 5px;
+    position: absolute;
+    left: 0%;
+    bottom: 0%;
+    transform: translate(0%, 0%);
+    z-index: 200;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
-.background_img_container {
+
+.gamePlay__btn {
+  all: unset;
+  color: rgb(155, 155, 155);
+  background-color: rgb(63, 63, 63);
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin: 2px;
+  font-size: bold;
+  transition-duration: 0.5s;
+}
+
+.gamePlay__btn:hover {
+  background-color: rgb(88, 88, 88);
+  transition-duration: 0.5s;
+
+}
+.backgroundImg_container_fullscreen{
   position: absolute;
   left: 50%;
+  top: -3%;
   transform: translate(-50%, 10%);
   transform-origin: center center;
   overflow: hidden;
+  /* background-color: black; */
 
-  background-color: black;
+}
+.backgroundImg_container {
+  transform: translate(-50%, 10%);
+  transform-origin: center center;
+  overflow: hidden;
+  /* background-color: black; */
 }
 
-.background_img {
+.backgroundImg {
   z-index: 97;
   height: 100%;
   width: 100%;
   object-fit: cover;
   margin:0;
   border-radius: 0;
-}
-
-.HistoryMap_btn{
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 10%);
 }

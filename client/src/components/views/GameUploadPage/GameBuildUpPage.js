@@ -7,7 +7,7 @@ import "./GameBuildUpPage";
 const { Title } = Typography;
 
 const extension = {
-    image: [".jpg", ".png", ".jpeg", ".GIF"],
+    image: [".jpg", ".png", ".jpeg", ".gif"],
     music: [".mp3", ".wav", ".wmv", ".wma", ".flac"],
 };
 
@@ -116,7 +116,7 @@ function GameBuildUpPage(props) {
         //check is_file ok
         for (let i = 0; i < files.length; i++) {
             if (!files[i]) {
-                message.error("손상된 파일입니다.");
+                message.error("10MB 이하의 파일을 업로드해주세요.");
                 return;
             }
 
@@ -157,7 +157,7 @@ function GameBuildUpPage(props) {
             };
             formData.append("file", files[i]);
             let file_name = files[i].name;
-            Axios.post("/api/game/uploadfiles", formData, config).then(
+            Axios.post("/api/game/uploadfile", formData, config).then(
                 (response) => {
                     if (response.data.success) {
                         setFilePath(response.data.url);

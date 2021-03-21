@@ -1,30 +1,12 @@
-import Axios from "axios";
-import { message } from "antd";
-import React, { useEffect, useState } from "react";
+import { Button } from 'antd';
+import React from "react";
 import "./SoundSideBar.css";
 
 import SoundFile from "./SoundFile";
 
-function SoundSideBar({ sound_audio, gameId, setSoundFile }) {
-    const [Sound, setSound] = useState([]);
+function SoundSideBar({ gameDetail, sound_audio, setSoundFile, setMakeModalState }) {
 
-    const variable = { gameId: gameId };
-    useEffect(() => {
-        Axios.post("/api/game/getgamedetail", variable).then((response) => {
-            if (response.data.success) {
-                if (response.data.gameDetail.sound.length === 0) {
-                    // TODO: 이 메세지가 아얘 찍히지 않도록 처리해줍시다.
-                    message.error("효과음이 없습니다.");
-                } else {
-                    setSound(response.data.gameDetail.sound);
-                }
-            } else {
-                alert("게임 정보를 로딩하는데 실패했습니다.");
-            }
-        });
-    }, []);
-
-    const renderSound = Sound.map((sound, index) => {
+    const renderSound = gameDetail.sound.map((sound, index) => {
         return (
             <div className="sound" key={`${index}`}>
                 <SoundFile
@@ -37,9 +19,16 @@ function SoundSideBar({ sound_audio, gameId, setSoundFile }) {
         );
     });
 
+    const setModal = () => {
+        setMakeModalState(4);
+    }
+
     return (
         <div className="sidebar__container">
-            {Sound && <div>{renderSound}</div>}
+            <Button onClick={setModal} type="primary" style={{ background: "black" }}>
+                추가
+            </Button>
+            <div>{renderSound}</div>
         </div>
     );
 }
