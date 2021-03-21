@@ -1,9 +1,9 @@
 .gamePlay__container_fullscreen{
   width: 100vw;
-  height: calc(100vh + 15%);
+  height: calc(100vh);
   background-color: black;
   position: absolute;
-  top: -15%;
+  top: 0%;
   z-index: 200;
   display: flex;
   align-items: center;
@@ -43,6 +43,10 @@
     bottom: 0%;
     transform: translate(0%, 0%);
     z-index: 200;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 
@@ -62,11 +66,18 @@
   transition-duration: 0.5s;
 
 }
-
-.backgroundImg_container {
-  /* position: absolute;
+.backgroundImg_container_fullscreen{
+  position: absolute;
   left: 50%;
-  transform: translate(-50%, 10%); */
+  top: -3%;
+  transform: translate(-50%, 10%);
+  transform-origin: center center;
+  overflow: hidden;
+  /* background-color: black; */
+
+}
+.backgroundImg_container {
+  transform: translate(-50%, 10%);
   transform-origin: center center;
   overflow: hidden;
   /* background-color: black; */

@@ -1,7 +1,7 @@
 import "./GamePlayPage.css";
 import CharacterBlock from "./CharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Axios from "axios";
 import DislikePopup from "./Dislike";
 import HistoryMapPopup from "./HistoryMap";
@@ -12,35 +12,45 @@ import { useDispatch } from "react-redux";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../_actions/controlPage_actions";
 import classNames from 'classnames/bind';
+import useFullscreenStatus from "../../../utils/useFullscreenStatus";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
 
 // playscreen
 const ProductScreen = (props) => {
-
   const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
   
-  const padding = 0.1;
-  const minSize = 300;
 
   const [ratio, setRatio] = useState(0.5);
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);  
   const userHistory = props.history;
-  const dispatch = useDispatch();
-
+  
   const [i, setI] = useState(0);
   const [Scene, setScene] = useState({});
   const [Dislike, setDislike] = useState(false);
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
   const [Clickable, setClickable] = useState(false);
+  
+  const dispatch = useDispatch();
 
-  const [ToggleFullSizeScreen,setToggleFullSizeScreen] = useState(true);
-  const styleContainer = [{'gamePlay__container_fullscreen' : ToggleFullSizeScreen,'gamePlay__container' : !ToggleFullSizeScreen}]
-  const styleMainContainer = [{'gamePlay__mainContainer_fullscreen' : ToggleFullSizeScreen,'gamePlay__mainContainer' : !ToggleFullSizeScreen}]
+  const maximizableElement = useRef(null);
+
+  let isFullscreen, setIsFullscreen;
+  let errorMessage;
+
+  try {
+    [isFullscreen, setIsFullscreen] = useFullscreenStatus(maximizableElement);
+  } catch (e) {
+    errorMessage = "Fullscreen not supported";
+    isFullscreen = false;
+    setIsFullscreen = undefined;
+  }
+
+  const handleExitFullscreen = () => document.exitFullscreen();
 
   useKey("Enter", handleEnter);
   useKey("Space", handleEnter);
@@ -48,8 +58,6 @@ const ProductScreen = (props) => {
   useKey("Digit2", handleChoice);
   useKey("Digit3", handleChoice);
   useKey("Digit4", handleChoice);
-
-
 
   function playMusic(i) {
     if (Scene.cutList[i].bgm.music) {
@@ -107,7 +115,7 @@ const ProductScreen = (props) => {
           setI(0);
           setScene(response.data.scene);
           dispatch(gameLoadingPage(0));
-          dispatch(gameLoadingPage(1));
+          dispatch(gameLoadingPage(5));
         } else {
           message.error("Scene 정보가 없습니다.");
         }
@@ -136,6 +144,9 @@ const ProductScreen = (props) => {
     window.addEventListener('resize', handleResize)
   },[window.innerWidth, window.inner]);
   
+  const padding = (isFullscreen ? 0.0 : 0.1);
+  const minSize = 300;
+
   let newScreenSize;
   if ( windowWidth * ratio > windowHeight  ) {
       newScreenSize = {
@@ -153,15 +164,20 @@ const ProductScreen = (props) => {
       }
   }
   
-  dispatch(navbarControl(false));
+  // dispatch(navbarControl(false));
 
   if (Scene.cutList) {
     if (i == 0) playMusic(0);
     return (
-      <div className={classNames(styleContainer)}>
-        <div className={classNames(styleMainContainer)}>
+      <div 
+        className={`${isFullscreen ? "gamePlay__container_fullscreen" : "gamePlay__container"}`}
+        ref={maximizableElement}
+      >
+        <div
+          className={`${isFullscreen ? "gamePlay__mainContainer_fullscreen" : "gamePlay__mainContainer"}`}
+        >
           <div
-            className="backgroundImg_container"
+            className={`${isFullscreen ? "backgroundImg_container_fullscreen" : "backgroundImg_container"}`}
             style={newScreenSize}
             onClick={(event) => handleEnter(event)}
           >
@@ -206,25 +222,31 @@ const ProductScreen = (props) => {
           </div>
         </div>
         <div className="gamePlay__btn_container">
+            {errorMessage ? (
             <button
-                className="gamePlay__btn"
-                onClick={() => setToggleFullSizeScreen(state => !state)}
+              onClick={() =>alert("Fullscreen is unsupported by this browser, please try another browser.")}
+              className="gamePlay__btn"
             >
-                {ToggleFullSizeScreen ? "전체화면 종료" : "전체화면"}
+              {errorMessage}
             </button>
+            ) : isFullscreen ? (
+              <button onClick={handleExitFullscreen} className="gamePlay__btn">Exit Fullscreen</button>
+            ) : (
+              <button onClick={setIsFullscreen} className="gamePlay__btn">Fullscreen</button>
+            )}
+            <div>
               <button
                   className="gamePlay__btn"
                   onClick={() => setHistoryMap(state => !state)}
               >
                   미니맵
               </button>
-          {!ToggleFullSizeScreen && 
               <button
                   className="gamePlay__btn" 
                   onClick={() => setDislike(state => !state)}>
                   신고
               </button>
-          }
+            </div>
         </div>
         <DislikePopup 
             sceneId={sceneId}
