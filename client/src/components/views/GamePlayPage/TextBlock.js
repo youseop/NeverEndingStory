@@ -54,7 +54,15 @@ export const TextBlockChoice = (props) => {
       <div className="name_block">{cut_name}</div>
       <hr className="text_line"></hr>
       <div className="text_block">
-        {cut_script}
+        <Typewriter
+          options={{
+            strings: cut_script,
+            autoStart: true,
+            loop: false,
+            delay: 10,
+            cursor: "",
+          }}
+        />
         <br />
         {/* 선택의 길이 등장할 수 있는 경우 */}
         <div>{choices}</div>

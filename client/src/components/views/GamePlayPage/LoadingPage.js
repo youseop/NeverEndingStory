@@ -25,6 +25,7 @@ const LoadingPage = () => {
         </div>
       );
     case LOADING_TYPE.SLIDELEFT:
+      console.log("type 2")
       return (
         <div
           style={{ animation: "1s ease-out 0s 1 slideLeft" }}

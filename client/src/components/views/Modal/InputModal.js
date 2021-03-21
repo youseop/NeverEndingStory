@@ -43,7 +43,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable }) => {
     }
   }, []);
 
-  const cancel = () => {   
+  const cancel = () => {
     setClickable(false);
     setVisible(false);
   };

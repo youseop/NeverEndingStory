@@ -18,10 +18,8 @@ import { navbarControl } from "../../../../_actions/controlPage_actions";
 import "./SceneMakePage.css";
 import SceneBox from "./SceneBox/SceneBox";
 
-
-var bgm_audio = new Audio();
-var sound_audio = new Audio();
-
+let bgm_audio = new Audio();
+let sound_audio = new Audio();
 function SceneMakePage(props) {
     const padding = 0.1;
     const minSize = 300;
@@ -268,17 +266,17 @@ function SceneMakePage(props) {
     };
 
     const onRemove_cut = () => {
-        if (CutList.length-1 <= CutNumber){
+        if (CutList.length - 1 <= CutNumber) {
             message.info('마지막 컷 입니다.');
             return;
         }
-        message.success(`${CutNumber+1}번째 컷이 삭제되었습니다.`);
+        message.success(`${CutNumber + 1}번째 컷이 삭제되었습니다.`);
         setCutList((oldArray) => [
             ...oldArray.slice(0, CutNumber),
             ...oldArray.slice(CutNumber + 1, 31),
         ]);
         setEmptyCutList((oldArray) => [
-            0,...oldArray
+            0, ...oldArray
         ]);
         displayCut(CutNumber + 1);
     }
@@ -289,7 +287,7 @@ function SceneMakePage(props) {
 
     const onSubmit_saveScene = (event) => {
         // event.preventDefault();
-        console.log(CutList.length);
+        // console.log(CutList.length);
         if (CutList.length < 2) {
             message.error("최소 3개의 컷을 생성해주세요.");
             return;
@@ -346,7 +344,7 @@ function SceneMakePage(props) {
             message.error("제출 취소요");
         }
     };
-    
+
     const [gameDetail, setGameDetail] = useState([]);
     const [sideBar, setSideBar] = useState([]);
 
@@ -412,22 +410,22 @@ function SceneMakePage(props) {
         }
         window.addEventListener('resize', handleResize)
         if (windowWidth * ratio > windowHeight) {
-            setNewScreenSize ({
+            setNewScreenSize({
                 width: `${windowHeight * (1 - 2 * padding) / ratio}px`,
                 height: `${windowHeight * (1 - 2 * padding)}px`,
                 minWidth: `${minSize / ratio}px`,
                 minHeight: `${minSize}px`
             })
         } else {
-            setNewScreenSize ({
+            setNewScreenSize({
                 width: `${windowWidth * (1 - 2 * padding)}px`,
                 height: `${windowWidth * (1 - 2 * padding) * ratio}px`,
                 minWidth: `${minSize}px`,
                 minHeight: `${minSize * ratio}px`
             })
-        }   
-    },[window.innerWidth, window.innerHeight]);
-    
+        }
+    }, [window.innerWidth, window.innerHeight]);
+
     return (
         <div className="scene__container">
             {/* <LoadingPage />   */}
@@ -436,16 +434,7 @@ function SceneMakePage(props) {
                     className="backgroundImg_container"
                     style={newScreenSize}
                 >
-                    {BackgroundImg ? (
-                        <img
-                            className="backgroundImg"
-                            src={`${BackgroundImg}`}
-                            alt="img"
-                        />
-                    ) : (
-                        <div></div>
-                    )}
-                    {BgmFile ? (
+                    {BgmFile.name ? (
                         <div
                             className="scene__SoundBox_container"
                             onClick={onClick_bgm_player}
@@ -453,15 +442,24 @@ function SceneMakePage(props) {
                             {BgmFile.name}
                         </div>
                     ) : (
-                        <div></div>
+                        <div>BGM</div>
                     )}
-                    {SoundFile ? (
+                    {SoundFile.name ? (
                         <div
                             className="scene__SoundBox_container"
                             onClick={onClick_sound_player}
                         >
                             {SoundFile.name}
                         </div>
+                    ) : (
+                        <div>Sound</div>
+                    )}
+                    {BackgroundImg ? (
+                        <img
+                            className="backgroundImg"
+                            src={`${BackgroundImg}`}
+                            alt="img"
+                        />
                     ) : (
                         <div></div>
                     )}
@@ -485,10 +483,10 @@ function SceneMakePage(props) {
             <SceneBox
                 CutList={CutList}
                 CutNumber={CutNumber}
-                displayCut={displayCut} 
+                displayCut={displayCut}
                 setCutNumber={setCutNumber}
                 Hover={Hover}
-                setHover={setHover} 
+                setHover={setHover}
                 EmptyCutList={EmptyCutList}
                 saveCut={saveCut}
             />
