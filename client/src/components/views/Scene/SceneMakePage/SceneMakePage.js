@@ -17,9 +17,11 @@ var sound_audio = new Audio();
 function SceneMakePage(props) {
     const location = useLocation();
     const sceneInfo = location.state;
+
+
     const gameId = props.match.params.gameId;
     const sceneId = props.match.params.sceneId;
-    const userId = useSelector((state) => state.user);
+    // const userId = useSelector((state) => state.user);
 
     const [IsLoading, setIsLoading] = useState(false);
     

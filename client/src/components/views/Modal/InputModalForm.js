@@ -4,8 +4,6 @@ import useKey from "../../functions/onClickFunction";
 
 const ModalFormComponent = ({ visible, onCancel, onCreate, form, remainTime }) => {
   const { getFieldDecorator } = form;
-<<<<<<< HEAD
-=======
 
   function handleEnter() {
     onCreate();
@@ -13,7 +11,6 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, remainTime }) =
 
   useKey("Enter", handleEnter);
 
->>>>>>> origin/makeScene
   return (
     <Modal
       visible={visible}
