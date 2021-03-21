@@ -9,28 +9,10 @@ import HistoryMapPopup from "./HistoryMap";
 import { message } from "antd";
 import { socket } from "../../App"
 import { loadEmptyNum } from "../../../_actions/sync_actions"
+import useKey from "../../functions/onClickFunction";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
-
-// Use keyboard input
-function useKey(key, cb) {
-    const callbackRef = useRef(cb);
-    
-    useEffect(() => {
-        callbackRef.current = cb;
-    });
-    
-    useEffect(() => {
-        function handle(event) {
-            if (event.code === key) {
-                callbackRef.current(event);
-            }
-        }
-        document.addEventListener("keypress", handle);
-        return () => document.removeEventListener("keypress", handle);
-    }, [key]);
-}
 
 // playscreen
 const ProductScreen = (props) => {
@@ -88,6 +70,7 @@ const ProductScreen = (props) => {
     }
 
     useKey("Enter", handleEnter);
+    useKey("Space", handleEnter);
 
     useEffect(() => {
         Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(

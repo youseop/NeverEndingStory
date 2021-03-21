@@ -15,6 +15,7 @@ function BackgroundSideBar({gameId, setBackgroundImg}) {
     .then(response => {
       if(response.data.success) {
         if(response.data.gameDetail.background.length === 0){
+          // TODO: 이 메세지가 아얘 찍히지 않도록 처리해줍시다.
           message.error('배경사진이 없습니다.');
         }
         else{

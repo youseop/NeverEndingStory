@@ -62,9 +62,7 @@ export const TextBlockChoice = (props) => {
                 <div>{choices}</div>
                 <br />
                 {scene_next_list.length < CHOICE_NUM ? (
-                    // <div onClick={onClick_nextScene}>
                     <div>
-                        {/* 선택의길... <br /> */}
                         <InputModal
                             scene_id={scene_id}
                             scene_depth={scene_depth}

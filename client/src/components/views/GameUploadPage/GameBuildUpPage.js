@@ -158,9 +158,7 @@ function GameBuildUpPage(props) {
             let file_name = files[i].name;
             Axios.post("/api/game/uploadfiles", formData, config).then(
                 (response) => {
-                    // console.log(response);
                     if (response.data.success) {
-                        // console.log("setFilePath");
                         setFilePath(response.data.url);
 
                         switch (fileState) {
@@ -251,11 +249,9 @@ function GameBuildUpPage(props) {
             );
         }
     };
-    // console.log(filePath);
+
     const onSubmit = (event) => {
         event.preventDefault();
-        // console.log(props.match.params);
-        // console.log(gameId);
         props.history.push(`/scene/make/${gameId}`);
     };
 

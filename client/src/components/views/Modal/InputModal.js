@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
 import ReactDOM from "react-dom";
 import { Button } from "antd";
@@ -44,7 +44,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
       });
 
       formRef.resetFields();
-      setVisible(false);
     });
   };
 

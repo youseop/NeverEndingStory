@@ -15,7 +15,8 @@ function CharacterSideBar({gameId, setCharacterList, CharacterList}) {
     .then(response => {
       if(response.data.success) {
         if(response.data.gameDetail.character.length === 0){
-          message.error('배경사진이 없습니다.');
+          // TODO: 이 메세지가 아얘 찍히지 않도록 처리해줍시다.
+          message.error('캐릭터 사진이 없습니다.');
         }
         else{
           setCharacter(response.data.gameDetail.character);

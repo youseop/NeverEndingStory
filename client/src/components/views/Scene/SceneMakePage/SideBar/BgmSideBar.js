@@ -13,6 +13,7 @@ function BgmSideBar({ bgm_audio, gameId, setBgmFile }) {
         Axios.post("/api/game/getgamedetail", variable).then((response) => {
             if (response.data.success) {
                 if (response.data.gameDetail.bgm.length === 0) {
+                    // TODO: 이 메세지가 아얘 찍히지 않도록 처리해줍시다.
                     message.error("배경음악이 없습니다.");
                 } else {
                     setBgm(response.data.gameDetail.bgm);
