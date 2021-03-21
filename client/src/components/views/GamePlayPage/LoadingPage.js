@@ -8,6 +8,7 @@ const LOADING_TYPE = {
   SLIDERIGHT: 3,
   SLIDEUP: 4,
   SLIDEDOWN: 5,
+  BLACKIN: 6,
 };
 
 const LoadingPage = () => {
@@ -53,6 +54,14 @@ const LoadingPage = () => {
       return (
         <div
           style={{ animation: "1s ease-out 0s 1 slideDown" }}
+          className="loading_page"
+          div
+        />
+      );
+    case LOADING_TYPE.BLACKIN:
+      return (
+        <div
+          style={{ animation: "1s ease-out 0s 1 blackIn" }}
           className="loading_page"
           div
         />

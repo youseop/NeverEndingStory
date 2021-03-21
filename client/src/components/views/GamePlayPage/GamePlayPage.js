@@ -99,7 +99,7 @@ const ProductScreen = (props) => {
           setI(0);
           setScene(response.data.scene);
           dispatch(gameLoadingPage(0));
-          dispatch(gameLoadingPage(1));
+          dispatch(gameLoadingPage(6));
         } else {
           message.error("Scene 정보가 없습니다.");
         }
