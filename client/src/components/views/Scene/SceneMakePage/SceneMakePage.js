@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import LoadingPage from "../../GamePlayPage/LoadingPage";
 import { gameLoadingPage } from "../../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../../_actions/controlPage_actions";
-import "./GamePlusScene.css";
+import "./SceneMakePage.css";
 import SceneBox from "./SceneBox/SceneBox";
 
 
@@ -23,6 +23,13 @@ var bgm_audio = new Audio();
 var sound_audio = new Audio();
 
 function SceneMakePage(props) {
+    const padding = 0.1;
+    const minSize = 300;
+
+    const [ratio, setRatio] = useState(0.5);
+    const [windowWidth, setwindowWidth] = useState(window.innerWidth);
+    const [windowHeight, setwindowHeight] = useState(window.innerHeight);
+    const [newScreenSize, setNewScreenSize] = useState({});
 
     //modal
     const [makeModalState, setMakeModalState] = useState(0);
@@ -31,14 +38,13 @@ function SceneMakePage(props) {
 
     //modal end
     const dispatch = useDispatch();
-    // dispatch(navbarControl(false));
+    dispatch(navbarControl(false));
     const location = useLocation();
 
     const sceneInfo = location.state;
     const gameId = props.match.params.gameId;
     const userId = useSelector((state) => state.user);
 
-    const [IsLoading, setIsLoading] = useState(false);
     const [SidBar_script, setSidBar_script] = useState(true);
 
     const [CharacterList, setCharacterList] = useState([]);
@@ -63,7 +69,6 @@ function SceneMakePage(props) {
                         const lastCut = response.data.lastCut;
                         setCharacterList(lastCut.characterList);
                         setBackgroundImg(lastCut.background);
-                        // setScript(lastCut.script);
                         setName(lastCut.name);
 
                         dispatch(gameLoadingPage(0));
@@ -73,7 +78,6 @@ function SceneMakePage(props) {
                     }
                 })
         }
-        setIsLoading(true)
     }, [])
 
     useEffect(() => {
@@ -83,7 +87,7 @@ function SceneMakePage(props) {
                 if (response.data.ratio) {
                     setRatio(parseFloat(response.data.ratio));
                 } else {
-                    message.error("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
+                    message.info("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
                 }
             } else {
                 message.error("Scene 정보가 없습니다.");
@@ -346,9 +350,8 @@ function SceneMakePage(props) {
     const [gameDetail, setGameDetail] = useState([]);
     const [sideBar, setSideBar] = useState([]);
 
-    const variable = { gameId: gameId }
     useEffect(() => {
-        Axios.post('/api/game/getgamedetail', variable)
+        Axios.post('/api/game/getgamedetail', { gameId: gameId })
             .then(response => {
                 if (response.data.success) {
                     setGameDetail(response.data.gameDetail)
@@ -356,7 +359,7 @@ function SceneMakePage(props) {
                     alert('게임 정보를 로딩하는데 실패했습니다.')
                 }
             })
-    }, [reload])
+    }, [reload, gameId])
 
 
     useEffect(() => {
@@ -400,15 +403,7 @@ function SceneMakePage(props) {
             </div>)
             setSideBar(reload_Sidebar)
         }
-    }, [gameDetail])
-
-
-    const padding = 0.1;
-    const minSize = 300;
-
-    const [ratio, setRatio] = useState(0.5);
-    const [windowWidth, setwindowWidth] = useState(window.innerWidth);
-    const [windowHeight, setwindowHeight] = useState(window.innerHeight);
+    }, [gameDetail, CharacterList, reload])
 
     useEffect(() => {
         function handleResize() {
@@ -416,27 +411,25 @@ function SceneMakePage(props) {
             setwindowHeight(window.innerHeight);
         }
         window.addEventListener('resize', handleResize)
-    });
-
-    let newScreenSize;
-    if (windowWidth * ratio > windowHeight) {
-        newScreenSize = {
-            width: `${windowHeight * (1 - 2 * padding) / ratio}px`,
-            height: `${windowHeight * (1 - 2 * padding)}px`,
-            minWidth: `${minSize / ratio}px`,
-            minHeight: `${minSize}px`
-        }
-    } else {
-        newScreenSize = {
-            width: `${windowWidth * (1 - 2 * padding)}px`,
-            height: `${windowWidth * (1 - 2 * padding) * ratio}px`,
-            minWidth: `${minSize}px`,
-            minHeight: `${minSize * ratio}px`
-        }
-    }
+        if (windowWidth * ratio > windowHeight) {
+            setNewScreenSize ({
+                width: `${windowHeight * (1 - 2 * padding) / ratio}px`,
+                height: `${windowHeight * (1 - 2 * padding)}px`,
+                minWidth: `${minSize / ratio}px`,
+                minHeight: `${minSize}px`
+            })
+        } else {
+            setNewScreenSize ({
+                width: `${windowWidth * (1 - 2 * padding)}px`,
+                height: `${windowWidth * (1 - 2 * padding) * ratio}px`,
+                minWidth: `${minSize}px`,
+                minHeight: `${minSize * ratio}px`
+            })
+        }   
+    },[window.innerWidth, window.innerHeight]);
     
     return (
-        <div>
+        <div className="scene__container">
             {/* <LoadingPage />   */}
             <div>
                 <div

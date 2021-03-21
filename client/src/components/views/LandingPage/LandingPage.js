@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Card, Avatar, Col, Typography } from "antd";
 import Axios from "axios";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const { Title } = Typography;
 const { Meta } = Card;
@@ -20,18 +21,19 @@ function LandingPage() {
     }, []);
 
     const renderCards = games.map((game, index) => {
-        if (!game.title)
-            return
+        if (!game.title){
+            return (<div></div>);
+        }
         return (
             <Col key={index} lg={6} md={8} xs={24}>
                 <div style={{ position: "relative" }}>
-                    <a href={`/game/${game._id}`}>
+                    <Link to={`/game/${game._id}`}>
                         <img
                             style={{ width: "100%" }}
                             src={`http://localhost:5000/${game.thumbnail}`}
                             alt="thumbnail"
                         />
-                    </a>
+                    </Link>
                 </div>
                 <br />
                 <Meta

@@ -1,4 +1,4 @@
-import "../Scene/SceneMakePage/GamePlusScene.css";
+import "./GamePlayPage.css";
 import CharacterBlock from "./CharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
 import React, { useEffect, useState } from "react";
@@ -11,12 +11,14 @@ import useKey from "../../functions/useKey";
 import { useDispatch } from "react-redux";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../_actions/controlPage_actions";
+import classNames from 'classnames/bind';
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
 
 // playscreen
 const ProductScreen = (props) => {
+
   const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
   
@@ -36,12 +38,18 @@ const ProductScreen = (props) => {
   const [HistoryMap, setHistoryMap] = useState(false);
   const [Clickable, setClickable] = useState(false);
 
+  const [ToggleFullSizeScreen,setToggleFullSizeScreen] = useState(true);
+  const styleContainer = [{'gamePlay__container_fullscreen' : ToggleFullSizeScreen,'gamePlay__container' : !ToggleFullSizeScreen}]
+  const styleMainContainer = [{'gamePlay__mainContainer_fullscreen' : ToggleFullSizeScreen,'gamePlay__mainContainer' : !ToggleFullSizeScreen}]
+
   useKey("Enter", handleEnter);
   useKey("Space", handleEnter);
   useKey("Digit1", handleChoice);
   useKey("Digit2", handleChoice);
   useKey("Digit3", handleChoice);
   useKey("Digit4", handleChoice);
+
+
 
   function playMusic(i) {
     if (Scene.cutList[i].bgm.music) {
@@ -126,7 +134,7 @@ const ProductScreen = (props) => {
       setwindowHeight(window.innerHeight);
     }
     window.addEventListener('resize', handleResize)
-  },[window.innerWidth, window.innerHeight]);
+  },[window.innerWidth, window.inner]);
   
   let newScreenSize;
   if ( windowWidth * ratio > windowHeight  ) {
@@ -144,13 +152,14 @@ const ProductScreen = (props) => {
       minHeight: `${minSize * ratio}px`
       }
   }
+  
   dispatch(navbarControl(false));
 
   if (Scene.cutList) {
     if (i == 0) playMusic(0);
     return (
-      <div>
-        <div>
+      <div className={classNames(styleContainer)}>
+        <div className={classNames(styleMainContainer)}>
           <div
             className="backgroundImg_container"
             style={newScreenSize}
@@ -198,16 +207,24 @@ const ProductScreen = (props) => {
         </div>
         <div className="gamePlay__btn_container">
             <button
-                className="gamePlay__complaint_btn" 
-                onClick={() => setDislike(state => !state)}>
-                신고
-            </button>
-            <button
-                className="gamePlay__historyMap_btn"
-                onClick={() => setHistoryMap(state => !state)}
+                className="gamePlay__btn"
+                onClick={() => setToggleFullSizeScreen(state => !state)}
             >
-                미니맵
+                {ToggleFullSizeScreen ? "전체화면 종료" : "전체화면"}
             </button>
+              <button
+                  className="gamePlay__btn"
+                  onClick={() => setHistoryMap(state => !state)}
+              >
+                  미니맵
+              </button>
+          {!ToggleFullSizeScreen && 
+              <button
+                  className="gamePlay__btn" 
+                  onClick={() => setDislike(state => !state)}>
+                  신고
+              </button>
+          }
         </div>
         <DislikePopup 
             sceneId={sceneId}
