@@ -179,7 +179,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
         let user = await User.findOne({ _id: userId });
 
 
-        if (user.gamePlaying.id && gameId.toHexString() === user.gamePlaying.gameId.toHexString()) {
+        if (user.gamePlaying.gameId && gameId.toHexString() === user.gamePlaying.gameId.toHexString()) {
             return res
                 .status(200)
                 .json({
@@ -188,6 +188,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                     isMaking: user.gamePlaying.isMaking,
                 });
         }
+
         if (user.gamePlaying.gameId) {
             updateHistoryFromPlaying(user);
         }

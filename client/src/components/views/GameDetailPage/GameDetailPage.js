@@ -56,7 +56,7 @@ function GameDetailPage(props) {
             {/* <a href={`/gameplay/${gameId}/${sceneId}`}>게임 시작하기..</a> */}
 
             {/* 게임 시작하기 or 이어 만들기 */}
-            <Link to={`/gameplay/${gameId}/${sceneId}`}>
+            <Link to={isMaking ? `/scene/make/${gameId}/${sceneId}` : `/gameplay/${gameId}/${sceneId}`}>
                 게임 시작하기
             </Link>
             <Comment gameId={gameId} />

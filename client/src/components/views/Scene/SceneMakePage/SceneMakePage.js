@@ -37,13 +37,13 @@ const SceneMakePage = (props) => {
     const [makeModalState, setMakeModalState] = useState(0);
     const [reload, setReload] = useState(1);
     const [uploadModalState, setUploadModalState] = useState(false);
-    
-    
+
+
     //modal end
     const dispatch = useDispatch();
-    
+
     const [SidBar_script, setSidBar_script] = useState(true);
-    
+
     const [CharacterList, setCharacterList] = useState([]);
     const [BackgroundImg, setBackgroundImg] = useState("");
     const [Script, setScript] = useState("");
@@ -56,17 +56,17 @@ const SceneMakePage = (props) => {
         name: "",
         music: "",
     });
-    
+
     const gameId = props.match.params.gameId;
     const sceneId = props.match.params.sceneId;
     const [isFirstScene, setIsFirstScene] = useState(false)
-    
+
     let scene;
     useEffect(() => {
         dispatch(navbarControl(false));
     }, [])
-    
-    useEffect( () => {
+
+    useEffect(() => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
             if (res.data.success) { scene = res.data.scene; }
@@ -74,11 +74,11 @@ const SceneMakePage = (props) => {
                 console.log("get scene ERROR");
                 props.history.push("/");
             }
-            
+
             if (!scene.isFirst) {
                 console.log(" This scene is NOT first ")
                 const variable = { sceneId: scene.prevSceneId };
-    
+
                 Axios.post("/api/scene/scenedetail", variable)
                     .then((response) => {
                         if (response.data.success) {
@@ -86,7 +86,7 @@ const SceneMakePage = (props) => {
                             setCharacterList(lastCut.characterList);
                             setBackgroundImg(lastCut.background);
                             setName(lastCut.name);
-    
+
                             dispatch(gameLoadingPage(0));
                             dispatch(gameLoadingPage(1));
                         } else {
@@ -94,7 +94,7 @@ const SceneMakePage = (props) => {
                         }
                     })
             }
-            else{
+            else {
                 setIsFirstScene(true)
             }
         })();
@@ -302,7 +302,7 @@ const SceneMakePage = (props) => {
         setUploadModalState(true)
     }
 
-    const onSubmit_saveScene = async (event) => {
+    const onSubmit_saveScene = async (event, isTmp=0) => {
         if (CutList.length < 2) {
             message.error("최소 3개의 컷을 생성해주세요.");
             return;
@@ -327,6 +327,7 @@ const SceneMakePage = (props) => {
                 gameId: gameId,
                 sceneId: sceneId,
                 cutList: submitCutList,
+                isTmp,
             };
 
             const response = await Axios.post(`/api/scene/save`, variable)
@@ -334,15 +335,21 @@ const SceneMakePage = (props) => {
             if (response.data.success) {
                 message
                     .loading("게임 업로드 중..", 1.0)
-                    .then(() =>
-                        message.success("게임 제작이 완료되었습니다.", 1.0)
+                    .then(() => {
+                        if (!isTmp) { 
+                            message.success("게임 제작이 완료되었습니다.", 1.0)
+                        }
+                        else {
+                            message.success("업로드 성공.")
+                        }
+                    }
                     ).then(() => {
-                        if (isFirstScene) {
+                        if (!isTmp && isFirstScene) {
                             history.push(
                                 `/game/${gameId}`
                             );
 
-                        } else {
+                        } else if ( !isTmp ) {
                             history.push(
                                 `/gameplay/${gameId}/${response.data.scene._id}`
                             );
@@ -356,6 +363,10 @@ const SceneMakePage = (props) => {
             message.error("제출 취소요");
         }
     };
+
+    const onTmpSave = (event) => {
+        onSubmit_saveScene(event, 1);
+    }
 
     const [gameDetail, setGameDetail] = useState([]);
     const [sideBar, setSideBar] = useState([]);
@@ -503,6 +514,9 @@ const SceneMakePage = (props) => {
                 saveCut={saveCut}
             />
             <div className="sceneMake__btn_container">
+                <Button type="primary" onClick={onTmpSave}>
+                    Temporary save
+                </Button>
                 <Button type="primary" onClick={onRemove_cut}>
                     Remove Cut
                 </Button>
@@ -511,7 +525,7 @@ const SceneMakePage = (props) => {
                         Next(Cut)
                     </Button>
                 )}
-                {isFirstScene?
+                {isFirstScene ?
                     <Button type="primary" onClick={onSubmit_first}>
                         Submit First
                         </Button>

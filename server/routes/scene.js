@@ -3,11 +3,44 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const { Scene } = require("../models/Scene");
 const { Game } = require("../models/Game");
+const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
+
+const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
+  const {
+    gamePlaying: { gameId, sceneIdList },
+    gameHistory,
+    isMaking,
+  } = user;
+  
+  if (user.gamePlaying !== undefined ) {
+    let i;
+    for (i=0; i < gameHistory.length; i++) {
+      if (gameHistory[i].gameId && gameHistory[i].gameId.toHexString() === user.gamePlaying.gameId.toHexString()) {
+        user.gameHistory[i].sceneIdList = [...sceneIdList];
+        user.gameHistory[i].isMaking = isMaking;
+        break;
+      }
+    }
+    
+    if (i === gameHistory.length) {
+      user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList], isMaking });
+    }
+  }
+
+  user.gamePlaying = {
+    gameId: targetGameId,
+    sceneIdList: [targetSceneId],
+    isMaking: true,
+  };
+  user.save((err) => {
+    if (err) return res.json({ success: false, err })
+  });
+}
 
 router.post('/create', auth, async (req, res) => {
   const userId = req.user._id
-  const scene = new Scene ({
+  const scene = new Scene({
     gameId: req.body.gameId,
     writer: userId,
     title: req.body.title,
@@ -18,60 +51,70 @@ router.post('/create', auth, async (req, res) => {
     prevSceneId: req.body.prevSceneId,
   })
 
-  scene.save( (err, scene) => {
-    console.log
-    if(err) return res.json({success: false, err})
-    return res.status(200).json({success: true, sceneId: scene._id})
+  const user = await User.findOne({ _id: userId });
+  if ( req.body.isFirst ) {
+    updatePlayingForFirst(req.body.gameId, scene._id, user);
+  }
+  else {
+    user.gamePlaying.isMaking = true;
+    user.gamePlaying.sceneIdList.push(scene._id);
+    user.save((err) => {
+      if (err) return res.json({ success: false, err })
+    });
+  }
+
+  scene.save((err, scene) => {
+    if (err) return res.json({ success: false, err })
+    return res.status(200).json({ success: true, sceneId: scene._id })
   })
 })
 
-router.post('/save', async (req, res) => {
-  
-  const sceneId = req.body.sceneId;
-  const scene = await Scene.findOne({_id: sceneId});
-  scene.cutList = req.body.cutList;
+router.post('/save', auth, async (req, res) => {
 
-  // object in object , 자동으로 안들어가서 charaterList 직접 삽입
+  const sceneId = req.body.sceneId;
+  const scene = await Scene.findOne({ _id: sceneId });
+  const userId = req.user._id;
+  const isTmp = req.body.isTmp;
+
+  if( !isTmp ) {
+    User.updateOne({_id: userId}, {$set: {'gamePlaying.isMaking': false}}).exec();
+    scene.status = 1;
+  }
+  
+  scene.cutList = req.body.cutList;
   for (let i = 0; i < req.body.cutList.length; i++) {
     scene.cutList[i].characterList = [...req.body.cutList[i].characterList];
   }
-  // console.log(scene);
+
   scene.save((err, scene) => {
     if (err) return res.json({ success: false, err })
-    // return res.status(200).json({success: true, scene})
+    if (isTmp) return res.status(200).json({ success: true, scene })
   })
 
-  // Only First Scene
-  if (scene.isFirst) {
-    console.log(scene)
+  if (!isTmp && scene.isFirst) {
     try {
       const game = await Game.findOne({ _id: scene.gameId });
 
       if (!game.first_scene) {
         game.first_scene = scene._id;
-    console.log(game)
 
         game.save((err, game) => {
           if (err) return res.json({ success: false, err })
           return res.status(200).json({ success: true, scene })
         });
       }
-      // else{
-      // TODO : 이미 첫번째가 삽입됐는데, 첫 씬인 경우 (== 첫씬을 다 제출하고 뒤로가기)
-      // }
 
     } catch (err) {
-      // console.log(err)
       return res.status(400).json({ success: false, err })
     }
   }
-  // First가 아닌 scene에 대해서 하는 행위
-  else{
-    try{
-      const prev_scene = await Scene.findOne({_id : scene.prevSceneId})
+
+  else if (!isTmp) {
+    try {
+      const prev_scene = await Scene.findOne({ _id: scene.prevSceneId })
       const insertScene = {
-        sceneId : scene._id,
-        script : scene.title,
+        sceneId: scene._id,
+        script: scene.title,
       }
       prev_scene.nextList.push(insertScene)
       prev_scene.save((err, prev_scene) => {
@@ -87,7 +130,6 @@ router.post('/save', async (req, res) => {
 })
 
 router.post("/scenedetail", (req, res) => {
-  // console.log(req.body.sceneId)
   Scene.findOne({ _id: mongoose.Types.ObjectId(req.body.sceneId) }).exec((err, sceneDetail) => {
     if (err) return res.status(400).send(err);
     const lastCut = sceneDetail.cutList[sceneDetail.cutList.length - 1];
