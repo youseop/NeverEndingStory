@@ -30,7 +30,6 @@ const LoadingPage = () => {
         <div
           style={{ animation: "1s ease-out 0s 1 slideLeft" }}
           className="loading_page"
-          div
         />
       );
     case LOADING_TYPE.SLIDERIGHT:
@@ -38,7 +37,6 @@ const LoadingPage = () => {
         <div
           style={{ animation: "1s ease-out 0s 1 slideRight" }}
           className="loading_page"
-          div
         />
       );
     case LOADING_TYPE.SLIDEUP:
@@ -46,7 +44,6 @@ const LoadingPage = () => {
         <div
           style={{ animation: "1s ease-out 0s 1 slideUp" }}
           className="loading_page"
-          div
         />
       );
     case LOADING_TYPE.SLIDEDOWN:
@@ -54,7 +51,6 @@ const LoadingPage = () => {
         <div
           style={{ animation: "1s ease-out 0s 1 slideDown" }}
           className="loading_page"
-          div
         />
       );
     default:

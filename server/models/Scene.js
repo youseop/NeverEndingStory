@@ -18,6 +18,17 @@ const nextSceneSchema = mongoose.Schema({
     },
 });
 
+
+const characterCutSchema = mongoose.Schema({
+    index: String,
+    image: String,
+    posX: Number,
+    posY: Number,
+    reverse: Number,
+    size: Number,
+});
+
+
 const cutSchema = mongoose.Schema({
     name: {
         type: String,
@@ -25,11 +36,7 @@ const cutSchema = mongoose.Schema({
     script: {
         type: String,
     },
-    characterList: [
-        {
-            type: String,
-        },
-    ],
+    characterList: [characterCutSchema],
     background: {
         type: String,
     },
@@ -76,7 +83,7 @@ const sceneSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
-}, {timestamps: true});
+}, { timestamps: true });
 
 const Scene = mongoose.model("Scene", sceneSchema);
 

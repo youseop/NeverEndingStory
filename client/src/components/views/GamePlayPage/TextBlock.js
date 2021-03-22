@@ -3,29 +3,27 @@ import React, { useReducer } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { message } from "antd";
 import InputModal from "../Modal/InputModal";
-import Typewriter from "typewriter-effect";
+import TextAnimation from './TextAnimation'
 
 // 일단 4 나중에 어떻게 할지 다시 결정..
 const CHOICE_NUM = 4;
 
 export const TextBlock = (props) => {
-  const { cut_name, cut_script } = props;
+  const { cut_name, cut_script, setIsTyping, isTyping } = props;
   return (
     <div className="text_container">
       <div className="name_block">{cut_name}</div>
       <hr className="text_line"></hr>
       <br />
       <div className="text_block">
-        <Typewriter
-          options={{
-            strings: cut_script,
-            autoStart: true,
-            loop: false,
-            delay: 10,
-            cursor: "",
-          }}
-        />
-        {/* {cut_script} */}
+        <div>
+          {
+            isTyping ? <TextAnimation
+              cut_script={cut_script}
+              setIsTyping={setIsTyping}
+            /> : cut_script
+          }
+        </div>
       </div>
     </div>
   );
@@ -40,7 +38,9 @@ export const TextBlockChoice = (props) => {
     scene_next_list,
     scene_id,
     scene_depth,
-    setClickable
+    setClickable,
+    setIsTyping,
+    isTyping,
   } = props;
   const choices = scene_next_list.map((choice, index) => {
     return (
@@ -54,15 +54,12 @@ export const TextBlockChoice = (props) => {
       <div className="name_block">{cut_name}</div>
       <hr className="text_line"></hr>
       <div className="text_block">
-        <Typewriter
-          options={{
-            strings: cut_script,
-            autoStart: true,
-            loop: false,
-            delay: 10,
-            cursor: "",
-          }}
-        />
+        {
+          isTyping ? <TextAnimation
+            cut_script={cut_script}
+            setIsTyping={setIsTyping}
+          /> : cut_script
+        }
         <br />
         {/* 선택의 길이 등장할 수 있는 경우 */}
         <div>{choices}</div>

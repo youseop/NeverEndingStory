@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./GameDetailPage.css";
 import Comment from '../Comment/Comment';
-import useSound from 'use-sound'
 
 function GameDetailPage(props) {
     const gameId = props.match.params.gameId;

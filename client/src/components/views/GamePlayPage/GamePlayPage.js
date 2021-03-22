@@ -86,10 +86,12 @@ const ProductScreen = (props) => {
     }
   }
 
+  const [isTyping, setIsTyping] = useState(true);
   function handleEnter(event) {
-    if (i < Scene.cutList.length - 1 && !Clickable) {
+    if (!isTyping && i < Scene.cutList.length - 1 && !Clickable) {
       playMusic(i + 1);
       setI(i + 1);
+      setIsTyping(true)
     }
   }
 
@@ -223,11 +225,15 @@ const ProductScreen = (props) => {
                 scene_id={Scene._id}
                 scene_next_list={Scene.nextList}
                 setClickable={setClickable}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
               />
             ) : (
               <TextBlock
                 cut_name={Scene.cutList[i].name}
                 cut_script={Scene.cutList[i].script}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
               />
             )}
             <HistoryMapPopup
