@@ -1,21 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Axios from "axios";
 import "./TreeMap.css";
 import { message } from "antd";
-
-function MapMove(x, y) {
-  var map = document.getElementsByClassName("TreeMap_example")[0];
-  var computedStyle = window.getComputedStyle(map);
-  var left = computedStyle.getPropertyValue("left");
-  var top = computedStyle.getPropertyValue("top");
-  console.log("computed:" + left + top);
-  // var new_position =
-  // transform !== "none" ? parseInt(transform.split(",")[4]) : 0;
-  // map.style.transform = `translate(${new_position - 250}px, 0px)`;
-  map.style.left = `(${parseInt(left) + x}px)`;
-  map.style.top = `(${parseInt(top) + y}px)`;
-  console.log("new:" + `(${parseInt(left) + x}px)`, `(${parseInt(top) + y}px)`);
-}
 
 function GoToScene(props) {
   const { userhistory, gameId, sceneId, GoScene } = props;
@@ -58,6 +44,36 @@ function useConstructor(callBack = () => {}) {
   setHasBeenCalled(true);
 }
 
+//* 나중에 스키마로 만들어야함
+const SceneDepth = 4;
+const sceneMap = [
+  { sceneId: 1, link: null },
+  { sceneId: 2, link: null },
+  { sceneId: 3, link: null },
+  { sceneId: 4, link: null },
+  { sceneId: null, link: null },
+  { sceneId: null, link: null },
+  { sceneId: 7, link: null },
+  { sceneId: 8, link: null },
+  { sceneId: 9, link: null },
+  { sceneId: 10, link: null },
+  { sceneId: 11, link: null },
+  { sceneId: 12, link: null },
+  { sceneId: 13, link: null },
+  { sceneId: 14, link: null },
+  { sceneId: 15, link: null },
+  { sceneId: 16, link: null },
+  { sceneId: 17, link: null },
+  { sceneId: 18, link: null },
+  { sceneId: 19, link: null },
+  { sceneId: 20, link: null },
+  { sceneId: 21, link: null },
+  { sceneId: 22, link: null },
+];
+
+const nodeWidth = 10;
+const nodeHeight = 5;
+
 let pivot = [0, 0];
 let position = [50, 0];
 let drag = false;
@@ -67,10 +83,10 @@ function TreeMapPopup(props) {
   const { gameId, sceneId } = props.history;
 
   const [Position, setPosition] = useState();
-
   useConstructor(() => {
     setPosition(position);
     console.log("constructor");
+    console.log(userhistory);
   });
 
   useEffect(() => {
@@ -106,7 +122,6 @@ function TreeMapPopup(props) {
   }
 
   function mouseMove(e) {
-    // console.log(Origin);
     if (drag) {
       if (pivot[0] != e.pageX || pivot[1] != e.pageY) {
         position = [
@@ -120,16 +135,79 @@ function TreeMapPopup(props) {
     e.preventDefault();
   }
 
+  let depth = 1;
+  let cnt_limit = 1;
+  let cnt = 0;
+  const TreeMap_nodes = sceneMap.map((scene, index) => {
+    if (cnt == cnt_limit) {
+      depth += 1;
+      cnt = 0;
+      cnt_limit = cnt_limit * 4;
+    }
+    cnt += 1;
+
+    console.log(index, depth);
+
+    return (
+      <div
+        className="TreeMap_nodeContainer"
+        style={{
+          width: (1 / SceneDepth) * 100 + "%",
+          height: (1 / cnt_limit) * 100 + "%",
+          left: ((depth - 1) / SceneDepth) * 100 + "%",
+          top: ((cnt - 1) / cnt_limit) * 100 + "%",
+        }}
+      >
+        {/* {index} */}
+        <div
+          className="TreeMap_node"
+          style={{ width: 1 +"rem", height: 1+"rem" }}
+
+        />
+        {depth != SceneDepth ? (
+          <Fragment>
+            <hr
+              className="TreeMap_nodeLine"
+              style={{ left: "70%", top: "12.5%" }}
+            />
+            <hr
+              className="TreeMap_nodeLine"
+              style={{ left: "70%", top: "37.5%" }}
+            />
+            <hr
+              className="TreeMap_nodeLine"
+              style={{ left: "70%", top: "62.5%" }}
+            />
+            <hr
+              className="TreeMap_nodeLine"
+              style={{ left: "70%", top: "87.5%" }}
+            />
+            <hr
+              className="TreeMap_nodeLine"
+              style={{ left: "50%", top: "50%" }}
+            />
+            <hr className="TreeMap_nodeLine_vertical" />
+          </Fragment>
+        ) : null}
+      </div>
+    );
+  });
+
   return trigger ? (
     <div className="TreeMap_popup">
       <button className="close_btn" onClick={() => close_button()}>
         close
       </button>
       <div
-        className="TreeMap_example"
-        style={{ left: Position[0], top: Position[1] }}
+        className="TreeMap_inner"
+        style={{
+          width: nodeWidth * SceneDepth + "%",
+          height: nodeHeight * Math.pow(4, SceneDepth - 1) + "%",
+          left: Position[0],
+          top: Position[1],
+        }}
       >
-        예시
+        {TreeMap_nodes}
       </div>
     </div>
   ) : null;

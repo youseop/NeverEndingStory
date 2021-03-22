@@ -83,6 +83,7 @@ const ProductScreen = (props) => {
       playMusic(i + 1);
       setI(i + 1);
     }
+    // event.preventDefault();
   }
 
   function handleChoice(event) {
