@@ -61,6 +61,15 @@ const SceneMakePage = (props) => {
     const sceneId = props.match.params.sceneId;
     const [isFirstScene, setIsFirstScene] = useState(false)
 
+    const [CutNumber, setCutNumber] = useState(0);
+    const [Hover, setHover] = useState(false);
+
+    const [CutList, setCutList] = useState([]);
+    const [EmptyCutList, setEmptyCutList] = useState(
+        Array.from({ length: 30 }, () => 0)
+    );
+
+
     let scene;
     useEffect(() => {
         dispatch(navbarControl(false));
@@ -92,6 +101,9 @@ const SceneMakePage = (props) => {
                 setCharacterList(tmpFirstCut.characterList)
                 setBackgroundImg(tmpFirstCut.background)
                 setName(tmpFirstCut.name);
+                setScript(tmpFirstCut.script);
+                setCutNumber(scene.cutList.length-1);
+
                 dispatch(gameLoadingPage(0));
                 dispatch(gameLoadingPage(1));
 
@@ -138,14 +150,7 @@ const SceneMakePage = (props) => {
         });
     }, [])
 
-    const [CutNumber, setCutNumber] = useState(0);
-    const [Hover, setHover] = useState(false);
-
-    const [CutList, setCutList] = useState([]);
-    const [EmptyCutList, setEmptyCutList] = useState(
-        Array.from({ length: 30 }, () => 0)
-    );
-
+  
 
     const onScriptChange = (event) => {
         setScript(event.currentTarget.value);

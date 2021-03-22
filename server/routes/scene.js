@@ -84,14 +84,15 @@ router.post('/save', auth, async (req, res) => {
   const isTmp = req.body.isTmp;
 
   if (!isTmp) {
-    const user = User.findOne({ _id: userId });
-    user.gamePlaying.isMaking = false;
+    const user = await User.findOne({ _id: userId });
+    if(user.gamePlaying) user.gamePlaying.isMaking = false;
 
     /* 추가 해야할 기능 :
     /* 1. 내가 기여한 게임 
     /* 2. 내가 창조한 게임 */
 
-    const idx = user.makingGameList.findIndex(item => item.sceneId === sceneId);
+    
+    const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === sceneId);
     if (idx > -1)  user.makingGameList.splice(idx, 1);
     user.save((err)=>{
       if(err) return res.status(400).json({success:false, err})
