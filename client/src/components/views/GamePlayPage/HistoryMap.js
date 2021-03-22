@@ -140,11 +140,11 @@ function HistoryMapPopup(props) {
           </div>
         </div>
       ) : (
-        ""
+        null
       )}
     </div>
   ) : (
-    ""
+    null
   );
 }
 

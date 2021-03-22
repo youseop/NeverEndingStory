@@ -11,8 +11,9 @@ import useKey from "../../functions/useKey";
 import { useDispatch } from "react-redux";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../_actions/controlPage_actions";
-import classNames from 'classnames/bind';
+import classNames from "classnames/bind";
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
+import TreeMapPopup from "./TreeMap";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
@@ -21,20 +22,20 @@ var sound_audio = new Audio();
 const ProductScreen = (props) => {
   const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
-  
 
   const [ratio, setRatio] = useState(0.5);
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
-  const [windowHeight, setwindowHeight] = useState(window.innerHeight);  
+  const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const userHistory = props.history;
-  
+
   const [i, setI] = useState(0);
   const [Scene, setScene] = useState({});
   const [Dislike, setDislike] = useState(false);
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
+  const [TreeMap, setTreeMap] = useState(false);
   const [Clickable, setClickable] = useState(false);
-  
+
   const dispatch = useDispatch();
 
   const maximizableElement = useRef(null);
@@ -115,28 +116,26 @@ const ProductScreen = (props) => {
           setI(0);
           setScene(response.data.scene);
           dispatch(gameLoadingPage(0));
-<<<<<<< HEAD
           dispatch(gameLoadingPage(6));
-=======
-          dispatch(gameLoadingPage(5));
->>>>>>> makeScene
         } else {
           message.error("Scene 정보가 없습니다.");
         }
       }
     );
-    
+
     const variable = { gameId: gameId };
     Axios.post("/api/game/ratio", variable).then((response) => {
-        if (response.data.success) {
-            if (response.data.ratio) {
-                setRatio(parseFloat(response.data.ratio));
-            } else {
-                message.error("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
-            }
+      if (response.data.success) {
+        if (response.data.ratio) {
+          setRatio(parseFloat(response.data.ratio));
         } else {
-            message.error("Scene 정보가 없습니다.");
+          message.error(
+            "배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다."
+          );
         }
+      } else {
+        message.error("Scene 정보가 없습니다.");
+      }
     });
   }, [sceneId]);
 
@@ -145,59 +144,71 @@ const ProductScreen = (props) => {
       setwindowWidth(window.innerWidth);
       setwindowHeight(window.innerHeight);
     }
-    window.addEventListener('resize', handleResize)
-  },[window.innerWidth, window.inner]);
-  
-  const padding = (isFullscreen ? 0.0 : 0.1);
+    window.addEventListener("resize", handleResize);
+  }, [window.innerWidth, window.inner]);
+
+  const padding = isFullscreen ? 0.0 : 0.1;
   const minSize = 300;
 
   let newScreenSize;
-  if ( windowWidth * ratio > windowHeight  ) {
-      newScreenSize = {
-      width:`${windowHeight * (1-2*padding) / ratio}px`,
-      height:`${windowHeight * (1-2*padding)}px`,
+  if (windowWidth * ratio > windowHeight) {
+    newScreenSize = {
+      width: `${(windowHeight * (1 - 2 * padding)) / ratio}px`,
+      height: `${windowHeight * (1 - 2 * padding)}px`,
       minWidth: `${minSize / ratio}px`,
-      minHeight: `${minSize}px`
-      }
+      minHeight: `${minSize}px`,
+    };
   } else {
-      newScreenSize = {
-      width:`${windowWidth * (1-2*padding)}px`,
-      height:`${windowWidth * (1-2*padding) * ratio}px`,
+    newScreenSize = {
+      width: `${windowWidth * (1 - 2 * padding)}px`,
+      height: `${windowWidth * (1 - 2 * padding) * ratio}px`,
       minWidth: `${minSize}px`,
-      minHeight: `${minSize * ratio}px`
-      }
+      minHeight: `${minSize * ratio}px`,
+    };
   }
-  
-  // dispatch(navbarControl(false));
+
+  dispatch(navbarControl(false));
 
   if (Scene.cutList) {
     if (i == 0) playMusic(0);
     return (
-      <div 
-        className={`${isFullscreen ? "gamePlay__container_fullscreen" : "gamePlay__container"}`}
+      <div
+        className={`${
+          isFullscreen
+            ? "gamePlay__container_fullscreen"
+            : "gamePlay__container"
+        }`}
         ref={maximizableElement}
       >
         <div
-          className={`${isFullscreen ? "gamePlay__mainContainer_fullscreen" : "gamePlay__mainContainer"}`}
+          className={`${
+            isFullscreen
+              ? "gamePlay__mainContainer_fullscreen"
+              : "gamePlay__mainContainer"
+          }`}
         >
           <div
-            className={`${isFullscreen ? "backgroundImg_container_fullscreen" : "backgroundImg_container"}`}
+            className={`${
+              isFullscreen
+                ? "backgroundImg_container_fullscreen"
+                : "backgroundImg_container"
+            }`}
             style={newScreenSize}
             onClick={(event) => handleEnter(event)}
           >
-            <LoadingPage />  
-            {Scene.cutList[i].background ? 
-            <img
-              className="backgroundImg"
-              src={Scene.cutList[i].background}
-              alt="Network Error"
-            /> 
-            :
-            <div></div>
-            }
+            <LoadingPage />
+            {Scene.cutList[i].background ? (
+              <img
+                className="backgroundImg"
+                src={Scene.cutList[i].background}
+                alt="Network Error"
+              />
+            ) : (
+              <div></div>
+            )}
             <CharacterBlock
               characterList={Scene.cutList[i].characterList}
-              onRemove_character={()=>{}}
+              onRemove_character={() => {}}
             />
 
             {i === Scene.cutList.length - 1 ? (
@@ -223,40 +234,63 @@ const ProductScreen = (props) => {
               setTrigger={setHistoryMap}
               setClickable={setClickable}
             />
+            <TreeMapPopup
+              userhistory={userHistory}
+              history={History}
+              trigger={TreeMap}
+              setTrigger={setTreeMap}
+              setClickable={setClickable}
+            />
           </div>
         </div>
         <div className="gamePlay__btn_container">
-            {errorMessage ? (
+          {errorMessage ? (
             <button
-              onClick={() =>alert("Fullscreen is unsupported by this browser, please try another browser.")}
+              onClick={() =>
+                alert(
+                  "Fullscreen is unsupported by this browser, please try another browser."
+                )
+              }
               className="gamePlay__btn"
             >
               {errorMessage}
             </button>
-            ) : isFullscreen ? (
-              <button onClick={handleExitFullscreen} className="gamePlay__btn">Exit Fullscreen</button>
-            ) : (
-              <button onClick={setIsFullscreen} className="gamePlay__btn">Fullscreen</button>
-            )}
-            <div>
-              <button
-                  className="gamePlay__btn"
-                  onClick={() => setHistoryMap(state => !state)}
-              >
-                  미니맵
-              </button>
-              <button
-                  className="gamePlay__btn" 
-                  onClick={() => setDislike(state => !state)}>
-                  신고
-              </button>
-            </div>
+          ) : isFullscreen ? (
+            <button onClick={handleExitFullscreen} className="gamePlay__btn">
+              Exit Fullscreen
+            </button>
+          ) : (
+            <button onClick={setIsFullscreen} className="gamePlay__btn">
+              Fullscreen
+            </button>
+          )}
+          <div>
+            <button
+              className="gamePlay__btn"
+              onClick={() => setHistoryMap((state) => !state)}
+            >
+              미니맵
+            </button>
+            <button
+              className="gamePlay__btn"
+              onClick={() => setDislike((state) => !state)}
+            >
+              신고
+            </button>
+            <button
+              className="gamePlay__btn"
+              onClick={() => setTreeMap((state) => !state)}
+            >
+              트리맵
+            </button>
+          </div>
         </div>
-        <DislikePopup 
-            sceneId={sceneId}
-            gameId={gameId}
-            trigger={Dislike} 
-            setTrigger={setDislike} />
+        <DislikePopup
+          sceneId={sceneId}
+          gameId={gameId}
+          trigger={Dislike}
+          setTrigger={setDislike}
+        />
       </div>
     );
   } else {

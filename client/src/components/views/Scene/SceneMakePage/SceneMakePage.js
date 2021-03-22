@@ -477,6 +477,7 @@ function SceneMakePage(props) {
                                 onChange={onScriptChange}
                                 value={Script}
                                 className="sceneMake__text_block"
+                                ref={(input) => input && input.focus()}
                             />
                         </div>
                     )}

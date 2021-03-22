@@ -15,7 +15,7 @@ const LoadingPage = () => {
   const loadingType = useSelector((state) => state.gameplay.loadingType);
   switch (loadingType) {
     case LOADING_TYPE.NONE:
-      return "";
+      return null;
     case LOADING_TYPE.BASIC:
       return (
         <div
@@ -30,43 +30,38 @@ const LoadingPage = () => {
         <div
           style={{ animation: "1s ease-out 0s 1 slideLeft" }}
           className="loading_page"
-          div
-        />
+        ></div>
       );
     case LOADING_TYPE.SLIDERIGHT:
       return (
         <div
           style={{ animation: "1s ease-out 0s 1 slideRight" }}
           className="loading_page"
-          div
-        />
+        ></div>
       );
     case LOADING_TYPE.SLIDEUP:
       return (
         <div
           style={{ animation: "1s ease-out 0s 1 slideUp" }}
           className="loading_page"
-          div
-        />
+        ></div>
       );
     case LOADING_TYPE.SLIDEDOWN:
       return (
         <div
           style={{ animation: "1s ease-out 0s 1 slideDown" }}
           className="loading_page"
-          div
-        />
+        ></div>
       );
     case LOADING_TYPE.BLACKIN:
       return (
         <div
           style={{ animation: "1s ease-out 0s 1 blackIn" }}
           className="loading_page"
-          div
-        />
+        ></div>
       );
     default:
-      return "";
+      return null;
   }
 };
 
