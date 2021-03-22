@@ -12,17 +12,17 @@ const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
     gameHistory,
     isMaking,
   } = user;
-  
-  if (user.gamePlaying !== undefined ) {
+
+  if (user.gamePlaying !== undefined) {
     let i;
-    for (i=0; i < gameHistory.length; i++) {
+    for (i = 0; i < gameHistory.length; i++) {
       if (gameHistory[i].gameId && gameHistory[i].gameId.toHexString() === user.gamePlaying.gameId.toHexString()) {
         user.gameHistory[i].sceneIdList = [...sceneIdList];
         user.gameHistory[i].isMaking = isMaking;
         break;
       }
     }
-    
+
     if (i === gameHistory.length) {
       user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList], isMaking });
     }
@@ -52,21 +52,28 @@ router.post('/create', auth, async (req, res) => {
   })
 
   const user = await User.findOne({ _id: userId });
-  if ( req.body.isFirst ) {
+  
+  // TODO : 추후 makingGameList 제한 필요
+  user.makingGameList.push({ sceneId: scene._id, gameId: req.body.gameId });
+
+  if (req.body.isFirst) {
     updatePlayingForFirst(req.body.gameId, scene._id, user);
   }
   else {
     user.gamePlaying.isMaking = true;
     user.gamePlaying.sceneIdList.push(scene._id);
+
+    // update Playing For First에서 이미 save 있음
     user.save((err) => {
-      if (err) return res.json({ success: false, err })
+      console.log(err);
+      if (err) return res.status(400).json({ success: false, err })
     });
   }
-
   scene.save((err, scene) => {
     if (err) return res.json({ success: false, err })
     return res.status(200).json({ success: true, sceneId: scene._id })
   })
+
 })
 
 router.post('/save', auth, async (req, res) => {
@@ -76,11 +83,23 @@ router.post('/save', auth, async (req, res) => {
   const userId = req.user._id;
   const isTmp = req.body.isTmp;
 
-  if( !isTmp ) {
-    User.updateOne({_id: userId}, {$set: {'gamePlaying.isMaking': false}}).exec();
+  if (!isTmp) {
+    const user = User.findOne({ _id: userId });
+    user.gamePlaying.isMaking = false;
+
+    /* 추가 해야할 기능 :
+    /* 1. 내가 기여한 게임 
+    /* 2. 내가 창조한 게임 */
+
+    const idx = user.makingGameList.findIndex(item => item.sceneId === sceneId);
+    if (idx > -1)  user.makingGameList.splice(idx, 1);
+    user.save((err)=>{
+      if(err) return res.status(400).json({success:false, err})
+    });
+
     scene.status = 1;
   }
-  
+
   scene.cutList = req.body.cutList;
   for (let i = 0; i < req.body.cutList.length; i++) {
     scene.cutList[i].characterList = [...req.body.cutList[i].characterList];

@@ -73,7 +73,19 @@ const userSchema = mongoose.Schema({
     },
     tokenExp: {
         type: Number
-    }
+    },
+    makingGameList: [
+        {
+            sceneId: {
+                type: mongoose.Types.ObjectId,
+                ref: "Scene"
+            },
+            gameId: {
+                type: mongoose.Types.ObjectId,
+                ref: "Game"
+            }
+        }
+    ]
 })
 
 

@@ -66,7 +66,8 @@ const SceneMakePage = (props) => {
         dispatch(navbarControl(false));
     }, [])
 
-    useEffect(() => {
+    //! scene save할 때 필요한 정보 갖고오기
+    useEffect( () => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
             if (res.data.success) { scene = res.data.scene; }
@@ -74,28 +75,50 @@ const SceneMakePage = (props) => {
                 console.log("get scene ERROR");
                 props.history.push("/");
             }
+            //! 임시저장 된 녀석이냐 아니냐 - 이곳에는 둘중 하나만 들어옴
+            console.log(scene)
 
-            if (!scene.isFirst) {
-                console.log(" This scene is NOT first ")
-                const variable = { sceneId: scene.prevSceneId };
+            // 임시저장한 녀석
+            if(scene.cutList.length){
 
-                Axios.post("/api/scene/scenedetail", variable)
-                    .then((response) => {
-                        if (response.data.success) {
-                            const lastCut = response.data.lastCut;
-                            setCharacterList(lastCut.characterList);
-                            setBackgroundImg(lastCut.background);
-                            setName(lastCut.name);
+                if(scene.isFirst){
+                    setIsFirstScene(true)
+                }
 
-                            dispatch(gameLoadingPage(0));
-                            dispatch(gameLoadingPage(1));
-                        } else {
-                            message.error("이전 Scene의 정보를 불러오는데 실패했습니다.")
-                        }
-                    })
+                // 임시저장된 녀석 불러오기
+                console.log(scene)
+                setCutList(scene.cutList);
+                const tmpFirstCut = scene.cutList[0]
+                setCharacterList(tmpFirstCut.characterList)
+                setBackgroundImg(tmpFirstCut.background)
+                setName(tmpFirstCut.name);
+                dispatch(gameLoadingPage(0));
+                dispatch(gameLoadingPage(1));
+
             }
-            else {
-                setIsFirstScene(true)
+            // 껍데기
+            else{
+                if (!scene.isFirst) {
+                    console.log(" This scene is NOT first ")
+                    const variable = { sceneId: scene.prevSceneId };
+                    Axios.post("/api/scene/scenedetail", variable)
+                        .then((response) => {
+                            //! 이전 씬의 마지막 컷 설정 유지
+                            if (response.data.success) {
+                                const lastCut = response.data.lastCut;
+                                setCharacterList(lastCut.characterList);
+                                setBackgroundImg(lastCut.background);
+                                setName(lastCut.name);
+                                dispatch(gameLoadingPage(0));
+                                dispatch(gameLoadingPage(1));
+                            } else {
+                                message.error("이전 Scene의 정보를 불러오는데 실패했습니다.")
+                            }
+                        })
+                }
+                else{
+                    setIsFirstScene(true)
+                }
             }
         })();
     }, [])

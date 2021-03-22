@@ -18,6 +18,7 @@ router.get("/auth", auth, (req, res) => {
         role: req.user.role,
         image: req.user.image,
         gameHistory: [],
+        makingGameList: req.user.makingGameList,
     });
 });
 
