@@ -103,8 +103,8 @@ const ProductScreen = (props) => {
           }`
         );
       } else {
-        setClickable(true);
         if (parseInt(event.key) - 1 === Scene.nextList.length) {
+          setClickable(true);
           event.preventDefault();
           var choice = document.getElementById("choice");
           choice.click();
