@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useKey from "../../functions/useKey";
 import { useWindupString } from "windups";
+import useMouse from "../../functions/useMouse";
 
 // const voice = new Audio('http://localhost:5000/uploads/sfx-blipmale.wav')
 const voice = new Audio('http://localhost:5000/uploads/sfx-typwriter.wav')
@@ -27,6 +28,7 @@ function TextAnimation({ cut_script, setIsTyping }) {
 
     useKey("Enter", handleEnter);
     useKey("Space", handleEnter);
+    useMouse("mouseup", handleEnter);
     function handleEnter(event) {
         skip()
     }

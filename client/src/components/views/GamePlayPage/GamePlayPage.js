@@ -88,7 +88,7 @@ const ProductScreen = (props) => {
 
   const [isTyping, setIsTyping] = useState(true);
   function handleEnter(event) {
-    if (i < Scene.cutList.length - 1 && !Clickable) {
+    if (!isTyping && i < Scene.cutList.length - 1 && !Clickable) {
       playMusic(i + 1);
       setI(i + 1);
       setIsTyping(true)
@@ -103,8 +103,8 @@ const ProductScreen = (props) => {
           }`
         );
       } else {
+        setClickable(true);
         if (parseInt(event.key) - 1 === Scene.nextList.length) {
-          setClickable(true);
           event.preventDefault();
           var choice = document.getElementById("choice");
           choice.click();
