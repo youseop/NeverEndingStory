@@ -11,6 +11,9 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable }) => {
   const [formRef, setFormRef] = useState(null);
 
   const handleCreate = () => {
+    if (!visible) {
+      return;
+    }
     formRef.validateFields((err, values) => {
       if (err) {
         return;

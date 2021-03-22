@@ -88,7 +88,7 @@ const ProductScreen = (props) => {
 
   const [isTyping, setIsTyping] = useState(true);
   function handleEnter(event) {
-    if (!isTyping && i < Scene.cutList.length - 1 && !Clickable) {
+    if (i < Scene.cutList.length - 1 && !Clickable) {
       playMusic(i + 1);
       setI(i + 1);
       setIsTyping(true)
