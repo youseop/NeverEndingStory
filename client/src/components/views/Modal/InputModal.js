@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReactDOM from "react-dom";
 import { Button } from "antd";
 import ModalForm from "./InputModalForm";
 import { useHistory } from "react-router";
 import { socket } from "../../App";
 import axios from "axios";
+import { loadEmptyNum } from "../../../_actions/sync_actions";
 
 const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_list }) => {
+  const dispatch = useDispatch()
   let history = useHistory();
   const user = useSelector((state) => state.user);
   const emptyNum = useSelector((state) => state.sync.emptyNum);
@@ -85,7 +87,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
 
   useEffect(() => {
     socket.on("validated", (data) =>{
-      console.log("validated : ",data.emptyNum)
       setValidated(validated*-1)
     })
 
@@ -97,31 +98,25 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
       setVisible(false);
     })
 
-    socket.emit("validate_empty_num", {emptyNum, scene_id})
-  }, [])
+    socket.emit("validate_empty_num", { scene_id})
+  }, [scene_id])
 
-
-  const working = () => {
-
-    console.log("en", emptyNum);
-    
-    const nextListLen = Array.isArray(scene_next_list) ? scene_next_list.length : 0;
-
-    const workingCnt = nextListLen + emptyNum
-    console.log("nextListLen : ",nextListLen, "emptyNum : ",emptyNum)
-
-    if (workingCnt>=0 && workingCnt <= 4){
-      console.log("working Cnt : ",workingCnt)
-
-      return [...Array(4 - workingCnt)].map((n, index) => {
-        return <div key={index}>작업중..<br /></div>
-      })
-    }
-  }
+  const [working, setWorking] = useState();
+  useEffect(() => {
+      console.log("en", emptyNum);
+      const nextListLen = Array.isArray(scene_next_list) ? scene_next_list.length : 0;
+      const workingCnt = nextListLen + emptyNum
+      console.log("nextListLen : ",nextListLen, "emptyNum : ",emptyNum)
+      if (workingCnt>=0 && workingCnt <= 4){
+        console.log("working Cnt : ",workingCnt)
+        setWorking([...Array(4 - workingCnt)].map((n, index) => {
+          return <div key={index}>작업중..<br /></div>
+        }))
+      }
+  }, [emptyNum, scene_next_list])
 
 
   useEffect(() => {
-    console.log("??????????????????????????????SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS???????????????????????????")
     if (remainTime > 0) {
       setDecreaseTimer(setTimeout(() => {
         setRemainTime(remainTime - 1);
@@ -132,7 +127,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
   return (
     <>
     {
-      working()
+      working
     }
       {
         emptyNum > 0 &&

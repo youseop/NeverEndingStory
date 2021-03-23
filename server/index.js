@@ -183,9 +183,9 @@ io.on('connection', socket => {
   });
 
   socket.on('validate_empty_num', async data => {
-    const { emptyNum, scene_id } = data;
+    const { scene_id } = data;
     if (scene_cache[scene_id]) {
-      console.log("return from cache", scene_cache[scene_id])
+      io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: scene_cache[scene_id].emptyNum });
       io.sockets.to(scene_id).emit("validated", { sceneId: scene_id, emptyNum: scene_cache[scene_id].emptyNum });
       return
     };
@@ -238,7 +238,7 @@ io.on('connection', socket => {
       emptyNum: sceneTmp.emptyNum,
       certificationList: [...newCertList],
     };
-    console.log("??:" , scene_cache[scene_id]);
+    console.log("??:", scene_cache[scene_id]);
     Scene.updateOne({ _id: scene_id }, { $set: { "sceneTmp": { ...scene_cache[scene_id] } } }).exec();
     io.sockets.to(scene_id).emit("validated", { sceneId: scene_id, emptyNum: scene_cache[scene_id].emptyNum });
   });
