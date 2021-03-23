@@ -39,6 +39,7 @@ const ProductScreen = (props) => {
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
   const [Clickable, setClickable] = useState(false);
+  const [prevSceneId, setPrevSceneId] = useState("null");
 
   const dispatch = useDispatch();
 
@@ -64,21 +65,17 @@ const ProductScreen = (props) => {
   useKey("Digit3", handleChoice);
   useKey("Digit4", handleChoice);
 
-  
-  useEffect(() => {
-    socket.emit("room", {room: sceneId});
-    socket.on("empty_num_changed", data => {
-        console.log(data.emptyNum);
-        dispatch(loadEmptyNum({
-            sceneId,
-            emptyNum : data.emptyNum
-        }));
-    })
-    dispatch(loadEmptyNum({
-        sceneId,
-    }));
-}, [])
 
+  useEffect(() => {
+    socket.on("accept_final_change", data => {
+      const {sceneId, title} = data;
+      
+      let newNextList = Scene.nextList ? [...Scene.nextList] : [];
+      newNextList.push({sceneId, script: title});
+      const newScene = {...Scene, nextList: newNextList};
+      setScene(newScene);
+    })
+  }, [Scene])
 
   const [isFirstCut, setIsFirstCut] = useState(true);
   function playMusic(i) {
@@ -127,6 +124,22 @@ const ProductScreen = (props) => {
       }
     }
   }
+
+  
+  useEffect(() => {
+    socket.emit("leave room", {room: prevSceneId});
+    socket.emit("room", { room: sceneId });
+    // socket.emit("exp_val", {room: sceneId});
+    setPrevSceneId(sceneId);
+    socket.on("empty_num_changed", data => {
+      dispatch(loadEmptyNum({
+        sceneId,
+        emptyNum: data.emptyNum
+      }));
+    })
+
+  }, [sceneId])
+
 
   useEffect(() => {
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
@@ -195,6 +208,11 @@ const ProductScreen = (props) => {
   // dispatch(navbarControl(false));
 
   useEffect(() => {
+
+    dispatch(loadEmptyNum({
+      sceneId,
+    }));
+
     return () => {
       bgm_audio.pause()
       sound_audio.pause()
@@ -217,7 +235,7 @@ const ProductScreen = (props) => {
             onClick={(event) => handleEnter(event)}
           >
             <LoadingPage />
-            {Scene.cutList[i].background ?
+            {(Scene.cutList[i] && Scene.cutList[i].background)?
               <img
                 className="backgroundImg"
                 src={Scene.cutList[i].background}

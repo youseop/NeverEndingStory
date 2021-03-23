@@ -83,6 +83,9 @@ const userSchema = mongoose.Schema({
             gameId: {
                 type: mongoose.Types.ObjectId,
                 ref: "Game"
+            },
+            exp : {
+                type: Date
             }
         }
     ]

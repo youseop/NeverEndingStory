@@ -19,11 +19,13 @@ import "./SceneMakePage.css";
 import SceneBox from "./SceneBox/SceneBox";
 import axios from "axios";
 import { useHistory } from "react-router-dom"
+import { socket } from "../../../App";
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
     const history = useHistory();
+    const user  = useSelector((state) => state.user);
 
     const padding = 0.1;
     const minSize = 300;
@@ -73,7 +75,20 @@ const SceneMakePage = (props) => {
     let scene;
     useEffect(() => {
         dispatch(navbarControl(false));
+
     }, [])
+
+
+    useEffect(() => {
+        if(user.userData){
+            socket.emit("room", {room: user.userData._id.toString()})
+        }
+
+        socket.on("timeout_making", data =>{
+            props.history.push("/")
+        })
+
+    }, [user])
 
     //! scene save할 때 필요한 정보 갖고오기
     useEffect( () => {
@@ -85,7 +100,6 @@ const SceneMakePage = (props) => {
                 props.history.push("/");
             }
             //! 임시저장 된 녀석이냐 아니냐 - 이곳에는 둘중 하나만 들어옴
-            console.log(scene)
 
             // 임시저장한 녀석
             if(scene.cutList.length){
@@ -95,7 +109,6 @@ const SceneMakePage = (props) => {
                 }
 
                 // 임시저장된 녀석 불러오기
-                console.log(scene)
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
                 setCharacterList(tmpFirstCut.characterList)
@@ -111,7 +124,6 @@ const SceneMakePage = (props) => {
             // 껍데기
             else{
                 if (!scene.isFirst) {
-                    console.log(" This scene is NOT first ")
                     const variable = { sceneId: scene.prevSceneId };
                     Axios.post("/api/scene/scenedetail", variable)
                         .then((response) => {
@@ -378,6 +390,12 @@ const SceneMakePage = (props) => {
                             );
 
                         } else if ( !isTmp ) {
+                            socket.emit("final_submit", {
+                                prevSceneId : response.data.scene.prevSceneId, 
+                                sceneId : response.data.scene._id, 
+                                title: response.data.scene.title,
+                                userId: user.userData._id.toString(),
+                            })
                             history.push(
                                 `/gameplay/${gameId}/${response.data.scene._id}`
                             );

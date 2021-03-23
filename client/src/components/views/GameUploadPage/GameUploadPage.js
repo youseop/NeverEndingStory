@@ -28,7 +28,6 @@ const RatioOptions = [
 ]
 
 function GameUploadPage(props) {
-    console.log("Asdfasdfasdfasdf")
     const user = useSelector((state) => state.user);
     const [GameTitle, setGameTitle] = useState("");
     const [description, setDescription] = useState("");

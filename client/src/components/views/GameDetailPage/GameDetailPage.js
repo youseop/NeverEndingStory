@@ -6,6 +6,7 @@ import "./GameDetailPage.css";
 import { LOCAL_HOST } from"../../Config"
 import Comment from '../Comment/Comment';
 import useSound from 'use-sound'
+import { socket } from "../../App";
 
 function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
@@ -46,7 +47,7 @@ function GameDetailPage(props) {
             {gameDetail.thumbnail &&
                 <img
                     style={{ width: "30%", height: "30%" }}
-                    src={`http://localhost:5000/${gameDetail.thumbnail}`}
+                    src={`http://${LOCAL_HOST}:5000/${gameDetail.thumbnail}`}
                     alt="thumbnail"
                 />}
             <div>카테고리 : {gameDetail.category}</div>

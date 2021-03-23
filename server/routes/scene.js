@@ -51,10 +51,13 @@ router.post('/create', auth, async (req, res) => {
     prevSceneId: req.body.prevSceneId,
   })
 
+  const MS_PER_HR = 150000
   const user = await User.findOne({ _id: userId });
   
   // TODO : 추후 makingGameList 제한 필요
-  user.makingGameList.push({ sceneId: scene._id, gameId: req.body.gameId });
+  const exp = Date.now() + MS_PER_HR
+  console.log("In create : ",exp)
+  user.makingGameList.push({ sceneId: scene._id, gameId: req.body.gameId, exp });
 
   if (req.body.isFirst) {
     updatePlayingForFirst(req.body.gameId, scene._id, user);
@@ -62,6 +65,7 @@ router.post('/create', auth, async (req, res) => {
   else {
     user.gamePlaying.isMaking = true;
     user.gamePlaying.sceneIdList.push(scene._id);
+
 
     // update Playing For First에서 이미 save 있음
     user.save((err) => {
@@ -71,7 +75,7 @@ router.post('/create', auth, async (req, res) => {
   }
   scene.save((err, scene) => {
     if (err) return res.json({ success: false, err })
-    return res.status(200).json({ success: true, sceneId: scene._id })
+    return res.status(200).json({ success: true, sceneId: scene._id, exp : exp })
   })
 
 })

@@ -93,7 +93,11 @@ const sceneSchema = mongoose.Schema({
                 timer: {
                     type: Number,
                     default: null,
-                }
+                },
+                isMakingScene: {
+                    type: Boolean,
+                    default: false, 
+                },
             }
         ],
     },

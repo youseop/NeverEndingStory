@@ -175,11 +175,35 @@ const updateHistoryFromPlaying = (user) => {
 router.get("/gamestart/:id", auth, async (req, res) => {
     const gameId = mongoose.Types.ObjectId(req.params.id);
     const userId = req.user._id;
+
+    // makingList에 지금 게임 아이디가 있는 경우..
+    // 유효성 검증 이후 할일 하기. (Date.now보다 큰가?)
+    
     try {
         let user = await User.findOne({ _id: userId });
+        let trashSceneId = mongoose.Types.ObjectId(0);
+        const idx = user.makingGameList.findIndex(item => item.gameId.toHexString() === gameId.toHexString())
+        if( idx > -1 ){
+            // 유효성 검증 fail
+            if(user.makingGameList[idx].exp < Date.now()){
+                trashSceneId = user.makingGameList[idx].sceneId; 
+                console.log(trashSceneId)
+                user.makingGameList.splice(idx,1)
+            }
+        }
 
-
+        // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감. 
         if (user.gamePlaying.gameId && gameId.toHexString() === user.gamePlaying.gameId.toHexString()) {
+            // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
+            if(trashSceneId.toHexString() === user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1].toHexString()){
+                console.log("I'm GAME PLAYYING zz")
+                user.gamePlaying.sceneIdList.splice(user.gamePlaying.sceneIdList.length - 1,1)
+                user.gamePlaying.isMaking = false;
+                user.save((err) => {
+                    if (err) { console.log(err); return res.status(400).json({ success: false }) }
+                });
+            }
+
             return res
                 .status(200)
                 .json({
@@ -189,17 +213,27 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                 });
         }
 
+        // 아니면 게임 플레임 히스토리에 넣기. 
         if (user.gamePlaying.gameId) {
             updateHistoryFromPlaying(user);
         }
 
-        const gameHistory = user.gameHistory;
-        for (let i = 0; i < gameHistory.length; i++) {
-            if (gameHistory[i].gameId && gameHistory[i].gameId.toHexString() === gameId.toHexString()) {
+        // 히스토리에서 지금 하려는 게임 찾아서 게임 플레잉에 갖고 옴. 
+        for (let i = 0; i < user.gameHistory.length; i++) {
+            if (user.gameHistory[i].gameId && user.gameHistory[i].gameId.toHexString() === gameId.toHexString()) {
+
+                // trashSceneId, 히스토리 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
+                if(trashSceneId.toHexString() === user.gameHistory[i].sceneIdList[user.gameHistory[i].sceneIdList.length - 1].toHexString()){
+                    user.gameHistory[i].sceneIdList.splice(user.gameHistory[i].sceneIdList.length - 1,1)
+                    user.gameHistory[i].isMaking = false;
+
+                }
+
                 user.gamePlaying = {
                     gameId: gameId,
-                    sceneIdList: gameHistory[i].sceneIdList.slice(0, gameHistory[i].sceneIdList.length),
+                    sceneIdList: user.gameHistory[i].sceneIdList.slice(0, user.gameHistory[i].sceneIdList.length),
                 };
+                
                 user.save((err) => {
                     if (err) { console.log(err); return res.status(400).json({ success: false }) }
                 });
@@ -207,13 +241,14 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                     .status(200)
                     .json({
                         success: true,
-                        sceneId: gameHistory[i].sceneIdList[gameHistory[i].sceneIdList.length - 1],
+                        sceneId: user.gameHistory[i].sceneIdList[user.gameHistory[i].sceneIdList.length - 1],
                         isMaking: user.gamePlaying.isMaking,
                     });
             }
         }
 
         try {
+        // 히스토리에 없으면 게임 플레잉에 새로 만들어서 넣음. 
             const game = await Game.findOne({ _id: gameId });
             const sceneId = game.first_scene;
             user.gamePlaying = {

@@ -7,6 +7,7 @@ import CharacterTab from "./Tab/CharacterTab"
 import BackgroundTab from "./Tab/BackgroundTab"
 import BgmTab from "./Tab/BgmTab"
 import SoundTab from "./Tab/SoundTab"
+import { LOCAL_HOST } from "../../../Config";
 
 const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
   const [fileQueue, setFileQueue] = useState([]);
@@ -95,25 +96,25 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
         case 1:
           DBForm.character.push({
             name: files[i].originalname,
-            image: `http://localhost:5000/${files[i].path}`,
+            image: `http://${LOCAL_HOST}:5000/${files[i].path}`,
           })
           break;
         case 2: //background
           DBForm.background.push({
             name: files[i].originalname,
-            image: `http://localhost:5000/${files[i].path}`,
+            image: `http://${LOCAL_HOST}:5000/${files[i].path}`,
           })
           break;
         case 3:
           DBForm.bgm.push({
             name: files[i].originalname,
-            music: `http://localhost:5000/${files[i].path}`,
+            music: `http://${LOCAL_HOST}:5000/${files[i].path}`,
           })
           break;
         case 4:
           DBForm.sound.push({
             name: files[i].originalname,
-            music: `http://localhost:5000/${files[i].path}`,
+            music: `http://${LOCAL_HOST}:5000/${files[i].path}`,
           })
           break;
         default:
@@ -126,7 +127,6 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
       DBForm
     ).then((response) => {
       if (response.data.success) {
-        console.log("SceneMakeModal::DB 업데이트 성공")
         setReload(reload => reload + 1)
         setTag(0)
       } else {
