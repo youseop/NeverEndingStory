@@ -66,8 +66,8 @@ let scene_cache = {} // {empty: 2, cert: [{ userID: ??, }]}
 const updateCache = async (sceneId, userId, plus, exp) => {
   console.log("plus", plus);
   scene_cache[sceneId].emptyNum += plus;
+
   io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum })
-  console.log("cert:", scene_cache[sceneId].certificationList, userId);
   const idx = scene_cache[sceneId].certificationList.findIndex(item => item.userId === userId);
   const certTokenList = scene_cache[sceneId].certificationList;
   if (plus > 0) {
@@ -86,6 +86,7 @@ const updateCache = async (sceneId, userId, plus, exp) => {
       if (scene_cache[sceneId].certificationList.some(itme => itme.userId === userId)) {
         scene_cache[sceneId].emptyNum += 1;
         io.sockets.to(userId).emit("timeout_making", { msg: "hi~" });
+
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
         if (idx > -1) scene_cache[sceneId].certificationList.splice(idx, 1)
       }
@@ -101,6 +102,7 @@ const updateCache = async (sceneId, userId, plus, exp) => {
       if (scene_cache[sceneId].certificationList.some(itme => itme.userId === userId)) {
         console.log("원상복구...")
         scene_cache[sceneId].emptyNum += 1;
+
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
         if (idx > -1) scene_cache[sceneId].certificationList.splice(idx, 1)
       }
@@ -127,12 +129,12 @@ io.on('connection', socket => {
   });
 
   socket.on('room', data => {
-    console.log('room join');
+    console.log('room join', data.room);
     socket.join(data.room);
   });
 
   socket.on('leave room', data => {
-    console.log('leaving room');
+    console.log('leaving room', data.room);
     socket.leave(data.room)
   });
 
@@ -146,8 +148,9 @@ io.on('connection', socket => {
     }
 
     if (scene_cache[sceneId].emptyNum === 0) {
-      socket.emit('empty_num_changed', { emptyNum: 0 });
       socket.emit('decrease_failed');
+      
+      socket.emit('empty_num_changed', { emptyNum: 0 });
       console.log(scene_cache[sceneId].emptyNum)
       console.log("이게 맞음......................")
       return;
@@ -185,6 +188,10 @@ io.on('connection', socket => {
   socket.on('validate_empty_num', async data => {
     const { scene_id } = data;
     if (scene_cache[scene_id]) {
+      
+      //! validate 되는 녀석만 하면 된다.
+      //! 동시에 validate 되는 녀석이면? 동시적용이 안되긴 함
+      // socket.emit('empty_num_changed', { emptyNum: scene_cache[scene_id].emptyNum });
       io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: scene_cache[scene_id].emptyNum });
       io.sockets.to(scene_id).emit("validated", { sceneId: scene_id, emptyNum: scene_cache[scene_id].emptyNum });
       return
@@ -226,12 +233,14 @@ io.on('connection', socket => {
             console.log("TIME OUT !! - emptyNum PLUS ")
 
             scene_cache[scene_id].emptyNum += 1;
+
             io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: scene_cache[scene_id].emptyNum });
             scene_cache[scene_id].certificationList.splice(idx, 1)
           }
         }, timeDiff)
       }
     }
+    
     console.log("empty_num_changed , emptyNum : ", sceneTmp.emptyNum)  // 클라 dispatch 시점
     io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: sceneTmp.emptyNum });
     scene_cache[scene_id] = {
@@ -266,11 +275,8 @@ io.on('connection', socket => {
     const idx = scene_cache[prevSceneId].certificationList.findIndex(item => item.userId === userId);
     console.log("idx:", idx)
     if (idx > -1) {
-      console.log(prevSceneId);
-      console.log("cache:", scene_cache[prevSceneId])
       clearTimeout(scene_cache[prevSceneId].certificationList[idx].timer);
       scene_cache[prevSceneId].certificationList.splice(idx, 1)
-      console.log("cache after:", scene_cache[prevSceneId])
     }
 
 

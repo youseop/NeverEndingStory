@@ -27,7 +27,6 @@ import './App.css';
  
 const io = require('socket.io-client');
 export const socket = io(`http://${LOCAL_HOST}:5000`);
-
 function App() {
   return (
     <Suspense fallback={(<div>Loading...</div>)}>

@@ -108,6 +108,7 @@ function HistoryMapPopup(props) {
     );
   });
 
+  //! 해당 녀석 클릭과 화면 클릭을 같게 인식한다.. 이부분을 고쳐야합니다!!
   return props.trigger ? (
     <div className="HistoryMap_popup">
       <button className="close_btn" onClick={() => close_button()}>
