@@ -4,5 +4,6 @@ export const AUTH_USER = 'auth_user';
 export const LOGOUT_USER = 'logout_user';
 
 export const LOADINGPAGE_GAMEPLAY = "gameLoading_gamePlay"
+export const PAUSE_GAMEPLAY = "pause_gamePlay"
 
 export const NAVBAR_CONTROL = "navbar_control"

@@ -83,10 +83,11 @@ function TreeMapPopup(props) {
   const { gameId, sceneId } = props.history;
 
   const [Position, setPosition] = useState();
+  
   useConstructor(() => {
     setPosition(position);
-    console.log("constructor");
-    console.log(userhistory);
+    // console.log("constructor");
+    // console.log(userhistory);
   });
 
   useEffect(() => {
@@ -123,7 +124,7 @@ function TreeMapPopup(props) {
 
   function mouseMove(e) {
     if (drag) {
-      if (pivot[0] != e.pageX || pivot[1] != e.pageY) {
+      if (pivot[0] !== e.pageX || pivot[1] !== e.pageY) {
         position = [
           position[0] - (pivot[0] - e.pageX),
           position[1] - (pivot[1] - e.pageY),
@@ -139,14 +140,14 @@ function TreeMapPopup(props) {
   let cnt_limit = 1;
   let cnt = 0;
   const TreeMap_nodes = sceneMap.map((scene, index) => {
-    if (cnt == cnt_limit) {
+    if (cnt === cnt_limit) {
       depth += 1;
       cnt = 0;
       cnt_limit = cnt_limit * 4;
     }
     cnt += 1;
 
-    console.log(index, depth);
+    // console.log(index, depth);
 
     return (
       <div
@@ -164,7 +165,7 @@ function TreeMapPopup(props) {
           style={{ width: 1 +"rem", height: 1+"rem" }}
 
         />
-        {depth != SceneDepth ? (
+        {depth !== SceneDepth ? (
           <Fragment>
             <hr
               className="TreeMap_nodeLine"

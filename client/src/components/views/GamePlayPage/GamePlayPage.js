@@ -8,26 +8,38 @@ import HistoryMapPopup from "./HistoryMap";
 import LoadingPage from "./LoadingPage";
 import { message } from "antd";
 import useKey from "../../functions/useKey";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../_actions/controlPage_actions";
-import classNames from "classnames/bind";
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
 import TreeMapPopup from "./TreeMap";
+import { gamePause } from "../../../_actions/gamePlay_actions";
 
 var bgm_audio = new Audio();
 var sound_audio = new Audio();
+
+function useConstructor(callBack = () => {}) {
+  const [hasBeenCalled, setHasBeenCalled] = useState(false);
+  if (hasBeenCalled) return;
+  callBack();
+  setHasBeenCalled(true);
+}
 
 // playscreen
 const ProductScreen = (props) => {
   const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
+  const userHistory = props.history;
+
+  const dispatch = useDispatch();
+
+  const isPause = useSelector((state) => state.gameplay.isPause);
+
+  // console.log("pause:" + isPause);
 
   const [ratio, setRatio] = useState(0.5);
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
-  const userHistory = props.history;
-
   const [i, setI] = useState(0);
   const [Scene, setScene] = useState({});
   const [Dislike, setDislike] = useState(false);
@@ -36,12 +48,35 @@ const ProductScreen = (props) => {
   const [TreeMap, setTreeMap] = useState(false);
   const [Clickable, setClickable] = useState(false);
 
-  const dispatch = useDispatch();
-
   const maximizableElement = useRef(null);
+
+  const handleExitFullscreen = () => document.exitFullscreen();
 
   let isFullscreen, setIsFullscreen;
   let errorMessage;
+
+  useConstructor(() => {
+    console.log("---constructor---");
+
+    //* navigation bar control
+    dispatch(navbarControl(false));
+
+    //* screen ratio control
+    const variable = { gameId: gameId };
+    Axios.post("/api/game/ratio", variable).then((response) => {
+      if (response.data.success) {
+        if (response.data.ratio) {
+          setRatio(parseFloat(response.data.ratio));
+        } else {
+          message.error(
+            "배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다."
+          );
+        }
+      } else {
+        message.error("Scene 정보가 없습니다.");
+      }
+    });
+  });
 
   try {
     [isFullscreen, setIsFullscreen] = useFullscreenStatus(maximizableElement);
@@ -51,10 +86,9 @@ const ProductScreen = (props) => {
     setIsFullscreen = undefined;
   }
 
-  const handleExitFullscreen = () => document.exitFullscreen();
-
   useKey("Enter", handleEnter);
   useKey("Space", handleEnter);
+
   useKey("Digit1", handleChoice);
   useKey("Digit2", handleChoice);
   useKey("Digit3", handleChoice);
@@ -79,7 +113,7 @@ const ProductScreen = (props) => {
   }
 
   function handleEnter(event) {
-    if (i < Scene.cutList.length - 1 && !Clickable) {
+    if (i < Scene.cutList.length - 1 && !isPause) {
       playMusic(i + 1);
       setI(i + 1);
     }
@@ -87,7 +121,7 @@ const ProductScreen = (props) => {
   }
 
   function handleChoice(event) {
-    if (i === Scene.cutList.length - 1 && !Clickable) {
+    if (i === Scene.cutList.length - 1 && !isPause) {
       if (Scene.nextList[parseInt(event.key) - 1]) {
         userHistory.push(
           `/gameplay/${gameId}/${
@@ -95,10 +129,10 @@ const ProductScreen = (props) => {
           }`
         );
       } else {
-        setClickable(true);
+        dispatch(gamePause(true));
         if (parseInt(event.key) - 1 === Scene.nextList.length) {
           event.preventDefault();
-          var choice = document.getElementById("choice");
+          let choice = document.getElementById("choice");
           choice.click();
         }
       }
@@ -106,6 +140,8 @@ const ProductScreen = (props) => {
   }
 
   useEffect(() => {
+    console.log("---effect - sceneId---");
+
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
       (response) => {
         if (response.data.success) {
@@ -123,24 +159,11 @@ const ProductScreen = (props) => {
         }
       }
     );
-
-    const variable = { gameId: gameId };
-    Axios.post("/api/game/ratio", variable).then((response) => {
-      if (response.data.success) {
-        if (response.data.ratio) {
-          setRatio(parseFloat(response.data.ratio));
-        } else {
-          message.error(
-            "배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다."
-          );
-        }
-      } else {
-        message.error("Scene 정보가 없습니다.");
-      }
-    });
   }, [sceneId]);
 
   useEffect(() => {
+    console.log("---effect - window size ---");
+
     function handleResize() {
       setwindowWidth(window.innerWidth);
       setwindowHeight(window.innerHeight);
@@ -168,7 +191,7 @@ const ProductScreen = (props) => {
     };
   }
 
-  dispatch(navbarControl(false));
+  console.log("------------------------");
 
   if (Scene.cutList) {
     if (i == 0) playMusic(0);
@@ -268,19 +291,28 @@ const ProductScreen = (props) => {
           <div>
             <button
               className="gamePlay__btn"
-              onClick={() => setHistoryMap((state) => !state)}
+              onClick={() => {
+                dispatch(gamePause(true));
+                setHistoryMap((state) => !state);
+              }}
             >
               미니맵
             </button>
             <button
               className="gamePlay__btn"
-              onClick={() => setDislike((state) => !state)}
+              onClick={() => {
+                dispatch(gamePause(true));
+                setDislike((state) => !state);
+              }}
             >
               신고
             </button>
             <button
               className="gamePlay__btn"
-              onClick={() => setTreeMap((state) => !state)}
+              onClick={() => {
+                dispatch(gamePause(true));
+                setTreeMap((state) => !state);
+              }}
             >
               트리맵
             </button>
@@ -295,7 +327,7 @@ const ProductScreen = (props) => {
       </div>
     );
   } else {
-    return <div>now loading..</div>;
+    return <LoadingPage />;
   }
 };
 
