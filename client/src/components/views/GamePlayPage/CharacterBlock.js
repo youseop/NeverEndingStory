@@ -8,15 +8,12 @@ const CharacterBlock = (props) => {
 
   const characterblocks = CharacterList.map((charSchema, index) => {
     return (
-      <div 
-        key={index} 
-        className="CharacterBlock"
-        style={{ left: `${charSchema.posX}%`}}
-      >
+      <div key={index}>
         <Character
           setCharacterList={setCharacterList}
           GameCharacterList={GameCharacterList}
           onRemove_character={onRemove_character}
+          CharacterList={CharacterList}
           index={index}
           charSchema={charSchema}
         />

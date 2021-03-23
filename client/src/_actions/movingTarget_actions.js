@@ -4,14 +4,14 @@ import {
 
 export function selectMovingTarget(character) {
   return {
-    type: SELECT_CHARACTER,
+    type: SELECT_MOVINGTARGET,
     payload: character,
   };
 }
 
 export function detachMovingTarget(character) {
   return {
-    type: DETACH_CHARACTER,
+    type: DETACH_MOVINGTARGET,
     payload: character,
   };
 }
