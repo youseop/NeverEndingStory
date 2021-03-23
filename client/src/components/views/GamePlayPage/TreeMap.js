@@ -79,7 +79,7 @@ let position = [50, 0];
 let drag = false;
 
 function TreeMapPopup(props) {
-  const { trigger, userhistory, setTrigger, setClickable } = props;
+  const { trigger, userhistory, setTrigger} = props;
   const { gameId, sceneId } = props.history;
 
   const [Position, setPosition] = useState();
@@ -93,7 +93,6 @@ function TreeMapPopup(props) {
   useEffect(() => {
     var container = document.getElementsByClassName("TreeMap_popup");
     if (trigger) {
-      setClickable(true);
       container[0].addEventListener("mousedown", mouseDown);
       container[0].addEventListener("mouseup", mouseUp);
       container[0].addEventListener("mousemove", mouseMove);
@@ -107,7 +106,6 @@ function TreeMapPopup(props) {
   }, [trigger]);
 
   function close_button() {
-    setClickable(false);
     setTrigger(false);
   }
 

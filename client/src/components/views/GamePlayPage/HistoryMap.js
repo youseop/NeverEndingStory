@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Axios from "axios";
 import "./HistoryMap.css";
 import { message } from "antd";
-
+import { useDispatch } from "react-redux";
+import { gamePause } from "../../../_actions/gamePlay_actions";
 
 function MapToLeft() {
   var map = document.getElementsByClassName("HistoryMap_inner")[0];
@@ -59,7 +60,7 @@ function GetSceneInfo(props) {
 }
 
 function HistoryMapPopup(props) {
-  const { userhistory, setTrigger, setClickable } = props;
+  const { userhistory, setTrigger } = props;
   const { gameId, sceneId } = props.history;
   const [GoScene, setGoScene] = useState(null);
   const [DelayHandler, setDelayHandler] = useState(null);
@@ -79,7 +80,6 @@ function HistoryMapPopup(props) {
   }
 
   function close_button() {
-    setClickable(false);
     setTrigger(false);
   }
 
@@ -139,13 +139,9 @@ function HistoryMapPopup(props) {
             are you sure? 다시는 돌아올 수 없다?
           </div>
         </div>
-      ) : (
-        null
-      )}
+      ) : null}
     </div>
-  ) : (
-    null
-  );
+  ) : null;
 }
 
 export default HistoryMapPopup;

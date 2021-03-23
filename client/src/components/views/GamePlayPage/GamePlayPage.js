@@ -25,7 +25,7 @@ function useConstructor(callBack = () => {}) {
   setHasBeenCalled(true);
 }
 
-// playscreen
+//! playscreen
 const ProductScreen = (props) => {
   const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
@@ -46,7 +46,6 @@ const ProductScreen = (props) => {
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
   const [TreeMap, setTreeMap] = useState(false);
-  const [Clickable, setClickable] = useState(false);
 
   const maximizableElement = useRef(null);
 
@@ -57,9 +56,6 @@ const ProductScreen = (props) => {
 
   useConstructor(() => {
     console.log("---constructor---");
-
-    //* navigation bar control
-    dispatch(navbarControl(false));
 
     //* screen ratio control
     const variable = { gameId: gameId };
@@ -88,7 +84,6 @@ const ProductScreen = (props) => {
 
   useKey("Enter", handleEnter);
   useKey("Space", handleEnter);
-
   useKey("Digit1", handleChoice);
   useKey("Digit2", handleChoice);
   useKey("Digit3", handleChoice);
@@ -117,7 +112,6 @@ const ProductScreen = (props) => {
       playMusic(i + 1);
       setI(i + 1);
     }
-    // event.preventDefault();
   }
 
   function handleChoice(event) {
@@ -139,9 +133,21 @@ const ProductScreen = (props) => {
     }
   }
 
+  //* navigation bar control
   useEffect(() => {
-    console.log("---effect - sceneId---");
+    dispatch(navbarControl(false));
+  }, []);
 
+  //* game pause control
+  useEffect(() => {
+    if (HistoryMap || Dislike || TreeMap) {
+      dispatch(gamePause(true));
+    } else {
+      dispatch(gamePause(false));
+    }
+  }, [HistoryMap, Dislike, TreeMap]);
+
+  useEffect(() => {
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
       (response) => {
         if (response.data.success) {
@@ -152,6 +158,7 @@ const ProductScreen = (props) => {
           setHistory(history);
           setI(0);
           setScene(response.data.scene);
+          dispatch(gamePause(false));
           dispatch(gameLoadingPage(0));
           dispatch(gameLoadingPage(6));
         } else {
@@ -162,8 +169,6 @@ const ProductScreen = (props) => {
   }, [sceneId]);
 
   useEffect(() => {
-    console.log("---effect - window size ---");
-
     function handleResize() {
       setwindowWidth(window.innerWidth);
       setwindowHeight(window.innerHeight);
@@ -190,8 +195,6 @@ const ProductScreen = (props) => {
       minHeight: `${minSize * ratio}px`,
     };
   }
-
-  console.log("------------------------");
 
   if (Scene.cutList) {
     if (i == 0) playMusic(0);
@@ -227,9 +230,7 @@ const ProductScreen = (props) => {
                 src={Scene.cutList[i].background}
                 alt="Network Error"
               />
-            ) : (
-              <div></div>
-            )}
+            ) : null}
             <CharacterBlock
               characterList={Scene.cutList[i].characterList}
               onRemove_character={() => {}}
@@ -243,7 +244,6 @@ const ProductScreen = (props) => {
                 scene_depth={Scene.depth}
                 scene_id={Scene._id}
                 scene_next_list={Scene.nextList}
-                setClickable={setClickable}
               />
             ) : (
               <TextBlock
@@ -256,14 +256,12 @@ const ProductScreen = (props) => {
               history={History}
               trigger={HistoryMap}
               setTrigger={setHistoryMap}
-              setClickable={setClickable}
             />
             <TreeMapPopup
               userhistory={userHistory}
               history={History}
               trigger={TreeMap}
               setTrigger={setTreeMap}
-              setClickable={setClickable}
             />
           </div>
         </div>
@@ -292,7 +290,6 @@ const ProductScreen = (props) => {
             <button
               className="gamePlay__btn"
               onClick={() => {
-                dispatch(gamePause(true));
                 setHistoryMap((state) => !state);
               }}
             >
@@ -301,7 +298,6 @@ const ProductScreen = (props) => {
             <button
               className="gamePlay__btn"
               onClick={() => {
-                dispatch(gamePause(true));
                 setDislike((state) => !state);
               }}
             >
@@ -310,7 +306,6 @@ const ProductScreen = (props) => {
             <button
               className="gamePlay__btn"
               onClick={() => {
-                dispatch(gamePause(true));
                 setTreeMap((state) => !state);
               }}
             >
@@ -327,6 +322,8 @@ const ProductScreen = (props) => {
       </div>
     );
   } else {
+    // dispatch(gameLoadingPage(0));
+    // dispatch(gameLoadingPage(1));
     return <LoadingPage />;
   }
 };
