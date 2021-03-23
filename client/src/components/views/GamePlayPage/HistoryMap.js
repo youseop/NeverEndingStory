@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Axios from "axios";
 import "./HistoryMap.css";
 import { message } from "antd";
-import { useDispatch } from "react-redux";
-import { gamePause } from "../../../_actions/gamePlay_actions";
 
 function MapToLeft() {
   var map = document.getElementsByClassName("HistoryMap_inner")[0];

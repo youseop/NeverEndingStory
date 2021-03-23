@@ -1,18 +1,21 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Button } from "antd";
 import ModalForm from "./InputModalForm";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { gamePause } from "../../../_actions/gamePlay_actions";
 
-const InputModal = ({ scene_id, scene_depth, game_id, setClickable }) => {
+const InputModal = ({ scene_id, scene_depth, game_id }) => {
   let history = useHistory();
+  const dispatch = useDispatch();
 
   const [visible, setVisible] = useState(false);
   const [formRef, setFormRef] = useState(null);
 
   const handleCreate = () => {
     formRef.validateFields((err, values) => {
-      if (err) {
+      if (err || !visible) {
         return;
       }
       console.log(
@@ -43,10 +46,11 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable }) => {
     }
   }, []);
 
-  const cancel = () => {   
-    setClickable(false);
+  const cancel = () => {
     setVisible(false);
+    dispatch(gamePause(false));
   };
+
   return (
     <>
       <div

@@ -35,8 +35,6 @@ const ProductScreen = (props) => {
 
   const isPause = useSelector((state) => state.gameplay.isPause);
 
-  // console.log("pause:" + isPause);
-
   const [ratio, setRatio] = useState(0.5);
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
@@ -55,8 +53,6 @@ const ProductScreen = (props) => {
   let errorMessage;
 
   useConstructor(() => {
-    console.log("---constructor---");
-
     //* screen ratio control
     const variable = { gameId: gameId };
     Axios.post("/api/game/ratio", variable).then((response) => {
