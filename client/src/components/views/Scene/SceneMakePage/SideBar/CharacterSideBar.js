@@ -8,7 +8,7 @@ function CharacterSideBar({ gameDetail, setCharacterList, CharacterList, setMake
   
   const renderCharacter = gameDetail.character.map((character, index) => {
     return <div className="character" key={`${index}`}>
-      <CharacterImg imgUrl={character.image} CharacterList={CharacterList} setCharacterList={setCharacterList} />
+      <CharacterImg index={index} character={character} />
     </div>
   })
 

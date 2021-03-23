@@ -336,4 +336,18 @@ router.post("/getgamedetail", (req, res) => {
         });
 });
 
+//? youseop for charModal (practice)
+router.post("/char_game_tmp_youseop", (req,res) => {
+    Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
+        .exec((err, gameDetail) => {
+            if (err) return res.status(400).send(err);
+            const character = new Character(req.body.char);
+            gameDetail.character.push(character);
+            gameDetail.save((err, doc) => {
+                if (err) return res.json({ success: false, err });
+                return res.status(200).json({ success: true, doc });
+            });
+        });
+})
+
 module.exports = router;

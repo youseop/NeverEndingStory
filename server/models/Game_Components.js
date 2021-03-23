@@ -16,7 +16,13 @@ const Playing = mongoose.model("playing", playingSchema);
 
 const characterSchema = mongoose.Schema({
     name: String,
+    description: String,
     image: String,
+    image_array: [
+        {
+            type: String,
+        },
+    ],
 });
 
 const Character = mongoose.model("character", characterSchema);

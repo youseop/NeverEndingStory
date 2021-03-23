@@ -1,0 +1,9 @@
+.characterblock {
+  z-index: 98;
+  height: 80%;
+  width: auto;
+  position: absolute;
+
+  bottom: 0%;
+  left: 40%;
+}

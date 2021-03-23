@@ -1,0 +1,27 @@
+.character__img {
+  object-fit: cover;
+  height:100%;
+  width: auto;
+  cursor: pointer;
+  transition: 0.1s;
+  margin: 2px;
+}
+
+.character__img:hover {
+  border: 2px solid rgb(255, 244, 244);
+  transition: 0.1s;
+  border-radius: 4px;
+}
+
+.character__container > .clicked {
+  background-color: rgba(10, 10, 10, 0.699);
+  transition: 0.1s;
+  border-radius: 4px;
+  /* box-shadow: 1px 1px 1px 1px rgb(51, 51, 51); */
+  z-index: 109;
+}
+
+
+.character__container{
+  position: relative;
+}
