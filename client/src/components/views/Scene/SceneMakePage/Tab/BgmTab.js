@@ -15,7 +15,7 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
                 return;
             }
             setFileQueue(oldArray => [...oldArray, files[i]])
-            setTypeQueue(oldArray => [...oldArray, 3])
+            setTypeQueue(oldArray => [...oldArray, 2])
             setBgmBlobNames(oldArray => [...oldArray, files[i]])
             setBgmBlobList(oldArray => [...oldArray, URL.createObjectURL(files[i])])
         }
@@ -25,7 +25,7 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
     useEffect(() => {
         if (game.bgm)
             setBgmCards(game.bgm.map((element, index) => {
-                return <div className="largeBox13">
+                return <div className="largeBox13" key={index}>
                     {(index + 1) % 2 ?
                         <div>
                             <img className="smallBox13"
@@ -58,7 +58,7 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
     useEffect(() => {
         if (bgmBlobList)
             setBlobCards(bgmBlobList.map((element, index) => {
-                return <div className="largeBox13">
+                return <div className="largeBox13" key={index}>
                     {(index + 1) % 2 ?
                         <div>
                             <img className="smallBox13"

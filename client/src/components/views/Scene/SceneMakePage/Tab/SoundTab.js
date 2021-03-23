@@ -15,7 +15,7 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
                 return;
             }
             setFileQueue(oldArray => [...oldArray, files[i]])
-            setTypeQueue(oldArray => [...oldArray, 4])
+            setTypeQueue(oldArray => [...oldArray, 3])
             setSoundBlobNames(oldArray => [...oldArray, files[i]])
             setSoundBlobList(oldArray => [...oldArray, URL.createObjectURL(files[i])])
         }
@@ -25,7 +25,7 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
     useEffect(() => {
         if (game.sound)
             setSoundCards(game.sound.map((element, index) => {
-                return <div className="largeBox13">
+                return <div className="largeBox13" key={index}>
                     {(index + 1) % 2 ?
                         <div>
                             <img className="smallBox13"
@@ -58,7 +58,7 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
     useEffect(() => {
         if (soundBlobList)
             setBlobCards(soundBlobList.map((element, index) => {
-                return <div className="largeBox13">
+                return <div className="largeBox13" key={index}>
                     {(index + 1) % 2 ?
                         <div>
                             <img className="smallBox13"
