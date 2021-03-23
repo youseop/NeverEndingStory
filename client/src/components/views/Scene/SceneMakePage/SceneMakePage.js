@@ -15,8 +15,10 @@ import { useDispatch } from "react-redux";
 import LoadingPage from "../../GamePlayPage/LoadingPage";
 import { gameLoadingPage } from "../../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../../_actions/controlPage_actions";
-import "./SceneMakePage.css";
+import CharacterModal from "../../../functions/CharacterModal/CharacterModal";
 import SceneBox from "./SceneBox/SceneBox";
+
+import "./SceneMakePage.css";
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
@@ -288,8 +290,8 @@ function SceneMakePage(props) {
     const onSubmit_saveScene = (event) => {
         // event.preventDefault();
         // console.log(CutList.length);
-        if (CutList.length < 2) {
-            message.error("최소 3개의 컷을 생성해주세요.");
+        if (CutList.length < 1) {
+            message.error("최소 2개의 컷을 생성해주세요.");
             return;
         }
         const submitCut = {
@@ -318,6 +320,7 @@ function SceneMakePage(props) {
                 sceneOption: SceneOption,
                 prevSceneId: sceneInfo ? sceneInfo.prev_scene_id : 0,
             };
+
             Axios.post("/api/scene/save", variable).then((response) => {
                 if (response.data.success) {
                     message
@@ -432,28 +435,9 @@ function SceneMakePage(props) {
             <div>
                 <div
                     className="backgroundImg_container"
+                    id="backgroundImg_container"
                     style={newScreenSize}
                 >
-                    {BgmFile.name ? (
-                        <div
-                            className="scene__SoundBox_container"
-                            onClick={onClick_bgm_player}
-                        >
-                            {BgmFile.name}
-                        </div>
-                    ) : (
-                        <div>BGM</div>
-                    )}
-                    {SoundFile.name ? (
-                        <div
-                            className="scene__SoundBox_container"
-                            onClick={onClick_sound_player}
-                        >
-                            {SoundFile.name}
-                        </div>
-                    ) : (
-                        <div>Sound</div>
-                    )}
                     {BackgroundImg ? (
                         <img
                             className="backgroundImg"
@@ -464,7 +448,9 @@ function SceneMakePage(props) {
                         <div></div>
                     )}
                     <CharacterBlock
-                        characterList={CharacterList}
+                        GameCharacterList={gameDetail.character}
+                        CharacterList={CharacterList}
+                        setCharacterList={setCharacterList}
                         onRemove_character={onRemove_character}
                     />
                     {SidBar_script && (
@@ -480,6 +466,7 @@ function SceneMakePage(props) {
                     )}
                 </div>
             </div>
+            <CharacterModal setCharacterList={setCharacterList} />
             <SceneBox
                 CutList={CutList}
                 CutNumber={CutNumber}
@@ -490,6 +477,28 @@ function SceneMakePage(props) {
                 EmptyCutList={EmptyCutList}
                 saveCut={saveCut}
             />
+            <div className="sceneMake__sound_container">
+                {BgmFile.name ? (
+                    <div
+                        className="scene__SoundBox_container"
+                        onClick={onClick_bgm_player}
+                    >
+                        {BgmFile.name}
+                    </div>
+                ) : (
+                    <div>BGM</div>
+                )}
+                {SoundFile.name ? (
+                    <div
+                        className="scene__SoundBox_container"
+                        onClick={onClick_sound_player}
+                    >
+                        {SoundFile.name}
+                    </div>
+                ) : (
+                    <div>Sound</div>
+                )}
+            </div>
             <div className="sceneMake__btn_container">
                 <Button type="primary" onClick={onRemove_cut}>
                     Remove Cut

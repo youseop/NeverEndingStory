@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Scene } = require("../models/Scene");
+const { Scene, CharacterCut } = require("../models/Scene");
 const { Game } = require("../models/Game");
 
 
@@ -20,7 +20,12 @@ router.post('/save', async (req, res) => {
 
   // object in object , 자동으로 안들어가서 charaterList 직접 삽입
   for (let i = 0; i < req.body.cutList.length; i++) {
-    scene.cutList[i].characterList = [...req.body.cutList[i].characterList];
+    //...req.body.cutList[i].characterList
+    scene.cutList[i].characterList = [];
+    for (let j = 0; j < req.body.cutList[i].characterList.length; j++) {
+      const characterCut = new CharacterCut(req.body.cutList[i].characterList[j]);
+      scene.cutList[i].characterList.push(characterCut);
+    }
   }
   scene.save((err, scene) => {
     if (err) return res.json({ success: false, err })

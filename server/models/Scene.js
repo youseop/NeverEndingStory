@@ -5,9 +5,7 @@ const {
     bgmSchema,
     soundSchema,
 } = require("./Game_Components");
-
 const Schema = mongoose.Schema;
-
 const nextSceneSchema = mongoose.Schema({
     sceneId: {
         type: Schema.Types.ObjectId,
@@ -18,7 +16,6 @@ const nextSceneSchema = mongoose.Schema({
     },
 });
 
-
 const characterCutSchema = mongoose.Schema({
     index: String,
     image: String,
@@ -27,7 +24,7 @@ const characterCutSchema = mongoose.Schema({
     reverse: Number,
     size: Number,
 });
-
+const CharacterCut = mongoose.model("CharacterCut", characterCutSchema);
 
 const cutSchema = mongoose.Schema({
     name: {
@@ -49,9 +46,7 @@ const cutSchema = mongoose.Schema({
         ref: "sound",
     },
 });
-
 const Cut = mongoose.model("cut", cutSchema);
-
 const sceneSchema = mongoose.Schema({
     gameId: {
         type: Schema.Types.ObjectId,
@@ -84,12 +79,12 @@ const sceneSchema = mongoose.Schema({
         default: 0,
     },
 }, { timestamps: true });
-
 const Scene = mongoose.model("Scene", sceneSchema);
-
 module.exports = {
     Scene,
     sceneSchema,
     Cut,
     cutSchema,
+    CharacterCut,
+    characterCutSchema
 };

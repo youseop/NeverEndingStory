@@ -1,0 +1,15 @@
+.modal_Character {
+  background-color: rgb(255, 208, 208);
+  position: absolute;
+  top: 50%;
+  left: 1%;
+  width: 20%;
+  height: 49%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  z-index: 120;
+  padding: 10px;
+  border-radius: 5px;
+}

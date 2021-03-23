@@ -1,5 +1,5 @@
 import "./GamePlayPage.css";
-import CharacterBlock from "./CharacterBlock";
+import GameCharacterBlock from "./GameCharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
 import React, { useEffect, useRef, useState } from "react";
 import Axios from "axios";
@@ -211,7 +211,7 @@ const ProductScreen = (props) => {
               :
               <div></div>
             }
-            <CharacterBlock
+            <GameCharacterBlock
               characterList={Scene.cutList[i].characterList}
               onRemove_character={() => { }}
             />

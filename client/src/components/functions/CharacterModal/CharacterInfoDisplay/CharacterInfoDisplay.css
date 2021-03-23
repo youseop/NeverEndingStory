@@ -1,0 +1,24 @@
+.characterInfo__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.image_array__container{
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 300px;
+  overflow-x: auto;
+  white-space:nowrap;
+  -ms-overflow-style: none;
+}
+
+.image_array__container::-webkit-scrollbar {
+  display: none;
+}
+
+.main_img {
+  height: 20px;
+  width: 20px;
+  object-fit: cover;
+}
