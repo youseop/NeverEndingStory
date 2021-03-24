@@ -31,9 +31,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const bgm_audio = new Audio();
-bgm_audio.volume = 0
+bgm_audio.volume = 0.5
 const sound_audio = new Audio();
-sound_audio.volume = 0
+sound_audio.volume = 0.5
 
 function useConstructor(callBack = () => { }) {
   const [hasBeenCalled, setHasBeenCalled] = useState(false);
