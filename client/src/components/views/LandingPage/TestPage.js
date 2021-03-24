@@ -17,13 +17,13 @@ function LandingPage() {
     useEffect(() => {
 
         if (inRoom) {
-            console.log('joining room');
+            // console.log('joining room');
             socket.emit('room', { room: 'test-room' });
         }
 
         return () => {
             if (inRoom) {
-                console.log('leaving room');
+                // console.log('leaving room');
                 socket.emit('leave room', {
                     room: 'test-room'
                 })
@@ -44,7 +44,7 @@ function LandingPage() {
         (theme === 'light')
             ? newTheme = 'dark'
             : newTheme = 'light';
-        console.log('new theme: ' + newTheme);
+        // console.log('new theme: ' + newTheme);
         setTheme(newTheme);
     }
 
@@ -55,7 +55,7 @@ function LandingPage() {
     }
 
     const handleNewMessage = () => {
-        console.log('emitting new message');
+        // console.log('emitting new message');
         socket.emit('new message', {
             room: 'test-room'
         });

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { socket } from "../../App"
 
 function TestPage(props) {
-    console.log(socket);
+    // console.log(socket);
     const [messageCount, setMessageCount] = useState(0);
     const [theme, setTheme] = useState('dark');
     const [inRoom, setInRoom] = useState(false);
@@ -13,13 +13,13 @@ function TestPage(props) {
     useEffect(() => {
 
         if (inRoom) {
-            console.log('joining room');
+            // console.log('joining room');
             socket.emit('room', { room: 'test-room' });
         }
 
         return () => {
             if (inRoom) {
-                console.log('leaving room');
+                // console.log('leaving room');
                 socket.emit('leave room', {
                     room: 'test-room'
                 })
@@ -40,7 +40,7 @@ function TestPage(props) {
         (theme === 'light')
             ? newTheme = 'dark'
             : newTheme = 'light';
-        console.log('new theme: ' + newTheme);
+        // console.log('new theme: ' + newTheme);
         setTheme(newTheme);
     }
 
@@ -51,7 +51,7 @@ function TestPage(props) {
     }
 
     const handleNewMessage = () => {
-        console.log('emitting new message');
+        // console.log('emitting new message');
         socket.emit('new message', {
             room: 'test-room'
         });

@@ -1,5 +1,5 @@
 import "./GamePlayPage.css";
-import CharacterBlock from "./CharacterBlock";
+import GameCharacterBlock from "./GameCharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,41 +13,61 @@ import { loadEmptyNum, savePrevScene } from "../../../_actions/sync_actions"
 import useKey from "../../functions/useKey";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../_actions/controlPage_actions";
-import classNames from 'classnames/bind';
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckSquare, faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from "react-router";
+import TreeMapPopup from "./TreeMap";
+import { gamePause } from "../../../_actions/gamePlay_actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheckSquare,
+  faCompress,
+  faExpand,
+} from "@fortawesome/free-solid-svg-icons";
 
 const bgm_audio = new Audio();
 const sound_audio = new Audio();
 
-// playscreen
+function useConstructor(callBack = () => {}) {
+  const [hasBeenCalled, setHasBeenCalled] = useState(false);
+  if (hasBeenCalled) return;
+  callBack();
+  setHasBeenCalled(true);
+}
+
+//! playscreen
 const ProductScreen = (props) => {
   const location = useLocation();  
   const { gameId, sceneId } = location.state;
 
-  console.log(location.state);
-  const [ratio, setRatio] = useState(0.5);
-  const [windowWidth, setwindowWidth] = useState(window.innerWidth);
-  const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const userHistory = props.history;
 
+  const dispatch = useDispatch();
+
+  const isPause = useSelector((state) => state.gameplay.isPause);
+
+  const ratio = 1080 / 1920;
+
+  const [windowWidth, setwindowWidth] = useState(window.innerWidth);
+  const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const [i, setI] = useState(0);
   const [Scene, setScene] = useState({});
   const [Dislike, setDislike] = useState(false);
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
-  const [Clickable, setClickable] = useState(false);
-
-  const dispatch = useDispatch();
+  const [TreeMap, setTreeMap] = useState(false);
 
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
   const maximizableElement = useRef(null);
 
+  const handleExitFullscreen = () => document.exitFullscreen();
+
   let isFullscreen, setIsFullscreen;
   let errorMessage;
+
+  useConstructor(() => {
+    console.log("")
+  });
 
   try {
     [isFullscreen, setIsFullscreen] = useFullscreenStatus(maximizableElement);
@@ -56,8 +76,6 @@ const ProductScreen = (props) => {
     isFullscreen = false;
     setIsFullscreen = undefined;
   }
-
-  const handleExitFullscreen = () => document.exitFullscreen();
 
   useKey("Enter", handleEnter);
   useKey("Space", handleEnter);
@@ -81,36 +99,36 @@ const ProductScreen = (props) => {
 
   const [isFirstCut, setIsFirstCut] = useState(true);
   function playMusic(i) {
-    if (isFirstCut)
-      setIsFirstCut(false)
+    if (isFirstCut) setIsFirstCut(false);
     if (Scene.cutList[i].bgm.music) {
       //이전 곡과 같은 bgm이 아니라면
       if (
         !(i > 0 && Scene.cutList[i - 1].bgm.music == Scene.cutList[i].bgm.music)
       ) {
         bgm_audio.pause();
-        bgm_audio.src = Scene.cutList[i].bgm.music
+        bgm_audio.src = Scene.cutList[i].bgm.music;
         bgm_audio.play();
       }
     }
     if (Scene.cutList[i].sound.music) {
       sound_audio.pause();
 
-
       sound_audio.src = Scene.cutList[i].sound.music;
       sound_audio.play();
     }
   }
 
+  const [isTyping, setIsTyping] = useState(true);
   function handleEnter(event) {
-    if (i < Scene.cutList.length - 1 && !Clickable) {
+    if (!isTyping && i < Scene.cutList.length - 1 && !isPause) {
       playMusic(i + 1);
       setI(i + 1);
+      setIsTyping(true);
     }
   }
 
   function handleChoice(event) {
-    if (i === Scene.cutList.length - 1 && !Clickable) {
+    if (i === Scene.cutList.length - 1 && !isPause) {
       if (Scene.nextList[parseInt(event.key) - 1]) {
         userHistory.replace({
           pathname: `/gameplay`,
@@ -120,10 +138,10 @@ const ProductScreen = (props) => {
           }
         })
       } else {
-        setClickable(true);
         if (parseInt(event.key) - 1 === Scene.nextList.length) {
+          dispatch(gamePause(true));
           event.preventDefault();
-          var choice = document.getElementById("choice");
+          let choice = document.getElementById("choice");
           choice.click();
         }
       }
@@ -140,6 +158,7 @@ const ProductScreen = (props) => {
     // socket.emit("exp_val", {room: sceneId});
     dispatch(savePrevScene({prevSceneId: sceneId}));
     socket.on("empty_num_changed", data => {
+      console.log("en change: ", data.emptyNum);
       dispatch(loadEmptyNum({
         sceneId,
         emptyNum: data.emptyNum
@@ -150,6 +169,19 @@ const ProductScreen = (props) => {
     
   }, [sceneId])
 
+  //* navigation bar control
+  useEffect(() => {
+    dispatch(navbarControl(false));
+  }, []);
+
+  //* game pause control
+  useEffect(() => {
+    if (HistoryMap || Dislike || TreeMap) {
+      dispatch(gamePause(true));
+    } else {
+      dispatch(gamePause(false));
+    }
+  }, [HistoryMap, Dislike, TreeMap]);
 
   useEffect(() => {
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
@@ -161,31 +193,19 @@ const ProductScreen = (props) => {
           };
           setHistory(history);
           setI(0);
-          bgm_audio.pause()
-          sound_audio.pause()
-          setIsFirstCut(true)
+          bgm_audio.pause();
+          sound_audio.pause();
+          setIsFirstCut(true);
           setScene(response.data.scene);
+          dispatch(gamePause(false));
           dispatch(gameLoadingPage(0));
-          dispatch(gameLoadingPage(5));
+          dispatch(gameLoadingPage(6));
         } else {
           message.error("Scene 정보가 없습니다.");
           props.history.replace(`/game/${gameId}`);
         }
       }
     );
-
-    const variable = { gameId: gameId };
-    Axios.post("/api/game/ratio", variable).then((response) => {
-      if (response.data.success) {
-        if (response.data.ratio) {
-          setRatio(parseFloat(response.data.ratio));
-        } else {
-          message.error("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
-        }
-      } else {
-        message.error("Scene 정보가 없습니다.");
-      }
-    });
   }, [sceneId]);
 
   useEffect(() => {
@@ -193,30 +213,28 @@ const ProductScreen = (props) => {
       setwindowWidth(window.innerWidth);
       setwindowHeight(window.innerHeight);
     }
-    window.addEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize);
   }, [window.innerWidth, window.inner]);
 
-  const padding = (isFullscreen ? 0.0 : 0.1);
+  const padding = isFullscreen ? 0.0 : 0.1;
   const minSize = 300;
 
   let newScreenSize;
   if (windowWidth * ratio > windowHeight) {
     newScreenSize = {
-      width: `${windowHeight * (1 - 2 * padding) / ratio}px`,
+      width: `${(windowHeight * (1 - 2 * padding)) / ratio}px`,
       height: `${windowHeight * (1 - 2 * padding)}px`,
       minWidth: `${minSize / ratio}px`,
-      minHeight: `${minSize}px`
-    }
+      minHeight: `${minSize}px`,
+    };
   } else {
     newScreenSize = {
       width: `${windowWidth * (1 - 2 * padding)}px`,
       height: `${windowWidth * (1 - 2 * padding) * ratio}px`,
       minWidth: `${minSize}px`,
-      minHeight: `${minSize * ratio}px`
-    }
+      minHeight: `${minSize * ratio}px`,
+    };
   }
-
-  // dispatch(navbarControl(false));
 
   useEffect(() => {
     console.log("motherfucket~~~");
@@ -225,23 +243,35 @@ const ProductScreen = (props) => {
     }));
 
     return () => {
-      bgm_audio.pause()
-      sound_audio.pause()
-    }
-  }, [])
+      bgm_audio.pause();
+      sound_audio.pause();
+    };
+  }, []);
 
   if (Scene.cutList) {
     if (i == 0 && isFirstCut) playMusic(0);
     return (
       <div
-        className={`${isFullscreen ? "gamePlay__container_fullscreen" : "gamePlay__container"}`}
+        className={`${
+          isFullscreen
+            ? "gamePlay__container_fullscreen"
+            : "gamePlay__container"
+        }`}
         ref={maximizableElement}
       >
         <div
-          className={`${isFullscreen ? "gamePlay__mainContainer_fullscreen" : "gamePlay__mainContainer"}`}
+          className={`${
+            isFullscreen
+              ? "gamePlay__mainContainer_fullscreen"
+              : "gamePlay__mainContainer"
+          }`}
         >
           <div
-            className={`${isFullscreen ? "backgroundImg_container_fullscreen" : "backgroundImg_container"}`}
+            className={`${
+              isFullscreen
+                ? "backgroundImg_container_fullscreen"
+                : "backgroundImg_container"
+            }`}
             style={newScreenSize}
             onClick={(event) => handleEnter(event)}
           >
@@ -252,12 +282,11 @@ const ProductScreen = (props) => {
                 src={Scene.cutList[i].background}
                 alt="Network Error"
               />
-              :
+          : (
               <div></div>
-            }
-            <CharacterBlock
+            )}
+            <GameCharacterBlock
               characterList={Scene.cutList[i].characterList}
-              onRemove_character={() => { }}
             />
 
             {i === Scene.cutList.length - 1 ? (
@@ -268,12 +297,15 @@ const ProductScreen = (props) => {
                 scene_depth={Scene.depth}
                 scene_id={Scene._id}
                 scene_next_list={Scene.nextList}
-                setClickable={setClickable}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
               />
             ) : (
               <TextBlock
                 cut_name={Scene.cutList[i].name}
                 cut_script={Scene.cutList[i].script}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
               />
             )}
             <HistoryMapPopup
@@ -281,7 +313,12 @@ const ProductScreen = (props) => {
               history={History}
               trigger={HistoryMap}
               setTrigger={setHistoryMap}
-              setClickable={setClickable}
+            />
+            <TreeMapPopup
+              userhistory={userHistory}
+              history={History}
+              trigger={TreeMap}
+              setTrigger={setTreeMap}
             />
           </div>
         </div>
@@ -289,19 +326,32 @@ const ProductScreen = (props) => {
           <div>
             <button
               className="gamePlay__btn"
-              onClick={() => setHistoryMap(state => !state)}
+              onClick={() => setHistoryMap((state) => !state)}
             >
               미니맵
-              </button>
+            </button>
             <button
               className="gamePlay__btn"
-              onClick={() => setDislike(state => !state)}>
+              onClick={() => {
+                setTreeMap((state) => !state);
+              }}
+            >
+              트리맵
+            </button>
+            <button
+              className="gamePlay__btn"
+              onClick={() => setDislike((state) => !state)}
+            >
               신고
-              </button>
+            </button>
           </div>
           {errorMessage ? (
             <button
-              onClick={() => alert("Fullscreen is unsupported by this browser, please try another browser.")}
+              onClick={() =>
+                alert(
+                  "Fullscreen is unsupported by this browser, please try another browser."
+                )
+              }
               className="gamePlay__btn"
             >
               {errorMessage}
@@ -320,11 +370,14 @@ const ProductScreen = (props) => {
           sceneId={sceneId}
           gameId={gameId}
           trigger={Dislike}
-          setTrigger={setDislike} />
+          setTrigger={setDislike}
+        />
       </div>
     );
   } else {
-    return <div>now loading..</div>;
+    // dispatch(gameLoadingPage(0));
+    // dispatch(gameLoadingPage(1));
+    return <LoadingPage />;
   }
 };
 

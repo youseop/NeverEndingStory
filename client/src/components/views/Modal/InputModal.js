@@ -6,10 +6,10 @@ import ModalForm from "./InputModalForm";
 import { useHistory } from "react-router";
 import { socket } from "../../App";
 import axios from "axios";
-import { loadEmptyNum } from "../../../_actions/sync_actions";
+import { gamePause } from "../../../_actions/gamePlay_actions";
 import { SecurityScanTwoTone } from "@ant-design/icons";
 
-const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_list }) => {
+const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
   const dispatch = useDispatch()
   let history = useHistory();
   const user = useSelector((state) => state.user);
@@ -26,10 +26,10 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
 
   const handleCreate = () => {
     formRef.validateFields(async (err, values) => {
-      if (err) {
+      clearTimeout(decreaseTimer);
+      if (err || !visible) {
         return;
       }
-      clearTimeout(decreaseTimer);
 
       const data = {
         gameId: game_id,
@@ -64,13 +64,12 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
       setFormRef(node);
     }
   }, []);
-
+  let decTimer;
   const onClickHandler = () => {
     clearTimeout(decreaseTimer);
-
     let tick = 30;
     setRemainTime(tick);
-    const decTimer = setInterval(() => {
+    decTimer = setInterval(() => {
       tick--;
       if (tick === 0) {
         clearInterval(decTimer);
@@ -79,18 +78,18 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
       }
       setRemainTime(tick);
     }, 970);
+    console.log("made -- ",decTimer)
     setDecreaseTimer(decTimer);
 
     socket.emit("empty_num_decrease", { scene_id, user_id });
-
-    return setVisible(true);
+    setVisible(true);
   }
-
+  
   const cancelHandler = () => {
     socket.emit("empty_num_increase", { scene_id, user_id });
     clearTimeout(decreaseTimer);
-    setClickable(false);
-    return setVisible(false)
+    setVisible(false);
+    dispatch(gamePause(false));
   }
 
   const createHandler = () => {
@@ -107,7 +106,8 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
     socket.on("decrease_failed", () => {
       console.log("failed..");
       clearTimeout(decreaseTimer);
-      setClickable(false);
+      console.log("deleted -- ",decreaseTimer)
+
       setVisible(false);
     })
 
@@ -116,10 +116,10 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
 
   const [working, setWorking] = useState();
   useEffect(() => {
-    console.log("en", emptyNum);
+    // console.log("en", emptyNum);
     const nextListLen = Array.isArray(scene_next_list) ? scene_next_list.length : 0;
     const workingCnt = nextListLen + emptyNum
-    console.log("nextListLen : ", nextListLen, "emptyNum : ", emptyNum)
+    // console.log("nextListLen : ", nextListLen, "emptyNum : ", emptyNum)
     if (workingCnt >= 0 && workingCnt <= 4) {
       console.log("working Cnt : ", workingCnt)
       setWorking([...Array(4 - workingCnt)].map((n, index) => {

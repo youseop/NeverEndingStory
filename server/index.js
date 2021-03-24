@@ -63,15 +63,15 @@ const io = require('socket.io')(server, { cors: { origin: '*' } });
 let scene_cache = {} // {empty: 2, cert: [{ userID: ??, }]}
 
 
-const updateCache = async (socket, sceneId, userId, plus, exp) => {
-  console.log("plus", plus);
+const updateCache = async (sceneId, userId, plus, exp) => {
+  // console.log("plus", plus);
   scene_cache[sceneId].emptyNum += plus;
 
   io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum })
   const idx = scene_cache[sceneId].certificationList.findIndex(item => item.userId === userId);
   const certTokenList = scene_cache[sceneId].certificationList;
   if (plus > 0) {
-    console.log("wokring idx:", idx);
+    // console.log("wokring idx:", idx);
     clearTimeout(certTokenList[idx].timer);
     if (idx > -1) certTokenList.splice(idx, 1)
   }
@@ -85,7 +85,7 @@ const updateCache = async (socket, sceneId, userId, plus, exp) => {
 
       if (scene_cache[sceneId].certificationList.some(itme => itme.userId === userId)) {
         scene_cache[sceneId].emptyNum += 1;
-        socket.emit("timeout_making", { msg: "hi~" });
+        io.sockets.to(userId.toString()).emit("timeout_making", { msg: "hi~" });
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
         if (idx > -1) scene_cache[sceneId].certificationList.splice(idx, 1)
         Scene.deleteOne({
@@ -101,9 +101,9 @@ const updateCache = async (socket, sceneId, userId, plus, exp) => {
 
   else {
     scene_cache[sceneId].certificationList[idx].timer = setTimeout(() => {
-      console.log("30 초 지남...")
+      // console.log("30 초 지남...")
       if (scene_cache[sceneId].certificationList.some(itme => itme.userId === userId)) {
-        console.log("원상복구...")
+        // console.log("원상복구...")
         scene_cache[sceneId].emptyNum += 1;
 
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
@@ -123,20 +123,20 @@ const updateCache = async (socket, sceneId, userId, plus, exp) => {
 }
 
 io.on('connection', socket => {
-  console.log('a user connected');
+  // console.log('a user connected');
 
   socket.on('disconnect', reason => {
     console.log(reason);
-    console.log('user disconnected');
+    // console.log('user disconnected');
   });
 
   socket.on('room', data => {
-    console.log('room join', data.room);
+    // console.log('room join', data.room);
     socket.join(data.room);
   });
 
   socket.on('leave room', data => {
-    console.log('leaving room', data.room);
+    // console.log('leaving room', data.room);
     socket.leave(data.room)
   });
 
@@ -150,11 +150,10 @@ io.on('connection', socket => {
     }
 
     if (scene_cache[sceneId].emptyNum === 0) {
+      console.log("faile..");
       socket.emit('decrease_failed');
-
       socket.emit('empty_num_changed', { emptyNum: 0 });
-      console.log(scene_cache[sceneId].emptyNum)
-      console.log("이게 맞음......................")
+      // console.log(scene_cache[sceneId].emptyNum)
       return;
     }
 
@@ -166,8 +165,8 @@ io.on('connection', socket => {
       isMakingScene: false,
     }
     scene_cache[sceneId].certificationList.push(user_token);
-    console.log("concorrency problem")
-    updateCache(socket, sceneId, userId, -1, 0)
+    // console.log("concorrency problem")
+    updateCache(sceneId, userId, -1, 0)
   });
 
   socket.on('empty_num_increase', async data => {
@@ -184,7 +183,7 @@ io.on('connection', socket => {
       io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: 4 });
       return;
     }
-    updateCache(socket, sceneId, userId, 1, 0)
+    updateCache(sceneId, userId, 1, 0)
   });
 
   socket.on('validate_empty_num', async data => {
@@ -216,8 +215,8 @@ io.on('connection', socket => {
 
       // 혹시 몰라서 1초 버퍼 둠..(1초 안에 뭐가 안끝나서 꼬일 것 같았음)
       if (timeDiff < 0) {
-        console.log(certToken)
-        console.log("exp over !! - emptyNum PLUS ")
+        // console.log(certToken)
+        // console.log("exp over !! - emptyNum PLUS ")
         sceneTmp.emptyNum += 1;
       } else {
         newCertList.push(certToken);
@@ -226,7 +225,7 @@ io.on('connection', socket => {
           const idx = scene_cache[scene_id].certificationList.findIndex(item => item.userId === certToken.userId);
           if (idx > -1) {
             if (scene_cache[scene_id].certificationList[idx].isMakingScene) {
-              socket.to(certToken.userId.toString()).emit("timeout_making", { sceneId: scene_id });
+              io.sockets.to(certToken.userId.toString()).emit("timeout_making", { sceneId: scene_id });
             }
 
             scene_cache[scene_id].emptyNum += 1;
@@ -243,7 +242,7 @@ io.on('connection', socket => {
       emptyNum: sceneTmp.emptyNum,
       certificationList: [...newCertList],
     };
-    console.log("??:", scene_cache[scene_id]);
+    // console.log("??:", scene_cache[scene_id]);
     Scene.updateOne({ _id: scene_id }, { $set: { "sceneTmp": { ...scene_cache[scene_id] } } }).exec();
     io.sockets.to(scene_id).emit("validated", { sceneId: scene_id, emptyNum: scene_cache[scene_id].emptyNum });
   });
@@ -256,7 +255,7 @@ io.on('connection', socket => {
       // cert 리스트의 모든 녀석을 확인하여 exp가 넘은 친구는 제거
     }
 
-    updateCache(socket, sceneId, userId, 0, exp)
+    updateCache(sceneId, userId, 0, exp)
   })
 
   socket.on('final_submit', async data => {
@@ -269,7 +268,7 @@ io.on('connection', socket => {
 
 
     const idx = scene_cache[prevSceneId].certificationList.findIndex(item => item.userId === userId);
-    console.log("idx:", idx)
+    // console.log("idx:", idx)
     if (idx > -1) {
       clearTimeout(scene_cache[prevSceneId].certificationList[idx].timer);
       scene_cache[prevSceneId].certificationList.splice(idx, 1)

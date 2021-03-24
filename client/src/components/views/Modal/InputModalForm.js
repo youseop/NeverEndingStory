@@ -10,7 +10,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, remainTime }) =
   }
 
   useKey("Enter", handleEnter);
-  
+
   if (visible) {
     return (
       <Modal

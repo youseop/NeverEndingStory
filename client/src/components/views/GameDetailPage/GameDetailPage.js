@@ -5,9 +5,7 @@ import { Link } from "react-router-dom";
 import "./GameDetailPage.css";
 import { LOCAL_HOST } from"../../Config"
 import Comment from '../Comment/Comment';
-import useSound from 'use-sound'
 import { socket } from "../../App";
-import { replace } from "formik";
 
 function GameDetailPage(props) {
     const gameId = props.match.params.gameId;

@@ -36,13 +36,11 @@ router.get('/getClass', (req,res) => {
 })
 
 router.post('/updateClass', (req,res) => {
-  // console.log("start")
   Class.findOne({"_id" : mongoose.Types.ObjectId(req.body.gameId)})
     .populate('creator')
     .exec((err, find_class) => {
       if(err) return res.status(400).send(err)
 
-      // console.log(req.body)
       const student = new Student(req.body.student);
       find_class.student.push(student);
 

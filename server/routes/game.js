@@ -126,10 +126,6 @@ router.post("/putDB", (req, res) => {
         .exec((err, gameDetail) => {
             if (err) return res.status(400).send(err);
 
-            req.body.character.forEach(value => {
-                const character = new Character(value);
-                gameDetail.character.push(character);
-            });
             req.body.background.forEach(value => {
                 const background = new Background(value);
                 gameDetail.background.push(background);
@@ -142,6 +138,21 @@ router.post("/putDB", (req, res) => {
                 const sound = new Sound(value);
                 gameDetail.sound.push(sound);
             });
+
+            gameDetail.save((err, doc) => {
+                if (err) return res.json({ success: false, err });
+                return res.status(200).json({ success: true, gameDetail });
+            });
+        });
+});
+
+router.post("/putCharDB", (req, res) => {
+    Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
+        .populate("creator")
+        .exec((err, gameDetail) => {
+            if (err) return res.status(400).send(err);
+
+            gameDetail.character = req.body.character;
 
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
@@ -187,7 +198,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
             // 유효성 검증 fail
             if(user.makingGameList[idx].exp < Date.now()){
                 trashSceneId = user.makingGameList[idx].sceneId; 
-                console.log(trashSceneId)
+                // console.log(trashSceneId)
                 user.makingGameList.splice(idx,1)
             }
         }
@@ -196,7 +207,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
         if (user.gamePlaying.gameId && gameId.toHexString() === user.gamePlaying.gameId.toHexString()) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
             if(trashSceneId.toHexString() === user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1].toHexString()){
-                console.log("I'm GAME PLAYYING zz")
+                // console.log("I'm GAME PLAYYING zz")
                 user.gamePlaying.sceneIdList.splice(user.gamePlaying.sceneIdList.length - 1,1)
                 user.gamePlaying.isMaking = false;
                 user.save((err) => {
@@ -355,7 +366,7 @@ router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
     try {
         const scene = await Scene.findOne({ _id: sceneId });
         if ( scene === null ) {
-            console.log("??????")
+            // console.log("??????")
             return res.status(200).json({ success: false });
         }
         return res.status(200).json({ success: true, scene });
@@ -380,5 +391,19 @@ router.post("/getgamedetail", (req, res) => {
             return res.status(200).json({ success: true, gameDetail });
         });
 });
+
+//? youseop for charModal (practice)
+router.post("/char_game_tmp_youseop", (req,res) => {
+    Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
+        .exec((err, gameDetail) => {
+            if (err) return res.status(400).send(err);
+            const character = new Character(req.body.char);
+            gameDetail.character.push(character);
+            gameDetail.save((err, doc) => {
+                if (err) return res.json({ success: false, err });
+                return res.status(200).json({ success: true, doc });
+            });
+        });
+})
 
 module.exports = router;

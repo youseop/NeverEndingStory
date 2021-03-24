@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Scene } = require("../models/Scene");
+const { Scene, CharacterCut } = require("../models/Scene");
 const { Game } = require("../models/Game");
 const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
@@ -56,7 +56,7 @@ router.post('/create', auth, async (req, res) => {
   
   // TODO : 추후 makingGameList 제한 필요
   const exp = Date.now() + MS_PER_HR
-  console.log("In create : ",exp)
+  // console.log("In create : ",exp)
   user.makingGameList.push({ sceneId: scene._id, gameId: req.body.gameId, exp });
 
   if (req.body.isFirst) {
@@ -107,7 +107,12 @@ router.post('/save', auth, async (req, res) => {
 
   scene.cutList = req.body.cutList;
   for (let i = 0; i < req.body.cutList.length; i++) {
-    scene.cutList[i].characterList = [...req.body.cutList[i].characterList];
+    //...req.body.cutList[i].characterList
+    scene.cutList[i].characterList = [];
+    for (let j = 0; j < req.body.cutList[i].characterList.length; j++) {
+      const characterCut = new CharacterCut(req.body.cutList[i].characterList[j]);
+      scene.cutList[i].characterList.push(characterCut);
+    }
   }
 
   scene.save((err, scene) => {

@@ -8,13 +8,14 @@ const LOADING_TYPE = {
   SLIDERIGHT: 3,
   SLIDEUP: 4,
   SLIDEDOWN: 5,
+  BLACKIN: 6,
 };
 
 const LoadingPage = () => {
   const loadingType = useSelector((state) => state.gameplay.loadingType);
   switch (loadingType) {
     case LOADING_TYPE.NONE:
-      return "";
+      return null;
     case LOADING_TYPE.BASIC:
       return (
         <div
@@ -53,7 +54,7 @@ const LoadingPage = () => {
         />
       );
     default:
-      return "";
+      return null;
   }
 };
 

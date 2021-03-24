@@ -23,7 +23,7 @@ function RightMenu(props) {
     const uploadGameFrame = async () => {
         // console.log(props)
 
-              // tmp scene create
+        // tmp scene create
         const gameResponse = await Axios.get("/api/game/uploadgameframe")
 
         if (!gameResponse.data.success) {
@@ -35,11 +35,11 @@ function RightMenu(props) {
             gameId: gameResponse.data.game._id,
             prevSceneId: null,
             sceneDepth: 0,
-            isFirst : 1,
+            isFirst: 1,
             title: ""
-            };
+        };
 
-    
+
         const sceneResponse = await Axios.post("/api/scene/create", firstScene)
         if (!sceneResponse.data.success) {
             alert("scene Frame제작 실패");
@@ -53,12 +53,12 @@ function RightMenu(props) {
             props.history.replace({
                 pathname: `/scene/make`,
                 state: {
-                  gameId: gameResponse.data.game._id,
-                  sceneId: sceneResponse.data.sceneId
+                    gameId: gameResponse.data.game._id,
+                    sceneId: sceneResponse.data.sceneId
                 }
-              });
+            });
         }, 1000);
-        
+
 
     }
 

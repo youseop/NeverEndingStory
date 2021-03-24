@@ -15,16 +15,17 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
                 return;
             }
             setFileQueue(oldArray => [...oldArray, files[i]])
-            setTypeQueue(oldArray => [...oldArray, 2])
+            setTypeQueue(oldArray => [...oldArray, 1])
             setBackBlobList(oldArray => [...oldArray, URL.createObjectURL(files[i])])
         }
     };
+
 
     // 왜 인자로 넘어온 game이 처음에 존재하지 않는지 모르겠음
     useEffect(() => {
         if (game.background)
             setBackgroundCards(game.background.map((element, index) => {
-                return <div className="largeBox1">
+                return <div className="largeBox1" key={index}>
                     <img className="smallBox12"
                         // style={index == 0 ? { position: "flex" } : { position: "flex" }}
                         src={element.image}

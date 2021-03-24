@@ -15,11 +15,13 @@ import { useDispatch } from "react-redux";
 import LoadingPage from "../../GamePlayPage/LoadingPage";
 import { gameLoadingPage } from "../../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../../_actions/controlPage_actions";
-import "./SceneMakePage.css";
+import CharacterModal from "../../../functions/CharacterModal/CharacterModal";
 import SceneBox from "./SceneBox/SceneBox";
 import axios from "axios";
 import { useHistory } from "react-router-dom"
 import { socket } from "../../../App";
+
+import "./SceneMakePage.css";
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
@@ -38,8 +40,8 @@ const SceneMakePage = (props) => {
 
     const padding = 0.1;
     const minSize = 300;
+    const ratio = 1080/1920;
 
-    const [ratio, setRatio] = useState(0.5);
     const [windowWidth, setwindowWidth] = useState(window.innerWidth);
     const [windowHeight, setwindowHeight] = useState(window.innerHeight);
     const [newScreenSize, setNewScreenSize] = useState({});
@@ -93,7 +95,7 @@ const SceneMakePage = (props) => {
         }
         socket.off("timeout_making")
         socket.on("timeout_making", data => {
-            console.log("GO HOME")
+            // console.log("GO HOME")
             props.history.replace("/")
         })
 
@@ -103,10 +105,10 @@ const SceneMakePage = (props) => {
     useEffect(() => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.success) { scene = res.data.scene; }
             else {
-                console.log("get scene ERROR");
+                // console.log("get scene ERROR");
                 props.history.replace("/");
                 return;
             }
@@ -155,23 +157,6 @@ const SceneMakePage = (props) => {
             }
         })();
     }, [])
-
-    useEffect(() => {
-        const variable = { gameId: gameId };
-        Axios.post("/api/game/ratio", variable).then((response) => {
-            if (response.data.success) {
-                if (response.data.ratio) {
-                    setRatio(parseFloat(response.data.ratio));
-                } else {
-                    message.info("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
-                }
-            } else {
-                message.error("Scene 정보가 없습니다.");
-            }
-        });
-    }, [])
-
-
 
     const onScriptChange = (event) => {
         setScript(event.currentTarget.value);
@@ -351,9 +336,9 @@ const SceneMakePage = (props) => {
         setUploadModalState(true)
     }
 
-    const onSubmit_saveScene = async (event, isTmp = 0) => {
-        if (CutList.length < 2) {
-            message.error("최소 3개의 컷을 생성해주세요.");
+    const onSubmit_saveScene = async (event, isTmp=0) => {
+        if (CutList.length < 1) {
+            message.error("최소 2개의 컷을 생성해주세요.");
             return;
         }
         const submitCut = {
@@ -448,10 +433,9 @@ const SceneMakePage = (props) => {
                 <div ref={characterSidebarElement}>
                     <CharacterSideBar
                         gameDetail={gameDetail}
-                        CharacterList={CharacterList}
-                        setCharacterList={setCharacterList}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
+                        setCharacterList={setCharacterList}
+                        setName={setName}
                     />
                 </div>
                 <div ref={backgroundSidebarElement} style={{ display: 'none' }}>
@@ -459,7 +443,6 @@ const SceneMakePage = (props) => {
                         gameDetail={gameDetail}
                         setBackgroundImg={setBackgroundImg}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
                     />
                 </div>
                 <div ref={bgmSidebarElement} style={{ display: 'none' }}>
@@ -468,7 +451,6 @@ const SceneMakePage = (props) => {
                         bgm_audio={bgm_audio}
                         setBgmFile={setBgmFile}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
                     />
                 </div>
                 <div ref={soundSidebarElement} style={{ display: 'none' }}>
@@ -477,7 +459,6 @@ const SceneMakePage = (props) => {
                         sound_audio={sound_audio}
                         setSoundFile={setSoundFile}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
                     />
                 </div>
             </div>)
@@ -514,28 +495,9 @@ const SceneMakePage = (props) => {
             <div>
                 <div
                     className="backgroundImg_container"
+                    id="backgroundImg_container"
                     style={newScreenSize}
                 >
-                    {BgmFile.name ? (
-                        <div
-                            className="scene__SoundBox_container"
-                            onClick={onClick_bgm_player}
-                        >
-                            {BgmFile.name}
-                        </div>
-                    ) : (
-                        <div>BGM</div>
-                    )}
-                    {SoundFile.name ? (
-                        <div
-                            className="scene__SoundBox_container"
-                            onClick={onClick_sound_player}
-                        >
-                            {SoundFile.name}
-                        </div>
-                    ) : (
-                        <div>Sound</div>
-                    )}
                     {BackgroundImg ? (
                         <img
                             className="backgroundImg"
@@ -546,7 +508,9 @@ const SceneMakePage = (props) => {
                         <div></div>
                     )}
                     <CharacterBlock
-                        characterList={CharacterList}
+                        GameCharacterList={gameDetail.character}
+                        CharacterList={CharacterList}
+                        setCharacterList={setCharacterList}
                         onRemove_character={onRemove_character}
                     />
                     {SidBar_script && (
@@ -557,11 +521,18 @@ const SceneMakePage = (props) => {
                                 onChange={onScriptChange}
                                 value={Script}
                                 className="sceneMake__text_block"
+                                ref={(input) => input && input.focus()}
                             />
                         </div>
                     )}
                 </div>
             </div>
+            <CharacterModal 
+                setName={setName}
+                setCharacterList={setCharacterList} 
+                CharacterList={CharacterList}
+                GameCharacterList={gameDetail.character}
+            />
             <SceneBox
                 CutList={CutList}
                 CutNumber={CutNumber}
@@ -572,6 +543,28 @@ const SceneMakePage = (props) => {
                 EmptyCutList={EmptyCutList}
                 saveCut={saveCut}
             />
+            <div className="sceneMake__sound_container">
+                {BgmFile.name ? (
+                    <div
+                        className="scene__SoundBox_container"
+                        onClick={onClick_bgm_player}
+                    >
+                        {BgmFile.name}
+                    </div>
+                ) : (
+                    <div>BGM</div>
+                )}
+                {SoundFile.name ? (
+                    <div
+                        className="scene__SoundBox_container"
+                        onClick={onClick_sound_player}
+                    >
+                        {SoundFile.name}
+                    </div>
+                ) : (
+                    <div>Sound</div>
+                )}
+            </div>
             <div className="sceneMake__btn_container">
                 <Button type="primary" onClick={onTmpSave}>
                     Temporary save

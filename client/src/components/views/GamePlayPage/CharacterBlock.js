@@ -1,24 +1,31 @@
+import React, { memo, useEffect } from 'react'
+import Character from "../../functions/CharacterModal/Character";
+
 import "./CharacterBlock.css";
-import React from "react";
+
 const CharacterBlock = (props) => {
-  const { characterList, onRemove_character } = props;
-  const positionX = [[35], [20, 50], [10, 35, 60]];
-  const positionY = [[10], [10, 20], [0, 15, 90]];
-  const characterblocks = characterList.map((url, index) => {
+  const { onRemove_character, CharacterList, GameCharacterList, setCharacterList } = props;
+
+  const characterblocks = CharacterList.map((charSchema, index) => {
     return (
-      <img
-        className="characterblock"
-        style={{ left: `${positionX[characterList.length - 1][index]}%`,
-                 bottom: `${positionY[characterList.length - 1][index]}%` }}
-        src={url}
-        key={index}
-        onClick={() => onRemove_character(index)}
-        alt="Network Error"
-      />
+      <div key={index}>
+        <Character
+          setCharacterList={setCharacterList}
+          GameCharacterList={GameCharacterList}
+          onRemove_character={onRemove_character}
+          CharacterList={CharacterList}
+          index={index}
+          charSchema={charSchema}
+        />
+      </div>
     );
   });
 
-  return <div>{characterblocks}</div>;
+  return (
+      <div className="CharacterBlocks" id="CharacterBlocks">
+        {characterblocks}
+      </div>
+  )
 };
 
-export default CharacterBlock;
+export default memo(CharacterBlock);
