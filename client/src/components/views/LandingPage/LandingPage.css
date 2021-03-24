@@ -35,7 +35,8 @@
 .game-box > div:nth-child(2) {
   width: 100%;
   flex: 1;
-  font-size: 1px;
+  font-size: 3px;
+  padding-right: 10px;
   /* background-color: tomato; */
 }
 .game-box > div:last-child {
@@ -68,6 +69,13 @@
   background: #e74a4a;
 }
 
+.bar{
+  float: right;
+  padding-right: 5px;
+  /* background-color: darkorchid; */
+  filter:brightness(50%)
+}
+
 .gamelist-container {
   position: absolute;
   left : 0px;
@@ -96,7 +104,7 @@
   width: 60px;
   height: 180px;
   top:63px;
-  left:5px;
+  left:0px;
 
   border-radius: 3px;
 
