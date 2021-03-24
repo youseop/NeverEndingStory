@@ -213,7 +213,6 @@ const ProductScreen = (props) => {
             }
             <GameCharacterBlock
               characterList={Scene.cutList[i].characterList}
-              onRemove_character={() => { }}
             />
 
             {i === Scene.cutList.length - 1 ? (

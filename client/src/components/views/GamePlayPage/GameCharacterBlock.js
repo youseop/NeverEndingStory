@@ -1,21 +1,28 @@
 import "./GameCharacterBlock.css";
 import React from "react";
 const GameCharacterBlock = (props) => {
-  const { characterList, onRemove_character } = props;
+  const { characterList } = props;
   
-  const characterblocks = characterList.map((characterSchema, index) => {
+  const characterblocks = characterList.map((charSchema, index) => {
     return (
-      <div>
-      <img
-        className="characterblock"
-        style={{ left: `${characterSchema.posX}%`,
-                 bottom: `${characterSchema.posY}%` }}
-        src={characterSchema.image}
-        key={index}
-        onClick={() => onRemove_character(index)}
-        alt="Network Error"
-      />
-    </div>
+      <div key={index}>
+        <div 
+          className="CharacterBlock"
+          style={{ left: `${charSchema.posX}%`}}
+        >
+          <div 
+            className="character__container"
+            style={{height: `${charSchema.size}%`,
+                    top: `${charSchema.posY}%`}}
+          >
+              <img
+                className="characterImg"
+                src={charSchema.image}
+                alt="img"
+              />
+          </div>
+        </div>
+      </div>
     )
   });
 
