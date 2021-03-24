@@ -8,7 +8,6 @@ import CharacterMoveX from './CharacterMove/CharacterMoveX';
 import CharacterMoveY from './CharacterMove/CharacterMoveY';
 import { selectMovingTarget } from '../../../_actions/movingTarget_actions';
 import {addEvent, removeAllEvents} from '../handleEventListener';
-import { SecurityScanTwoTone } from '@ant-design/icons';
 
 function Character(props) {
   const dispatch = useDispatch();
@@ -17,7 +16,7 @@ function Character(props) {
   const element_X = useRef();
   const element_Y = useRef();
 
-  const [clicked,setClicked] = useState(false);
+  const [clicked,setClicked] = useState(true);
   const [moving, setMoving] = useState(true);
   const [sizing, setSizing] = useState(false);
 
@@ -63,28 +62,17 @@ function Character(props) {
     }
   }, [])
 
-  const onMouseEnter = () => {
-    setClicked(true);
+  const onMouseEnter_initMoving = () => {
+    // addEvent(background_element, "mousemove", mouseMove, false);
   }
 
-  const onMouseLeave = () => {
-    setClicked(false);
-  }
-
-  const onMouseDown = (e) => {
+  const onMouseDown_selectMovingTarget = (e) => {
     addEvent(background_element, "mousemove", mouseMove, false);
     pivot = [e.pageX,e.pageY];
     drag = true;
   }
 
-  const onMouseUp = (e) => {
-    pivot = [e.pageX,e.pageY];
-    drag = false;
-    if(sizing === true){
-      setSizing(false);
-      setMoving(true);
-    }
-    dispatch(selectCharacter({...GameCharacterList[charSchema.index], index: charSchema.index}));
+  const onMouseUp_detachMovingTarget = (e) => {
     setCharacterList((oldArray)=> {
       return [
         ...oldArray.slice(0,index), 
@@ -95,6 +83,10 @@ function Character(props) {
     setCharacterList((oldArray)=> {
       return [...oldArray.slice(0,index), {...oldArray[index], size: Number(element_Y.current.style.height.replace( /%/g, '' ))} ,...oldArray.slice(index+1,4)]
     })
+    pivot = [e.pageX,e.pageY];
+    drag = false;
+    setSizing(false);
+    dispatch(selectCharacter({...GameCharacterList[charSchema.index], index: charSchema.index}));
   }
 
 
@@ -112,19 +104,26 @@ function Character(props) {
                 top: `${charSchema.posY}%`}}
       >
           <img
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp}
+            onMouseEnter={onMouseEnter_initMoving}
+            onMouseDown={onMouseDown_selectMovingTarget}
+            onMouseUp={onMouseUp_detachMovingTarget}
             className={`${clicked ? "characterImg_clicked" : "characterImg"}`}
             id={`${index}`}
             src={charSchema.image}
             alt="img"
           />
+          {clicked &&
+          <div 
+            className={`${moving ? "btn_moving_clicked" : "btn_moving"}`} 
+            onClick={() => {setMoving((state)=>!state);setSizing(false)}}
+          >위치 조절</div>
+          }
+          {clicked &&
           <div 
             className={`${sizing ? "btn_sizing_clicked" : "btn_sizing"}`} 
-            onClick={() => {setMoving((state)=>!state);setSizing((state)=>!state)}}
+            onClick={() => {setMoving(false);setSizing((state)=>!state)}}
           >사이즈 조절</div>
+          }
       </div>
     </div>
   )
