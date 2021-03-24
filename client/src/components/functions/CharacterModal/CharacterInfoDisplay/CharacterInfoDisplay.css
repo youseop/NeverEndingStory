@@ -3,6 +3,26 @@
   flex-direction: column;
 }
 
+.characterList__container{
+  display: flex;
+  width: auto;
+}
+
+.characterList_Info {
+  display: flex;
+  flex-direction: column;
+}
+
+.characterList_Image {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+}
+
+.characterList_Text{
+  font-size: 0.3rem;
+}
+
 .image_array__container{
   display: flex;
   align-items: flex-start;

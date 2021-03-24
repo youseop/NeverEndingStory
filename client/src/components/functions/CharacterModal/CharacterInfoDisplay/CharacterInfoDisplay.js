@@ -1,8 +1,12 @@
 import { message } from 'antd';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { selectCharacter } from '../../../../_actions/characterSelected_actions';
 import './CharacterInfoDisplay.css';
 
-function CharacterInfoDisplay({character, setCharacterList}) {
+function CharacterInfoDisplay({character, setCharacterList, CharacterList, GameCharacterList}) {
+  const dispatch = useDispatch();
+
   const onClick_putCharacter = (index,url) => {
     const CharacterSchema = {
       index: character.index,
@@ -25,7 +29,25 @@ function CharacterInfoDisplay({character, setCharacterList}) {
     })
   }
 
-  const characterImages = character.image_array.map((url, index) => {
+  const onClick_selectCharacter = (index) => {
+    dispatch(selectCharacter({...GameCharacterList[index], index: index}));
+  }
+
+  const CharacterListImages = CharacterList.map((character,index) => {
+    return (
+    <div key={index} 
+      className="characterList_Info" 
+      onClick={() => {onClick_selectCharacter(character.index)}}
+    >
+      <img src={character.image} alt="" className="characterList_Image"/>
+      <div className="characterList_Text">
+        x: {character.posX} y: {character.posY} size: {character.size}
+      </div>
+    </div>
+    )
+  })
+
+  const characterDetailImages = character.image_array.map((url, index) => {
     return( 
       <div key={index} onClick={() => {onClick_putCharacter(index,url)}}>
         <img src={url} alt="img"/>
@@ -35,10 +57,13 @@ function CharacterInfoDisplay({character, setCharacterList}) {
 
   return (
     <div className="characterInfo__container">
+      <div className="characterList__container">
+        {CharacterListImages}
+      </div>
       <div>이름 : {character.name}</div>
       <div>정보 : {character.description}</div>
       <img src={character.image} alt="" className="main_img"/>
-      <div className="image_array__container">{characterImages}</div>
+      <div className="image_array__container">{characterDetailImages}</div>
     </div>
   )
 }

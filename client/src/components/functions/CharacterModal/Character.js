@@ -27,7 +27,7 @@ function Character(props) {
 
   function mouseMove(e) {
     if (drag && clicked && moving) {
-      if (pivot[0]-e.pageX>13 || pivot[1]-e.pageY>13 || pivot[0]-e.pageX<-13 || pivot[1]-e.pageY<-13) {
+      if (pivot[0]-e.pageX>3 || pivot[1]-e.pageY>3 || pivot[0]-e.pageX<-3 || pivot[1]-e.pageY<-3) {
         
         const background_width = background_element.offsetWidth;
         const background_height = background_element.offsetHeight;
@@ -43,15 +43,17 @@ function Character(props) {
     } else if (drag && clicked && sizing) {
       if (pivot[0] != e.pageX) {
         const page = [e.pageX,e.pageY];
-        setCharacterList((oldArray)=> {
-          const img_height = element_Y.current.offsetHeight;
-          const prev_size = oldArray[index].size;
-          const next_size = prev_size*(img_height-(pivot[0]-page[0]))/img_height;
-          return [...oldArray.slice(0,index), {...oldArray[index], size: next_size} ,...oldArray.slice(index+1,4)]
-        })
+        const img_height = element_Y.current.offsetHeight;
+        const prev_size = Number(element_Y.current.style.height.replace( /%/g, '' ));
+        const next_size = prev_size*(img_height-(pivot[1]-page[1]))/img_height;
+        if (next_size > 20){
+          element_Y.current.style.height = String(next_size)+'%';
+        }
         pivot = page;
       }
     }
+    e.stopPropagation()
+    e.preventDefault()
   }
 
   const onMouseEnter_initMoving = () => {
@@ -66,11 +68,15 @@ function Character(props) {
   const onMouseUp_detachMovingTarget = (e) => {
     const page = [e.pageX,e.pageY];
     setCharacterList((oldArray)=> {
+      console.log(oldArray)
       return [
         ...oldArray.slice(0,index), 
-        {...oldArray[index], posX: element_X.current.style.left, posY: element_Y.current.style.top},
+        {...oldArray[index], posX: Number(element_X.current.style.left.replace( /%/g, '' )), posY: Number(element_Y.current.style.top.replace( /%/g, '' ).replace( /px/g, '' ))},
         ...oldArray.slice(index+1,4)
       ]
+    })
+    setCharacterList((oldArray)=> {
+      return [...oldArray.slice(0,index), {...oldArray[index], size: Number(element_Y.current.style.height.replace( /%/g, '' ))} ,...oldArray.slice(index+1,4)]
     })
     removeAllEvents(background_element, "mousemove");
     pivot = [e.pageX,e.pageY];
@@ -79,10 +85,6 @@ function Character(props) {
     setMoving(false);
     setSizing(false);
     dispatch(selectCharacter({...GameCharacterList[charSchema.index], index: charSchema.index}));
-
-
-    // e.preventDefault();
-    // e.stopPropagation();
   }
 
 
