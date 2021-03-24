@@ -10,7 +10,7 @@ function SoundFile({ sound_audio, sound, setSoundFile }) {
 
     return (
         <div onClick={onClick_music}>
-            <img src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`} alt="img" />
+            <img src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`} alt="img" />
             {sound.name}
         </div>
     );

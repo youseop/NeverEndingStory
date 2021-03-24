@@ -158,13 +158,11 @@ const ProductScreen = (props) => {
     // socket.emit("exp_val", {room: sceneId});
     dispatch(savePrevScene({prevSceneId: sceneId}));
     socket.on("empty_num_changed", data => {
-      console.log("en change: ", data.emptyNum);
       dispatch(loadEmptyNum({
         sceneId,
         emptyNum: data.emptyNum
       }));
     })
-    console.log("working");
     socket.emit("validate_empty_num", {scene_id: sceneId})
     
   }, [sceneId])
@@ -237,7 +235,6 @@ const ProductScreen = (props) => {
   }
 
   useEffect(() => {
-    console.log("motherfucket~~~");
     dispatch(loadEmptyNum({
       sceneId,
     }));

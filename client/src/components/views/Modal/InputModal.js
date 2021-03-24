@@ -78,7 +78,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
       }
       setRemainTime(tick);
     }, 970);
-    console.log("made -- ",decTimer)
     setDecreaseTimer(decTimer);
 
     socket.emit("empty_num_decrease", { scene_id, user_id });
@@ -106,7 +105,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
     socket.on("decrease_failed", () => {
       console.log("failed..");
       clearTimeout(decreaseTimer);
-      console.log("deleted -- ",decreaseTimer)
 
       setVisible(false);
     })

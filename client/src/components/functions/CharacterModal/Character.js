@@ -1,26 +1,21 @@
 import React, { useRef, memo, useState, useEffect } from 'react';
-import CharacterModal from './CharacterModal';
 import './Character.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCharacter } from '../../../_actions/characterSelected_actions';
-import CharacterSize from './CharacterSize/CharacterSize';
-import CharacterMoveX from './CharacterMove/CharacterMoveX';
-import CharacterMoveY from './CharacterMove/CharacterMoveY';
-import { selectMovingTarget } from '../../../_actions/movingTarget_actions';
 import {addEvent, removeAllEvents} from '../handleEventListener';
-import { SecurityScanTwoTone } from '@ant-design/icons';
 
 function Character(props) {
   const dispatch = useDispatch();
+
   const { charSchema, GameCharacterList, setCharacterList , index, CharacterList } = props;
-  
+
   const element_X = useRef();
   const element_Y = useRef();
 
   const [clicked,setClicked] = useState(true);
-  const [hover,setHover] = useState(false);
   const [moving, setMoving] = useState(true);
   const [sizing, setSizing] = useState(false);
+  const [imgWidth, setImgWidth] = useState(0);
 
   const background_element = document.getElementById("backgroundImg_container");
 
@@ -31,7 +26,6 @@ function Character(props) {
     const page = [e.pageX,e.pageY];
     if (drag && clicked && moving) {
       if (pivot[0]-e.pageX>3 || pivot[1]-e.pageY>3 || pivot[0]-e.pageX<-3 || pivot[1]-e.pageY<-3) {
-        
         const background_width = background_element.offsetWidth;
         const background_height = background_element.offsetHeight;
         const prev_posX = Number(element_X.current.style.left.replace( /%/g, '' ));
@@ -43,42 +37,46 @@ function Character(props) {
         pivot = page;
       }
     } else if (drag && clicked && sizing) {
-      if (pivot[0] != e.pageX) {
-        const img_height = element_Y.current.offsetHeight;
+      if (pivot[0] - e.pageX>7 || pivot[0] - e.pageX<-7 ) {
+        const image_width = document.getElementById(`${index}`).offsetWidth;
         const prev_size = Number(element_Y.current.style.height.replace( /%/g, '' ));
-        const next_size = prev_size*(img_height-(pivot[1]-page[1]))/img_height;
+        let next_size = 0;
+        if(pivot[0]-page[0] < 0){
+          next_size = prev_size*(image_width-1*(pivot[0]-page[0]))/image_width;
+        } else {
+          next_size = prev_size*(image_width-1*(pivot[0]-page[0]))/image_width;
+        }
         if (next_size > 20){
           element_Y.current.style.height = String(next_size)+'%';
         }
         pivot = page;
       }
     }
+    setImgWidth(document.getElementById(`${index}`).offsetWidth);
     e.stopPropagation()
     e.preventDefault()
   }
 
   useEffect(() => {
     addEvent(background_element, "mousemove", mouseMove, false);
+    addEvent(background_element, "mouseup", onMouseUp, false);
+    setImgWidth(document.getElementById(`${index}`).offsetWidth);
     return () => {
       removeAllEvents(background_element, "mousemove");
+      removeAllEvents(background_element, "mouseup");
     }
   }, [])
 
-  const onMouseEnter = () => {
-    // addEvent(background_element, "mousemove", mouseMove, false);
-  }
-
-  const onMouseLeave = () => {
-    
-  }
-
   const onMouseDown = (e) => {
     addEvent(background_element, "mousemove", mouseMove, false);
+    addEvent(background_element, "mouseup", onMouseUp, false);
     pivot = [e.pageX,e.pageY];
     drag = true;
   }
 
   const onMouseUp = (e) => {
+    removeAllEvents(background_element, "mousemove");
+    removeAllEvents(background_element, "mouseup");
     setCharacterList((oldArray)=> {
       return [
         ...oldArray.slice(0,index), 
@@ -92,9 +90,19 @@ function Character(props) {
     pivot = [e.pageX,e.pageY];
     drag = false;
     setSizing(false);
+    setMoving(true);
     dispatch(selectCharacter({...GameCharacterList[charSchema.index], index: charSchema.index}));
   }
 
+  const onMouseOver = (e) => {
+    setMoving(false);
+    setSizing(true);
+  }
+
+  const onMouseOut = (e) => {
+    setMoving(true);
+    setSizing(false);
+  }
 
   return (
     <div 
@@ -110,10 +118,7 @@ function Character(props) {
                 top: `${charSchema.posY}%`}}
       >
           <img
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
             onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp}
             className={`${clicked ? "characterImg_clicked" : "characterImg"}`}
             id={`${index}`}
             src={charSchema.image}
@@ -121,8 +126,11 @@ function Character(props) {
           />
           <div 
             className={`${sizing ? "btn_sizing_clicked" : "btn_sizing"}`} 
-            onClick={() => {setMoving((state)=>!state);setSizing((state)=>!state)}}
-          >사이즈 조절</div>
+            onMouseOver={onMouseOver}
+            onMouseOut={onMouseOut}
+            onMouseDown={onMouseDown}
+            style={{left: `${imgWidth-3}px`}}
+          ></div>
       </div>
     </div>
   )
