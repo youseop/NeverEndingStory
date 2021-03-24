@@ -66,6 +66,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
   }, []);
   let decTimer;
   const onClickHandler = () => {
+    dispatch(gamePause(true));
     clearTimeout(decreaseTimer);
     let tick = 30;
     setRemainTime(tick);
