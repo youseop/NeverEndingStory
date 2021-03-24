@@ -1,11 +1,12 @@
 import { message } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { detachCharacter } from '../../../_actions/characterSelected_actions';
+import { detachCharacter, selectCharacter } from '../../../_actions/characterSelected_actions';
+import Character from './Character';
 import CharacterInfoDisplay from './CharacterInfoDisplay/CharacterInfoDisplay';
 import './CharacterModal.css';
 
-function CharacterModal({ setCharacterList, setName }) {
+function CharacterModal({setCharacterList, CharacterList, GameCharacterList, setName}) {
   const dispatch = useDispatch();
 
   const onClick_detachCharacter = () => {
@@ -13,7 +14,7 @@ function CharacterModal({ setCharacterList, setName }) {
   }
 
   const currentCharacter = useSelector((state) => state.character);
-
+  
   const onClick_removeCharacter = () => {
     console.log(123, currentCharacter)
     console.log(123, currentCharacter.characterSelected)
@@ -28,15 +29,36 @@ function CharacterModal({ setCharacterList, setName }) {
     setName("")
   }
 
+  const [isAdded,setIsAdded] = useState(false);
+
+  useEffect(() => {
+    let flag = 0;
+    for(let i = 0; i<CharacterList.length; i++){
+      if (CharacterList[i].index === currentCharacter.characterSelected.index){
+        flag = 1;
+        break;
+      }
+    }
+    if(flag === 1){
+      setIsAdded(true);
+    } else {
+      setIsAdded(false);
+    }
+
+  },[currentCharacter, CharacterList])
+
   return (
-    <div className="modal_Character">
-      <div onClick={onClick_detachCharacter}>캐릭터 선택 해제</div>
-      <div onClick={onClick_removeCharacter}>삭제</div>
-      <CharacterInfoDisplay
-        character={currentCharacter.characterSelected}
-        setCharacterList={setCharacterList}
-        setName={setName} />
-    </div>
+      <div className="modal_Character">
+        <div onClick={onClick_detachCharacter}>캐릭터 선택 해제</div>
+        {isAdded && <div onClick={onClick_removeCharacter}>삭제</div>}
+        <CharacterInfoDisplay 
+          setName={setName}
+          GameCharacterList={GameCharacterList}
+          character={currentCharacter.characterSelected} 
+          setCharacterList={setCharacterList}
+          CharacterList={CharacterList}
+      />
+      </div>
   )
 }
 

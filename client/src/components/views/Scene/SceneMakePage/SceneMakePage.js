@@ -462,9 +462,11 @@ function SceneMakePage(props) {
                     )}
                 </div>
             </div>
-            <CharacterModal
-                setCharacterList={setCharacterList}
+            <CharacterModal 
                 setName={setName}
+                setCharacterList={setCharacterList} 
+                CharacterList={CharacterList}
+                GameCharacterList={gameDetail.character}
             />
             <SceneBox
                 CutList={CutList}
