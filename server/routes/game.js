@@ -164,7 +164,7 @@ const updateHistoryFromPlaying = (user) => {
         }
     }
 
-    user.gameHistory.replace({ gameId, sceneIdList: [...sceneIdList] });
+    user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList] });
     user.gamePlaying.sceneIdList = [];
     user.gamePlaying.gameId = null;
     return;
@@ -354,6 +354,10 @@ router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
     sceneId = mongoose.Types.ObjectId(sceneId);
     try {
         const scene = await Scene.findOne({ _id: sceneId });
+        if ( scene === null ) {
+            console.log("??????")
+            return res.status(200).json({ success: false });
+        }
         return res.status(200).json({ success: true, scene });
     } catch (err) {
         console.log(err);

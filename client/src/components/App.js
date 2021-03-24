@@ -28,6 +28,10 @@ import './App.css';
  
 const io = require('socket.io-client');
 export let socket = io(`http://${LOCAL_HOST}:5000`);
+
+window.onpopstate = () => {
+  window.location.reload();
+};
 function App() {
   return (
     <Suspense fallback={(<div>Loading...</div>)}>

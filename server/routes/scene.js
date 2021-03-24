@@ -24,7 +24,7 @@ const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
     }
 
     if (i === gameHistory.length) {
-      user.gameHistory.replace({ gameId, sceneIdList: [...sceneIdList], isMaking });
+      user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList], isMaking });
     }
   }
 

@@ -7,6 +7,7 @@ import { LOCAL_HOST } from"../../Config"
 import Comment from '../Comment/Comment';
 import useSound from 'use-sound'
 import { socket } from "../../App";
+import { replace } from "formik";
 
 function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
@@ -62,7 +63,7 @@ function GameDetailPage(props) {
                     state: {
                         gameId: gameId,
                         sceneId: sceneId
-                    }
+                    },
                 }
                 }>
                 게임 시작하기

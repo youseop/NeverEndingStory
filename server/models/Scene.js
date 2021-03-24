@@ -102,7 +102,7 @@ const sceneSchema = mongoose.Schema({
         ],
     },
     prevSceneId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Scene",
     },
     nextList: [nextSceneSchema],

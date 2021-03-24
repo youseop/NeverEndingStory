@@ -87,6 +87,10 @@ const SceneMakePage = (props) => {
 
 
     useEffect(() => {
+        if (user.userData) {
+            socket.emit("leave room", {room: user.userData._id.toString()});
+            socket.emit("room", {room: user.userData._id.toString()});
+        }
         socket.off("timeout_making")
         socket.on("timeout_making", data => {
             console.log("GO HOME")
@@ -99,10 +103,12 @@ const SceneMakePage = (props) => {
     useEffect(() => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
+            console.log(res.data)
             if (res.data.success) { scene = res.data.scene; }
             else {
                 console.log("get scene ERROR");
                 props.history.replace("/");
+                return;
             }
             // 임시저장한 녀석
             if (scene.cutList.length) {

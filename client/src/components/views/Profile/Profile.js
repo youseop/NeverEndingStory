@@ -18,7 +18,7 @@ function Profile() {
             </div>
             <Link to={
               {
-                pathname: `/scene/make`,
+                pathname: `/scene/make}`,
                 state: {
                   gameId: game.gameId,
                   sceneId: game.sceneId

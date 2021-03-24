@@ -82,14 +82,16 @@ const updateCache = async (socket, sceneId, userId, plus, exp) => {
     certTokenList[idx].exp = exp;
     certTokenList[idx].isMakingScene = true;
     certTokenList[idx].timer = setTimeout(() => {
-      console.log("모든 문제의 시작점...")
+
       if (scene_cache[sceneId].certificationList.some(itme => itme.userId === userId)) {
-        console.log("원상복구 하는가???????????????????????")
         scene_cache[sceneId].emptyNum += 1;
         socket.emit("timeout_making", { msg: "hi~" });
-
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
         if (idx > -1) scene_cache[sceneId].certificationList.splice(idx, 1)
+        Scene.deleteOne({
+          prevSceneId: mongoose.Types.ObjectId(sceneId),
+          writer: mongoose.Types.ObjectId(userId)
+        }).exec().then((err)=> {console.log(err)});
       }
       return;
     }, exp - Date.now())
@@ -149,7 +151,7 @@ io.on('connection', socket => {
 
     if (scene_cache[sceneId].emptyNum === 0) {
       socket.emit('decrease_failed');
-      
+
       socket.emit('empty_num_changed', { emptyNum: 0 });
       console.log(scene_cache[sceneId].emptyNum)
       console.log("이게 맞음......................")
@@ -188,7 +190,7 @@ io.on('connection', socket => {
   socket.on('validate_empty_num', async data => {
     const { scene_id } = data;
     if (scene_cache[scene_id]) {
-      
+
       //! validate 되는 녀석만 하면 된다.
       //! 동시에 validate 되는 녀석이면? 동시적용이 안되긴 함
       // socket.emit('empty_num_changed', { emptyNum: scene_cache[scene_id].emptyNum });
@@ -219,28 +221,22 @@ io.on('connection', socket => {
         sceneTmp.emptyNum += 1;
       } else {
         newCertList.push(certToken);
-        console.log("타이머 설정하기...")
+
         setTimeout(() => {
-          console.log("TIME OUT...")
-          // 믿음이 강력한 코드 --- 에러 발생 가능함
           const idx = scene_cache[scene_id].certificationList.findIndex(item => item.userId === certToken.userId);
           if (idx > -1) {
-            console.log("원상복구...")
             if (scene_cache[scene_id].certificationList[idx].isMakingScene) {
-              console.log("hey man!!");
-              socket.emit("timeout_making", { sceneId: scene_id });
+              socket.to(certToken.userId.toString()).emit("timeout_making", { sceneId: scene_id });
             }
-            console.log("TIME OUT !! - emptyNum PLUS ")
 
             scene_cache[scene_id].emptyNum += 1;
-
             io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: scene_cache[scene_id].emptyNum });
             scene_cache[scene_id].certificationList.splice(idx, 1)
           }
         }, timeDiff)
       }
     }
-    
+
     console.log("empty_num_changed , emptyNum : ", sceneTmp.emptyNum)  // 클라 dispatch 시점
     io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: sceneTmp.emptyNum });
     scene_cache[scene_id] = {
