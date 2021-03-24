@@ -318,8 +318,8 @@ const ProductScreen = (props) => {
       </div>
     );
   } else {
-    dispatch(gameLoadingPage(0));
-    dispatch(gameLoadingPage(1));
+    // dispatch(gameLoadingPage(0));
+    // dispatch(gameLoadingPage(1));
     return <LoadingPage />;
   }
 };
