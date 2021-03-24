@@ -1,19 +1,19 @@
 import React from 'react'
 import { message } from 'antd';
+import { useDispatch } from "react-redux";
+import { selectCharacter } from '../../../../../_actions/characterSelected_actions';
 
-function CharacterImg({ imgUrl, setCharacterList, CharacterList }) {
+function CharacterImg({ character, index }) {
+  const dispatch = useDispatch();
 
-  let limit = 0;
-  const onClick_setCharacter = () => {
-    setCharacterList(oldArray => (limit = oldArray.length) < 3 ? [...oldArray, imgUrl] : oldArray)
-    if (limit === 3)
-      message.error('인물은 최대 세명까지 가능합니다.')
+  const onClick_selectCharacter = () => {
+    dispatch(selectCharacter({ ...character, index: index }));
   }
 
   return (
     <div>
-      <div onClick={onClick_setCharacter}>
-        <img src={`${imgUrl}`} alt="img" />
+      <div onClick={onClick_selectCharacter}>
+        <img src={`${character.image_array[0]}`} alt="img" />
       </div>
     </div>
   )

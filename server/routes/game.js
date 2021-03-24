@@ -126,10 +126,6 @@ router.post("/putDB", (req, res) => {
         .exec((err, gameDetail) => {
             if (err) return res.status(400).send(err);
 
-            req.body.character.forEach(value => {
-                const character = new Character(value);
-                gameDetail.character.push(character);
-            });
             req.body.background.forEach(value => {
                 const background = new Background(value);
                 gameDetail.background.push(background);
@@ -142,6 +138,21 @@ router.post("/putDB", (req, res) => {
                 const sound = new Sound(value);
                 gameDetail.sound.push(sound);
             });
+
+            gameDetail.save((err, doc) => {
+                if (err) return res.json({ success: false, err });
+                return res.status(200).json({ success: true, gameDetail });
+            });
+        });
+});
+
+router.post("/putCharDB", (req, res) => {
+    Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
+        .populate("creator")
+        .exec((err, gameDetail) => {
+            if (err) return res.status(400).send(err);
+
+            gameDetail.character = req.body.character;
 
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
@@ -335,5 +346,19 @@ router.post("/getgamedetail", (req, res) => {
             return res.status(200).json({ success: true, gameDetail });
         });
 });
+
+//? youseop for charModal (practice)
+router.post("/char_game_tmp_youseop", (req,res) => {
+    Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
+        .exec((err, gameDetail) => {
+            if (err) return res.status(400).send(err);
+            const character = new Character(req.body.char);
+            gameDetail.character.push(character);
+            gameDetail.save((err, doc) => {
+                if (err) return res.json({ success: false, err });
+                return res.status(200).json({ success: true, doc });
+            });
+        });
+})
 
 module.exports = router;

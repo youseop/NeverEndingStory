@@ -14,18 +14,13 @@ const InputModal = ({ scene_id, scene_depth, game_id }) => {
   const [formRef, setFormRef] = useState(null);
 
   const handleCreate = () => {
+    if (!visible) {
+      return;
+    }
     formRef.validateFields((err, values) => {
       if (err || !visible) {
         return;
       }
-      console.log(
-        "Received values of form: ",
-        values,
-        scene_id,
-        scene_depth,
-        game_id
-      );
-
       history.push({
         pathname: `/scene/make/${game_id}`,
         state: {

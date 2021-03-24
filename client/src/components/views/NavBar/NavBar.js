@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 function NavBar() {
   const [visible, setVisible] = useState(false);
   const navbarOn = useSelector((state) => state.controlpage.navbarOn);
-
   let style = {};
 
   const showDrawer = () => {
@@ -27,7 +26,7 @@ function NavBar() {
       zIndex: 5,
       width: "100%",
       // transform: "translate(0,-69px)",
-      opacity : 0,
+      opacity: 0,
       animation: "0.8s ease-out 0s 1 hide",
     };
   }

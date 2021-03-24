@@ -21,7 +21,6 @@ function RightMenu(props) {
     };
 
     const uploadGameFrame = () => {
-        console.log(props)
         Axios.get("/api/game/uploadgameframe").then((response) => {
             if (response.data.success) {
                 message.success(

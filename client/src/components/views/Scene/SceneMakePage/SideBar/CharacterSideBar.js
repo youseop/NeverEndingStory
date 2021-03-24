@@ -4,11 +4,15 @@ import './CharacterSideBar'
 
 import CharacterImg from './CharacterImg'
 
-function CharacterSideBar({ gameDetail, setCharacterList, CharacterList, setMakeModalState }) {
-  
+function CharacterSideBar({ gameDetail, setCharacterList, setMakeModalState, setName }) {
+
   const renderCharacter = gameDetail.character.map((character, index) => {
     return <div className="character" key={`${index}`}>
-      <CharacterImg imgUrl={character.image} CharacterList={CharacterList} setCharacterList={setCharacterList} />
+      <CharacterImg
+        character={character}
+        index={index}
+        setCharacterList={setCharacterList}
+        setName={setName} />
     </div>
   })
 

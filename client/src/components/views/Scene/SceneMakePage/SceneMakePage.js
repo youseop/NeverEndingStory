@@ -15,18 +15,18 @@ import { useDispatch } from "react-redux";
 import LoadingPage from "../../GamePlayPage/LoadingPage";
 import { gameLoadingPage } from "../../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../../_actions/controlPage_actions";
-import "./SceneMakePage.css";
+import CharacterModal from "../../../functions/CharacterModal/CharacterModal";
 import SceneBox from "./SceneBox/SceneBox";
 
+import "./SceneMakePage.css";
 
-var bgm_audio = new Audio();
-var sound_audio = new Audio();
-
+let bgm_audio = new Audio();
+let sound_audio = new Audio();
 function SceneMakePage(props) {
     const padding = 0.1;
     const minSize = 300;
+    const ratio = 1080/1920;
 
-    const [ratio, setRatio] = useState(0.5);
     const [windowWidth, setwindowWidth] = useState(window.innerWidth);
     const [windowHeight, setwindowHeight] = useState(window.innerHeight);
     const [newScreenSize, setNewScreenSize] = useState({});
@@ -78,21 +78,6 @@ function SceneMakePage(props) {
                     }
                 })
         }
-    }, [])
-
-    useEffect(() => {
-        const variable = { gameId: gameId };
-        Axios.post("/api/game/ratio", variable).then((response) => {
-            if (response.data.success) {
-                if (response.data.ratio) {
-                    setRatio(parseFloat(response.data.ratio));
-                } else {
-                    message.info("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
-                }
-            } else {
-                message.error("Scene 정보가 없습니다.");
-            }
-        });
     }, [])
 
     const [CutNumber, setCutNumber] = useState(0);
@@ -268,17 +253,17 @@ function SceneMakePage(props) {
     };
 
     const onRemove_cut = () => {
-        if (CutList.length-1 <= CutNumber){
+        if (CutList.length - 1 <= CutNumber) {
             message.info('마지막 컷 입니다.');
             return;
         }
-        message.success(`${CutNumber+1}번째 컷이 삭제되었습니다.`);
+        message.success(`${CutNumber + 1}번째 컷이 삭제되었습니다.`);
         setCutList((oldArray) => [
             ...oldArray.slice(0, CutNumber),
             ...oldArray.slice(CutNumber + 1, 31),
         ]);
         setEmptyCutList((oldArray) => [
-            0,...oldArray
+            0, ...oldArray
         ]);
         displayCut(CutNumber + 1);
     }
@@ -288,10 +273,8 @@ function SceneMakePage(props) {
     }
 
     const onSubmit_saveScene = (event) => {
-        // event.preventDefault();
-        console.log(CutList.length);
-        if (CutList.length < 2) {
-            message.error("최소 3개의 컷을 생성해주세요.");
+        if (CutList.length < 1) {
+            message.error("최소 2개의 컷을 생성해주세요.");
             return;
         }
         const submitCut = {
@@ -320,6 +303,7 @@ function SceneMakePage(props) {
                 sceneOption: SceneOption,
                 prevSceneId: sceneInfo ? sceneInfo.prev_scene_id : 0,
             };
+
             Axios.post("/api/scene/save", variable).then((response) => {
                 if (response.data.success) {
                     message
@@ -346,7 +330,7 @@ function SceneMakePage(props) {
             message.error("제출 취소요");
         }
     };
-    
+
     const [gameDetail, setGameDetail] = useState([]);
     const [sideBar, setSideBar] = useState([]);
 
@@ -368,10 +352,9 @@ function SceneMakePage(props) {
                 <div ref={characterSidebarElement}>
                     <CharacterSideBar
                         gameDetail={gameDetail}
-                        CharacterList={CharacterList}
-                        setCharacterList={setCharacterList}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
+                        setCharacterList={setCharacterList}
+                        setName={setName}
                     />
                 </div>
                 <div ref={backgroundSidebarElement} style={{ display: 'none' }}>
@@ -379,7 +362,6 @@ function SceneMakePage(props) {
                         gameDetail={gameDetail}
                         setBackgroundImg={setBackgroundImg}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
                     />
                 </div>
                 <div ref={bgmSidebarElement} style={{ display: 'none' }}>
@@ -388,7 +370,6 @@ function SceneMakePage(props) {
                         bgm_audio={bgm_audio}
                         setBgmFile={setBgmFile}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
                     />
                 </div>
                 <div ref={soundSidebarElement} style={{ display: 'none' }}>
@@ -397,7 +378,6 @@ function SceneMakePage(props) {
                         sound_audio={sound_audio}
                         setSoundFile={setSoundFile}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
                     />
                 </div>
             </div>)
@@ -412,28 +392,29 @@ function SceneMakePage(props) {
         }
         window.addEventListener('resize', handleResize)
         if (windowWidth * ratio > windowHeight) {
-            setNewScreenSize ({
+            setNewScreenSize({
                 width: `${windowHeight * (1 - 2 * padding) / ratio}px`,
                 height: `${windowHeight * (1 - 2 * padding)}px`,
                 minWidth: `${minSize / ratio}px`,
                 minHeight: `${minSize}px`
             })
         } else {
-            setNewScreenSize ({
+            setNewScreenSize({
                 width: `${windowWidth * (1 - 2 * padding)}px`,
                 height: `${windowWidth * (1 - 2 * padding) * ratio}px`,
                 minWidth: `${minSize}px`,
                 minHeight: `${minSize * ratio}px`
             })
-        }   
-    },[window.innerWidth, window.innerHeight]);
-    
+        }
+    }, [window.innerWidth, window.innerHeight]);
+
     return (
         <div className="scene__container">
             {/* <LoadingPage />   */}
             <div>
                 <div
                     className="backgroundImg_container"
+                    id="backgroundImg_container"
                     style={newScreenSize}
                 >
                     {BackgroundImg ? (
@@ -445,28 +426,10 @@ function SceneMakePage(props) {
                     ) : (
                         <div></div>
                     )}
-                    {BgmFile ? (
-                        <div
-                            className="scene__SoundBox_container"
-                            onClick={onClick_bgm_player}
-                        >
-                            {BgmFile.name}
-                        </div>
-                    ) : (
-                        <div></div>
-                    )}
-                    {SoundFile ? (
-                        <div
-                            className="scene__SoundBox_container"
-                            onClick={onClick_sound_player}
-                        >
-                            {SoundFile.name}
-                        </div>
-                    ) : (
-                        <div></div>
-                    )}
                     <CharacterBlock
-                        characterList={CharacterList}
+                        GameCharacterList={gameDetail.character}
+                        CharacterList={CharacterList}
+                        setCharacterList={setCharacterList}
                         onRemove_character={onRemove_character}
                     />
                     {SidBar_script && (
@@ -483,16 +446,44 @@ function SceneMakePage(props) {
                     )}
                 </div>
             </div>
+            <CharacterModal 
+                setName={setName}
+                setCharacterList={setCharacterList} 
+                CharacterList={CharacterList}
+                GameCharacterList={gameDetail.character}
+            />
             <SceneBox
                 CutList={CutList}
                 CutNumber={CutNumber}
-                displayCut={displayCut} 
+                displayCut={displayCut}
                 setCutNumber={setCutNumber}
                 Hover={Hover}
-                setHover={setHover} 
+                setHover={setHover}
                 EmptyCutList={EmptyCutList}
                 saveCut={saveCut}
             />
+            <div className="sceneMake__sound_container">
+                {BgmFile.name ? (
+                    <div
+                        className="scene__SoundBox_container"
+                        onClick={onClick_bgm_player}
+                    >
+                        {BgmFile.name}
+                    </div>
+                ) : (
+                    <div>BGM</div>
+                )}
+                {SoundFile.name ? (
+                    <div
+                        className="scene__SoundBox_container"
+                        onClick={onClick_sound_player}
+                    >
+                        {SoundFile.name}
+                    </div>
+                ) : (
+                    <div>Sound</div>
+                )}
+            </div>
             <div className="sceneMake__btn_container">
                 <Button type="primary" onClick={onRemove_cut}>
                     Remove Cut

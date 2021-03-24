@@ -1,5 +1,5 @@
 import "./GamePlayPage.css";
-import CharacterBlock from "./CharacterBlock";
+import GameCharacterBlock from "./GameCharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
 import React, { useEffect, useRef, useState } from "react";
 import Axios from "axios";
@@ -14,9 +14,15 @@ import { navbarControl } from "../../../_actions/controlPage_actions";
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
 import TreeMapPopup from "./TreeMap";
 import { gamePause } from "../../../_actions/gamePlay_actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheckSquare,
+  faCompress,
+  faExpand,
+} from "@fortawesome/free-solid-svg-icons";
 
-var bgm_audio = new Audio();
-var sound_audio = new Audio();
+const bgm_audio = new Audio();
+const sound_audio = new Audio();
 
 function useConstructor(callBack = () => {}) {
   const [hasBeenCalled, setHasBeenCalled] = useState(false);
@@ -35,7 +41,8 @@ const ProductScreen = (props) => {
 
   const isPause = useSelector((state) => state.gameplay.isPause);
 
-  const [ratio, setRatio] = useState(0.5);
+  const ratio = 1080 / 1920;
+
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const [i, setI] = useState(0);
@@ -53,21 +60,7 @@ const ProductScreen = (props) => {
   let errorMessage;
 
   useConstructor(() => {
-    //* screen ratio control
-    const variable = { gameId: gameId };
-    Axios.post("/api/game/ratio", variable).then((response) => {
-      if (response.data.success) {
-        if (response.data.ratio) {
-          setRatio(parseFloat(response.data.ratio));
-        } else {
-          message.error(
-            "배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다."
-          );
-        }
-      } else {
-        message.error("Scene 정보가 없습니다.");
-      }
-    });
+    console.log("")
   });
 
   try {
@@ -85,7 +78,9 @@ const ProductScreen = (props) => {
   useKey("Digit3", handleChoice);
   useKey("Digit4", handleChoice);
 
+  const [isFirstCut, setIsFirstCut] = useState(true);
   function playMusic(i) {
+    if (isFirstCut) setIsFirstCut(false);
     if (Scene.cutList[i].bgm.music) {
       //이전 곡과 같은 bgm이 아니라면
       if (
@@ -98,15 +93,18 @@ const ProductScreen = (props) => {
     }
     if (Scene.cutList[i].sound.music) {
       sound_audio.pause();
+
       sound_audio.src = Scene.cutList[i].sound.music;
       sound_audio.play();
     }
   }
 
+  const [isTyping, setIsTyping] = useState(true);
   function handleEnter(event) {
-    if (i < Scene.cutList.length - 1 && !isPause) {
+    if (!isTyping && i < Scene.cutList.length - 1 && !isPause) {
       playMusic(i + 1);
       setI(i + 1);
+      setIsTyping(true);
     }
   }
 
@@ -119,8 +117,8 @@ const ProductScreen = (props) => {
           }`
         );
       } else {
-        dispatch(gamePause(true));
         if (parseInt(event.key) - 1 === Scene.nextList.length) {
+          dispatch(gamePause(true));
           event.preventDefault();
           let choice = document.getElementById("choice");
           choice.click();
@@ -153,6 +151,9 @@ const ProductScreen = (props) => {
           };
           setHistory(history);
           setI(0);
+          bgm_audio.pause();
+          sound_audio.pause();
+          setIsFirstCut(true);
           setScene(response.data.scene);
           dispatch(gamePause(false));
           dispatch(gameLoadingPage(0));
@@ -192,8 +193,15 @@ const ProductScreen = (props) => {
     };
   }
 
+  useEffect(() => {
+    return () => {
+      bgm_audio.pause();
+      sound_audio.pause();
+    };
+  }, []);
+
   if (Scene.cutList) {
-    if (i == 0) playMusic(0);
+    if (i == 0 && isFirstCut) playMusic(0);
     return (
       <div
         className={`${
@@ -226,10 +234,11 @@ const ProductScreen = (props) => {
                 src={Scene.cutList[i].background}
                 alt="Network Error"
               />
-            ) : null}
-            <CharacterBlock
+            ) : (
+              <div></div>
+            )}
+            <GameCharacterBlock
               characterList={Scene.cutList[i].characterList}
-              onRemove_character={() => {}}
             />
 
             {i === Scene.cutList.length - 1 ? (
@@ -240,11 +249,15 @@ const ProductScreen = (props) => {
                 scene_depth={Scene.depth}
                 scene_id={Scene._id}
                 scene_next_list={Scene.nextList}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
               />
             ) : (
               <TextBlock
                 cut_name={Scene.cutList[i].name}
                 cut_script={Scene.cutList[i].script}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
               />
             )}
             <HistoryMapPopup
@@ -262,6 +275,28 @@ const ProductScreen = (props) => {
           </div>
         </div>
         <div className="gamePlay__btn_container">
+          <div>
+            <button
+              className="gamePlay__btn"
+              onClick={() => setHistoryMap((state) => !state)}
+            >
+              미니맵
+            </button>
+            <button
+              className="gamePlay__btn"
+              onClick={() => {
+                setTreeMap((state) => !state);
+              }}
+            >
+              트리맵
+            </button>
+            <button
+              className="gamePlay__btn"
+              onClick={() => setDislike((state) => !state)}
+            >
+              신고
+            </button>
+          </div>
           {errorMessage ? (
             <button
               onClick={() =>
@@ -275,39 +310,13 @@ const ProductScreen = (props) => {
             </button>
           ) : isFullscreen ? (
             <button onClick={handleExitFullscreen} className="gamePlay__btn">
-              Exit Fullscreen
+              <FontAwesomeIcon icon={faCompress} />
             </button>
           ) : (
             <button onClick={setIsFullscreen} className="gamePlay__btn">
-              Fullscreen
+              <FontAwesomeIcon icon={faExpand} />
             </button>
           )}
-          <div>
-            <button
-              className="gamePlay__btn"
-              onClick={() => {
-                setHistoryMap((state) => !state);
-              }}
-            >
-              미니맵
-            </button>
-            <button
-              className="gamePlay__btn"
-              onClick={() => {
-                setDislike((state) => !state);
-              }}
-            >
-              신고
-            </button>
-            <button
-              className="gamePlay__btn"
-              onClick={() => {
-                setTreeMap((state) => !state);
-              }}
-            >
-              트리맵
-            </button>
-          </div>
         </div>
         <DislikePopup
           sceneId={sceneId}
