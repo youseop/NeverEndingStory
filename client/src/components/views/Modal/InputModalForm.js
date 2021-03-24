@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Form, Input } from "antd";
 import useKey from "../../functions/useKey";
 
-const ModalFormComponent = ({ visible, onCancel, onCreate, form }) => {
+const ModalFormComponent = ({ visible, onCancel, onCreate, form, remainTime }) => {
   const { getFieldDecorator } = form;
 
   function handleEnter() {
@@ -15,7 +15,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form }) => {
     return (
       <Modal
         visible={true}
-        title="선택지 내용을 입력하세요"
+        title={`선택지 내용을 입력하세요 (${remainTime})`}
         okText="Submit"
         onCancel={onCancel}
         onOk={onCreate}

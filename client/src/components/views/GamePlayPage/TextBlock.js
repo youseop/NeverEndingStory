@@ -31,6 +31,9 @@ export const TextBlock = (props) => {
 
 // 선택지 display
 export const TextBlockChoice = (props) => {
+
+  // 뭔가 한다..
+  
   const {
     game_id,
     cut_name,
@@ -41,11 +44,21 @@ export const TextBlockChoice = (props) => {
     setIsTyping,
     isTyping,
   } = props;
+  
   const choices = scene_next_list.map((choice, index) => {
     return (
-      <Link to={`/gameplay/${game_id}/${choice.sceneId}`} key={`${index}`}>
+      <Link to={
+        {
+            pathname: `/gameplay`,
+            key:index,
+            state: {
+                gameId: game_id,
+                sceneId: choice.sceneId
+            }
+        }
+        } key={index}>
         {choice.script} <br />
-      </Link>
+    </Link>
     );
   });
   return (
@@ -69,6 +82,7 @@ export const TextBlockChoice = (props) => {
               scene_id={scene_id}
               scene_depth={scene_depth}
               game_id={game_id}
+              scene_next_list={scene_next_list}
             />
           </div>
         ) : (

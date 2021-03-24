@@ -3,7 +3,9 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./GameDetailPage.css";
+import { LOCAL_HOST } from"../../Config"
 import Comment from '../Comment/Comment';
+import { socket } from "../../App";
 
 function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
@@ -11,6 +13,7 @@ function GameDetailPage(props) {
 
     const [gameDetail, setGameDetail] = useState([]);
     const [sceneId, setSceneId] = useState([]);
+    const [isMaking, setIsMaking] = useState(false);
 
     useEffect(() => {
         Axios.post("/api/game/getgamedetail", variable).then((response) => {
@@ -27,6 +30,7 @@ function GameDetailPage(props) {
         Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
             if (response.data.success) {
                 setSceneId(response.data.sceneId);
+                setIsMaking(response.data.isMaking);
             } else {
                 message.error("로그인 해주세요.");
             }
@@ -42,15 +46,24 @@ function GameDetailPage(props) {
             {gameDetail.thumbnail &&
                 <img
                     style={{ width: "30%", height: "30%" }}
-                    src={`http://localhost:5000/${gameDetail.thumbnail}`}
+                    src={`http://${LOCAL_HOST}:5000/${gameDetail.thumbnail}`}
                     alt="thumbnail"
                 />}
             <div>카테고리 : {gameDetail.category}</div>
             <div>크리에이터: {gameDetail.creator}</div>
             <div>{gameDetail.description}</div>
             <br />
-            {/* <a href={`/gameplay/${gameId}/${sceneId}`}>게임 시작하기..</a> */}
-            <Link to={`/gameplay/${gameId}/${sceneId}`}>
+
+            {/* 게임 시작하기 or 이어 만들기 */}
+            <Link to={
+                {
+                    pathname: isMaking ? `/scene/make` : `/gameplay`,
+                    state: {
+                        gameId: gameId,
+                        sceneId: sceneId
+                    },
+                }
+                }>
                 게임 시작하기
             </Link>
             <Comment gameId={gameId} />

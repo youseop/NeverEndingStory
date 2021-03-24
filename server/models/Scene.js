@@ -64,6 +64,14 @@ const sceneSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
+    title: {
+        type: String,
+        default: "",
+    },
+    working_num: {
+        type: Number,
+        default: 0,
+    },
     notRecommend: {
         type: Number,
         default: 0,
@@ -71,6 +79,36 @@ const sceneSchema = mongoose.Schema({
     depth: {
         type: Number,
         default: 0,
+    },
+    sceneTmp: {
+        emptyNum: {
+            type: Number,
+            default: 4,
+        },
+        certificationList: [
+            {
+                userId: {
+                    type: String,
+                    ref: "User",
+                },
+                exp: {
+                    type: Date,
+                    default: null, 
+                },
+                timer: {
+                    type: Number,
+                    default: null,
+                },
+                isMakingScene: {
+                    type: Boolean,
+                    default: false, 
+                },
+            }
+        ],
+    },
+    prevSceneId: {
+        type: Schema.Types.ObjectId,
+        ref: "Scene",
     },
     nextList: [nextSceneSchema],
     cutList: [cutSchema],
@@ -80,7 +118,7 @@ const sceneSchema = mongoose.Schema({
     },
     isFirst: {
         type: Number,
-        default: 0,
+        default: 1,
     },
 }, { timestamps: true });
 const Scene = mongoose.model("Scene", sceneSchema);

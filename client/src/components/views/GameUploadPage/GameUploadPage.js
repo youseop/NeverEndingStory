@@ -4,6 +4,7 @@ import Dropzone from "react-dropzone";
 import Axios from "axios";
 import { useSelector } from "react-redux";
 import "./GameUploadPage.css";
+import {LOCAL_HOST} from"../../Config"
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -116,7 +117,7 @@ function GameUploadPage(props) {
                     "첫 Scene을 생성해주세요. 오른쪽의 +버튼을 활용해 이미지들을 추가할 수 있습니다."
                 );
                 setTimeout(() => {
-                    props.history.push(
+                    props.history.replace(
                         `/game/upload/${response.data.game._id}`
                     );
                 }, 1000);
@@ -166,7 +167,7 @@ function GameUploadPage(props) {
                         <div>
                             <img
                                 className="thumbnail__img"
-                                src={`http://localhost:5000/${filePath}`}
+                                src={`http://${LOCAL_HOST}:5000/${filePath}`}
                                 alt="thumbnail"
                             />
                         </div>

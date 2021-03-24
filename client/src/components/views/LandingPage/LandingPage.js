@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Row, Card, Avatar, Col, Typography } from "antd";
 import Axios from "axios";
 import moment from "moment";
+import GameDetailPage from "../GameDetailPage/GameDetailPage";
+import {LOCAL_HOST} from"../../Config"
 import { Link } from "react-router-dom";
 import "./LandingPage.css";
 import { SVG, BAR } from "../../svg/icon";
@@ -62,7 +64,7 @@ function LandingPage() {
           <Link to={`/game/${game._id}`}>
             <img
               style={{ width: "100%" }}
-              src={`http://localhost:5000/${game.thumbnail}`}
+              src={`http://${LOCAL_HOST}:5000/${game.thumbnail}`}
               alt="thumbnail"
             />
           </Link>
@@ -93,7 +95,7 @@ function LandingPage() {
           <a href={`/game/${game._id}`}>
             <img
               className="game-image"
-              src={`http://localhost:5000/${game.thumbnail}`}
+              src={`http://${LOCAL_HOST}:5000/${game.thumbnail}`}
               alt={game.title}
             />
             <div className="game-title">{game.title}</div>

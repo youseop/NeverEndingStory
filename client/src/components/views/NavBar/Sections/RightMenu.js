@@ -20,21 +20,46 @@ function RightMenu(props) {
         });
     };
 
-    const uploadGameFrame = () => {
-        Axios.get("/api/game/uploadgameframe").then((response) => {
-            if (response.data.success) {
-                message.success(
-                    "첫 Scene을 생성해주세요. 오른쪽의 버튼을 활용해 이미지들을 추가할 수 있습니다."
-                );
-                setTimeout(() => {
-                    props.history.push(
-                        `/scene/make/${response.data.game._id}`
-                    );
-                }, 1000);
-            } else {
-                alert("game Frame제작 실패");
-            }
-        });
+    const uploadGameFrame = async () => {
+        // console.log(props)
+
+        // tmp scene create
+        const gameResponse = await Axios.get("/api/game/uploadgameframe")
+
+        if (!gameResponse.data.success) {
+            alert("game Frame제작 실패");
+            return;
+        }
+
+        const firstScene = {
+            gameId: gameResponse.data.game._id,
+            prevSceneId: null,
+            sceneDepth: 0,
+            isFirst: 1,
+            title: ""
+        };
+
+
+        const sceneResponse = await Axios.post("/api/scene/create", firstScene)
+        if (!sceneResponse.data.success) {
+            alert("scene Frame제작 실패");
+            return;
+        }
+
+        message.success(
+            "첫 Scene을 생성해주세요. 오른쪽의 버튼을 활용해 이미지들을 추가할 수 있습니다."
+        );
+        setTimeout(() => {
+            props.history.replace({
+                pathname: `/scene/make`,
+                state: {
+                    gameId: gameResponse.data.game._id,
+                    sceneId: sceneResponse.data.sceneId
+                }
+            });
+        }, 1000);
+
+
     }
 
     if (user.userData && !user.userData.isAuth) {

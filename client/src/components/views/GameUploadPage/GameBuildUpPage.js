@@ -3,6 +3,7 @@ import { Col, Row, Typography, Button, Form, Icon, message } from "antd";
 import Dropzone from "react-dropzone";
 import Axios from "axios";
 import "./GameBuildUpPage";
+import {LOCAL_HOST} from"../../Config"
 
 const { Title } = Typography;
 
@@ -80,7 +81,7 @@ function GameBuildUpPage(props) {
                         <div style={{ position: "relative" }}>
                             <img
                                 style={{ width: "20px", height: "20px" }}
-                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
                                 alt="img not found"
                             />
                             {cur_game.bgm[index].name}
@@ -99,7 +100,7 @@ function GameBuildUpPage(props) {
                         <div style={{ position: "relative" }}>
                             <img
                                 style={{ width: "20px", height: "20px" }}
-                                src="http://localhost:5000/uploads\music_icon.jpg"
+                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
                                 alt="img not found"
                             />
                             {cur_game.sound[index].name}
@@ -168,7 +169,7 @@ function GameBuildUpPage(props) {
                                     gameId: gameId,
                                     character: {
                                         name: file_name,
-                                        image: `http://localhost:5000/${response.data.url}`,
+                                        image: `http://${LOCAL_HOST}:5000/${response.data.url}`,
                                     },
                                 };
                                 Axios.post(
@@ -187,7 +188,7 @@ function GameBuildUpPage(props) {
                                     gameId: gameId,
                                     background: {
                                         name: file_name,
-                                        image: `http://localhost:5000/${response.data.url}`,
+                                        image: `http://${LOCAL_HOST}:5000/${response.data.url}`,
                                     },
                                 };
                                 Axios.post(
@@ -206,7 +207,7 @@ function GameBuildUpPage(props) {
                                     gameId: gameId,
                                     bgm: {
                                         name: file_name,
-                                        music: `http://localhost:5000/${response.data.url}`,
+                                        music: `http://${LOCAL_HOST}:5000/${response.data.url}`,
                                     },
                                 };
                                 Axios.post("/api/game/putBgm", bgmForm).then(
@@ -225,7 +226,7 @@ function GameBuildUpPage(props) {
                                     gameId: gameId,
                                     sound: {
                                         name: file_name,
-                                        music: `http://localhost:5000/${response.data.url}`,
+                                        music: `http://${LOCAL_HOST}:5000/${response.data.url}`,
                                     },
                                 };
                                 Axios.post(
@@ -253,7 +254,7 @@ function GameBuildUpPage(props) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        props.history.push(`/scene/make/${gameId}`);
+        props.history.push(`/scene/make/`);
     };
 
     const onCharacter = () => {

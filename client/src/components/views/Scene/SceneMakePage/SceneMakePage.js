@@ -17,12 +17,27 @@ import { gameLoadingPage } from "../../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../../_actions/controlPage_actions";
 import CharacterModal from "../../../functions/CharacterModal/CharacterModal";
 import SceneBox from "./SceneBox/SceneBox";
+import axios from "axios";
+import { useHistory } from "react-router-dom"
+import { socket } from "../../../App";
 
 import "./SceneMakePage.css";
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
-function SceneMakePage(props) {
+const SceneMakePage = (props) => {
+    const history = useHistory();
+    const location = useLocation();
+    const {gameId,sceneId} = location.state
+
+    // const {gameId,sceneId} = location.state ;
+    if(location.state === undefined) {
+        window.history.back();
+        // return <div></div>;
+    }
+    
+    const user = useSelector((state) => state.user);
+
     const padding = 0.1;
     const minSize = 300;
     const ratio = 1080/1920;
@@ -36,14 +51,9 @@ function SceneMakePage(props) {
     const [reload, setReload] = useState(1);
     const [uploadModalState, setUploadModalState] = useState(false);
 
+
     //modal end
     const dispatch = useDispatch();
-    dispatch(navbarControl(false));
-    const location = useLocation();
-
-    const sceneInfo = location.state;
-    const gameId = props.match.params.gameId;
-    const userId = useSelector((state) => state.user);
 
     const [SidBar_script, setSidBar_script] = useState(true);
 
@@ -60,25 +70,7 @@ function SceneMakePage(props) {
         music: "",
     });
 
-    useEffect(() => {
-        if (sceneInfo) {
-            const variable = { sceneId: location.state.prev_scene_id };
-            Axios.post("/api/scene/scenedetail", variable)
-                .then((response) => {
-                    if (response.data.success) {
-                        const lastCut = response.data.lastCut;
-                        setCharacterList(lastCut.characterList);
-                        setBackgroundImg(lastCut.background);
-                        setName(lastCut.name);
-
-                        dispatch(gameLoadingPage(0));
-                        dispatch(gameLoadingPage(1));
-                    } else {
-                        message.error("이전 Scene의 정보를 불러오는데 실패했습니다.")
-                    }
-                })
-        }
-    }, [])
+    const [isFirstScene, setIsFirstScene] = useState(false)
 
     const [CutNumber, setCutNumber] = useState(0);
     const [Hover, setHover] = useState(false);
@@ -88,10 +80,83 @@ function SceneMakePage(props) {
         Array.from({ length: 30 }, () => 0)
     );
 
-    // 첫 씬과 나머지 씬들의 차이
-    const [SceneOption, setSceneOption] = useState(
-        sceneInfo ? sceneInfo.scene_option : ""
-    );
+
+    let scene;
+    useEffect(() => {
+        dispatch(navbarControl(false));
+
+    }, [])
+
+
+    useEffect(() => {
+        if (user.userData) {
+            socket.emit("leave room", {room: user.userData._id.toString()});
+            socket.emit("room", {room: user.userData._id.toString()});
+        }
+        socket.off("timeout_making")
+        socket.on("timeout_making", data => {
+            // console.log("GO HOME")
+            props.history.replace("/")
+        })
+
+    }, [user])
+
+    //! scene save할 때 필요한 정보 갖고오기
+    useEffect(() => {
+        (async () => {
+            const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
+            // console.log(res.data)
+            if (res.data.success) { scene = res.data.scene; }
+            else {
+                // console.log("get scene ERROR");
+                props.history.replace("/");
+                return;
+            }
+            // 임시저장한 녀석
+            if (scene.cutList.length) {
+
+                if (scene.isFirst) {
+                    setIsFirstScene(true)
+                }
+
+                // 임시저장된 녀석 불러오기
+                setCutList(scene.cutList);
+                const tmpFirstCut = scene.cutList[0]
+                setCharacterList(tmpFirstCut.characterList)
+                setBackgroundImg(tmpFirstCut.background)
+                setName(tmpFirstCut.name);
+                setScript(tmpFirstCut.script);
+                setCutNumber(scene.cutList.length - 1);
+
+                dispatch(gameLoadingPage(0));
+                dispatch(gameLoadingPage(1));
+
+            }
+            // 껍데기
+            else {
+                if (!scene.isFirst) {
+                    const variable = { sceneId: scene.prevSceneId };
+                    Axios.post("/api/scene/scenedetail", variable)
+                        .then((response) => {
+                            //! 이전 씬의 마지막 컷 설정 유지
+                            if (response.data.success) {
+                                const lastCut = response.data.lastCut;
+                                setCharacterList(lastCut.characterList);
+                                setBackgroundImg(lastCut.background);
+                                setName(lastCut.name);
+                                dispatch(gameLoadingPage(0));
+                                dispatch(gameLoadingPage(1));
+                            } else {
+                                message.error("이전 Scene의 정보를 불러오는데 실패했습니다.")
+                            }
+                        })
+                }
+                else {
+                    setIsFirstScene(true)
+                }
+            }
+        })();
+    }, [])
 
     const onScriptChange = (event) => {
         setScript(event.currentTarget.value);
@@ -100,7 +165,6 @@ function SceneMakePage(props) {
     const onNameChange = (event) => {
         setName(event.currentTarget.value);
     };
-
     const characterSidebarElement = useRef();
     const backgroundSidebarElement = useRef();
     const bgmSidebarElement = useRef();
@@ -272,7 +336,7 @@ function SceneMakePage(props) {
         setUploadModalState(true)
     }
 
-    const onSubmit_saveScene = (event) => {
+    const onSubmit_saveScene = async (event, isTmp=0) => {
         if (CutList.length < 1) {
             message.error("최소 2개의 컷을 생성해주세요.");
             return;
@@ -295,41 +359,58 @@ function SceneMakePage(props) {
         if (window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,
-                writer: userId.userData._id,
-                nextList: [],
+                sceneId: sceneId,
                 cutList: submitCutList,
-                isFirst: sceneInfo ? 0 : 1,
-                depth: sceneInfo ? sceneInfo.depth + 1 : 0,
-                sceneOption: SceneOption,
-                prevSceneId: sceneInfo ? sceneInfo.prev_scene_id : 0,
+                isTmp,
             };
 
-            Axios.post("/api/scene/save", variable).then((response) => {
-                if (response.data.success) {
-                    message
-                        .loading("게임 업로드 중..", 1.5)
-                        .then(() =>
-                            message.success("게임 제작이 완료되었습니다.", 1.5)
-                        );
-                    setTimeout(() => {
-                        if (sceneInfo) {
-                            props.history.push(
-                                `/gameplay/${gameId}/${response.data.scene._id}`
-                            );
-                        } else {
-                            props.history.push(
+            const response = await Axios.post(`/api/scene/save`, variable)
+
+            if (response.data.success) {
+                message
+                    .loading("게임 업로드 중..", 1.0)
+                    .then(() => {
+                        if (!isTmp) {
+                            message.success("게임 제작이 완료되었습니다.", 1.0)
+                        }
+                        else {
+                            message.success("업로드 성공.")
+                        }
+                    }
+                    ).then(() => {
+                        if (!isTmp && isFirstScene) {
+                            history.replace(
                                 `/game/${gameId}`
                             );
+
+                        } else if (!isTmp) {
+                            socket.emit("final_submit", {
+                                prevSceneId: response.data.scene.prevSceneId,
+                                sceneId: response.data.scene._id,
+                                title: response.data.scene.title,
+                                userId: user.userData._id.toString(),
+                            })
+                            history.replace({
+                                pathname: `/gameplay`,
+                                state: {
+                                    sceneId: response.data.scene._id,
+                                    gameId: gameId,
+                                }
+                            })
                         }
-                    }, 1000);
-                } else {
-                    message.error("DB에 문제가 있습니다.");
-                }
-            });
+                    })
+            } else {
+                message.error("DB에 문제가 있습니다.");
+            }
+
         } else {
             message.error("제출 취소요");
         }
     };
+
+    const onTmpSave = (event) => {
+        onSubmit_saveScene(event, 1);
+    }
 
     const [gameDetail, setGameDetail] = useState([]);
     const [sideBar, setSideBar] = useState([]);
@@ -485,6 +566,9 @@ function SceneMakePage(props) {
                 )}
             </div>
             <div className="sceneMake__btn_container">
+                <Button type="primary" onClick={onTmpSave}>
+                    Temporary save
+                </Button>
                 <Button type="primary" onClick={onRemove_cut}>
                     Remove Cut
                 </Button>
@@ -493,7 +577,7 @@ function SceneMakePage(props) {
                         Next(Cut)
                     </Button>
                 )}
-                {SceneOption == 0 ?
+                {isFirstScene ?
                     <Button type="primary" onClick={onSubmit_first}>
                         Submit First
                         </Button>

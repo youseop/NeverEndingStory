@@ -2,16 +2,19 @@ import "./GamePlayPage.css";
 import GameCharacterBlock from "./GameCharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
 import DislikePopup from "./Dislike";
 import HistoryMapPopup from "./HistoryMap";
 import LoadingPage from "./LoadingPage";
 import { message } from "antd";
+import { socket } from "../../App"
+import { loadEmptyNum, savePrevScene } from "../../../_actions/sync_actions"
 import useKey from "../../functions/useKey";
-import { useDispatch, useSelector } from "react-redux";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../_actions/controlPage_actions";
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
+import { useLocation } from "react-router";
 import TreeMapPopup from "./TreeMap";
 import { gamePause } from "../../../_actions/gamePlay_actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,8 +36,9 @@ function useConstructor(callBack = () => {}) {
 
 //! playscreen
 const ProductScreen = (props) => {
-  const { gameId } = props.match.params;
-  const { sceneId } = props.match.params;
+  const location = useLocation();  
+  const { gameId, sceneId } = location.state;
+
   const userHistory = props.history;
 
   const dispatch = useDispatch();
@@ -51,6 +55,8 @@ const ProductScreen = (props) => {
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
   const [TreeMap, setTreeMap] = useState(false);
+
+  const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
   const maximizableElement = useRef(null);
 
@@ -77,6 +83,19 @@ const ProductScreen = (props) => {
   useKey("Digit2", handleChoice);
   useKey("Digit3", handleChoice);
   useKey("Digit4", handleChoice);
+
+
+  useEffect(() => {
+    socket.off("accept_final_change");
+    socket.on("accept_final_change", data => {
+      const {sceneId, title} = data;
+      
+      let newNextList = Scene.nextList ? [...Scene.nextList] : [];
+      newNextList.push({sceneId, script: title});
+      const newScene = {...Scene, nextList: newNextList};
+      setScene(newScene);
+    })
+  }, [Scene])
 
   const [isFirstCut, setIsFirstCut] = useState(true);
   function playMusic(i) {
@@ -111,11 +130,13 @@ const ProductScreen = (props) => {
   function handleChoice(event) {
     if (i === Scene.cutList.length - 1 && !isPause) {
       if (Scene.nextList[parseInt(event.key) - 1]) {
-        userHistory.push(
-          `/gameplay/${gameId}/${
-            Scene.nextList[parseInt(event.key) - 1].sceneId
-          }`
-        );
+        userHistory.replace({
+          pathname: `/gameplay`,
+          state: {
+            sceneId: Scene.nextList[parseInt(event.key) - 1].sceneId,
+            gameId: gameId,
+          }
+        })
       } else {
         if (parseInt(event.key) - 1 === Scene.nextList.length) {
           dispatch(gamePause(true));
@@ -126,6 +147,27 @@ const ProductScreen = (props) => {
       }
     }
   }
+
+  
+  useEffect(() => {
+    socket.emit("leave room", {room: prevSceneId});
+
+    socket.off("empty_num_changed") //! 매번 열린다.
+    
+    socket.emit("room", { room: sceneId });
+    // socket.emit("exp_val", {room: sceneId});
+    dispatch(savePrevScene({prevSceneId: sceneId}));
+    socket.on("empty_num_changed", data => {
+      console.log("en change: ", data.emptyNum);
+      dispatch(loadEmptyNum({
+        sceneId,
+        emptyNum: data.emptyNum
+      }));
+    })
+    console.log("working");
+    socket.emit("validate_empty_num", {scene_id: sceneId})
+    
+  }, [sceneId])
 
   //* navigation bar control
   useEffect(() => {
@@ -160,6 +202,7 @@ const ProductScreen = (props) => {
           dispatch(gameLoadingPage(6));
         } else {
           message.error("Scene 정보가 없습니다.");
+          props.history.replace(`/game/${gameId}`);
         }
       }
     );
@@ -194,6 +237,11 @@ const ProductScreen = (props) => {
   }
 
   useEffect(() => {
+    console.log("motherfucket~~~");
+    dispatch(loadEmptyNum({
+      sceneId,
+    }));
+
     return () => {
       bgm_audio.pause();
       sound_audio.pause();
@@ -228,13 +276,13 @@ const ProductScreen = (props) => {
             onClick={(event) => handleEnter(event)}
           >
             <LoadingPage />
-            {Scene.cutList[i].background ? (
+            {(Scene.cutList[i] && Scene.cutList[i].background)?
               <img
                 className="backgroundImg"
                 src={Scene.cutList[i].background}
                 alt="Network Error"
               />
-            ) : (
+          : (
               <div></div>
             )}
             <GameCharacterBlock

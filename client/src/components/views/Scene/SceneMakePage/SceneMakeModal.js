@@ -7,6 +7,7 @@ import CharacterTab from "./Tab/CharacterTab"
 import BackgroundTab from "./Tab/BackgroundTab"
 import BgmTab from "./Tab/BgmTab"
 import SoundTab from "./Tab/SoundTab"
+import { LOCAL_HOST } from "../../../Config";
 import _ from "lodash";
 
 const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
@@ -124,7 +125,7 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
 
       if (fileNum) {
         for (var j = cnt; j < cnt + fileNum[i]; j++) {
-          game.character[i].image_array.push(`http://localhost:5000/${files[j].path}`)
+          game.character[i].image_array.push(`http://${LOCAL_HOST}:5000/${files[j].path}`)
         }
         cnt += fileNum[i]
       }
@@ -143,7 +144,7 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
           setReload(reload => reload + 1)
           setTag(0)
         }
-        console.log("SceneMakeModal::CharDB 업데이트 성공")
+        // console.log("SceneMakeModal::CharDB 업데이트 성공")
       } else {
         message.error("DB 업데이트 실패");
       }
@@ -180,19 +181,19 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
         case 1: //background
           DBForm.background.push({
             name: files[i].originalname,
-            image: `http://localhost:5000/${files[i].path}`,
+            image: `http://${LOCAL_HOST}:5000/${files[i].path}`,
           })
           break;
         case 2:
           DBForm.bgm.push({
             name: files[i].originalname,
-            music: `http://localhost:5000/${files[i].path}`,
+            music: `http://${LOCAL_HOST}:5000/${files[i].path}`,
           })
           break;
         case 3:
           DBForm.sound.push({
             name: files[i].originalname,
-            music: `http://localhost:5000/${files[i].path}`,
+            music: `http://${LOCAL_HOST}:5000/${files[i].path}`,
           })
           break;
         default:
@@ -205,7 +206,6 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
       DBForm
     ).then((response) => {
       if (response.data.success) {
-        console.log("SceneMakeModal::DB 업데이트 성공")
         setReload(reload => reload + 1)
         setTag(0)
       } else {

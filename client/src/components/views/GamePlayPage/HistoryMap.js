@@ -30,7 +30,13 @@ function GoToScene(props) {
     if (!response.data.success) {
       message.error("Scene 변경 요청 실패");
     } else {
-      userhistory.push(`/gameplay/${gameId}/${sceneId[GoScene - 1]}`);
+      userhistory.replace({
+        pathname: `/gameplay`,
+        state: {
+          sceneId: sceneId[GoScene - 1],
+          gameId: gameId,
+        }
+      })
       const close = document.getElementsByClassName("close_btn");
       for (let i = close.length - 1; i >= 0; i--) {
         close[i].click();
@@ -106,6 +112,7 @@ function HistoryMapPopup(props) {
     );
   });
 
+  //! 해당 녀석 클릭과 화면 클릭을 같게 인식한다.. 이부분을 고쳐야합니다!!
   return props.trigger ? (
     <div className="HistoryMap_popup">
       <button className="close_btn" onClick={() => close_button()}>
