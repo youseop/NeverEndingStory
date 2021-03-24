@@ -117,7 +117,7 @@ function GameUploadPage(props) {
                     "첫 Scene을 생성해주세요. 오른쪽의 +버튼을 활용해 이미지들을 추가할 수 있습니다."
                 );
                 setTimeout(() => {
-                    props.history.push(
+                    props.history.replace(
                         `/game/upload/${response.data.game._id}`
                     );
                 }, 1000);

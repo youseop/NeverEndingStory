@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { Route, Switch } from "react-router-dom";
 import Auth from "../hoc/auth";
+import Valid from "../hoc/valid";
 // pages for this product
 import LandingPage from "./views/LandingPage/LandingPage.js";
 import TestPage from "./views/LandingPage/TestPage.js";
@@ -39,8 +40,8 @@ function App() {
           <Route exact path="/profile" component={Auth(Profile, true)} />
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
-          <Route path="/gameplay/:gameId/:sceneId" component={Auth(GamePlayPage, null)} />
-          <Route exact path="/scene/make/:gameId/:sceneId" component={Auth(SceneMakePage, true)} />
+          <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />
+          <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage, true))} />
         </Switch>
       </div>
       <Footer />

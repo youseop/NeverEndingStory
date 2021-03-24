@@ -254,7 +254,7 @@ function GameBuildUpPage(props) {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        props.history.push(`/scene/make/${gameId}`);
+        props.history.push(`/scene/make/`);
     };
 
     const onCharacter = () => {

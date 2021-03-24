@@ -25,7 +25,16 @@ let bgm_audio = new Audio();
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
     const history = useHistory();
-    const user  = useSelector((state) => state.user);
+    const location = useLocation();
+    const {gameId,sceneId} = location.state
+
+    // const {gameId,sceneId} = location.state ;
+    if(location.state === undefined) {
+        window.history.back();
+        // return <div></div>;
+    }
+    
+    const user = useSelector((state) => state.user);
 
     const padding = 0.1;
     const minSize = 300;
@@ -59,8 +68,6 @@ const SceneMakePage = (props) => {
         music: "",
     });
 
-    const gameId = props.match.params.gameId;
-    const sceneId = props.match.params.sceneId;
     const [isFirstScene, setIsFirstScene] = useState(false)
 
     const [CutNumber, setCutNumber] = useState(0);
@@ -81,26 +88,26 @@ const SceneMakePage = (props) => {
 
     useEffect(() => {
         socket.off("timeout_making")
-        socket.on("timeout_making", data =>{
+        socket.on("timeout_making", data => {
             console.log("GO HOME")
-            props.history.push("/")
+            props.history.replace("/")
         })
 
     }, [user])
 
     //! scene save할 때 필요한 정보 갖고오기
-    useEffect( () => {
+    useEffect(() => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
             if (res.data.success) { scene = res.data.scene; }
             else {
                 console.log("get scene ERROR");
-                props.history.push("/");
+                props.history.replace("/");
             }
             // 임시저장한 녀석
-            if(scene.cutList.length){
+            if (scene.cutList.length) {
 
-                if(scene.isFirst){
+                if (scene.isFirst) {
                     setIsFirstScene(true)
                 }
 
@@ -111,14 +118,14 @@ const SceneMakePage = (props) => {
                 setBackgroundImg(tmpFirstCut.background)
                 setName(tmpFirstCut.name);
                 setScript(tmpFirstCut.script);
-                setCutNumber(scene.cutList.length-1);
+                setCutNumber(scene.cutList.length - 1);
 
                 dispatch(gameLoadingPage(0));
                 dispatch(gameLoadingPage(1));
 
             }
             // 껍데기
-            else{
+            else {
                 if (!scene.isFirst) {
                     const variable = { sceneId: scene.prevSceneId };
                     Axios.post("/api/scene/scenedetail", variable)
@@ -136,7 +143,7 @@ const SceneMakePage = (props) => {
                             }
                         })
                 }
-                else{
+                else {
                     setIsFirstScene(true)
                 }
             }
@@ -158,7 +165,7 @@ const SceneMakePage = (props) => {
         });
     }, [])
 
-  
+
 
     const onScriptChange = (event) => {
         setScript(event.currentTarget.value);
@@ -338,7 +345,7 @@ const SceneMakePage = (props) => {
         setUploadModalState(true)
     }
 
-    const onSubmit_saveScene = async (event, isTmp=0) => {
+    const onSubmit_saveScene = async (event, isTmp = 0) => {
         if (CutList.length < 2) {
             message.error("최소 3개의 컷을 생성해주세요.");
             return;
@@ -372,7 +379,7 @@ const SceneMakePage = (props) => {
                 message
                     .loading("게임 업로드 중..", 1.0)
                     .then(() => {
-                        if (!isTmp) { 
+                        if (!isTmp) {
                             message.success("게임 제작이 완료되었습니다.", 1.0)
                         }
                         else {
@@ -381,20 +388,24 @@ const SceneMakePage = (props) => {
                     }
                     ).then(() => {
                         if (!isTmp && isFirstScene) {
-                            history.push(
+                            history.replace(
                                 `/game/${gameId}`
                             );
 
-                        } else if ( !isTmp ) {
+                        } else if (!isTmp) {
                             socket.emit("final_submit", {
-                                prevSceneId : response.data.scene.prevSceneId, 
-                                sceneId : response.data.scene._id, 
+                                prevSceneId: response.data.scene.prevSceneId,
+                                sceneId: response.data.scene._id,
                                 title: response.data.scene.title,
                                 userId: user.userData._id.toString(),
                             })
-                            history.push(
-                                `/gameplay/${gameId}/${response.data.scene._id}`
-                            );
+                            history.replace({
+                                pathname: `/gameplay`,
+                                state: {
+                                    sceneId: response.data.scene._id,
+                                    gameId: gameId,
+                                }
+                            })
                         }
                     })
             } else {

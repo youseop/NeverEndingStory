@@ -48,8 +48,12 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
       setVisible(false);
 
       //! 껍데기 넣을 때, 서버에서 exp 같이 넣기 (별개로 or 같이 해도됨 시간 동기화가 되는 좋은 방법이 있다면)
-      history.push({
-        pathname: `/scene/make/${game_id}/${res.data.sceneId}`,
+      history.replace({
+        pathname: `/scene/make`,
+        state: {
+          gameId: game_id,
+          sceneId: res.data.sceneId
+        }
       });
 
     });

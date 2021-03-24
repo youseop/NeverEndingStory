@@ -31,7 +31,13 @@ function GoToScene(props) {
     if (!response.data.success) {
       message.error("Scene 변경 요청 실패");
     } else {
-      userhistory.push(`/gameplay/${gameId}/${sceneId[GoScene - 1]}`);
+      userhistory.replace({
+        pathname: `/gameplay`,
+        state: {
+          sceneId: sceneId[GoScene - 1],
+          gameId: gameId,
+        }
+      })
       const close = document.getElementsByClassName("close_btn");
       for (let i = close.length - 1; i >= 0; i--) {
         close[i].click();

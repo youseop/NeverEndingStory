@@ -17,17 +17,17 @@ import classNames from 'classnames/bind';
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare, faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { useLocation } from "react-router";
 
 const bgm_audio = new Audio();
 const sound_audio = new Audio();
 
 // playscreen
 const ProductScreen = (props) => {
+  const location = useLocation();  
+  const { gameId, sceneId } = location.state;
 
-  const { gameId } = props.match.params;
-  const { sceneId } = props.match.params;
-
-
+  console.log(location.state);
   const [ratio, setRatio] = useState(0.5);
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
@@ -112,10 +112,13 @@ const ProductScreen = (props) => {
   function handleChoice(event) {
     if (i === Scene.cutList.length - 1 && !Clickable) {
       if (Scene.nextList[parseInt(event.key) - 1]) {
-        userHistory.push(
-          `/gameplay/${gameId}/${Scene.nextList[parseInt(event.key) - 1].sceneId
-          }`
-        );
+        userHistory.replace({
+          pathname: `/gameplay`,
+          state: {
+            sceneId: Scene.nextList[parseInt(event.key) - 1].sceneId,
+            gameId: gameId,
+          }
+        })
       } else {
         setClickable(true);
         if (parseInt(event.key) - 1 === Scene.nextList.length) {
@@ -166,6 +169,7 @@ const ProductScreen = (props) => {
           dispatch(gameLoadingPage(5));
         } else {
           message.error("Scene 정보가 없습니다.");
+          props.history.replace(`/game/${gameId}`);
         }
       }
     );

@@ -50,9 +50,13 @@ function RightMenu(props) {
             "첫 Scene을 생성해주세요. 오른쪽의 버튼을 활용해 이미지들을 추가할 수 있습니다."
         );
         setTimeout(() => {
-            props.history.push(
-                `/scene/make/${gameResponse.data.game._id}/${sceneResponse.data.sceneId}`
-            );
+            props.history.replace({
+                pathname: `/scene/make`,
+                state: {
+                  gameId: gameResponse.data.game._id,
+                  sceneId: sceneResponse.data.sceneId
+                }
+              });
         }, 1000);
         
 

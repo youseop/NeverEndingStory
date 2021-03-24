@@ -48,9 +48,18 @@ export const TextBlockChoice = (props) => {
   
   const choices = scene_next_list.map((choice, index) => {
     return (
-      <Link to={`/gameplay/${game_id}/${choice.sceneId}`} key={`${index}`}>
+      <Link to={
+        {
+            pathname: `/gameplay`,
+            key:index,
+            state: {
+                gameId: game_id,
+                sceneId: choice.sceneId
+            }
+        }
+        } key={index}>
         {choice.script} <br />
-      </Link>
+    </Link>
     );
   });
   return (

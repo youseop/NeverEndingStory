@@ -10,13 +10,21 @@ function Profile() {
 
     const list = (userData) => {
       const makingGameList = userData.makingGameList;
-      return makingGameList.map((game) => {
+      return makingGameList.map((game, index) => {
         return (
           <>
             <div>
               {game.gameId}
             </div>
-            <Link to={`/scene/make/${game.gameId}/${game.sceneId}`}>
+            <Link to={
+              {
+                pathname: `/scene/make`,
+                state: {
+                  gameId: game.gameId,
+                  sceneId: game.sceneId
+                }
+              }
+            } key = {index}>
               게임 만들러가기..
             </Link>
           </>

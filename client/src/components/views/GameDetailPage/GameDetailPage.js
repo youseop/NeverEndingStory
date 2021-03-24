@@ -54,10 +54,17 @@ function GameDetailPage(props) {
             <div>크리에이터: {gameDetail.creator}</div>
             <div>{gameDetail.description}</div>
             <br />
-            {/* <a href={`/gameplay/${gameId}/${sceneId}`}>게임 시작하기..</a> */}
 
             {/* 게임 시작하기 or 이어 만들기 */}
-            <Link to={isMaking ? `/scene/make/${gameId}/${sceneId}` : `/gameplay/${gameId}/${sceneId}`}>
+            <Link to={
+                {
+                    pathname: isMaking ? `/scene/make` : `/gameplay`,
+                    state: {
+                        gameId: gameId,
+                        sceneId: sceneId
+                    }
+                }
+                }>
                 게임 시작하기
             </Link>
             <Comment gameId={gameId} />

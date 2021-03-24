@@ -164,7 +164,7 @@ const updateHistoryFromPlaying = (user) => {
         }
     }
 
-    user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList] });
+    user.gameHistory.replace({ gameId, sceneIdList: [...sceneIdList] });
     user.gamePlaying.sceneIdList = [];
     user.gamePlaying.gameId = null;
     return;
