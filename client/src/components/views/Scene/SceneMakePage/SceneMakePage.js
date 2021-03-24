@@ -369,10 +369,9 @@ function SceneMakePage(props) {
                 <div ref={characterSidebarElement}>
                     <CharacterSideBar
                         gameDetail={gameDetail}
-                        CharacterList={CharacterList}
-                        setCharacterList={setCharacterList}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
+                        setCharacterList={setCharacterList}
+                        setName={setName}
                     />
                 </div>
                 <div ref={backgroundSidebarElement} style={{ display: 'none' }}>
@@ -380,7 +379,6 @@ function SceneMakePage(props) {
                         gameDetail={gameDetail}
                         setBackgroundImg={setBackgroundImg}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
                     />
                 </div>
                 <div ref={bgmSidebarElement} style={{ display: 'none' }}>
@@ -389,7 +387,6 @@ function SceneMakePage(props) {
                         bgm_audio={bgm_audio}
                         setBgmFile={setBgmFile}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
                     />
                 </div>
                 <div ref={soundSidebarElement} style={{ display: 'none' }}>
@@ -398,7 +395,6 @@ function SceneMakePage(props) {
                         sound_audio={sound_audio}
                         setSoundFile={setSoundFile}
                         setMakeModalState={setMakeModalState}
-                        reload={reload}
                     />
                 </div>
             </div>)
@@ -466,7 +462,10 @@ function SceneMakePage(props) {
                     )}
                 </div>
             </div>
-            <CharacterModal setCharacterList={setCharacterList} />
+            <CharacterModal
+                setCharacterList={setCharacterList}
+                setName={setName}
+            />
             <SceneBox
                 CutList={CutList}
                 CutNumber={CutNumber}

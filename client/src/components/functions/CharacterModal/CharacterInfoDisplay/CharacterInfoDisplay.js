@@ -2,7 +2,7 @@ import { message } from 'antd';
 import React from 'react';
 import './CharacterInfoDisplay.css';
 
-function CharacterInfoDisplay({ character, setCharacterList }) {
+function CharacterInfoDisplay({ character, setCharacterList, setName }) {
   const onClick_putCharacter = (index, url) => {
     const CharacterSchema = {
       index: character.index,
@@ -23,6 +23,7 @@ function CharacterInfoDisplay({ character, setCharacterList }) {
       }
       return [...oldArray, CharacterSchema]
     })
+    setName(character.name)
   }
 
   const characterImages = character.image_array.map((url, index) => {

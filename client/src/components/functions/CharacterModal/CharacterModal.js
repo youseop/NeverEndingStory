@@ -5,7 +5,7 @@ import { detachCharacter } from '../../../_actions/characterSelected_actions';
 import CharacterInfoDisplay from './CharacterInfoDisplay/CharacterInfoDisplay';
 import './CharacterModal.css';
 
-function CharacterModal({setCharacterList}) {
+function CharacterModal({ setCharacterList, setName }) {
   const dispatch = useDispatch();
 
   const onClick_detachCharacter = () => {
@@ -15,22 +15,28 @@ function CharacterModal({setCharacterList}) {
   const currentCharacter = useSelector((state) => state.character);
 
   const onClick_removeCharacter = () => {
+    console.log(123, currentCharacter)
+    console.log(123, currentCharacter.characterSelected)
     setCharacterList((oldArray) => {
-      for(let i = 0; i < oldArray.length; i++){
-        if(oldArray[i].index === currentCharacter.characterSelected.index){
+      for (let i = 0; i < oldArray.length; i++) {
+        if (oldArray[i].index === currentCharacter.characterSelected.index) {
           message.info("삭제되었습니다.");
           return [...oldArray.slice(0, i), ...oldArray.slice(i + 1, 4)]
         }
       }
     })
+    setName("")
   }
 
   return (
-      <div className="modal_Character">
-        <div onClick={onClick_detachCharacter}>캐릭터 선택 해제</div>
-        <div onClick={onClick_removeCharacter}>삭제</div>
-        <CharacterInfoDisplay character={currentCharacter.characterSelected} setCharacterList={setCharacterList}/>
-      </div>
+    <div className="modal_Character">
+      <div onClick={onClick_detachCharacter}>캐릭터 선택 해제</div>
+      <div onClick={onClick_removeCharacter}>삭제</div>
+      <CharacterInfoDisplay
+        character={currentCharacter.characterSelected}
+        setCharacterList={setCharacterList}
+        setName={setName} />
+    </div>
   )
 }
 

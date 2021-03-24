@@ -18,6 +18,15 @@ router.post('/save', async (req, res) => {
     depth: req.body.depth
   })
 
+  //   const characterCutSchema = mongoose.Schema({
+  //     index: String,
+  //     image: String,
+  //     posX: Number,
+  //     posY: Number,
+  //     reverse: Number,
+  //     size: Number,
+  // });
+
   // object in object , 자동으로 안들어가서 charaterList 직접 삽입
   for (let i = 0; i < req.body.cutList.length; i++) {
     //...req.body.cutList[i].characterList
