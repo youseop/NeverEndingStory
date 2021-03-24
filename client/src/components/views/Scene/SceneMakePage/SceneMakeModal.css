@@ -2,21 +2,19 @@
   display: flex;
   flex-flow: row nowrap;
   text-align: center;
-  color: #fff;
-  background-color: #94ebcd;
-  border-bottom: 4px solid #6ddccf;
+  /* color: #fff; */
+  color: #dddddd;
+  /* background-color: #94ebcd; */
+  background-color: #30475e;
+  /* border-bottom: 4px solid #6ddccf; */
+  border-bottom: 4px solid #222831;
 
 }
 .tab {
   flex: 1 0 auto;
-  padding: 1rem 1.5rem calc(1rem - 4px);
-  /* border-bottom: 4px solid transparent; */
-  /* &:hover {
-    cursor: pointer;
-    border-bottom: 4px solid #fbc2eb;
-  } */
-  
+  padding: 1rem 1.5rem calc(1rem - 4px);  
 }
 .is-selected {
-  background-color: #6ddccf;
+  /* background-color: #6ddccf; */
+  background-color: #222831;
 }

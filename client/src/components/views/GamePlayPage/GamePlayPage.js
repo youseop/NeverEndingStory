@@ -1,4 +1,6 @@
 import "./GamePlayPage.css";
+import 'react-rangeslider/lib/index.css'
+import "./GamePlaySlider.css";
 import GameCharacterBlock from "./GameCharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
 import React, { useEffect, useRef, useState } from "react";
@@ -18,6 +20,10 @@ import { useLocation } from "react-router";
 import TreeMapPopup from "./TreeMap";
 import { gamePause } from "../../../_actions/gamePlay_actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import VolumeOffIcon from '@material-ui/icons/VolumeOff';
+import Slider from 'react-rangeslider'
+
 import {
   faCheckSquare,
   faCompress,
@@ -25,9 +31,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const bgm_audio = new Audio();
+bgm_audio.volume = 0
 const sound_audio = new Audio();
+sound_audio.volume = 0
 
-function useConstructor(callBack = () => {}) {
+function useConstructor(callBack = () => { }) {
   const [hasBeenCalled, setHasBeenCalled] = useState(false);
   if (hasBeenCalled) return;
   callBack();
@@ -36,7 +44,7 @@ function useConstructor(callBack = () => {}) {
 
 //! playscreen
 const ProductScreen = (props) => {
-  const location = useLocation();  
+  const location = useLocation();
   const { gameId, sceneId } = location.state;
 
   const userHistory = props.history;
@@ -88,14 +96,36 @@ const ProductScreen = (props) => {
   useEffect(() => {
     socket.off("accept_final_change");
     socket.on("accept_final_change", data => {
-      const {sceneId, title} = data;
-      
+      const { sceneId, title } = data;
+
       let newNextList = Scene.nextList ? [...Scene.nextList] : [];
-      newNextList.push({sceneId, script: title});
-      const newScene = {...Scene, nextList: newNextList};
+      newNextList.push({ sceneId, script: title });
+      const newScene = { ...Scene, nextList: newNextList };
       setScene(newScene);
     })
   }, [Scene])
+
+  const [volume, setVolume] = useState(0.5)
+  const [muted, setMuted] = useState(false)
+  const tempVolume = useRef(0.5)
+
+  const mute = () => {
+    if (muted) {
+      setMuted(false)
+      volumeControl(tempVolume.current)
+    } else {
+      tempVolume.current = volume
+      setMuted(true)
+      volumeControl(0)
+    }
+  }
+
+  const volumeControl = (volume) => {
+    setVolume(volume)
+    volume === 0 ? setMuted(true) : setMuted(false)
+    bgm_audio.volume = volume
+    sound_audio.volume = volume
+  }
 
   const [isFirstCut, setIsFirstCut] = useState(true);
   function playMusic(i) {
@@ -127,6 +157,7 @@ const ProductScreen = (props) => {
     }
   }
 
+
   function handleChoice(event) {
     if (i === Scene.cutList.length - 1 && !isPause) {
       if (Scene.nextList[parseInt(event.key) - 1]) {
@@ -148,15 +179,15 @@ const ProductScreen = (props) => {
     }
   }
 
-  
+
   useEffect(() => {
-    socket.emit("leave room", {room: prevSceneId});
+    socket.emit("leave room", { room: prevSceneId });
 
     socket.off("empty_num_changed") //! 매번 열린다.
-    
+
     socket.emit("room", { room: sceneId });
     // socket.emit("exp_val", {room: sceneId});
-    dispatch(savePrevScene({prevSceneId: sceneId}));
+    dispatch(savePrevScene({ prevSceneId: sceneId }));
     socket.on("empty_num_changed", data => {
       console.log("en change: ", data.emptyNum);
       dispatch(loadEmptyNum({
@@ -165,8 +196,8 @@ const ProductScreen = (props) => {
       }));
     })
     console.log("working");
-    socket.emit("validate_empty_num", {scene_id: sceneId})
-    
+    socket.emit("validate_empty_num", { scene_id: sceneId })
+
   }, [sceneId])
 
   //* navigation bar control
@@ -248,43 +279,41 @@ const ProductScreen = (props) => {
     };
   }, []);
 
+
   if (Scene.cutList) {
     if (i == 0 && isFirstCut) playMusic(0);
     return (
       <div
-        className={`${
-          isFullscreen
-            ? "gamePlay__container_fullscreen"
-            : "gamePlay__container"
-        }`}
+        className={`${isFullscreen
+          ? "gamePlay__container_fullscreen"
+          : "gamePlay__container"
+          }`}
         ref={maximizableElement}
       >
         <div
-          className={`${
-            isFullscreen
-              ? "gamePlay__mainContainer_fullscreen"
-              : "gamePlay__mainContainer"
-          }`}
+          className={`${isFullscreen
+            ? "gamePlay__mainContainer_fullscreen"
+            : "gamePlay__mainContainer"
+            }`}
         >
           <div
-            className={`${
-              isFullscreen
-                ? "backgroundImg_container_fullscreen"
-                : "backgroundImg_container"
-            }`}
+            className={`${isFullscreen
+              ? "backgroundImg_container_fullscreen"
+              : "backgroundImg_container"
+              }`}
             style={newScreenSize}
             onClick={(event) => handleEnter(event)}
           >
             <LoadingPage />
-            {(Scene.cutList[i] && Scene.cutList[i].background)?
+            {(Scene.cutList[i] && Scene.cutList[i].background) ?
               <img
                 className="backgroundImg"
                 src={Scene.cutList[i].background}
                 alt="Network Error"
               />
-          : (
-              <div></div>
-            )}
+              : (
+                <div></div>
+              )}
             <GameCharacterBlock
               characterList={Scene.cutList[i].characterList}
             />
@@ -323,6 +352,25 @@ const ProductScreen = (props) => {
           </div>
         </div>
         <div className="gamePlay__btn_container">
+          <div
+            className="gamePlay__btn"
+            onClick={mute}
+          >
+            {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+          </div>
+          <div
+            style={{ width: "80px" }} //slider width
+          >
+            <Slider
+              min={0}
+              max={1}
+              step={0.02}
+              value={volume}
+              onChange={event => {
+                volumeControl(event)
+              }}
+            />
+          </div>
           <div>
             <button
               className="gamePlay__btn"

@@ -113,7 +113,10 @@
   }
 
   .sceneMake__sound_container {
+      color:#dddddd;
+      font-size: 15px;
       position: absolute;
+      margin-top:0.5rem;
       left: 1%;
       transform: translate(0%, 0%);
   }
@@ -135,17 +138,22 @@
     margin: 3px;
 }
 
+/* .sceneMake__btn {
+    border-color: #30475e;
+    background-color: #30475e;
+    font-size: 15px;
+} */
+
 .scenemake__sideBar_container {
     position: absolute;
     right: 0%;
     transform: translate(0%, 0%);
     display: flex;
-
 }
 
 .scenemake__toggleButton_container {
     width: 60px;
-    background-color: rgb(44, 44, 44);
+    background-color: #30475e;
     height: 100%;
     -ms-overflow-style: none;
 }

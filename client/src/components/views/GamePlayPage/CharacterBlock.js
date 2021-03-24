@@ -22,9 +22,10 @@ const CharacterBlock = (props) => {
   });
 
   return (
-      <div className="CharacterBlocks" id="CharacterBlocks">
-        {characterblocks}
-      </div>
+    CharacterList.length > 0 &&
+    <div className="CharacterBlocks" id="CharacterBlocks">
+      {characterblocks}
+    </div>
   )
 };
 
