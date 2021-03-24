@@ -45,6 +45,10 @@ const cutSchema = mongoose.Schema({
         type: Schema.Types,
         ref: "sound",
     },
+    cutEffect: {
+        type: Number,
+        default: 0,
+    }
 });
 const Cut = mongoose.model("cut", cutSchema);
 const sceneSchema = mongoose.Schema({
