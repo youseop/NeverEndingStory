@@ -10,15 +10,17 @@ const { Title } = Typography;
 const { Meta } = Card;
 
 function ContainerToRight(target) {
-  // console.log(target)
   var container = document.getElementById(target);
-  // console.log(container)
-  // var computedStyle = window.getComputedStyle(map);
-  // var transform = computedStyle.getPropertyValue("transform");
-  // var new_position =
-    // transform !== "none" ? parseInt(transform.split(",")[4]) : 0;
+  var computedStyle = window.getComputedStyle(container);
+  var left = computedStyle.getPropertyValue("left").split("p")[0];
+  container.style.left = parseInt(left) - 600 + "px";
+}
 
-  // map.style.transform = `translate(${new_position - 250}px, 0px)`;
+function ContainerToLeft(target) {
+  var container = document.getElementById(target);
+  var computedStyle = window.getComputedStyle(container);
+  var left = computedStyle.getPropertyValue("left").split("p")[0];
+  container.style.left = parseInt(left) + 600 + "px";
 }
 
 function LandingPage() {
@@ -124,12 +126,19 @@ function LandingPage() {
           >
             {gameList}
           </div>
-          <div className="gamelist-left-arrow">
+          <div
+            className="gamelist-left-arrow"
+            onClick={() => {
+              ContainerToLeft("popular_gameList");
+            }}
+          >
             <SVG src="arrow_1" width="45" height="27" color="#F5F5F5" />
           </div>
           <div
             className="gamelist-right-arrow"
-            onClick={ContainerToRight("popular_gameList")}
+            onClick={() => {
+              ContainerToRight("popular_gameList");
+            }}
           >
             <SVG src="arrow_1" width="45" height="27" color="#F5F5F5" />
           </div>
