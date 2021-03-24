@@ -7,7 +7,6 @@ const { Game } = require("../models/Game");
 
 router.post('/save', async (req, res) => {
 
-  // console.log(req.body)
 
   const scene = new Scene({
     gameId: req.body.gameId,
@@ -49,7 +48,6 @@ router.post('/save', async (req, res) => {
       // }
 
     } catch (err) {
-      // console.log(err)
       return res.status(400).json({ success: false, err })
     }
   }
@@ -75,7 +73,6 @@ router.post('/save', async (req, res) => {
 })
 
 router.post("/scenedetail", (req, res) => {
-  // console.log(req.body.sceneId)
   Scene.findOne({ _id: mongoose.Types.ObjectId(req.body.sceneId) }).exec((err, sceneDetail) => {
     if (err) return res.status(400).send(err);
     const lastCut = sceneDetail.cutList[sceneDetail.cutList.length - 1];
