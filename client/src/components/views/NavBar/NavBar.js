@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 function NavBar() {
   const [visible, setVisible] = useState(false);
   const navbarOn = useSelector((state) => state.controlpage.navbarOn);
-  console.log(navbarOn);
   let style = {};
 
   const showDrawer = () => {

@@ -25,8 +25,8 @@ let sound_audio = new Audio();
 function SceneMakePage(props) {
     const padding = 0.1;
     const minSize = 300;
+    const ratio = 1080/1920;
 
-    const [ratio, setRatio] = useState(0.5);
     const [windowWidth, setwindowWidth] = useState(window.innerWidth);
     const [windowHeight, setwindowHeight] = useState(window.innerHeight);
     const [newScreenSize, setNewScreenSize] = useState({});
@@ -78,21 +78,6 @@ function SceneMakePage(props) {
                     }
                 })
         }
-    }, [])
-
-    useEffect(() => {
-        const variable = { gameId: gameId };
-        Axios.post("/api/game/ratio", variable).then((response) => {
-            if (response.data.success) {
-                if (response.data.ratio) {
-                    setRatio(parseFloat(response.data.ratio));
-                } else {
-                    message.info("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
-                }
-            } else {
-                message.error("Scene 정보가 없습니다.");
-            }
-        });
     }, [])
 
     const [CutNumber, setCutNumber] = useState(0);
@@ -288,8 +273,6 @@ function SceneMakePage(props) {
     }
 
     const onSubmit_saveScene = (event) => {
-        // event.preventDefault();
-        // console.log(CutList.length);
         if (CutList.length < 1) {
             message.error("최소 2개의 컷을 생성해주세요.");
             return;

@@ -68,7 +68,6 @@ function Character(props) {
   const onMouseUp_detachMovingTarget = (e) => {
     const page = [e.pageX,e.pageY];
     setCharacterList((oldArray)=> {
-      console.log(oldArray)
       return [
         ...oldArray.slice(0,index), 
         {...oldArray[index], posX: Number(element_X.current.style.left.replace( /%/g, '' )), posY: Number(element_Y.current.style.top.replace( /%/g, '' ).replace( /px/g, '' ))},

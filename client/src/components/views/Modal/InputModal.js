@@ -18,14 +18,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable }) => {
       if (err) {
         return;
       }
-      console.log(
-        "Received values of form: ",
-        values,
-        scene_id,
-        scene_depth,
-        game_id
-      );
-
       history.push({
         pathname: `/scene/make/${game_id}`,
         state: {

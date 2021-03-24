@@ -16,8 +16,6 @@ function CharacterModal({setCharacterList, CharacterList, GameCharacterList, set
   const currentCharacter = useSelector((state) => state.character);
   
   const onClick_removeCharacter = () => {
-    console.log(123, currentCharacter)
-    console.log(123, currentCharacter.characterSelected)
     setCharacterList((oldArray) => {
       for (let i = 0; i < oldArray.length; i++) {
         if (oldArray[i].index === currentCharacter.characterSelected.index) {

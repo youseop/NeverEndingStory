@@ -25,8 +25,8 @@ const ProductScreen = (props) => {
   const { gameId } = props.match.params;
   const { sceneId } = props.match.params;
 
+  const ratio = 1080/1920;
 
-  const [ratio, setRatio] = useState(0.5);
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const userHistory = props.history;
@@ -134,19 +134,6 @@ const ProductScreen = (props) => {
         }
       }
     );
-
-    const variable = { gameId: gameId };
-    Axios.post("/api/game/ratio", variable).then((response) => {
-      if (response.data.success) {
-        if (response.data.ratio) {
-          setRatio(parseFloat(response.data.ratio));
-        } else {
-          message.error("배경화면의 비율 정보가 존재하지 않습니다. 2:1로 초기화 합니다.");
-        }
-      } else {
-        message.error("Scene 정보가 없습니다.");
-      }
-    });
   }, [sceneId]);
 
   useEffect(() => {
