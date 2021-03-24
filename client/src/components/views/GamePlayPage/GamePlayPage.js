@@ -142,7 +142,9 @@ const ProductScreen = (props) => {
           dispatch(gamePause(true));
           event.preventDefault();
           let choice = document.getElementById("choice");
-          choice.click();
+          if(choice){
+            choice.click();
+          }
         }
       }
     }
@@ -151,12 +153,10 @@ const ProductScreen = (props) => {
   
   useEffect(() => {
     socket.emit("leave room", {room: prevSceneId});
-
-    socket.off("empty_num_changed") //! 매번 열린다.
-    
     socket.emit("room", { room: sceneId });
     // socket.emit("exp_val", {room: sceneId});
     dispatch(savePrevScene({prevSceneId: sceneId}));
+    socket.off("empty_num_changed") //! 매번 열린다.
     socket.on("empty_num_changed", data => {
       console.log("en change: ", data.emptyNum);
       dispatch(loadEmptyNum({

@@ -5,8 +5,10 @@ import {
 } from './types';
 
 export function loadEmptyNum(dataToSubmit){
+    console.log(dataToSubmit)
     const request = dataToSubmit.emptyNum !== undefined ? dataToSubmit.emptyNum : axios.get(`/api/game/getSceneInfo/${dataToSubmit.sceneId}`)
         .then(response => {
+            console.log(response.data);
             const scene = response.data.scene;
             return scene.sceneTmp.emptyNum;
         });

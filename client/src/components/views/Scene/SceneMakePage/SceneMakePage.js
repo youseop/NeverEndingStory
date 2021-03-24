@@ -399,7 +399,18 @@ const SceneMakePage = (props) => {
                             })
                         }
                     })
-            } else {
+            } else if(response.data.msg === 'expired') {
+                message.error("제작 유효기간이 만료되었습니다..", 1.0);
+                props.history.replace({
+                    pathname: `/gameplay`,
+                    state: {
+                        sceneId: response.data.prevSceneId,
+                        gameId: gameId,
+                    }
+                })
+                return;
+            }
+             else {
                 message.error("DB에 문제가 있습니다.");
             }
 
