@@ -87,7 +87,7 @@ const updateCache = async (sceneId, userId, plus, exp) => {
     certTokenList[idx].isMakingScene = true;
     certTokenList[idx].timer = setTimeout(() => {
 
-      if (scene_cache[sceneId].certificationList.some(itme => itme.userId === userId)) {
+      if (scene_cache[sceneId].certificationList.some(item => item.userId === userId)) {
         scene_cache[sceneId].emptyNum += 1;
         io.sockets.to(userId.toString()).emit("timeout_making", { msg: "hi~" });
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
@@ -109,7 +109,7 @@ const updateCache = async (sceneId, userId, plus, exp) => {
   else {
     scene_cache[sceneId].certificationList[idx].timer = setTimeout(() => {
       // console.log("30 초 지남...")
-      if (scene_cache[sceneId].certificationList.some(itme => itme.userId === userId)) {
+      if (scene_cache[sceneId].certificationList.some(item => item.userId === userId)) {
         // console.log("원상복구...")
         scene_cache[sceneId].emptyNum += 1;
 
