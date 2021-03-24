@@ -85,11 +85,10 @@ router.post('/create', auth, async (req, res) => {
 
 router.post('/save', auth, async (req, res) => {
 
-  const sceneId = req.body.sceneId;
+  const sceneId = mongoose.Types.ObjectId(req.body.sceneId);
   const scene = await Scene.findOne({ _id: sceneId });
   const userId = req.user._id;
   const isTmp = req.body.isTmp;
-
   // isFirst가 아닐떄만 createdAt이랑 확인해서 저장해도 되는 친구인지 확인, 안되는 친구면 삭제하고, 게임플레잉 마지막 녀석 제거, 이전 씬 응답으로 보내줘서, props.history.replace
   const {isFirst, prevSceneId, createdAt} = scene;
   if(!isFirst && (Date.now() - createdAt >= MS_PER_HR)) {
@@ -97,6 +96,8 @@ router.post('/save', auth, async (req, res) => {
     Scene.deleteOne({_id: sceneId});
     user.gamePlaying.sceneIdList.pop();
     user.gamePlaying.isMaking = false;
+    const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === sceneId.toString());
+    if (idx > -1) user.makingGameList.splice(idx, 1);
     user.save((err)=>{
       if(err) return res.status(400).json({success:false, err})
     });
@@ -112,7 +113,7 @@ router.post('/save', auth, async (req, res) => {
     /* 2. 내가 창조한 게임 */
 
     
-    const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === sceneId);
+    const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === sceneId.toString());
     if (idx > -1)  user.makingGameList.splice(idx, 1);
     user.save((err)=>{
       if(err) return res.status(400).json({success:false, err})
