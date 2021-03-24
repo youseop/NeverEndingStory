@@ -8,6 +8,7 @@ import CharacterMoveX from './CharacterMove/CharacterMoveX';
 import CharacterMoveY from './CharacterMove/CharacterMoveY';
 import { selectMovingTarget } from '../../../_actions/movingTarget_actions';
 import {addEvent, removeAllEvents} from '../handleEventListener';
+import { SecurityScanTwoTone } from '@ant-design/icons';
 
 function Character(props) {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ function Character(props) {
   const element_Y = useRef();
 
   const [clicked,setClicked] = useState(true);
+  const [hover,setHover] = useState(false);
   const [moving, setMoving] = useState(true);
   const [sizing, setSizing] = useState(false);
 
@@ -62,17 +64,21 @@ function Character(props) {
     }
   }, [])
 
-  const onMouseEnter_initMoving = () => {
+  const onMouseEnter = () => {
     // addEvent(background_element, "mousemove", mouseMove, false);
   }
 
-  const onMouseDown_selectMovingTarget = (e) => {
+  const onMouseLeave = () => {
+    
+  }
+
+  const onMouseDown = (e) => {
     addEvent(background_element, "mousemove", mouseMove, false);
     pivot = [e.pageX,e.pageY];
     drag = true;
   }
 
-  const onMouseUp_detachMovingTarget = (e) => {
+  const onMouseUp = (e) => {
     setCharacterList((oldArray)=> {
       return [
         ...oldArray.slice(0,index), 
@@ -104,26 +110,19 @@ function Character(props) {
                 top: `${charSchema.posY}%`}}
       >
           <img
-            onMouseEnter={onMouseEnter_initMoving}
-            onMouseDown={onMouseDown_selectMovingTarget}
-            onMouseUp={onMouseUp_detachMovingTarget}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp}
             className={`${clicked ? "characterImg_clicked" : "characterImg"}`}
             id={`${index}`}
             src={charSchema.image}
             alt="img"
           />
-          {clicked &&
-          <div 
-            className={`${moving ? "btn_moving_clicked" : "btn_moving"}`} 
-            onClick={() => {setMoving((state)=>!state);setSizing(false)}}
-          >위치 조절</div>
-          }
-          {clicked &&
           <div 
             className={`${sizing ? "btn_sizing_clicked" : "btn_sizing"}`} 
-            onClick={() => {setMoving(false);setSizing((state)=>!state)}}
+            onClick={() => {setMoving((state)=>!state);setSizing((state)=>!state)}}
           >사이즈 조절</div>
-          }
       </div>
     </div>
   )
