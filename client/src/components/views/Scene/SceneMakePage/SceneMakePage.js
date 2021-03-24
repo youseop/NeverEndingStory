@@ -80,11 +80,9 @@ const SceneMakePage = (props) => {
 
 
     useEffect(() => {
-        if(user.userData){
-            socket.emit("room", {room: user.userData._id.toString()})
-        }
-
+        socket.off("timeout_making")
         socket.on("timeout_making", data =>{
+            console.log("GO HOME")
             props.history.push("/")
         })
 
@@ -99,8 +97,6 @@ const SceneMakePage = (props) => {
                 console.log("get scene ERROR");
                 props.history.push("/");
             }
-            //! 임시저장 된 녀석이냐 아니냐 - 이곳에는 둘중 하나만 들어옴
-
             // 임시저장한 녀석
             if(scene.cutList.length){
 

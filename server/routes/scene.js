@@ -51,7 +51,7 @@ router.post('/create', auth, async (req, res) => {
     prevSceneId: req.body.prevSceneId,
   })
 
-  const MS_PER_HR = 150000
+  const MS_PER_HR = 15000
   const user = await User.findOne({ _id: userId });
   
   // TODO : 추후 makingGameList 제한 필요

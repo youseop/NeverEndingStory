@@ -18,7 +18,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
   const [visible, setVisible] = useState(false);
   const [formRef, setFormRef] = useState(null);
   const [remainTime, setRemainTime] = useState(0);
-  const [increaseTimer, setIncreaseTimer] = useState(null);
   const [decreaseTimer, setDecreaseTimer] = useState(null);
   const [validated, setValidated] = useState(1)
 
@@ -31,7 +30,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
         return;
       }
       clearTimeout(decreaseTimer);
-      clearTimeout(increaseTimer);
 
       const data = {
         gameId: game_id,
@@ -64,11 +62,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
   }, []);
 
   const onClickHandler = () => {
-    clearTimeout(increaseTimer);
     clearTimeout(decreaseTimer);
-    setIncreaseTimer(setTimeout(() => {
-      cancelHandler();
-    }, 30000));
 
     let tick = 30;
     setRemainTime(tick);
@@ -90,7 +84,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
 
   const cancelHandler = () => {
     socket.emit("empty_num_increase", { scene_id, user_id });
-    clearTimeout(increaseTimer);
     clearTimeout(decreaseTimer);
     setClickable(false);
     return setVisible(false)
@@ -101,13 +94,14 @@ const InputModal = ({ scene_id, scene_depth, game_id, setClickable, scene_next_l
   }
 
   useEffect(() => {
+    socket.off("validated");
     socket.on("validated", (data) => {
       setValidated(validated * -1)
     })
 
+    socket.off("decrease_failed");
     socket.on("decrease_failed", () => {
       console.log("failed..");
-      clearTimeout(increaseTimer);
       clearTimeout(decreaseTimer);
       setClickable(false);
       setVisible(false);

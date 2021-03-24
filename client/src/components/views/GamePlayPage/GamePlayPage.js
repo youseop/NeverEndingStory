@@ -9,7 +9,7 @@ import HistoryMapPopup from "./HistoryMap";
 import LoadingPage from "./LoadingPage";
 import { message } from "antd";
 import { socket } from "../../App"
-import { loadEmptyNum } from "../../../_actions/sync_actions"
+import { loadEmptyNum, savePrevScene } from "../../../_actions/sync_actions"
 import useKey from "../../functions/useKey";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 import { navbarControl } from "../../../_actions/controlPage_actions";
@@ -39,9 +39,10 @@ const ProductScreen = (props) => {
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
   const [Clickable, setClickable] = useState(false);
-  const [prevSceneId, setPrevSceneId] = useState("null");
 
   const dispatch = useDispatch();
+
+  const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
   const maximizableElement = useRef(null);
 
@@ -67,6 +68,7 @@ const ProductScreen = (props) => {
 
 
   useEffect(() => {
+    socket.off("accept_final_change");
     socket.on("accept_final_change", data => {
       const {sceneId, title} = data;
       
@@ -133,12 +135,8 @@ const ProductScreen = (props) => {
     
     socket.emit("room", { room: sceneId });
     // socket.emit("exp_val", {room: sceneId});
-    setPrevSceneId(sceneId);
+    dispatch(savePrevScene({prevSceneId: sceneId}));
     socket.on("empty_num_changed", data => {
-      console.log("empty_num changed~~~", data.emptyNum);
-      console.log("change check")
-      console.log(data)
-
       dispatch(loadEmptyNum({
         sceneId,
         emptyNum: data.emptyNum

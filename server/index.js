@@ -63,7 +63,7 @@ const io = require('socket.io')(server, { cors: { origin: '*' } });
 let scene_cache = {} // {empty: 2, cert: [{ userID: ??, }]}
 
 
-const updateCache = async (sceneId, userId, plus, exp) => {
+const updateCache = async (socket, sceneId, userId, plus, exp) => {
   console.log("plus", plus);
   scene_cache[sceneId].emptyNum += plus;
 
@@ -84,8 +84,9 @@ const updateCache = async (sceneId, userId, plus, exp) => {
     certTokenList[idx].timer = setTimeout(() => {
       console.log("모든 문제의 시작점...")
       if (scene_cache[sceneId].certificationList.some(itme => itme.userId === userId)) {
+        console.log("원상복구 하는가???????????????????????")
         scene_cache[sceneId].emptyNum += 1;
-        io.sockets.to(userId).emit("timeout_making", { msg: "hi~" });
+        socket.emit("timeout_making", { msg: "hi~" });
 
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
         if (idx > -1) scene_cache[sceneId].certificationList.splice(idx, 1)
@@ -118,7 +119,6 @@ const updateCache = async (sceneId, userId, plus, exp) => {
     }
   ).exec();
 }
-
 
 io.on('connection', socket => {
   console.log('a user connected');
@@ -165,7 +165,7 @@ io.on('connection', socket => {
     }
     scene_cache[sceneId].certificationList.push(user_token);
     console.log("concorrency problem")
-    updateCache(sceneId, userId, -1, 0)
+    updateCache(socket, sceneId, userId, -1, 0)
   });
 
   socket.on('empty_num_increase', async data => {
@@ -182,7 +182,7 @@ io.on('connection', socket => {
       io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: 4 });
       return;
     }
-    updateCache(sceneId, userId, 1, 0)
+    updateCache(socket, sceneId, userId, 1, 0)
   });
 
   socket.on('validate_empty_num', async data => {
@@ -200,7 +200,6 @@ io.on('connection', socket => {
     // 캐시가 없으면?, DB에서 캐시 갖고온다.
     const sceneSelector = await Scene.findOne({ _id: mongoose.Types.ObjectId(scene_id) }).select("nextList sceneTmp");
     const sceneTmp = sceneSelector.sceneTmp;
-    const nextList = sceneSelector.nextList;
 
     // exp 안된 녀석만 push 해서 newCertList.
     let newCertList = [];
@@ -220,7 +219,7 @@ io.on('connection', socket => {
         sceneTmp.emptyNum += 1;
       } else {
         newCertList.push(certToken);
-
+        console.log("타이머 설정하기...")
         setTimeout(() => {
           console.log("TIME OUT...")
           // 믿음이 강력한 코드 --- 에러 발생 가능함
@@ -228,7 +227,8 @@ io.on('connection', socket => {
           if (idx > -1) {
             console.log("원상복구...")
             if (scene_cache[scene_id].certificationList[idx].isMakingScene) {
-              io.sockets.to(certToken.userId).emit("timeout_making", { msg: "hi~" });
+              console.log("hey man!!");
+              socket.emit("timeout_making", { sceneId: scene_id });
             }
             console.log("TIME OUT !! - emptyNum PLUS ")
 
@@ -260,7 +260,7 @@ io.on('connection', socket => {
       // cert 리스트의 모든 녀석을 확인하여 exp가 넘은 친구는 제거
     }
 
-    updateCache(sceneId, userId, 0, exp)
+    updateCache(socket, sceneId, userId, 0, exp)
   })
 
   socket.on('final_submit', async data => {

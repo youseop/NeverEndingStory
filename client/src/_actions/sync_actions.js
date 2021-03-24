@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
-    LOAD_EMPTY_NUM
+    LOAD_EMPTY_NUM,
+    SAVE_PREV_SCENE
 } from './types';
 
 export function loadEmptyNum(dataToSubmit){
@@ -13,6 +14,15 @@ export function loadEmptyNum(dataToSubmit){
 
     return {
         type: LOAD_EMPTY_NUM,
+        payload: request
+    };
+}
+
+export function savePrevScene(dataToSubmit){
+    const request = dataToSubmit.prevSceneId;
+
+    return {
+        type: SAVE_PREV_SCENE,
         payload: request
     };
 }

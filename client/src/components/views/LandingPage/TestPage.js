@@ -32,7 +32,8 @@ function LandingPage() {
     });
 
     useEffect(() => {
-        socket.on('receive message', payload => {
+    socket.off("receive message");
+    socket.on('receive message', payload => {
             setMessageCount(messageCount + 1);
             document.title = `${messageCount} new messages have been emitted`;
         });
