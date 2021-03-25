@@ -1,6 +1,7 @@
 .characterInfo__container {
   display: flex;
   flex-direction: column;
+  width:20% /* same .modal_Character */
 }
 
 .characterList__container{

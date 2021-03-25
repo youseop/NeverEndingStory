@@ -32,7 +32,6 @@
 }
 
 /*toggle full screen*/
-
 .gamePlay__btn_container {
     padding: 5px;
     position: absolute;
@@ -45,7 +44,6 @@
     align-items: center;
     justify-content: flex-end;
 }
-
 
 .gamePlay__btn {
   all: unset;
@@ -63,6 +61,7 @@
   transition-duration: 0.2s;
   cursor: pointer;
 }
+
 .backgroundImg_container_fullscreen{
   position: absolute;
   left: 50%;

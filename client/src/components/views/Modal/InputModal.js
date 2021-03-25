@@ -27,6 +27,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
   const handleCreate = () => {
     formRef.validateFields(async (err, values) => {
       clearTimeout(decreaseTimer);
+      console.log("deleted -- ", decreaseTimer)
       if (err || !visible) {
         return;
       }
@@ -65,37 +66,44 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
     }
   }, []);
   let decTimer;
+
   const onClickHandler = () => {
     dispatch(gamePause(true));
     clearTimeout(decreaseTimer);
+    console.log("deleted -- ", decreaseTimer)
     let tick = 30;
     setRemainTime(tick);
     decTimer = setInterval(() => {
+      console.log("timer is not deleted~~~~~~~~~~~");
       tick--;
       if (tick === 0) {
+        console.log("tick이 0이라서 실행합니다.")
         clearInterval(decTimer);
         cancelHandler();
         return;
       }
       setRemainTime(tick);
     }, 970);
-    console.log("made -- ",decTimer)
+    console.log("made -- ", decTimer)
     setDecreaseTimer(decTimer);
 
     socket.emit("empty_num_decrease", { scene_id, user_id });
     setVisible(true);
   }
-  
+
   const cancelHandler = () => {
     socket.emit("empty_num_increase", { scene_id, user_id });
     clearTimeout(decreaseTimer);
-    setVisible(false);
+      console.log("deleted -- ", decreaseTimer)
+      setVisible(false);
     dispatch(gamePause(false));
   }
 
   const createHandler = () => {
     return handleCreate();
   }
+
+  const [dino, setDino] = useState(0);
 
   useEffect(() => {
     socket.off("validated");
@@ -105,15 +113,21 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
 
     socket.off("decrease_failed");
     socket.on("decrease_failed", () => {
-      console.log("failed..");
-      clearTimeout(decreaseTimer);
-      console.log("deleted -- ",decreaseTimer)
-
       setVisible(false);
+      setDino(0);
+      setDino(1);
     })
 
     socket.emit("validate_empty_num", { scene_id })
   }, [scene_id])
+
+  useEffect(() => {
+    if (dino) {
+      clearTimeout(decreaseTimer);
+      console.log("failed.. deleted -- ", decreaseTimer)
+      console.log("visible false");
+    }
+  }, [dino]);
 
   const [working, setWorking] = useState();
   useEffect(() => {

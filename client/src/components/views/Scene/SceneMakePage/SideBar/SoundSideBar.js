@@ -25,7 +25,10 @@ function SoundSideBar({ gameDetail, sound_audio, setSoundFile, setMakeModalState
 
     return (
         <div className="sidebar__container">
-            <Button onClick={setModal} type="primary" style={{ background: "black" }}>
+            <Button
+                type="primary"
+                style={{ fontSize: "15px" }}
+                onClick={setModal}>
                 추가
             </Button>
             <div>{renderSound}</div>

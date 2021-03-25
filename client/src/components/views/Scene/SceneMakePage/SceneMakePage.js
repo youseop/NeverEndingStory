@@ -20,7 +20,7 @@ import SceneBox from "./SceneBox/SceneBox";
 import axios from "axios";
 import { useHistory } from "react-router-dom"
 import { socket } from "../../../App";
-
+import { PlayCircleOutlined, PauseCircleOutlined, StopOutlined } from '@ant-design/icons';
 import "./SceneMakePage.css";
 
 let bgm_audio = new Audio();
@@ -28,19 +28,19 @@ let sound_audio = new Audio();
 const SceneMakePage = (props) => {
     const history = useHistory();
     const location = useLocation();
-    const {gameId,sceneId} = location.state
+    const { gameId, sceneId } = location.state
 
     // const {gameId,sceneId} = location.state ;
-    if(location.state === undefined) {
+    if (location.state === undefined) {
         window.history.back();
         // return <div></div>;
     }
-    
+
     const user = useSelector((state) => state.user);
 
     const padding = 0.1;
     const minSize = 300;
-    const ratio = 1080/1920;
+    const ratio = 1080 / 1920;
 
     const [windowWidth, setwindowWidth] = useState(window.innerWidth);
     const [windowHeight, setwindowHeight] = useState(window.innerHeight);
@@ -58,7 +58,7 @@ const SceneMakePage = (props) => {
     const [SidBar_script, setSidBar_script] = useState(true);
 
     const [CharacterList, setCharacterList] = useState([]);
-    const [BackgroundImg, setBackgroundImg] = useState("");
+    const [BackgroundImg, setBackgroundImg] = useState("http://localhost:5000/uploads/defaultBackground.png");
     const [Script, setScript] = useState("");
     const [Name, setName] = useState("");
     const [BgmFile, setBgmFile] = useState({
@@ -90,8 +90,8 @@ const SceneMakePage = (props) => {
 
     useEffect(() => {
         if (user.userData) {
-            socket.emit("leave room", {room: user.userData._id.toString()});
-            socket.emit("room", {room: user.userData._id.toString()});
+            socket.emit("leave room", { room: user.userData._id.toString() });
+            socket.emit("room", { room: user.userData._id.toString() });
         }
         socket.off("timeout_making")
         socket.on("timeout_making", data => {
@@ -226,11 +226,13 @@ const SceneMakePage = (props) => {
     const onClick_bgm_player = () => {
         if (bgm_audio.paused) bgm_audio.play();
         else bgm_audio.pause();
+        setReload(reload => reload + 1)
     };
 
     const onClick_sound_player = () => {
         if (sound_audio.paused) sound_audio.play();
         else sound_audio.pause();
+        setReload(reload => reload + 1)
     };
 
     function handleEnter(event) {
@@ -336,7 +338,7 @@ const SceneMakePage = (props) => {
         setUploadModalState(true)
     }
 
-    const onSubmit_saveScene = async (event, isTmp=0) => {
+    const onSubmit_saveScene = async (event, isTmp = 0) => {
         if (CutList.length < 1) {
             message.error("최소 2개의 컷을 생성해주세요.");
             return;
@@ -399,7 +401,18 @@ const SceneMakePage = (props) => {
                             })
                         }
                     })
-            } else {
+            } else if(response.data.msg === 'expired') {
+                message.error("제작 유효기간이 만료되었습니다..", 1.0);
+                props.history.replace({
+                    pathname: `/gameplay`,
+                    state: {
+                        sceneId: response.data.prevSceneId,
+                        gameId: gameId,
+                    }
+                })
+                return;
+            }
+             else {
                 message.error("DB에 문제가 있습니다.");
             }
 
@@ -498,15 +511,11 @@ const SceneMakePage = (props) => {
                     id="backgroundImg_container"
                     style={newScreenSize}
                 >
-                    {BackgroundImg ? (
-                        <img
-                            className="backgroundImg"
-                            src={`${BackgroundImg}`}
-                            alt="img"
-                        />
-                    ) : (
-                        <div></div>
-                    )}
+                    <img
+                        className="backgroundImg"
+                        src={`${BackgroundImg}`}
+                        alt="img"
+                    />
                     <CharacterBlock
                         GameCharacterList={gameDetail.character}
                         CharacterList={CharacterList}
@@ -527,9 +536,9 @@ const SceneMakePage = (props) => {
                     )}
                 </div>
             </div>
-            <CharacterModal 
+            <CharacterModal
                 setName={setName}
-                setCharacterList={setCharacterList} 
+                setCharacterList={setCharacterList}
                 CharacterList={CharacterList}
                 GameCharacterList={gameDetail.character}
             />
@@ -549,40 +558,80 @@ const SceneMakePage = (props) => {
                         className="scene__SoundBox_container"
                         onClick={onClick_bgm_player}
                     >
+                        {
+                            BgmFile.name && bgm_audio.paused &&
+                            <PlayCircleOutlined
+                                style={{ fontSize: "20px" }} />
+                        }
+                        {
+                            BgmFile.name && !bgm_audio.paused &&
+                            <PauseCircleOutlined
+                                style={{ fontSize: "20px" }} />
+                        }
                         {BgmFile.name}
                     </div>
                 ) : (
-                    <div>BGM</div>
+                    <div>
+                        <StopOutlined
+                            style={{ fontSize: "20px" }}
+                        />
+                    BGM
+                    </div>
                 )}
                 {SoundFile.name ? (
                     <div
                         className="scene__SoundBox_container"
                         onClick={onClick_sound_player}
                     >
+                        {
+                            BgmFile.name && sound_audio.paused &&
+                            <PlayCircleOutlined
+                                style={{ fontSize: "20px" }} />
+                        }
+                        {
+                            BgmFile.name && !sound_audio.paused &&
+                            <PauseCircleOutlined
+                                style={{ fontSize: "20px" }} />
+                        }
                         {SoundFile.name}
                     </div>
                 ) : (
-                    <div>Sound</div>
+                    <div>
+                        <StopOutlined
+                            style={{ fontSize: "20px" }}
+                        />
+                    Sound
+                    </div>
                 )}
             </div>
             <div className="sceneMake__btn_container">
-                <Button type="primary" onClick={onTmpSave}>
-                    Temporary save
+                <Button type="primary"
+                    style={{ fontSize: "15px" }}
+                    onClick={onTmpSave}>
+                    임시저장
                 </Button>
-                <Button type="primary" onClick={onRemove_cut}>
-                    Remove Cut
+                <Button type="primary"
+                    style={{ fontSize: "15px" }}
+                    onClick={onRemove_cut}>
+                    컷 삭제
                 </Button>
                 {CutNumber < 29 && (
-                    <Button type="primary" onClick={onSubmit_nextCut}>
-                        Next(Cut)
+                    <Button type="primary"
+                        style={{ fontSize: "15px" }}
+                        onClick={onSubmit_nextCut}>
+                        다음 컷
                     </Button>
                 )}
                 {isFirstScene ?
-                    <Button type="primary" onClick={onSubmit_first}>
-                        Submit First
+                    <Button type="primary"
+                        style={{ fontSize: "15px" }}
+                        onClick={onSubmit_first}>
+                        업로드
                         </Button>
-                    : <Button type="primary" onClick={onSubmit_saveScene}>
-                        Submit
+                    : <Button type="primary"
+                        style={{ fontSize: "15px" }}
+                        onClick={onSubmit_saveScene}>
+                        업로드
                         </Button>
                 }
                 <UploadModal

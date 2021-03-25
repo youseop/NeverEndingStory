@@ -3,7 +3,7 @@ import { Col, Row, Typography, Button, Form, Icon, message } from "antd";
 import Dropzone from "react-dropzone";
 import Axios from "axios";
 import "./GameBuildUpPage";
-import {LOCAL_HOST} from"../../Config"
+import { LOCAL_HOST } from "../../Config"
 
 const { Title } = Typography;
 
@@ -81,7 +81,7 @@ function GameBuildUpPage(props) {
                         <div style={{ position: "relative" }}>
                             <img
                                 style={{ width: "20px", height: "20px" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
+                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
                                 alt="img not found"
                             />
                             {cur_game.bgm[index].name}
@@ -100,7 +100,7 @@ function GameBuildUpPage(props) {
                         <div style={{ position: "relative" }}>
                             <img
                                 style={{ width: "20px", height: "20px" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
+                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
                                 alt="img not found"
                             />
                             {cur_game.sound[index].name}
