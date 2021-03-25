@@ -9,9 +9,8 @@ export function selectCharacter(character) {
   };
 }
 
-export function detachCharacter(character) {
+export function detachCharacter() {
   return {
     type: DETACH_CHARACTER,
-    payload: character,
   };
 }

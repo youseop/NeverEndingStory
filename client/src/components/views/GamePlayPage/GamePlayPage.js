@@ -173,7 +173,7 @@ const ProductScreen = (props) => {
           dispatch(gamePause(true));
           event.preventDefault();
           let choice = document.getElementById("choice");
-          if(choice){
+          if (choice) {
             choice.click();
           }
         }
@@ -183,19 +183,17 @@ const ProductScreen = (props) => {
 
 
   useEffect(() => {
-    socket.emit("leave room", {room: prevSceneId});
+    socket.emit("leave room", { room: prevSceneId });
     socket.emit("room", { room: sceneId });
     // socket.emit("exp_val", {room: sceneId});
-    dispatch(savePrevScene({prevSceneId: sceneId}));
+    dispatch(savePrevScene({ prevSceneId: sceneId }));
     socket.off("empty_num_changed") //! 매번 열린다.
     socket.on("empty_num_changed", data => {
-      console.log("en change: ", data.emptyNum);
       dispatch(loadEmptyNum({
         sceneId,
         emptyNum: data.emptyNum
       }));
     })
-    console.log("working");
     socket.emit("validate_empty_num", { scene_id: sceneId })
 
   }, [sceneId])
@@ -268,7 +266,6 @@ const ProductScreen = (props) => {
   }
 
   useEffect(() => {
-    console.log("motherfucket~~~");
     dispatch(loadEmptyNum({
       sceneId,
     }));

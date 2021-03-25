@@ -22,10 +22,12 @@ import { useHistory } from "react-router-dom"
 import { socket } from "../../../App";
 import { PlayCircleOutlined, PauseCircleOutlined, StopOutlined } from '@ant-design/icons';
 import "./SceneMakePage.css";
+import { detachCharacter } from "../../../../_actions/characterSelected_actions";
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
+    const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
     const { gameId, sceneId } = location.state
@@ -50,10 +52,6 @@ const SceneMakePage = (props) => {
     const [makeModalState, setMakeModalState] = useState(0);
     const [reload, setReload] = useState(1);
     const [uploadModalState, setUploadModalState] = useState(false);
-
-
-    //modal end
-    const dispatch = useDispatch();
 
     const [SidBar_script, setSidBar_script] = useState(true);
 
@@ -369,6 +367,7 @@ const SceneMakePage = (props) => {
             const response = await Axios.post(`/api/scene/save`, variable)
 
             if (response.data.success) {
+                dispatch(detachCharacter());
                 message
                     .loading("게임 업로드 중..", 1.0)
                     .then(() => {
