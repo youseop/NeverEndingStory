@@ -51,9 +51,9 @@ router.post('/create', auth, async (req, res) => {
     prevSceneId: req.body.prevSceneId,
   })
 
-  const MS_PER_HR = 15000
+  const MS_PER_HR = 150000000000
   const user = await User.findOne({ _id: userId });
-  
+
   // TODO : 추후 makingGameList 제한 필요
   const exp = Date.now() + MS_PER_HR
   // console.log("In create : ",exp)
@@ -75,7 +75,7 @@ router.post('/create', auth, async (req, res) => {
   }
   scene.save((err, scene) => {
     if (err) return res.json({ success: false, err })
-    return res.status(200).json({ success: true, sceneId: scene._id, exp : exp })
+    return res.status(200).json({ success: true, sceneId: scene._id, exp: exp })
   })
 
 })
@@ -89,17 +89,17 @@ router.post('/save', auth, async (req, res) => {
 
   if (!isTmp) {
     const user = await User.findOne({ _id: userId });
-    if(user.gamePlaying) user.gamePlaying.isMaking = false;
+    if (user.gamePlaying) user.gamePlaying.isMaking = false;
 
     /* 추가 해야할 기능 :
     /* 1. 내가 기여한 게임 
     /* 2. 내가 창조한 게임 */
 
-    
+
     const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === sceneId);
-    if (idx > -1)  user.makingGameList.splice(idx, 1);
-    user.save((err)=>{
-      if(err) return res.status(400).json({success:false, err})
+    if (idx > -1) user.makingGameList.splice(idx, 1);
+    user.save((err) => {
+      if (err) return res.status(400).json({ success: false, err })
     });
 
     scene.status = 1;
