@@ -92,10 +92,13 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
   }
 
   const cancelHandler = () => {
+    if (!visible) {
+      return;
+    }
     socket.emit("empty_num_increase", { scene_id, user_id });
     clearTimeout(decreaseTimer);
-      console.log("deleted -- ", decreaseTimer)
-      setVisible(false);
+    console.log("deleted -- ", decreaseTimer)
+    setVisible(false);
     dispatch(gamePause(false));
   }
 
