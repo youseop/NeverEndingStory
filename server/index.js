@@ -1,23 +1,43 @@
 const express = require("express");
-const app = express();
 const path = require("path");
-const cors = require('cors')
-
+const cors = require('cors');
+const dotenv = require('dotenv');
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const mongoose = require("mongoose");
+const redis = require('redis');
+const morgan = require('morgan');
+dotenv.config();
+
 
 const config = require("./config/key");
-
-const mongoose = require("mongoose");
 const { Scene } = require("./models/Scene");
 const { User } = require("./models/User");
+const { logger } = require("./config/logger");
+
+
+const app = express();
+
+const redisClient = redis.createClient({
+  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  password: process.env.REDIS_PASSWORD,
+})
+
 const connect = mongoose.connect(config.mongoURI,
   {
     useNewUrlParser: true, useUnifiedTopology: true,
     useCreateIndex: true, useFindAndModify: false
   })
-  .then(() => console.log('MongoDB Connected...'))
+  .then(() => logger.info("mongoose connected..."))
   .catch(err => console.log(err));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+  app.use(helmet({contentSecurityPolicy: false}));
+  app.use(hpp());
+} else {
+  app.use(morgan('dev'));
+}
 
 app.use(cors())
 
@@ -42,26 +62,30 @@ app.use('/api/test', require('./routes/subdoc_route'));
 app.use('/uploads', express.static('uploads'));
 
 // Serve static assets if in production
-if (process.env.NODE_ENV === "production") {
+// if (process.env.NODE_ENV === "production") {
 
-  // Set static folder   
-  // All the javascript and css files will be read and served from this folder
-  app.use(express.static("client/build"));
+//   // Set static folder   
+//   // All the javascript and css files will be read and served from this folder
+//   app.use(express.static("client/build"));
 
-  // index.html for all page routes    html or routing and naviagtion
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-  });
-}
-
-const port = process.env.PORT || 5000
-
+//   // index.html for all page routes    html or routing and naviagtion
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+//   });
+// }
+const port = process.env.PORT
 const server = require('http').createServer(app);
-const io = require('socket.io')(server, { cors: { origin: '*' } });
-
+const io = require('socket.io')(server, { 
+  cors: { origin: '*' },
+  upgradeTimeout: 30000,
+});
+const redisAdapter = require('socket.io-redis');
+io.adapter(redisAdapter({ host: 'localhost', port: 6379 }));
 
 let scene_cache = {} // {empty: 2, cert: [{ userID: ??, }]}
 
+
+// redisClient
 
 const updateCache = async (sceneId, userId, plus, exp) => {
   // console.log("plus", plus);

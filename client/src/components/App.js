@@ -27,7 +27,7 @@ import './App.css';
 //false  logged in user can't go inside
  
 const io = require('socket.io-client');
-export let socket = io(`http://${LOCAL_HOST}:5000`);
+export let socket = io(`http://${LOCAL_HOST}:5000`, {transports : ['websocket']});
 
 window.onpopstate = () => {
   window.location.reload();

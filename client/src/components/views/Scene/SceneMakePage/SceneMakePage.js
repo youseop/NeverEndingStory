@@ -23,6 +23,7 @@ import { socket } from "../../../App";
 import { PlayCircleOutlined, PauseCircleOutlined, StopOutlined } from '@ant-design/icons';
 import "./SceneMakePage.css";
 import { detachCharacter } from "../../../../_actions/characterSelected_actions";
+import { LOCAL_HOST } from "../../../Config";
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
@@ -56,7 +57,7 @@ const SceneMakePage = (props) => {
     const [SidBar_script, setSidBar_script] = useState(true);
 
     const [CharacterList, setCharacterList] = useState([]);
-    const [BackgroundImg, setBackgroundImg] = useState("http://localhost:5000/uploads/defaultBackground.png");
+    const [BackgroundImg, setBackgroundImg] = useState(`http://${LOCAL_HOST}:5000/uploads/defaultBackground.png`);
     const [Script, setScript] = useState("");
     const [Name, setName] = useState("");
     const [BgmFile, setBgmFile] = useState({

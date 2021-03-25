@@ -7,7 +7,7 @@ const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 
 
-const MS_PER_HR = 150000000000 //15000
+const MS_PER_HR = 3600000 //15000
 
 
 const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
@@ -27,7 +27,7 @@ const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
       }
     }
 
-    if (i === gameHistory.length) {
+    if (i === gameHistory.length) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
       user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList], isMaking });
     }
   }

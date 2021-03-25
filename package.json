@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node server/index.js",
+    "deploy": "NODE_ENV=production PORT=5000 pm2 start server/index.js -i 1",
     "backend": "nodemon server/index.js",
     "frontend": "npm run start --prefix client",
     "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\""
@@ -21,17 +22,26 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "helmet": "^4.4.1",
+    "hpp": "^0.2.3",
     "http": "0.0.1-security",
     "http-proxy-middleware": "^1.0.6",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.12.0",
+    "morgan": "^1.10.0",
     "multer": "^1.4.2",
+    "pm2": "^4.5.5",
     "react-redux": "^5.0.7",
+    "redis": "^3.0.2",
     "saslprep": "^1.0.3",
     "socket.io": "^4.0.0",
-    "supports-color": "^7.1.0"
+    "socket.io-redis": "^6.1.0",
+    "supports-color": "^7.1.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.1"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
