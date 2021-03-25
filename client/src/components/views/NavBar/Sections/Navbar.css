@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css';
+@import 'antd.css';
 
 @keyframes hide {
   0% {
@@ -20,6 +20,18 @@
     opacity : 1;
     transform: translate(0,0);
   }
+}
+
+.ant-menu {
+  background: #222831;
+
+}
+.ant-menu-horizontal > .ant-menu-item:hover {
+  border-bottom: 2px solid #fff;
+}
+
+.ant-menu-horizontal > .ant-menu-item > a:hover {
+  color: #fff;
 }
 
 .menu {
@@ -56,6 +68,7 @@
 
 .menu__container .ant-menu-item {
   padding: 0px 5px;
+  background-color: #222831;
 }
 
 .menu__container .ant-menu-submenu-title {
@@ -65,10 +78,12 @@
 .menu__container .ant-menu-item a,
 .menu__container .ant-menu-submenu-title a {
   padding: 10px 15px;
+  color:#e8e8e8;
 }
 
 .menu__container .ant-menu-horizontal {
   border-bottom: none;
+  color: #222831;
 }
 
 .menu__container .menu_left {

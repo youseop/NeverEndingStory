@@ -30,8 +30,7 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
                     {(index + 1) % 2 ?
                         <div>
                             <img className="smallBox13"
-                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
+                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
                                 alt="img"
                             />
                             {element.name}
@@ -39,8 +38,7 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
                         :
                         <div>
                             <img className="smallBox23"
-                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
+                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
                                 alt="img"
                             />
                             {element.name}
@@ -50,12 +48,6 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
             }))
     }, [game]);
 
-    const onClick_music = () => {
-        //     setBgmFile(sound);
-        //     bgm_audio.src = sound.music;
-        //     bgm_audio.play();
-    };
-
     useEffect(() => {
         if (soundBlobList)
             setBlobCards(soundBlobList.map((element, index) => {
@@ -64,7 +56,7 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
                         <div>
                             <img className="smallBox13"
                                 // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
+                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
                                 alt="img"
                             />
                             {soundBlobNames[index].name}
@@ -73,7 +65,7 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
                         <div>
                             <img className="smallBox23"
                                 // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
+                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
                                 alt="img"
                             />
                             {soundBlobNames[index].name}

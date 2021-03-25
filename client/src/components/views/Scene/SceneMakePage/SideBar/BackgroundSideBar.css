@@ -10,5 +10,6 @@ img{
 }
 
 .sidebar__container{
-  height: 84vh;
+  /* height: 84vh; */
+  height: 50vh;
 }

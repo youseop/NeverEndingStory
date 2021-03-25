@@ -29,8 +29,7 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
                     {(index + 1) % 2 ?
                         <div>
                             <img className="smallBox13"
-                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
+                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
                                 alt="img"
                             />
                             {element.name}
@@ -38,8 +37,7 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
                         :
                         <div>
                             <img className="smallBox23"
-                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
+                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
                                 alt="img"
                             />
                             {element.name}
@@ -49,11 +47,6 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
             }))
     }, [game]);
 
-    const onClick_music = () => {
-        //     setBgmFile(bgm);
-        //     bgm_audio.src = bgm.music;
-        //     bgm_audio.play();
-    };
 
     useEffect(() => {
         if (bgmBlobList)
@@ -63,7 +56,7 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
                         <div>
                             <img className="smallBox13"
                                 // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
+                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
                                 alt="img"
                             />
                             {bgmBlobNames[index].name}
@@ -72,7 +65,7 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
                         <div>
                             <img className="smallBox23"
                                 // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads\music_icon.jpg`}
+                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
                                 alt="img"
                             />
                             {bgmBlobNames[index].name}

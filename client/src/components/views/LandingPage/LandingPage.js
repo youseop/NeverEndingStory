@@ -11,18 +11,34 @@ import { SVG, BAR } from "../../svg/icon";
 const { Title } = Typography;
 const { Meta } = Card;
 
+const ListContainer = {
+  recent_games: {
+    id: "recent_gameList",
+    pos: 0,
+    limit: 3,
+  },
+  popular_games: {
+    id: "popular_gameList",
+    pos: 0,
+    limit: 2,
+  },
+};
+
 function ContainerToRight(target) {
-  var container = document.getElementById(target);
-  var computedStyle = window.getComputedStyle(container);
-  var left = computedStyle.getPropertyValue("left").split("p")[0];
-  container.style.left = parseInt(left) - 600 + "px";
+  if (target.pos < target.limit - 1) {
+    target.pos += 1;
+    var container = document.getElementById(target.id);
+    container.style.left = -1240 * target.pos + "px";
+    console.log(target.pos);
+  }
 }
 
 function ContainerToLeft(target) {
-  var container = document.getElementById(target);
-  var computedStyle = window.getComputedStyle(container);
-  var left = computedStyle.getPropertyValue("left").split("p")[0];
-  container.style.left = parseInt(left) + 600 + "px";
+  if (target.pos > 0) {
+    target.pos -= 1;
+    var container = document.getElementById(target.id);
+    container.style.left = -600 * target.pos + "px";
+  }
 }
 
 function LandingPage() {
@@ -104,7 +120,7 @@ function LandingPage() {
       </div>
       <div className="box-container game-box">
         <div className="box-title">최근 플레이한 게임</div>
-        <div className="box-positionBar">position</div>
+        <div className="box-positionBar"></div>
         <div className="box-gameList">
           <div
             id="recent_gameList"
@@ -118,7 +134,12 @@ function LandingPage() {
       <div className="box-container game-box">
         <div className="box-title">인기 게임</div>
         <div className="box-positionBar">
-          <BAR />
+          <div id="popular_bar0" className="bar">
+            <BAR />
+          </div>
+          <div id="popular_bar1" className="bar">
+            <BAR />
+          </div>
         </div>
         <div className="box-gameList">
           <div
@@ -131,7 +152,7 @@ function LandingPage() {
           <div
             className="gamelist-left-arrow"
             onClick={() => {
-              ContainerToLeft("popular_gameList");
+              ContainerToLeft(ListContainer.popular_games);
             }}
           >
             <SVG src="arrow_1" width="45" height="27" color="#F5F5F5" />
@@ -139,7 +160,7 @@ function LandingPage() {
           <div
             className="gamelist-right-arrow"
             onClick={() => {
-              ContainerToRight("popular_gameList");
+              ContainerToRight(ListContainer.popular_games);
             }}
           >
             <SVG src="arrow_1" width="45" height="27" color="#F5F5F5" />
