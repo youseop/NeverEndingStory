@@ -4,6 +4,7 @@ import Axios from "axios";
 import { LOCAL_HOST } from "../../Config";
 import "./LandingPage.css";
 import { SVG, BAR } from "../../svg/icon";
+import {test} from "./test"
 
 const ListContainer = {
   recent_games: {
@@ -52,6 +53,7 @@ function ContainerToRight(target) {
 function ContainerToLeft(target) {
   if (target.pos > 0) {
     // console.log(target.pos);
+    test()
     var bar = document.getElementById(
       target.id.split("_")[0] + "_bar" + String(target.pos)
     );
