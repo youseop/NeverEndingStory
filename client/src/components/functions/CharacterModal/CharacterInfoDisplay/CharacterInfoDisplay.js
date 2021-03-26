@@ -31,6 +31,7 @@ function CharacterInfoDisplay({setName, character, setCharacterList, CharacterLi
   }
 
   const onClick_selectCharacter = (index) => {
+    setName(GameCharacterList[index].name)
     dispatch(selectCharacter({...GameCharacterList[index], index: index}));
   }
 
@@ -41,9 +42,9 @@ function CharacterInfoDisplay({setName, character, setCharacterList, CharacterLi
       onClick={() => {onClick_selectCharacter(character.index)}}
     >
       <img src={character.image} alt="" className="characterList_Image"/>
-      <div className="characterList_Text">
+      {/* <div className="characterList_Text">
         x: {character.posX} y: {character.posY} size: {character.size}
-      </div>
+      </div> */}
     </div>
     )
   })

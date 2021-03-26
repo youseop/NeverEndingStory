@@ -7,7 +7,7 @@ const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 
 
-const MS_PER_HR = 15000
+const MS_PER_HR = 150000000000 //15000
 
 
 const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
@@ -56,7 +56,7 @@ router.post('/create', auth, async (req, res) => {
   })
 
   const user = await User.findOne({ _id: userId });
-  
+
   // TODO : 추후 makingGameList 제한 필요
   const exp = Date.now() + MS_PER_HR
   // console.log("In create : ",exp)
@@ -78,7 +78,7 @@ router.post('/create', auth, async (req, res) => {
   }
   scene.save((err, scene) => {
     if (err) return res.json({ success: false, err })
-    return res.status(200).json({ success: true, sceneId: scene._id, exp : exp })
+    return res.status(200).json({ success: true, sceneId: scene._id, exp: exp })
   })
 
 })
@@ -90,33 +90,33 @@ router.post('/save', auth, async (req, res) => {
   const userId = req.user._id;
   const isTmp = req.body.isTmp;
   // isFirst가 아닐떄만 createdAt이랑 확인해서 저장해도 되는 친구인지 확인, 안되는 친구면 삭제하고, 게임플레잉 마지막 녀석 제거, 이전 씬 응답으로 보내줘서, props.history.replace
-  const {isFirst, prevSceneId, createdAt} = scene;
-  if(!isFirst && (Date.now() - createdAt >= MS_PER_HR)) {
+  const { isFirst, prevSceneId, createdAt } = scene;
+  if (!isFirst && (Date.now() - createdAt >= MS_PER_HR)) {
     const user = await User.findOne({ _id: userId });
-    Scene.deleteOne({_id: sceneId});
+    Scene.deleteOne({ _id: sceneId });
     user.gamePlaying.sceneIdList.pop();
     user.gamePlaying.isMaking = false;
     const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === sceneId.toString());
     if (idx > -1) user.makingGameList.splice(idx, 1);
-    user.save((err)=>{
-      if(err) return res.status(400).json({success:false, err})
+    user.save((err) => {
+      if (err) return res.status(400).json({ success: false, err })
     });
     return res.status(200).json({ success: false, msg: 'expired', prevSceneId })
   }
 
   if (!isTmp) {
     const user = await User.findOne({ _id: userId });
-    if(user.gamePlaying) user.gamePlaying.isMaking = false;
+    if (user.gamePlaying) user.gamePlaying.isMaking = false;
 
     /* 추가 해야할 기능 :
     /* 1. 내가 기여한 게임 
     /* 2. 내가 창조한 게임 */
 
-    
+
     const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === sceneId.toString());
-    if (idx > -1)  user.makingGameList.splice(idx, 1);
-    user.save((err)=>{
-      if(err) return res.status(400).json({success:false, err})
+    if (idx > -1) user.makingGameList.splice(idx, 1);
+    user.save((err) => {
+      if (err) return res.status(400).json({ success: false, err })
     });
 
     scene.status = 1;
