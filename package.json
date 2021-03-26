@@ -17,6 +17,9 @@
     "author": "John ahn",
     "license": "ISC",
     "dependencies": {
+        "@types/jest": "^26.0.22",
+        "@types/react": "^17.0.3",
+        "@types/react-dom": "^17.0.3",
         "bcrypt": "^5.0.1",
         "body-parser": "^1.18.3",
         "cookie-parser": "^1.4.3",
@@ -36,7 +39,7 @@
     },
     "devDependencies": {
         "@types/express": "^4.17.11",
-        "@types/node": "^14.14.35",
+        "@types/node": "^14.14.36",
         "concurrently": "^4.1.0",
         "nodemon": "^1.19.1",
         "ts-node": "^9.1.1",
