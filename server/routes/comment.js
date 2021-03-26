@@ -40,7 +40,20 @@ router.post('/getComment', async (req, res) => {
 
 router.post('/removeComment', async (req, res) => {
   try {
-    await Comment.deleteOne({ '_id': req.body.commentId })
+    await Comment.deleteOne({ '_id': mongoose.Types.ObjectId(req.body.commentId) });
+    await Comment.deleteMany({responseTo: req.body.commentId});
+    return res.status(200).json({ success: true });
+  } catch {
+    return res.json({ success: false, err });
+  }
+})
+
+router.post('/editComment', async (req, res) => {
+  try {
+    await Comment.updateOne(
+      { _id: mongoose.Types.ObjectId(req.body.commentId) },
+      { $set: {content: req.body.comment}}
+    )
     return res.status(200).json({ success: true })
   } catch {
     return res.json({ success: false, err })
@@ -53,8 +66,8 @@ router.post('/getReply', async (req, res) => {
     , 'responseTo': req.body.responseTo
   })
     .populate('writer')
-    // .sort('createdAt')
-    .sort({ createdAt: 'descending' })
+    .sort('createdAt')
+    // .sort({ createdAt: 'ascending' })
     .exec((err, result) => {
       if (err) return res.json({ success: false, err })
       return res.status(200).json({ success: true, result })

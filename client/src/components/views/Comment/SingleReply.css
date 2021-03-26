@@ -1,0 +1,73 @@
+.reply_container {
+  display: none;
+}
+
+.container_box {
+  width: 100%;
+  margin: 5px;
+  padding: 10px;
+}
+
+.comment_container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.comment_contents {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.SingleReply__img {
+  border-radius: 50%;
+  width: 30px;
+  margin: 2px;
+  margin-left: 5px;
+}
+
+.SingleReply__nickname {
+  font-size: 0.6rem;
+  color: rgb(255, 255, 255);
+}
+
+.SingleReply__content {
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-bottom: 10px;
+
+}
+
+.SingleReply__comment_info {
+  font-size: 0.8rem;
+  display: flex;
+}
+
+.comment_like {
+  cursor: pointer;
+  margin: 3px;
+}
+.comment_dislike {
+  cursor: pointer;
+  margin: 3px;
+}
+.comment_option {
+  cursor: pointer;
+  color: rgb(122, 122, 122);
+  margin: 3px;
+}
+.comment_option:hover {
+  color: rgb(98, 98, 98);
+  margin: 3px;
+}
+.comment_writeReplyToggle{
+  margin: 3px;
+}
+.comment_displayReplyToggle{
+  cursor: pointer;
+}
+.form {
+  width: 100%;
+}
