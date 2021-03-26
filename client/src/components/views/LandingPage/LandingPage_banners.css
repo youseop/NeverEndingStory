@@ -1,0 +1,36 @@
+.banner-container {
+  position: relative;
+  background-color:#C4C4C4;
+  width: 1440px;
+  height: 580px;
+}
+
+.banner-main1{
+  background-color:#30475E;
+  border-radius: 5px;
+}
+.banner-main1-slogan1{
+  position: absolute;
+  top: 15%;
+  left: 5%;
+
+  font-family: Noto Sans KR;
+  font-weight: bold;
+  font-size: 130px;
+  text-align: center;
+
+  color: #ffffff;
+}
+.banner-main1-slogan2{
+  position: absolute;
+  top: 45%;
+  left: 5.2%;
+
+  font-family: Noto Sans KR;
+  font-weight: bold;
+  font-size: 80px;
+  text-align: center;
+
+  color: #ffffff;
+}
+

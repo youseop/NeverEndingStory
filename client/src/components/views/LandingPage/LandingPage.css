@@ -3,7 +3,7 @@
   margin: auto;
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: 50px 300px 300px;
+  grid-template-rows: 600px 300px 300px;
   gap: 5px;
   /* background-color: wheat; */
 }
@@ -43,30 +43,6 @@
   width: 100%;
   flex: 44;
   /* background-color: bisque; */
-}
-
-.button-newgame {
-  all: unset;
-
-  position: absolute;
-  top: 9.5%;
-  right: 0.5%;
-  width: 189px;
-  height: 47px;
-
-  background: #f05454;
-  border-radius: 10px;
-
-  font-family: Noto Sans KR;
-  font-weight: bold;
-  font-size: 20px;
-  text-align: center;
-
-  color: #ffffff;
-}
-
-.button-newgame:hover {
-  background: #e74a4a;
 }
 
 .bar{

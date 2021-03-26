@@ -4,7 +4,8 @@ import Axios from "axios";
 import { LOCAL_HOST } from "../../Config";
 import "./LandingPage.css";
 import { SVG, BAR } from "../../svg/icon";
-import {test} from "./test"
+import {Banner_main1} from"./LandingPage_banners"
+import {NewGameButton} from"./LandingPage_buttons"
 
 const ListContainer = {
   recent_games: {
@@ -16,7 +17,7 @@ const ListContainer = {
     id: "popular_gameList",
     pos: 0,
     limit: 2,
-  },
+  },   
 };
 
 function ContainerToRight(target) {
@@ -53,7 +54,6 @@ function ContainerToRight(target) {
 function ContainerToLeft(target) {
   if (target.pos > 0) {
     // console.log(target.pos);
-    test()
     var bar = document.getElementById(
       target.id.split("_")[0] + "_bar" + String(target.pos)
     );
@@ -95,48 +95,6 @@ function LandingPage(props) {
     });
   }, []);
 
-  const uploadGameFrame = async () => {
-
-    // tmp scene create
-    const gameResponse = await Axios.get("/api/game/uploadgameframe");
-  
-    if (!gameResponse.data.success) {
-      alert("game Frame제작 실패");
-      return;
-    }
-  
-    const firstScene = {
-      gameId: gameResponse.data.game._id,
-      prevSceneId: null,
-      sceneDepth: 0,
-      isFirst: 1,
-      title: "",
-    };
-  
-    const sceneResponse = await Axios.post("/api/scene/create", firstScene);
-    if (!sceneResponse.data.success) {
-      alert("scene Frame제작 실패");
-      return;
-    }
-  
-    message.success(
-      "첫 Scene을 생성해주세요. 오른쪽의 버튼을 활용해 이미지들을 추가할 수 있습니다."
-    );
-
-    // console.log(props)
-    setTimeout(() => {
-      props.history.replace({
-        pathname: `/scene/make`,
-        state: {
-          gameId: gameResponse.data.game._id,
-          sceneId: sceneResponse.data.sceneId,
-        },
-      });
-    }, 1000);
-  };
-
-
-  // console.log(games);
   let game_length = 0;
 
   const gameList = games.map((game, index) => {
@@ -163,9 +121,8 @@ function LandingPage(props) {
   return (
     <div className="mainPage_container">
       <div className="box-container">
-        <button className="button-newgame" onClick={uploadGameFrame}>
-          NEW 게임 만들기
-        </button>
+        <Banner_main1/>
+        <NewGameButton replace={props.history.replace}/>
       </div>
       <div className="box-container game-box">
         <div className="box-title">최근 플레이한 게임</div>
