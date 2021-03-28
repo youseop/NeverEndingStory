@@ -2,6 +2,88 @@
   display: none;
 }
 
+.textarea {
+  color: black;
+}
+
+.comment_btn {
+  cursor: pointer;
+  all: unset;
+  width: 6vw;
+  max-width: 70px;
+  height: 40px;
+  color: black;
+  background-color: rgb(243, 243, 243);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.comment_btn:hover {
+  cursor: pointer;
+  all: unset;
+  width: 6vw;
+  max-width: 70px;
+  height: 40px;
+  color: black;
+  background-color: rgb(233, 233, 233);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.edit_btn {
+  cursor: pointer;
+  all: unset;
+  margin: 5px;
+  width: 4vw;
+  max-width: 50px;
+  height: 8px;
+  color: black;
+  background-color: rgb(243, 243, 243);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 1px;
+  margin-left: 5px;
+  border-radius: 5px;
+}
+
+
+.edit_btn:hover {
+  cursor: pointer;
+  all: unset;
+  margin: 5px;
+  width: 4vw;
+  max-width: 50px;
+  height: 8px;
+  color: black;
+  background-color: rgb(233, 233, 233);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 1px;
+  margin-left: 5px;
+  border-radius: 5px;
+}
+
+.comment_input {
+
+}
+
+.edit_container {
+  display: flex;
+  width: 100%;
+}
+
 .container_box {
   width: 100%;
   margin: 5px;
@@ -30,7 +112,7 @@
 
 .nickname {
   font-size: 0.8rem;
-  color: gray;
+  color: rgb(255, 255, 255);
 }
 
 .content {

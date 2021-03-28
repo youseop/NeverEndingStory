@@ -12,6 +12,10 @@ const commentSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: 'Game'
   },
+  sceneId : {
+    type: Schema.Types.ObjectId,
+    ref: 'Scene'
+  },
   responseTo : {
     type: String
   },
