@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React from "react";
+import React, { memo } from "react";
 import "./BgmSideBar.css";
 
 import BgmFile from "./BgmFile";
@@ -36,4 +36,4 @@ function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, setMakeModalState }) {
     );
 }
 
-export default BgmSideBar;
+export default memo(BgmSideBar);

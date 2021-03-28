@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { detachCharacter, selectCharacter } from '../../../_actions/characterSelected_actions';
 import Character from './Character';
@@ -60,4 +60,4 @@ function CharacterModal({ setCharacterList, CharacterList, GameCharacterList, se
   )
 }
 
-export default CharacterModal
+export default memo(CharacterModal)

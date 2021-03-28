@@ -571,9 +571,7 @@ const SceneMakePage = (props) => {
                     </div>
                 ) : (
                     <div>
-                        <StopOutlined
-                            style={{ fontSize: "20px" }}
-                        />
+                        [icon]
                     BGM
                     </div>
                 )}
@@ -596,42 +594,40 @@ const SceneMakePage = (props) => {
                     </div>
                 ) : (
                     <div>
-                        <StopOutlined
-                            style={{ fontSize: "20px" }}
-                        />
+                        [icon]
                     Sound
                     </div>
                 )}
             </div>
             <div className="sceneMake__btn_container">
-                <Button type="primary"
+                <div type="primary"
                     style={{ fontSize: "15px" }}
                     onClick={onTmpSave}>
                     임시저장
-                </Button>
-                <Button type="primary"
+                </div>
+                <div type="primary"
                     style={{ fontSize: "15px" }}
                     onClick={onRemove_cut}>
                     컷 삭제
-                </Button>
+                </div>
                 {CutNumber < 29 && (
-                    <Button type="primary"
+                    <div type="primary"
                         style={{ fontSize: "15px" }}
                         onClick={onSubmit_nextCut}>
                         다음 컷
-                    </Button>
+                    </div>
                 )}
                 {isFirstScene ?
-                    <Button type="primary"
+                    <div type="primary"
                         style={{ fontSize: "15px" }}
                         onClick={onSubmit_first}>
                         업로드
-                        </Button>
-                    : <Button type="primary"
+                        </div>
+                    : <div type="primary"
                         style={{ fontSize: "15px" }}
                         onClick={onSubmit_saveScene}>
                         업로드
-                        </Button>
+                        </div>
                 }
                 <UploadModal
                     gameId={gameId}

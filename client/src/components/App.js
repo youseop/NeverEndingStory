@@ -8,7 +8,7 @@ import TestPage from "./views/LandingPage/TestPage.js";
 
 import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
-import Profile from './views/Profile/Profile';
+import Profile from './views/Profile/Profile.tsx';
 
 import GameDetailPage from './views/GameDetailPage/GameDetailPage.js';
 import GameUploadPage from "./views/GameUploadPage/GameUploadPage.js";
@@ -16,8 +16,8 @@ import GameBuildUpPage from "./views/GameUploadPage/GameBuildUpPage.js";
 import GamePlayPage from "./views/GamePlayPage/GamePlayPage.js";
 import SceneMakePage from "./views/Scene/SceneMakePage/SceneMakePage";
 
-import NavBar from "./views/NavBar/NavBar";
-import Footer from "./views/Footer/Footer"
+import NavBar from "./views/NavBar/NavBar.tsx";
+import Footer from "./views/Footer/Footer.tsx"
 import { LOCAL_HOST } from './Config';
 
 import './App.css';

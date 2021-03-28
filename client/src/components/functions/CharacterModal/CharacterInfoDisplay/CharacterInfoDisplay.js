@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import React from 'react';
+import React, { memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectCharacter } from '../../../../_actions/characterSelected_actions';
 import './CharacterInfoDisplay.css';
@@ -70,4 +70,4 @@ function CharacterInfoDisplay({setName, character, setCharacterList, CharacterLi
   )
 }
 
-export default CharacterInfoDisplay
+export default memo(CharacterInfoDisplay)

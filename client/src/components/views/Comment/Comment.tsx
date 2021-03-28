@@ -1,13 +1,28 @@
 import { message } from 'antd';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
 import './Comment.css';
 import SingleComment from './SingleComment';
+import mongodb from "mongodb";
+import { Mongoose } from 'mongoose';
 
-function Comment({gameId}) {
-  const user = useSelector((state) => state.user);
-  const isAuth = useSelector((state) => {
+interface GameId {
+  gameId: string
+}
+
+interface State_user {
+  user: {
+    userData: {
+      isAuth: boolean;
+      _id: mongodb.ObjectID
+    }
+  }
+}
+
+function Comment({gameId}: GameId) {
+  const user = useSelector((state: State_user) => state.user);
+  const isAuth = useSelector((state: State_user) => {
     if (state.user.userData){
       return state.user.userData.isAuth;
     } else {
@@ -15,16 +30,16 @@ function Comment({gameId}) {
     }
   });
   
-  const [update, setUpdate] = useState(true);
-  const [commentContent, setCommentContent] = useState("");
-  const [comments, setComments] = useState([]);
+  const [update, setUpdate] = useState<boolean>(true);
+  const [commentContent, setCommentContent] = useState<string>("");
+  const [comments, setComments] = useState<string[]>([]);
  
   const updateToggle = () => {
-    setUpdate((state) => !state);
+    setUpdate((state: boolean) => !state);
   }
 
   useEffect(() => {
-    axios.post('/api/comment/getComment', {gameId: gameId}).then(response => {
+    axios.post('/api/comment/get-comment', {gameId: gameId}).then(response => {
       if (response.data.success) {
         setComments(response.data.result);
       } else {
@@ -33,11 +48,11 @@ function Comment({gameId}) {
     })
   }, [update])
 
-  const onChange_comment = (event) => {
+  const onChange_comment = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setCommentContent(event.currentTarget.value);
   }
 
-  const onSubmit_comment = (event) => {
+  const onSubmit_comment = (event: React.ChangeEvent<HTMLInputElement>): void => {
     event.preventDefault();
     if(commentContent === ""){
       return;
@@ -50,7 +65,7 @@ function Comment({gameId}) {
       responseTo : ""
     };
 
-    axios.post('/api/comment/saveComment', variables).then(response => {
+    axios.post('/api/comment/save-comment', variables).then(response => {
       if(response.data.success) {
         message.success('댓글 감사합니다!');
         updateToggle();
@@ -61,7 +76,14 @@ function Comment({gameId}) {
     })
   }
 
-  const mapComment = comments.map((comment, index) => {
+  interface Comment {
+    content: string;
+    writer: mongodb.ObjectID;
+    gameId: string;
+    responseTo: mongodb.ObjectID;    
+  }
+
+  const mapComment = comments.map((comment: Comment, index: number) => {
     return (
       <div key={index}>
         {comment &&
@@ -98,4 +120,4 @@ function Comment({gameId}) {
   )
 }
 
-export default Comment
+export default memo(Comment)

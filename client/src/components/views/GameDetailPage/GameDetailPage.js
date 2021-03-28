@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./GameDetailPage.css";
 import { LOCAL_HOST } from "../../Config"
-import Comment from '../Comment/Comment';
+import Comment from '../Comment/Comment.tsx';
 import { socket } from "../../App";
 
 function GameDetailPage(props) {

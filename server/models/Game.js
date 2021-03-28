@@ -7,6 +7,19 @@ const { userSchema } = require("./User");
 
 const Schema = mongoose.Schema;
 
+const contributerSchema = mongoose.Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  sceneList: [
+    {
+      type: String,
+    },
+  ],
+})
+
+const Contributer = mongoose.model("contributer", contributerSchema);
 
 const gameSchema = mongoose.Schema({
   view : {
@@ -51,9 +64,14 @@ const gameSchema = mongoose.Schema({
   ready: {
     type: Number,
     default: 0
-  }
+  },
+  contributerList: [contributerSchema],
 }, {timestamps: true})
 
 const Game = mongoose.model('Game', gameSchema);
 
-module.exports = { Game }
+module.exports = { 
+  Game,
+  Contributer,
+  contributerSchema,
+ }
