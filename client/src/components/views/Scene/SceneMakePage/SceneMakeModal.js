@@ -10,6 +10,8 @@ import SoundTab from "./Tab/SoundTab"
 import { LOCAL_HOST } from "../../../Config";
 import _ from "lodash";
 
+const config = require('../../../../config/key');
+
 const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
   const [game, setGame] = useState([]);
   const [fileQueue, setFileQueue] = useState([]);
@@ -112,6 +114,7 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
   }
 
   const uploadCharDB = (fileNum, files) => {
+    console.log(process.env.NODE_ENV);
     let cnt = 0
     for (var i = 0; i < blobGame.character.length; i++) {
       if (!game.character[i])
@@ -125,7 +128,8 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
 
       if (fileNum) {
         for (var j = cnt; j < cnt + fileNum[i]; j++) {
-          game.character[i].image_array.push(`http://${LOCAL_HOST}:5000/${files[j].path}`)
+          console.log(`${config.STORAGE}/${files[j].path}`);
+          game.character[i].image_array.push( process.env.NODE_ENV === 'development' ? `${config.STORAGE}/${files[j].path}` : files[j].location)
         }
         cnt += fileNum[i]
       }
@@ -134,6 +138,7 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
       gameId: gameId,
       character: game.character
     };
+    console.log(game.character)
     Axios.post(
       "/api/game/putCharDB",
       DBForm
@@ -158,11 +163,11 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
     fileQueue.forEach(value => {
       formData.append('files', value);
     })
-    const config = {
+    const header = {
       header: { "encrpyt": "multipart/form-data" }, //content type을 같이 보내줘야한다!
     };
 
-    Axios.post("/api/game/uploadfile", formData, config).then(
+    Axios.post("/api/game/uploadfile", formData, header).then(
       (response) => {
         if (response.data.success) {
           uploadDB(response.data.files);
@@ -181,19 +186,19 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
         case 1: //background
           DBForm.background.push({
             name: files[i].originalname,
-            image: `http://${LOCAL_HOST}:5000/${files[i].path}`,
+            image: ( process.env.NODE_ENV === 'development' ? `${config.STORAGE}/${files[i].path}` : files[i].location),
           })
           break;
         case 2:
           DBForm.bgm.push({
             name: files[i].originalname,
-            music: `http://${LOCAL_HOST}:5000/${files[i].path}`,
+            music: ( process.env.NODE_ENV === 'development' ? `${config.STORAGE}/${files[i].path}` : files[i].location),
           })
           break;
         case 3:
           DBForm.sound.push({
             name: files[i].originalname,
-            music: `http://${LOCAL_HOST}:5000/${files[i].path}`,
+            music: ( process.env.NODE_ENV === 'development' ? `${config.STORAGE}/${files[i].path}` : files[i].location),
           })
           break;
         default:

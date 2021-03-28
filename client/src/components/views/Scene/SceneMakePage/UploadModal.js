@@ -91,7 +91,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene 
         Axios.post("/api/game/uploadfile", formData, config).then(
             (response) => {
                 if (response.data.success) {
-                    uploadGame(response.data.files[0].path);
+                    uploadGame( process.env.NODE_ENV === 'development' ? response.data.files[0].path : response.data.files[0].location );
                 } else {
                     message.error("업로드 실패");
                 }

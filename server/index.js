@@ -21,7 +21,7 @@ const connect = mongoose.connect(config.mongoURI,
     useNewUrlParser: true, useUnifiedTopology: true,
     useCreateIndex: true, useFindAndModify: false
   })
-  .then(() => logger.info("mongoose connected..."))
+  .then(() => logger.info("mongoose connected...!"))
   .catch(err => console.log(err));
 
 if (process.env.NODE_ENV === 'production') {

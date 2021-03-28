@@ -146,7 +146,7 @@ function LandingPage(props) {
           <a href={`/game/${game._id}`}>
             <img
               className="game-image"
-              src={`http://${LOCAL_HOST}:5000/${game.thumbnail}`}
+              src={ process.env.NODE_ENV === 'development' ? `http://${LOCAL_HOST}:5000/${game.thumbnail}` : game.thumbnail}
               alt={game.title}
             />
             <div className="game-title">{game.title}</div>

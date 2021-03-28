@@ -17,6 +17,7 @@ const { auth } = require("../middleware/auth");
 
 const multer = require("multer");
 const { objCmp } = require("../lib/object");
+const { log } = require("winston");
 
 
 let storage;
@@ -58,6 +59,7 @@ router.post("/uploadfile", (req, res) => {
     //서버에 저장
     upload(req, res, (err) => {
         if (err) {
+            console.log(err);
             return res.json({ success: false, err });
         }
         return res.json({
