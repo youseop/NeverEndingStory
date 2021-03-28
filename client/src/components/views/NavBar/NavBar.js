@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import LeftMenu from "./Sections/LeftMenu";
 import RightMenu from "./Sections/RightMenu";
 import { Drawer, Button, Icon } from "antd";
 import "./Sections/Navbar.css";
@@ -17,7 +16,7 @@ function NavBar() {
   const onClose = () => {
     setVisible(false);
   };
-
+  
   if (navbarOn) {
     style = { position: "fixed", zIndex: 5, width: "100%" };
   } else {
@@ -30,10 +29,11 @@ function NavBar() {
       animation: "0.8s ease-out 0s 1 hide",
     };
   }
+  
   return (
     <nav className="menu" style={style}>
       <div className="menu__logo">
-        <a href="/">REGANOP</a>
+        <a href="/">NEVER ENDING</a>
       </div>
       <div className="menu__container">
         <div className="menu_rigth">
@@ -47,14 +47,13 @@ function NavBar() {
           <Icon type="align-right" />
         </Button>
         <Drawer
-          title="REGANOP"
+          title="NEVER ENDING"
           placement="right"
           className="menu_drawer"
           closable={false}
           onClose={onClose}
           visible={visible}
         >
-          {/* <LeftMenu mode="inline" /> */}
           <RightMenu mode="inline" />
         </Drawer>
       </div>
