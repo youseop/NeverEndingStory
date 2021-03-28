@@ -16,9 +16,17 @@ const mongoose = require("mongoose");
 const { auth } = require("../middleware/auth");
 
 const multer = require("multer");
+const multerS3 = require("multer-s3");
+const AWS = require("aws-sdk");
 const { objCmp } = require("../lib/object");
 const { log } = require("winston");
 
+
+AWS.config.update({
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAcessKey : process.env.S3_SECRET_ACCESS_KEY,
+    region : 'ap-northeast-2',
+});
 
 let storage;
 if (process.env.NODE_ENV === 'production') {
@@ -75,14 +83,17 @@ router.post("/uploadgameInfo", (req, res) => {
         .exec((err, gameDetail) => {
             if (err) return res.status(400).send(err);
 
-            gameDetail.creator = req.body.creator;
-            gameDetail.title = req.body.title;
-            gameDetail.description = req.body.description;
-            gameDetail.thumbnail = req.body.thumbnail;
-            gameDetail.privacy = req.body.privacy;
-            gameDetail.category = req.body.category;
-            gameDetail.writer = req.body.writer;
-
+            gameDetail = {
+                ...gameDetail,
+                creator : req.body.creator,
+                title : req.body.title,
+                description : req.body.description,
+                thumbnail : req.body.thumbnail,
+                privacy : req.body.privacy,
+                category : req.body.category,
+                writer : req.body.writer,
+            }
+                
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
                 return res.status(200).json({ success: true, gameDetail });

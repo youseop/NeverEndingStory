@@ -130,7 +130,7 @@ const ProductScreen = (props) => {
   const [isFirstCut, setIsFirstCut] = useState(true);
   function playMusic(i) {
     if (isFirstCut) setIsFirstCut(false);
-    if (Scene.cutList[i].bgm.music) {
+    if (Scene.cutList[i]?.bgm.music) {
       //이전 곡과 같은 bgm이 아니라면
       if (
         !(i > 0 && Scene.cutList[i - 1].bgm.music == Scene.cutList[i].bgm.music)
@@ -140,7 +140,7 @@ const ProductScreen = (props) => {
         bgm_audio.play();
       }
     }
-    if (Scene.cutList[i].sound.music) {
+    if (Scene.cutList[i]?.sound.music) {
       sound_audio.pause();
 
       sound_audio.src = Scene.cutList[i].sound.music;
@@ -277,7 +277,7 @@ const ProductScreen = (props) => {
   }, []);
 
 
-  if (Scene.cutList) {
+  if (Scene?.cutList) {
     if (i == 0 && isFirstCut) playMusic(0);
     return (
       <div
