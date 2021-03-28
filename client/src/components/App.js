@@ -19,15 +19,13 @@ import SceneMakePage from "./views/Scene/SceneMakePage/SceneMakePage";
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
 import { LOCAL_HOST } from './Config';
-
+import io from 'socket.io-client';
 import './App.css';
 
-//null   Anyone Can go inside
-//true   only logged in user can go inside
-//false  logged in user can't go inside
- 
-const io = require('socket.io-client');
-export let socket = io(`http://${LOCAL_HOST}:5000`, {transports : ['websocket']});
+const config = require('../config/key');
+// export let socket = io(`http://${LOCAL_HOST}:5000`, {transports : ['websocket']});
+export let socket = io(config.SOCKET, {transports : ['websocket']});
+
 
 window.onpopstate = () => {
   window.location.reload();

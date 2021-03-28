@@ -16,15 +16,28 @@ const mongoose = require("mongoose");
 const { auth } = require("../middleware/auth");
 
 const multer = require("multer");
+const { objCmp } = require("../lib/object");
 
-let storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}_${file.originalname}`);
-    },
-});
+
+let storage;
+if (process.env.NODE_ENV === 'production') {
+    storage = multerS3({
+        s3: new AWS.S3(),
+        bucket: 'neverending',
+        key(req,file,cb){
+            cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+        },
+    })
+} else {
+    storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, "uploads/");
+        },
+        filename: (req, file, cb) => {
+            cb(null, `${Date.now()}_${file.originalname}`);
+        },
+    });
+}
 
 // uploadFilter 정의
 const uploadFilter = (req, file, cb) => {
@@ -167,7 +180,7 @@ const updateHistoryFromPlaying = (user) => {
         gameHistory,
     } = user;
     for (let i = 0; i < gameHistory.length; i++) {
-        if (gameHistory[i].gameId && gameHistory[i].gameId.toHexString() === gameId.toHexString()) {
+        if ( gameHistory[i].gameId && objCmp(gameHistory[i].gameId, gameId) ) {
             user.gameHistory[i].sceneIdList = [...sceneIdList];
             user.gamePlaying.sceneIdList = [];
             user.gamePlaying.gameId = null;
@@ -193,25 +206,25 @@ router.get("/gamestart/:id", auth, async (req, res) => {
     try {
         let user = await User.findOne({ _id: userId });
         let trashSceneId = mongoose.Types.ObjectId(0);
-        const idx = user.makingGameList.findIndex(item => item.gameId.toHexString() === gameId.toHexString())
+        const idx = user.makingGameList.findIndex(item => objCmp(item.gameId.gameId, gameId) )
         if( idx > -1 ){
-            // 유효성 검증 fail
             if(user.makingGameList[idx].exp < Date.now()){
                 trashSceneId = user.makingGameList[idx].sceneId; 
-                // console.log(trashSceneId)
                 user.makingGameList.splice(idx,1)
             }
         }
 
         // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감. 
-        if (user.gamePlaying.gameId && gameId.toHexString() === user.gamePlaying.gameId.toHexString()) {
+        if (user.gamePlaying.gameId && objCmp(user.gamePlaying.gameId, gameId)) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
-            if(trashSceneId.toHexString() === user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1].toHexString()){
-                // console.log("I'm GAME PLAYYING zz")
-                user.gamePlaying.sceneIdList.splice(user.gamePlaying.sceneIdList.length - 1,1)
+            if( objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId) ){
+                user.gamePlaying.sceneIdList.pop();
                 user.gamePlaying.isMaking = false;
                 user.save((err) => {
-                    if (err) { console.log(err); return res.status(400).json({ success: false }) }
+                    if (err) { 
+                        console.log(err); 
+                        return res.status(400).json({ success: false }) 
+                    }
                 });
             }
 
@@ -280,19 +293,33 @@ router.get("/gamestart/:id", auth, async (req, res) => {
 });
 
 const validateScene = async (gamePlaying, sceneId, gameId) => {
-    if (gamePlaying.gameId.toHexString() === gameId.toHexString()) {
-        const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[gamePlaying.sceneIdList.length - 1] });
-        if (gamePlaying.sceneIdList[gamePlaying.sceneIdList.length - 1].toHexString() === sceneId.toHexString()) {
+    if (objCmp(gamePlaying.gameId,  gameId)) {
+
+        const len = gamePlaying.sceneIdList.length - 1
+        const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[len] });
+
+        if (objCmp(gamePlaying.sceneIdList[len], sceneId)) {
             return true;
         }
+
         for (let i = 0; i < scene.nextList.length; i++) {
-            if (scene.nextList[i].sceneId.toHexString() === sceneId.toHexString()) {
+            if (objCmp(scene.nextList[i].sceneId, sceneId)) {
                 return true;
             }
         }
+
     }
     return false;
 };
+
+router.get("/historycleanup", auth, async (req, res) => {
+    User.updateOne({_id: req.user._id}, 
+        {
+            $set: {
+                'gamePlaying.sceneIdList': [req.user.gamePlaying.sceneIdList.shift()]
+            }
+        }).then( () => res.status(200).json({success: true}) )
+})
 
 router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
     const userId = req.user._id;

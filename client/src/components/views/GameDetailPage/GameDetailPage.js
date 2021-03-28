@@ -7,6 +7,8 @@ import { LOCAL_HOST } from "../../Config"
 import Comment from '../Comment/Comment';
 import { socket } from "../../App";
 
+const config = require('../../../config/key')
+
 function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
@@ -44,7 +46,11 @@ function GameDetailPage(props) {
             {gameDetail.thumbnail &&
                 <img
                     style={{ width: "30%", height: "30%" }}
-                    src={`http://${LOCAL_HOST}:5000/${gameDetail.thumbnail}`}
+                    src={
+                        process.env.NODE_ENV === 'production' ?
+                        gameDetail.thumbnail
+                        :
+                        `${config.STORAGE}/${gameDetail.thumbnail}`}
                     alt="thumbnail"
                 />}
             <div>제목: {gameDetail.title}</div>

@@ -55,9 +55,9 @@ function GetSceneInfo(props) {
       const lastcut = cutList[cutList.length - 1];
       setSceneInfo({
         sceneindex: index,
-        background: lastcut.background,
-        name: lastcut.name,
-        script: lastcut.script,
+        background: lastcut?.background,
+        name: lastcut?.name,
+        script: lastcut?.script,
       });
     }
   });
