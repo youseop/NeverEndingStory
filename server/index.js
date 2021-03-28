@@ -42,6 +42,11 @@ app.use('/api/game', require('./routes/game'));
 app.use('/api/scene', require('./routes/scene'));
 app.use('/api/complaint', require('./routes/complaint'));
 app.use('/api/comment', require('./routes/comment'));
+<<<<<<< HEAD
+=======
+app.use('/api/like', require('./routes/like'));
+
+>>>>>>> da1eb82cf58f6a4a1b4169f5d2a827b4ffb5ba3f
 app.use('/api/test', require('./routes/subdoc_route'));
 app.use('/uploads', express.static('uploads'));
 

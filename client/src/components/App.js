@@ -4,11 +4,10 @@ import Auth from "../hoc/auth";
 import Valid from "../hoc/valid";
 // pages for this product
 import LandingPage from "./views/LandingPage/LandingPage.js";
-import TestPage from "./views/LandingPage/TestPage.js";
 
 import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
-import Profile from './views/Profile/Profile';
+import Profile from './views/Profile/Profile.js';
 
 import GameDetailPage from './views/GameDetailPage/GameDetailPage.js';
 import GameUploadPage from "./views/GameUploadPage/GameUploadPage.js";

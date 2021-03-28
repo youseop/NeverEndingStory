@@ -9,6 +9,10 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^14.14.36",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
     "antd": "^3.24.1",
     "axios": "^0.21.1",
     "core-js": "^3.6.4",
@@ -30,6 +34,7 @@
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.3.0",
     "socket.io-client": "^4.0.0",
+    "typescript": "^4.2.3",
     "typewriter-effect": "^2.17.0",
     "windups": "^1.1.9",
     "yup": "^0.27.0"
@@ -56,6 +61,8 @@
     ]
   },
   "devDependencies": {
+    "@types/react-redux": "^7.1.16",
+    "@types/react-router-dom": "^5.1.7",
     "http-proxy-middleware": "^1.0.3"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",

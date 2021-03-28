@@ -1,0 +1,23 @@
+.button-newgame {
+  all: unset;
+
+  position: absolute;
+  top: 70%;
+  right: 5%;
+  width: 189px;
+  height: 47px;
+
+  background: #f05454;
+  border-radius: 10px;
+
+  font-family: Noto Sans KR;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.button-newgame:hover {
+  background: #e74a4a;
+}

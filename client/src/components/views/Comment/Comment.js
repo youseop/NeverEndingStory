@@ -2,7 +2,6 @@ import { message } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
-import useKey from '../../functions/useKey';
 import './Comment.css';
 import SingleComment from './SingleComment';
 
@@ -62,12 +61,6 @@ function Comment({gameId}) {
     })
   }
 
-  const handleEnter = (event) => {
-    onSubmit_comment(event);
-  }
-
-  // useKey('Enter',(event => handleEnter(event))); //Todo 문제가 많음 엔터칠때 대댓글 엔터도 같이 쳐진다,,,
-
   const mapComment = comments.map((comment, index) => {
     return (
       <div key={index}>
@@ -92,7 +85,7 @@ function Comment({gameId}) {
           value={commentContent}
           placeholder="코멘트를 작성해 주세요."
         />
-        <button className="btn" onClick={onSubmit_comment}>댓글 작성</button>
+        <button className="comment_btn" onClick={onSubmit_comment}>댓글 작성</button>
       </form>
       }
       <br />

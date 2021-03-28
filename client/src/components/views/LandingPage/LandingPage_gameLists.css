@@ -1,0 +1,135 @@
+.game-box {
+  display: flex;
+  flex-direction: column;
+  border: none;
+}
+
+.game-box > div:first-child {
+  width: 100%;
+  flex: 7;
+}
+.game-box > div:nth-child(2) {
+  width: 100%;
+  flex: 1;
+  font-size: 2px;
+  /* background-color: tomato; */
+}
+.game-box > div:last-child {
+  width: 100%;
+  flex: 44;
+  /* background-color: bisque; */
+}
+
+.box-title {
+  padding-left: 10px;
+  font-family: Noto Sans KR;
+  font-weight: bold;
+  font-size: 27px;
+  color: #dddddd;
+}
+
+.bar {
+  opacity: 0;
+  float: right;
+  padding-right: 5px;
+  /* background-color: darkorchid; */
+  filter: brightness(50%);
+  transition-duration: 0.4s;
+}
+
+.gamelist-container {
+  position: absolute;
+  left: 45px;
+
+  display: flex;
+  border: none;
+  flex-direction: row;
+  gap: 1px;
+  /* background-color: purple; */
+  transition-duration: 0.5s;
+}
+
+.gamelist-game {
+  all: unset;
+  position: relative;
+  flex: 1;
+  width: 320px;
+  height: 235px;
+  /* background-color: rgba(81, 255, 0, 0.445); */
+}
+.gamelist-game:hover{
+  font-weight: bolder;
+}
+
+.gamelist-left-arrow {
+  display: none;
+  position: absolute;
+  width: 45px;
+  height: 180px;
+  top: 60px;
+  left: 0px;
+
+  background-color: rgba(0, 0, 0, 0.472);
+  padding: 75px 0px;
+  transform: scaleX(-1);
+}
+.gamelist-left-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.712);
+}
+
+.gamelist-right-arrow {
+  display: none;
+  position: absolute;
+  width: 45px;
+  height: 180px;
+  top: 60px;
+  right: 0px;
+
+  background-color: rgba(0, 0, 0, 0.472);
+  padding: 75px 0px;
+}
+.gamelist-right-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.712);
+}
+
+.game-image {
+  position: absolute;
+
+  width: 320px;
+  height: 180px;
+  left: 2px;
+  top: 0%;
+
+  border-radius: 5px;
+
+  background: #dddddd;
+  object-fit: cover;
+  filter: brightness(95%);
+}
+.game-image:hover  {
+  filter: brightness(102%);
+}
+
+.game-title {
+  position: absolute;
+  width: 100%;
+  height: 22px;
+  left: 10px;
+  top: 81%;
+
+  font-size: 15px;
+  color: #dddddd;
+}
+
+.game-category {
+  position: absolute;
+  width: 54px;
+  height: 16px;
+  left: 10px;
+  top: 91%;
+
+  font-size: 11px;
+  color: #dddddd;
+
+  opacity: 0.9;
+}
