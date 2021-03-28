@@ -4,7 +4,7 @@ import CharacterSideBar from "./SideBar/CharacterSideBar";
 import BgmSideBar from "./SideBar/BgmSideBar";
 import SoundSideBar from "./SideBar/SoundSideBar";
 import { useSelector } from "react-redux";
-import { message, Button } from "antd";
+import { message } from "antd";
 import Axios from "axios";
 import { useLocation } from "react-router";
 import SceneMakeModal from './SceneMakeModal';
@@ -18,11 +18,12 @@ import { navbarControl } from "../../../../_actions/controlPage_actions";
 import CharacterModal from "../../../functions/CharacterModal/CharacterModal";
 import SceneBox from "./SceneBox/SceneBox";
 import axios from "axios";
+import { SVG } from "../../../svg/icon";
 import { useHistory } from "react-router-dom"
 import { socket } from "../../../App";
 import { PlayCircleOutlined, PauseCircleOutlined, StopOutlined } from '@ant-design/icons';
 import { detachCharacter } from "../../../../_actions/characterSelected_actions";
-import "./SceneMakePage.css";
+import "./SceneMakePage2.css";
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
@@ -501,46 +502,29 @@ const SceneMakePage = (props) => {
         }
     }, [window.innerWidth, window.innerHeight]);
 
+    const onLeft = () => {
+        if (CutNumber !== 0) {
+            saveCut();
+            displayCut(CutNumber - 1);
+            setCutNumber(CutNumber - 1);
+        }
+    }
+
     return (
-        <div className="scene__container">
-            {/* <LoadingPage />   */}
-            <div>
-                <div
-                    className="backgroundImg_container"
-                    id="backgroundImg_container"
-                    style={newScreenSize}
-                >
-                    <img
-                        className="backgroundImg"
-                        src={`${BackgroundImg}`}
-                        alt="img"
-                    />
-                    <CharacterBlock
-                        GameCharacterList={gameDetail.character}
-                        CharacterList={CharacterList}
-                        setCharacterList={setCharacterList}
-                        onRemove_character={onRemove_character}
-                    />
-                    {SidBar_script && (
-                        <div className="sceneMake__text_container">
-                            <input onChange={onNameChange} value={Name} className="sceneMake__name_block" />
-                            <hr className="sceneMake__text_line"></hr>
-                            <textarea
-                                onChange={onScriptChange}
-                                value={Script}
-                                className="sceneMake__text_block"
-                                ref={(input) => input && input.focus()}
-                            />
-                        </div>
-                    )}
-                </div>
-            </div>
-            <CharacterModal
-                setName={setName}
-                setCharacterList={setCharacterList}
-                CharacterList={CharacterList}
-                GameCharacterList={gameDetail.character}
-            />
+        <div className="wrapper">
+            {gameDetail?.title ?
+                <div className="box title">
+                    [{gameDetail?.title}]
+                </div> :
+                (
+                    <div>
+                        <div className="box title">
+                            [제목 먼저 짓게 수정]
+                    </div>
+                        <div className="box title-btn">상세정보</div>
+                    </div>
+                )
+            }
             <SceneBox
                 CutList={CutList}
                 CutNumber={CutNumber}
@@ -551,87 +535,67 @@ const SceneMakePage = (props) => {
                 EmptyCutList={EmptyCutList}
                 saveCut={saveCut}
             />
-            <div className="sceneMake__sound_container">
-                {BgmFile.name ? (
-                    <div
-                        className="scene__SoundBox_container"
-                        onClick={onClick_bgm_player}
-                    >
-                        {
-                            BgmFile.name && bgm_audio.paused &&
-                            <PlayCircleOutlined
-                                style={{ fontSize: "20px" }} />
-                        }
-                        {
-                            BgmFile.name && !bgm_audio.paused &&
-                            <PauseCircleOutlined
-                                style={{ fontSize: "20px" }} />
-                        }
-                        {BgmFile.name}
-                    </div>
-                ) : (
-                    <div>
-                        <StopOutlined
-                            style={{ fontSize: "20px" }}
+
+            <div className="box scene">
+                <div className="scene left-arrow"
+                    onClick={onLeft}>
+                    <SVG src="arrow_1" width="50" height="50" color="#F5F5F5" />
+                </div>
+                <img
+                    className="backgroundImg"
+                    src={`${BackgroundImg}`}
+                    alt="img"
+                />
+                <CharacterBlock
+                    GameCharacterList={gameDetail.character}
+                    CharacterList={CharacterList}
+                    setCharacterList={setCharacterList}
+                    onRemove_character={onRemove_character}
+                />
+                {SidBar_script && (
+                    <div className="sceneMake__text_container">
+                        <input onChange={onNameChange} value={Name} className="sceneMake__name_block" />
+                        <hr className="sceneMake__text_line"></hr>
+                        <textarea
+                            onChange={onScriptChange}
+                            value={Script}
+                            className="sceneMake__text_block"
+                            ref={(input) => input && input.focus()}
                         />
-                    BGM
                     </div>
                 )}
-                {SoundFile.name ? (
-                    <div
-                        className="scene__SoundBox_container"
-                        onClick={onClick_sound_player}
-                    >
-                        {
-                            BgmFile.name && sound_audio.paused &&
-                            <PlayCircleOutlined
-                                style={{ fontSize: "20px" }} />
-                        }
-                        {
-                            BgmFile.name && !sound_audio.paused &&
-                            <PauseCircleOutlined
-                                style={{ fontSize: "20px" }} />
-                        }
-                        {SoundFile.name}
-                    </div>
-                ) : (
-                    <div>
-                        <StopOutlined
-                            style={{ fontSize: "20px" }}
-                        />
-                    Sound
+                {CutNumber < 29 && (
+                    <div className="scene right-arrow"
+                        onClick={onSubmit_nextCut}>
+                        <SVG src="arrow_1" width="50" height="50" color="#F5F5F5" />
                     </div>
                 )}
             </div>
-            <div className="sceneMake__btn_container">
-                <Button type="primary"
-                    style={{ fontSize: "15px" }}
-                    onClick={onTmpSave}>
-                    임시저장
-                </Button>
-                <Button type="primary"
-                    style={{ fontSize: "15px" }}
+            {/* 
+            <div className="box d">캐릭터이름</div>
+            <div className="box e">현재캐릭터</div>
+            <div className="box f">음악</div> */}
+
+            {/* <div className="box g">대사</div> */}
+
+            <div className="box scene__btn_top">
+                <div className="box scene_btn"
                     onClick={onRemove_cut}>
                     컷 삭제
-                </Button>
-                {CutNumber < 29 && (
-                    <Button type="primary"
-                        style={{ fontSize: "15px" }}
-                        onClick={onSubmit_nextCut}>
-                        다음 컷
-                    </Button>
-                )}
+                </div>
+                <div className="box scene_btn"
+                    onClick={onTmpSave}>
+                    임시 저장
+                </div>
                 {isFirstScene ?
-                    <Button type="primary"
-                        style={{ fontSize: "15px" }}
+                    <div className="box scene_btn scene_btn_blue"
                         onClick={onSubmit_first}>
-                        업로드
-                        </Button>
-                    : <Button type="primary"
-                        style={{ fontSize: "15px" }}
+                        완료
+                        </div>
+                    : <div className="box scene_btn scene_btn_blue"
                         onClick={onSubmit_saveScene}>
-                        업로드
-                        </Button>
+                        완료
+                        </div>
                 }
                 <UploadModal
                     gameId={gameId}
@@ -640,41 +604,10 @@ const SceneMakePage = (props) => {
                     onSubmit_saveScene={onSubmit_saveScene}
                 />
             </div>
-            <div className="scenemake__sideBar_container">
-                {sideBar !== 0 && sideBar}
-
-                <div className="scenemake__toggleButton_container">
-                    <div
-                        className="scenemake__btn_sidebar"
-                        onClick={onClick_character}
-                    >char</div>
-                    <div
-                        className="scenemake__btn_sidebar"
-                        onClick={onClick_background}
-                    >back</div>
-                    <div
-                        className="scenemake__btn_sidebar"
-                        onClick={onClick_script}
-                    >script</div>
-                    <div className="scenemake__btn_sidebar" onClick={onClick_bgm}>
-                        bgm
-                    </div>
-                    <div className="scenemake__btn_sidebar" onClick={onClick_sound}>
-                        sound
-                    </div>
-                </div>
-            </div>
-            {
-                makeModalState !== 0 && <SceneMakeModal
-                    gameId={gameId}
-                    visible={Boolean(makeModalState)}
-                    setTag={setMakeModalState}
-                    tag={makeModalState}
-                    setReload={setReload}
-                />
-            }
-        </div>
-    );
+            <div className="box btn_side">사이드버튼</div>
+            <div className="box sideBar">캐릭터선택</div>
+        </div >
+    )
 }
 
 export default SceneMakePage;

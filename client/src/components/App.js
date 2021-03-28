@@ -15,6 +15,7 @@ import GameUploadPage from "./views/GameUploadPage/GameUploadPage.js";
 import GameBuildUpPage from "./views/GameUploadPage/GameBuildUpPage.js";
 import GamePlayPage from "./views/GamePlayPage/GamePlayPage.js";
 import SceneMakePage from "./views/Scene/SceneMakePage/SceneMakePage";
+import SceneMakePage2 from "./views/Scene/SceneMakePage/SceneMakePage2";
 
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
@@ -25,7 +26,7 @@ import './App.css';
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
- 
+
 const io = require('socket.io-client');
 export let socket = io(`http://${LOCAL_HOST}:5000`);
 
@@ -35,7 +36,7 @@ window.onpopstate = () => {
 function App() {
   return (
     <Suspense fallback={(<div>Loading...</div>)}>
-      <NavBar />
+      {/* <NavBar /> */}
       <div className="app">
         <Switch>
           <Route exact path="/" component={Auth(LandingPage, null)} />
@@ -45,7 +46,8 @@ function App() {
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
           <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />
-          <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage, true))} />
+          <Route exact path="/scene/make2" component={Valid(Auth(SceneMakePage, true))} />
+          <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage2, true))} />
         </Switch>
       </div>
       <Footer />
