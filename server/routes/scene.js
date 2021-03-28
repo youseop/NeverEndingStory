@@ -27,7 +27,7 @@ const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
       }
     }
 
-    if (i === gameHistory.length) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+    if (i === gameHistory.length) {
       user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList], isMaking });
     }
   }
@@ -182,5 +182,48 @@ router.post("/scenedetail", (req, res) => {
     return res.status(200).json({ success: true, lastCut })
   })
 })
+
+
+router.delete('/', async (req, res) => {
+  //! 첫번째 씬이면, 게임도 지운다.
+  if (req.body.isFirst) {
+    Game.deleteOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
+      .then(() => "GAME DELETE SUCCESS")
+      .catch((err) => console.log("GAME DELETE ERR ", err))
+  }
+  //! 껍데기 씬 지우기
+  Scene.deleteOne({ _id: mongoose.Types.ObjectId(req.body.sceneId) })
+    .then(() => "SCENE DELETE SUCCESS")
+    .catch((err) => console.log("SCENE DELETE ERR ", err))
+  //! user의 makingGameList & gamePlaying - sceneList, isMaking update
+  const user = await User.findOne({ _id: req.body.userId });
+  const idx = user.makingGameList.findIndex(item => item.gameId.toString() === req.body.gameId)
+  if (idx > -1) {
+    user.makingGameList.splice(idx, 1)
+  }
+  else {
+    console.log("THERE IS NO MAKING GAME -- 이상하네")
+  }
+  user.gamePlaying.sceneIdList.pop();
+  user.gamePlaying.isMaking = false;
+  user.save((err) => {
+    console.log("SAVE")
+    if (err) {
+      console.log(err)
+      return res.status(400).json({ success: false, err })
+    }
+    return res.status(200).json({
+      success: true,
+      //! 이전 씬은 플레잉 리스트의 마지막 녀석이겠구만!!
+      prevSceneId:
+        req.body.isFirst ?
+          null
+          :
+          user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1]
+    })
+  });
+  //! 이후, 작성중인 사람, 공헌자 목럭에서 삭제하는 로직도 필요하다.
+})
+
 
 module.exports = router;

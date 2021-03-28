@@ -1,5 +1,5 @@
 const objCmp = (objA, objB) => {
-    if (objA.toString() === objB.toString()) {
+    if (objA && objB &&  objA.toString() === objB.toString()) {
         return true;
     } else {
         return false;

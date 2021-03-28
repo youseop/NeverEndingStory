@@ -401,7 +401,7 @@ const SceneMakePage = (props) => {
                             })
                         }
                     })
-            } else if(response.data.msg === 'expired') {
+            } else if (response.data.msg === 'expired') {
                 message.error("제작 유효기간이 만료되었습니다..", 1.0);
                 props.history.replace({
                     pathname: `/gameplay`,
@@ -412,7 +412,7 @@ const SceneMakePage = (props) => {
                 })
                 return;
             }
-             else {
+            else {
                 message.error("DB에 문제가 있습니다.");
             }
 
@@ -501,6 +501,36 @@ const SceneMakePage = (props) => {
             })
         }
     }, [window.innerWidth, window.innerHeight]);
+
+    const onDeleteScene = () => {
+        Axios.delete('/api/scene', {
+            data: {
+                gameId: gameId,
+                sceneId: sceneId,
+                isFirst: isFirstScene,
+                userId: user.userData._id
+            }
+        })
+            .then(response => {
+                if (response.data.success) {
+                    //! 다 삭제되면 emptyNum 올려주기
+                    console.log(isFirstScene)
+                    if (isFirstScene == false) {
+                        socket.emit("empty_num_increase",
+                            {
+                                scene_id: response.data.prevSceneId,
+                                user_id: user.userData._id
+                            })
+                        //! 돌아가야할 곳 : game detail 로 가자
+                        props.history.push(`/game/${gameId}`)
+                    }
+                    else {
+                        //! 들어가야할 곳 : 홈화면
+                        props.history.push(`/`)
+                    }
+                }
+            })
+    }
 
     return (
         <div className="scene__container">
@@ -605,6 +635,11 @@ const SceneMakePage = (props) => {
                 )}
             </div>
             <div className="sceneMake__btn_container">
+                <Button type="primary"
+                    style={{ fontSize: "15px" }}
+                    onClick={onDeleteScene}>
+                    작성 취소
+                </Button>
                 <Button type="primary"
                     style={{ fontSize: "15px" }}
                     onClick={onTmpSave}>

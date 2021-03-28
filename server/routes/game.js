@@ -99,15 +99,6 @@ router.get("/uploadgameframe", (req, res) => {
     });
 });
 
-// router.post("/uploadgamepage", (req, res) => {
-//     const game = new Game(req.body);
-//     game.save((err, game) => {
-//         if (err) return res.json({ success: false, err });
-
-//         res.status(200).json({ success: true, game });
-//     });
-// });
-
 router.get("/getgames", (req, res) => {
     //game_creater에 Schema.Types.ObjectId라고 써놨는데,
     //populate를 해줘야 그 정보를 채워서 받을 수 있다.
