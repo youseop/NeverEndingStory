@@ -24,7 +24,7 @@ interface LoginUser {
 }
 
 function LoginPage(props: LoginPageProps) {
-  const dispatch = useDispatch();
+  const dispatch : any = useDispatch();
   const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
 
   const [formErrorMessage, setFormErrorMessage] = useState("");

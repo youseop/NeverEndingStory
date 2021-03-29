@@ -15,7 +15,7 @@ interface RegisterPageProps {
 }
 
 function RegisterPage(props:RegisterPageProps) {
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   return (
     <Formik
       initialValues={{
@@ -44,7 +44,7 @@ function RegisterPage(props:RegisterPageProps) {
             email: values.email,
             password: values.password,
             nickname: values.nickname,
-            image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
+            // image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
           };
 
           dispatch(registerUser(dataToSubmit)).then(response => {
