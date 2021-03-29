@@ -9,7 +9,7 @@ import "../SceneEndingPage/SceneEndingPage.css";
 
 
 
-const FirstSceneTeleport = ({ gameId }) => {
+const FirstSceneTeleport = ({ gameId, setScene }) => {
     const history = useHistory();
     const user = useSelector((state) => state.user);
     const [isWarningVisible, setIsWarningVisible] = useState(false)
@@ -22,6 +22,7 @@ const FirstSceneTeleport = ({ gameId }) => {
                 then(response => {
                     if (response.data.success) {
                         setIsWarningVisible(false)
+                        setScene({})
                         history.push({
                             pathname: `/gameplay`,
                             state: {

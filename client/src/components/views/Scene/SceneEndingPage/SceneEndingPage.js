@@ -4,7 +4,7 @@ import FirstSceneTeleport from "../SceneTeleport/FirstSceneTeleport";
 import PrevSceneTeleport from "../SceneTeleport/PrevSceneTeleport";
 
 
-const SceneEndingPage = ({ gameId }) => {
+const SceneEndingPage = ({ gameId, setScene }) => {
 
 
     return (
@@ -22,10 +22,12 @@ const SceneEndingPage = ({ gameId }) => {
                     <FirstSceneTeleport 
                         key={0}
                         gameId={gameId}
+                        setScene = {setScene}
                     />
                     <PrevSceneTeleport 
                         key={1}
                         gameId={gameId}
+                        setScene={setScene}
                     />
                 </React.Fragment>
             </div>

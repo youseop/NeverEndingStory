@@ -50,12 +50,14 @@ export const TextBlockChoice = (props) => {
         isTyping,
         isEnding,
         isLastMotion,
-        theme
+        theme,
+        setScene
     } = props;
 
     theme = 'atorney';
 
     const choices = scene_next_list.map((choice, index) => {
+        console.log("---------choices-------")
         return (
             <Link to={
                 {
@@ -69,7 +71,8 @@ export const TextBlockChoice = (props) => {
             } key={index}
                 style={{ textDecoration: 'none' }}
                 className={`text_line_choice ${theme}`}
-                onclick={() => setIsTyping(true)} >
+                onClick = {() => setScene({})}
+                 >
                 { choice.script}
             </Link>
         );
@@ -95,7 +98,7 @@ export const TextBlockChoice = (props) => {
             { isLastMotion &&
                 <div class={`choice_box ${isEnding} ${theme}`}>
                     {isEnding === true ?
-                        <SceneEndingPage gameId={game_id} /> :
+                        <SceneEndingPage gameId={game_id} setScene={setScene} /> :
                         <>
                             {choices}
                             {scene_next_list.length < CHOICE_NUM ?
