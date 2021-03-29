@@ -128,7 +128,6 @@ const SceneMakePage = (props) => {
 
                 dispatch(gameLoadingPage(0));
                 dispatch(gameLoadingPage(1));
-
             }
             // 껍데기
             else {

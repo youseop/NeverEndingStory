@@ -36,7 +36,7 @@ window.onpopstate = () => {
 function App() {
   return (
     <Suspense fallback={(<div>Loading...</div>)}>
-      {/* <NavBar /> */}
+      <NavBar />
       <div className="app">
         <Switch>
           <Route exact path="/" component={Auth(LandingPage, null)} />

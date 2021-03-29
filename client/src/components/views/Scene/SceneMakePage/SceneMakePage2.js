@@ -58,8 +58,8 @@ const SceneMakePage = (props) => {
 
     const [CharacterList, setCharacterList] = useState([]);
     const [BackgroundImg, setBackgroundImg] = useState("http://localhost:5000/uploads/defaultBackground.png");
-    const [Script, setScript] = useState("대사를 입력해주세요.");
-    const [Name, setName] = useState("이름");
+    const [Script, setScript] = useState("");
+    const [Name, setName] = useState("");
     const [BgmFile, setBgmFile] = useState({
         name: "",
         music: "",
@@ -168,6 +168,8 @@ const SceneMakePage = (props) => {
     const backgroundSidebarElement = useRef();
     const bgmSidebarElement = useRef();
     const soundSidebarElement = useRef();
+    const scriptElement = useRef();
+    const nameElement = useRef();
 
     const makeVisible = (element) => {
         makeInvisible()
@@ -235,7 +237,17 @@ const SceneMakePage = (props) => {
     };
 
     function handleEnter(event) {
-        onSubmit_nextCut(event);
+        if (nameElement.current == document.activeElement)
+            scriptElement.current.focus();
+        else if (scriptElement.current == document.activeElement)
+            onSubmit_nextCut(event);
+    }
+
+    function handleTab(event) {
+        if (nameElement.current == document.activeElement)
+            scriptElement.current.focus();
+        else if (scriptElement.current == document.activeElement)
+            nameElement.current.focus();
     }
 
     useKey("Enter", handleEnter);
@@ -315,6 +327,7 @@ const SceneMakePage = (props) => {
             setScript("");
         }
         setCutNumber((oldNumber) => oldNumber + 1);
+        scriptElement.current.focus()
     };
 
     const onRemove_cut = () => {
@@ -450,6 +463,12 @@ const SceneMakePage = (props) => {
                         setCharacterList={setCharacterList}
                         setName={setName}
                     />
+                    <CharacterModal
+                        setName={setName}
+                        setCharacterList={setCharacterList}
+                        CharacterList={CharacterList}
+                        GameCharacterList={gameDetail.character}
+                    />
                 </div>
                 <div ref={backgroundSidebarElement} style={{ display: 'none' }}>
                     <BackgroundSideBar
@@ -535,83 +554,91 @@ const SceneMakePage = (props) => {
             />
 
             <div className="box scene">
-                <div className="sceneMake__sound_container">
-                    {BgmFile.name ? (
-                        <div
-                            onClick={onClick_bgm_player}
-                        >
-                            {
-                                BgmFile.name && bgm_audio.paused &&
-                                <PlayCircleOutlined
-                                    style={{ fontSize: "20px" }} />
-                            }
-                            {
-                                BgmFile.name && !bgm_audio.paused &&
-                                <PauseCircleOutlined
-                                    style={{ fontSize: "20px" }} />
-                            }
-                            {BgmFile.name}
-                        </div>
-                    ) : (
-                        <div>
-                            <StopOutlined
-                                style={{ fontSize: "20px" }}
-                            />
-                    BGM
-                        </div>
-                    )}
-                    {SoundFile.name ? (
-                        <div
-                            onClick={onClick_sound_player}
-                        >
-                            {
-                                BgmFile.name && sound_audio.paused &&
-                                <PlayCircleOutlined
-                                    style={{ fontSize: "20px" }} />
-                            }
-                            {
-                                BgmFile.name && !sound_audio.paused &&
-                                <PauseCircleOutlined
-                                    style={{ fontSize: "20px" }} />
-                            }
-                            {SoundFile.name}
-                        </div>
-                    ) : (
-                        <div>
-                            <StopOutlined
-                                style={{ fontSize: "20px" }}
-                            />
-                    Sound
-                        </div>
-                    )}
-                </div>
-
                 <div className="scene left-arrow"
                     onClick={onLeft}>
                     <SVG src="arrow_1" width="50" height="50" color="#F5F5F5" />
                 </div>
-                <img
+                <div
                     className="backgroundImg"
-                    src={`${BackgroundImg}`}
-                    alt="img"
-                />
-                <CharacterBlock
-                    GameCharacterList={gameDetail.character}
-                    CharacterList={CharacterList}
-                    setCharacterList={setCharacterList}
-                    onRemove_character={onRemove_character}
-                />
-                {SidBar_script && (
-                    <div className="sceneMake__text_container">
-                        <div className="sceneMake__name_block">
-                            {Name}
+                    id="backgroundImg_container"
+                    style={{ overflow: "hidden" }}
+                >
+
+                    <img
+                        className="backgroundImg"
+                        // id="backgroundImg_container"
+                        src={`${BackgroundImg}`}
+                        alt="img"
+                    />
+                    <CharacterBlock
+                        GameCharacterList={gameDetail.character}
+                        CharacterList={CharacterList}
+                        setCharacterList={setCharacterList}
+                        onRemovech_aracter={onRemove_character}
+                    />
+                    {SidBar_script && (
+                        <div className="sceneMake__text_container">
+                            <div className="sceneMake__name_block">
+                                {Name ? Name : "이름을 입력해주세요."}
+                            </div>
+                            <div className="sceneMake__text_line"></div>
+                            <div className="sceneMake__text_block">
+                                {Script ? Script : "대사를 입력해주세요."}
+                            </div>
                         </div>
-                        <div className="sceneMake__text_line"></div>
-                        <div className="sceneMake__text_block">
-                            {Script}
-                        </div>
+                    )}
+                    <div className="sceneMake__sound_container">
+                        {BgmFile.name ? (
+                            <div
+                                onClick={onClick_bgm_player}
+                            >
+                                {
+                                    BgmFile.name && bgm_audio.paused &&
+                                    <PlayCircleOutlined
+                                        style={{ fontSize: "20px" }} />
+                                }
+                                {
+                                    BgmFile.name && !bgm_audio.paused &&
+                                    <PauseCircleOutlined
+                                        style={{ fontSize: "20px" }} />
+                                }
+                                {BgmFile.name}
+                            </div>
+                        ) : (
+                            <div>
+                                <StopOutlined
+                                    style={{ fontSize: "20px" }}
+                                />
+                            BGM
+                            </div>
+                        )}
+                        {SoundFile.name ? (
+                            <div
+                                onClick={onClick_sound_player}
+                            >
+                                {
+                                    BgmFile.name && sound_audio.paused &&
+                                    <PlayCircleOutlined
+                                        style={{ fontSize: "20px" }} />
+                                }
+                                {
+                                    BgmFile.name && !sound_audio.paused &&
+                                    <PauseCircleOutlined
+                                        style={{ fontSize: "20px" }} />
+                                }
+                                {SoundFile.name}
+                            </div>
+                        ) : (
+                            <div>
+                                <StopOutlined
+                                    style={{ fontSize: "20px" }}
+                                />
+                            Sound
+                            </div>
+                        )}
                     </div>
-                )}
+                </div>
+
                 {CutNumber < 29 && (
                     <div className="scene right-arrow"
                         onClick={onSubmit_nextCut}>
@@ -668,17 +695,21 @@ const SceneMakePage = (props) => {
             <input
                 onChange={onNameChange}
                 value={Name}
+                ref={nameElement}
                 className="box textbox_name"
             />
             <div className="textbox_bottom">
-                <div className="enter">
-                    확인
+                <div className="enter"
+                    onClick={onSubmit_nextCut}>
+                    Enter
+                    <br />
+                    {CutNumber}/30
                 </div>
                 <textarea
                     onChange={onScriptChange}
                     value={Script}
                     className="box textbox_script"
-                    ref={(input) => input && input.focus()}
+                    ref={scriptElement}
                 />
             </div>
             <div className="box options">
