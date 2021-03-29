@@ -19,7 +19,7 @@ const connect = mongoose.connect(config.mongoURI,
     useNewUrlParser: true, useUnifiedTopology: true,
     useCreateIndex: true, useFindAndModify: false
   })
-  .then(() => logger.info("mongoose connected..."))
+  .then(() => logger.info(`mongoose connected... ${config.mongoURI}`))
   .catch(err => console.log(err));
 
 if (process.env.NODE_ENV === 'production') {
@@ -190,70 +190,75 @@ io.on('connection', socket => {
       return
     };
 
-    // 캐시가 없으면?, DB에서 캐시 갖고온다.
-    const sceneSelector = await Scene.findOne({ _id: mongoose.Types.ObjectId(scene_id) }).select("nextList sceneTmp");
-    const sceneTmp = sceneSelector.sceneTmp;
-
-    // exp 안된 녀석만 push 해서 newCertList.
-    let newCertList = [];
-    // cerList에 들어있는 녀석 체크한다. (why? 서버 꺼졌으니까 재 검정)
-    let limit = Array.isArray(sceneTmp.certificationList) ? sceneTmp.certificationList.length : 0;
-    for (let i = 0; i < limit; i++) {
-
-      // 리스트 각 원소 = certToken
-      const certToken = sceneTmp.certificationList[i];
-
-      const timeDiff = certToken.exp - Date.now();
-
-      // 혹시 몰라서 1초 버퍼 둠..(1초 안에 뭐가 안끝나서 꼬일 것 같았음)
-      if (timeDiff < 0) {
-        if (certToken.isMakingScene) {
-          io.sockets.to(certToken.userId.toString()).emit("timeout_making", { sceneId: scene_id });
-
-          console.log("yeah~~~~1");
-          Scene.deleteOne({
-            prevSceneId: mongoose.Types.ObjectId(scene_id),
-            writer: mongoose.Types.ObjectId(certToken.userId)
-          }).exec().then((err) => { console.log(err) });
-
-        }
-
-        sceneTmp.emptyNum += 1;
-        io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: sceneTmp.emptyNum });
-      } else {
-        newCertList.push(certToken);
-
-        setTimeout(() => {
-          const idx = scene_cache[scene_id].certificationList.findIndex(item => item.userId === certToken.userId);
-          if (idx > -1) {
-            if (scene_cache[scene_id].certificationList[idx].isMakingScene) {
-              io.sockets.to(certToken.userId.toString()).emit("timeout_making", { sceneId: scene_id });
-
-              console.log("yeah~~~~2");
-              Scene.deleteOne({
-                prevSceneId: mongoose.Types.ObjectId(scene_id),
-                writer: mongoose.Types.ObjectId(certToken.userId)
-              }).exec().then((err) => { console.log(err) });
-
-            }
-
-            scene_cache[scene_id].emptyNum += 1;
-            io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: scene_cache[scene_id].emptyNum });
-            scene_cache[scene_id].certificationList.splice(idx, 1)
+    try {
+      // 캐시가 없으면?, DB에서 캐시 갖고온다.
+      const sceneSelector = await Scene.findOne({ _id: mongoose.Types.ObjectId(scene_id) }).select("nextList sceneTmp");
+      const sceneTmp = sceneSelector.sceneTmp;
+  
+      // exp 안된 녀석만 push 해서 newCertList.
+      let newCertList = [];
+      // cerList에 들어있는 녀석 체크한다. (why? 서버 꺼졌으니까 재 검정)
+      let limit = Array.isArray(sceneTmp.certificationList) ? sceneTmp.certificationList.length : 0;
+      for (let i = 0; i < limit; i++) {
+  
+        // 리스트 각 원소 = certToken
+        const certToken = sceneTmp.certificationList[i];
+  
+        const timeDiff = certToken.exp - Date.now();
+  
+        // 혹시 몰라서 1초 버퍼 둠..(1초 안에 뭐가 안끝나서 꼬일 것 같았음)
+        if (timeDiff < 0) {
+          if (certToken.isMakingScene) {
+            io.sockets.to(certToken.userId.toString()).emit("timeout_making", { sceneId: scene_id });
+  
+            console.log("yeah~~~~1");
+            Scene.deleteOne({
+              prevSceneId: mongoose.Types.ObjectId(scene_id),
+              writer: mongoose.Types.ObjectId(certToken.userId)
+            }).exec().then((err) => { console.log(err) });
+  
           }
-        }, timeDiff)
+  
+          sceneTmp.emptyNum += 1;
+          io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: sceneTmp.emptyNum });
+        } else {
+          newCertList.push(certToken);
+  
+          setTimeout(() => {
+            const idx = scene_cache[scene_id].certificationList.findIndex(item => item.userId === certToken.userId);
+            if (idx > -1) {
+              if (scene_cache[scene_id].certificationList[idx].isMakingScene) {
+                io.sockets.to(certToken.userId.toString()).emit("timeout_making", { sceneId: scene_id });
+  
+                console.log("yeah~~~~2");
+                Scene.deleteOne({
+                  prevSceneId: mongoose.Types.ObjectId(scene_id),
+                  writer: mongoose.Types.ObjectId(certToken.userId)
+                }).exec().then((err) => { console.log(err) });
+  
+              }
+  
+              scene_cache[scene_id].emptyNum += 1;
+              io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: scene_cache[scene_id].emptyNum });
+              scene_cache[scene_id].certificationList.splice(idx, 1)
+            }
+          }, timeDiff)
+        }
       }
+  
+      console.log("empty_num_changed , emptyNum : ", sceneTmp.emptyNum)  // 클라 dispatch 시점
+      io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: sceneTmp.emptyNum });
+      scene_cache[scene_id] = {
+        emptyNum: sceneTmp.emptyNum,
+        certificationList: [...newCertList],
+      };
+      // console.log("??:", scene_cache[scene_id]);
+      Scene.updateOne({ _id: scene_id }, { $set: { "sceneTmp": { ...scene_cache[scene_id] } } }).exec();
+      io.sockets.to(scene_id).emit("validated", { sceneId: scene_id, emptyNum: scene_cache[scene_id].emptyNum });
+    } catch {
+      console.log("err")
+      return;
     }
-
-    console.log("empty_num_changed , emptyNum : ", sceneTmp.emptyNum)  // 클라 dispatch 시점
-    io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: sceneTmp.emptyNum });
-    scene_cache[scene_id] = {
-      emptyNum: sceneTmp.emptyNum,
-      certificationList: [...newCertList],
-    };
-    // console.log("??:", scene_cache[scene_id]);
-    Scene.updateOne({ _id: scene_id }, { $set: { "sceneTmp": { ...scene_cache[scene_id] } } }).exec();
-    io.sockets.to(scene_id).emit("validated", { sceneId: scene_id, emptyNum: scene_cache[scene_id].emptyNum });
   });
 
   socket.on('created_choice', async (data) => {

@@ -11,18 +11,19 @@ const CHOICE_NUM = 4;
 export const TextBlock = (props) => {
   const { cut_name, cut_script, setIsTyping, isTyping } = props;
   return (
-    <div className="text_container">
-      <div className="name_block">{cut_name}</div>
-      <hr className="text_line"></hr>
-      <br />
-      <div className="text_block">
-        <div>
-          {
-            isTyping ? <TextAnimation
-              cut_script={cut_script}
-              setIsTyping={setIsTyping}
-            /> : cut_script
-          }
+    <div className="text_window">
+
+      <div className="text_container">
+        <div className="name_block">{cut_name}</div>
+        <div className="text_block">
+          <div className="text_line">
+            {
+              isTyping ? <TextAnimation
+                cut_script={cut_script}
+                setIsTyping={setIsTyping}
+              /> : cut_script
+            }
+          </div>
         </div>
       </div>
     </div>
@@ -33,7 +34,7 @@ export const TextBlock = (props) => {
 export const TextBlockChoice = (props) => {
 
   // 뭔가 한다..
-  
+
   const {
     game_id,
     cut_name,
@@ -44,51 +45,50 @@ export const TextBlockChoice = (props) => {
     setIsTyping,
     isTyping,
   } = props;
-  
+
   const choices = scene_next_list.map((choice, index) => {
     return (
       <Link to={
         {
-            pathname: `/gameplay`,
-            key:index,
-            state: {
-                gameId: game_id,
-                sceneId: choice.sceneId
-            }
+          pathname: `/gameplay`,
+          key: index,
+          state: {
+            gameId: game_id,
+            sceneId: choice.sceneId
+          }
         }
-        } key={index}>
-        {choice.script} <br />
-    </Link>
+      } key={index} style={{ textDecoration: 'none' }} className="text_line_choice">
+        {choice.script}
+      </Link>
     );
   });
   return (
-    <div className="text_container">
-      <div className="name_block">{cut_name}</div>
-      <hr className="text_line"></hr>
-      <div className="text_block">
-        {
-          isTyping ? <TextAnimation
-            cut_script={cut_script}
-            setIsTyping={setIsTyping}
-          /> : cut_script
-        }
-        <br />
-        {/* 선택의 길이 등장할 수 있는 경우 */}
-        <div>{choices}</div>
-        <br />
-        {scene_next_list.length < CHOICE_NUM ? (
-          <div>
-            <InputModal
-              scene_id={scene_id}
-              scene_depth={scene_depth}
-              game_id={game_id}
-              scene_next_list={scene_next_list}
-            />
+    <div className="text_window">
+      <div className="text_container">
+        <div className="name_block">{cut_name}</div>
+        <div className="text_block">
+          <div className="text_line">
+            {
+              isTyping ? <TextAnimation
+                cut_script={cut_script}
+                setIsTyping={setIsTyping}
+              /> : cut_script
+            }
           </div>
+        </div>
+      </div>
+      <div class="choice_box">
+        {choices}
+        {scene_next_list.length < CHOICE_NUM ? (
+          <InputModal
+            scene_id={scene_id}
+            scene_depth={scene_depth}
+            game_id={game_id}
+            scene_next_list={scene_next_list}
+          />
         ) : (
           <div></div>
         )}
-        {/* 항상 */}
       </div>
     </div>
   );

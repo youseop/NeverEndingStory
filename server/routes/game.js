@@ -24,8 +24,8 @@ const { log } = require("winston");
 
 AWS.config.update({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
-    secretAcessKey : process.env.S3_SECRET_ACCESS_KEY,
-    region : 'ap-northeast-2',
+    secretAcessKey: process.env.S3_SECRET_ACCESS_KEY,
+    region: 'ap-northeast-2',
 });
 
 let storage;
@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
     storage = multerS3({
         s3: new AWS.S3(),
         bucket: 'neverending',
-        key(req,file,cb){
+        key(req, file, cb) {
             cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
         },
     })
@@ -83,17 +83,15 @@ router.post("/uploadgameInfo", (req, res) => {
         .exec((err, gameDetail) => {
             if (err) return res.status(400).send(err);
 
-            gameDetail = {
-                ...gameDetail,
-                creator : req.body.creator,
-                title : req.body.title,
-                description : req.body.description,
-                thumbnail : req.body.thumbnail,
-                privacy : req.body.privacy,
-                category : req.body.category,
-                writer : req.body.writer,
-            }
-                
+            gameDetail.creator = req.body.creator
+            gameDetail.title = req.body.title
+            gameDetail.description = req.body.description
+            gameDetail.thumbnail = req.body.thumbnail
+            gameDetail.privacy = req.body.privacy
+            gameDetail.category = req.body.category
+            gameDetail.writer = req.body.writer
+
+
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
                 return res.status(200).json({ success: true, gameDetail });
@@ -184,7 +182,7 @@ const updateHistoryFromPlaying = (user) => {
         gameHistory,
     } = user;
     for (let i = 0; i < gameHistory.length; i++) {
-        if ( gameHistory[i].gameId && objCmp(gameHistory[i].gameId, gameId) ) {
+        if (gameHistory[i].gameId && objCmp(gameHistory[i].gameId, gameId)) {
             user.gameHistory[i].sceneIdList = [...sceneIdList];
             user.gamePlaying.sceneIdList = [];
             user.gamePlaying.gameId = null;
@@ -206,28 +204,28 @@ router.get("/gamestart/:id", auth, async (req, res) => {
 
     // makingList에 지금 게임 아이디가 있는 경우..
     // 유효성 검증 이후 할일 하기. (Date.now보다 큰가?)
-    
+
     try {
         let user = await User.findOne({ _id: userId });
         let trashSceneId = mongoose.Types.ObjectId(0);
-        const idx = user.makingGameList.findIndex(item => objCmp(item.gameId.gameId, gameId) )
-        if( idx > -1 ){
-            if(user.makingGameList[idx].exp < Date.now()){
-                trashSceneId = user.makingGameList[idx].sceneId; 
-                user.makingGameList.splice(idx,1)
+        const idx = user.makingGameList.findIndex(item => objCmp(item.gameId.gameId, gameId))
+        if (idx > -1) {
+            if (user.makingGameList[idx].exp < Date.now()) {
+                trashSceneId = user.makingGameList[idx].sceneId;
+                user.makingGameList.splice(idx, 1)
             }
         }
 
         // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감. 
         if (user.gamePlaying.gameId && objCmp(user.gamePlaying.gameId, gameId)) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
-            if( objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId) ){
+            if (objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
                 user.gamePlaying.sceneIdList.pop();
                 user.gamePlaying.isMaking = false;
                 user.save((err) => {
-                    if (err) { 
-                        console.log(err); 
-                        return res.status(400).json({ success: false }) 
+                    if (err) {
+                        console.log(err);
+                        return res.status(400).json({ success: false })
                     }
                 });
             }
@@ -251,8 +249,8 @@ router.get("/gamestart/:id", auth, async (req, res) => {
             if (user.gameHistory[i].gameId && user.gameHistory[i].gameId.toHexString() === gameId.toHexString()) {
 
                 // trashSceneId, 히스토리 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
-                if(trashSceneId.toHexString() === user.gameHistory[i].sceneIdList[user.gameHistory[i].sceneIdList.length - 1].toHexString()){
-                    user.gameHistory[i].sceneIdList.splice(user.gameHistory[i].sceneIdList.length - 1,1)
+                if (trashSceneId.toHexString() === user.gameHistory[i].sceneIdList[user.gameHistory[i].sceneIdList.length - 1].toHexString()) {
+                    user.gameHistory[i].sceneIdList.splice(user.gameHistory[i].sceneIdList.length - 1, 1)
                     user.gameHistory[i].isMaking = false;
 
                 }
@@ -261,7 +259,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                     gameId: gameId,
                     sceneIdList: user.gameHistory[i].sceneIdList.slice(0, user.gameHistory[i].sceneIdList.length),
                 };
-                
+
                 user.save((err) => {
                     if (err) { console.log(err); return res.status(400).json({ success: false }) }
                 });
@@ -276,7 +274,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
         }
 
         try {
-        // 히스토리에 없으면 게임 플레잉에 새로 만들어서 넣음. 
+            // 히스토리에 없으면 게임 플레잉에 새로 만들어서 넣음. 
             const game = await Game.findOne({ _id: gameId });
             const sceneId = game.first_scene;
             user.gamePlaying = {
@@ -285,7 +283,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                 isMaking: false,
             };
             user.save();
-            return res.status(200).json({ success: true, sceneId , isMaking: user.gamePlaying.isMaking,});
+            return res.status(200).json({ success: true, sceneId, isMaking: user.gamePlaying.isMaking, });
         } catch (err) {
             console.log(err);
             return res.status(400).json({ success: false });
@@ -297,7 +295,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
 });
 
 const validateScene = async (gamePlaying, sceneId, gameId) => {
-    if (objCmp(gamePlaying.gameId,  gameId)) {
+    if (objCmp(gamePlaying.gameId, gameId)) {
 
         const len = gamePlaying.sceneIdList.length - 1
         const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[len] });
@@ -317,12 +315,12 @@ const validateScene = async (gamePlaying, sceneId, gameId) => {
 };
 
 router.get("/historycleanup", auth, async (req, res) => {
-    User.updateOne({_id: req.user._id}, 
+    User.updateOne({ _id: req.user._id },
         {
             $set: {
                 'gamePlaying.sceneIdList': [req.user.gamePlaying.sceneIdList.shift()]
             }
-        }).then( () => res.status(200).json({success: true}) )
+        }).then(() => res.status(200).json({ success: true }))
 })
 
 router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
@@ -396,7 +394,7 @@ router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
     sceneId = mongoose.Types.ObjectId(sceneId);
     try {
         const scene = await Scene.findOne({ _id: sceneId });
-        if ( scene === null ) {
+        if (scene === null) {
             // console.log("??????")
             return res.status(200).json({ success: false });
         }
@@ -424,7 +422,7 @@ router.post("/getgamedetail", (req, res) => {
 });
 
 //? youseop for charModal (practice)
-router.post("/char_game_tmp_youseop", (req,res) => {
+router.post("/char_game_tmp_youseop", (req, res) => {
     Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
         .exec((err, gameDetail) => {
             if (err) return res.status(400).send(err);

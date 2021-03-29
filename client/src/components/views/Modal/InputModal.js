@@ -129,35 +129,16 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
     }
   }, [dino]);
 
-  const [working, setWorking] = useState();
-  useEffect(() => {
-    // console.log("en", emptyNum);
-    const nextListLen = Array.isArray(scene_next_list) ? scene_next_list.length : 0;
-    const workingCnt = nextListLen + emptyNum
-    // console.log("nextListLen : ", nextListLen, "emptyNum : ", emptyNum)
-    if (workingCnt >= 0 && workingCnt <= 4) {
-      console.log("working Cnt : ", workingCnt)
-      setWorking([...Array(4 - workingCnt)].map((n, index) => {
-        return <div key={index}>작업중..<br /></div>
-      }))
-    }
-  }, [emptyNum, scene_next_list])
-
-
   return (
     <>
       {
-        working
-      }
-      {
-        emptyNum > 0 &&
+        (scene_next_list?.length < 4) &&
         <>
           <div
-            id="choice"
-            onClick={onClickHandler}
-            style={{ color: "red" }}
+            className="text_line_choice"
+            onClick={emptyNum > 0 ? onClickHandler : null}
           >
-            선택의 길...
+            선택의 길... (+{emptyNum})
             </div>
         </>
       }
