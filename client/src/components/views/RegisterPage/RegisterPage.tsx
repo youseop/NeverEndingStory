@@ -14,8 +14,17 @@ interface RegisterPageProps {
   }
 }
 
+interface RegisterUser {
+  payload: {
+    success: boolean;
+    err:{
+      errmsg:string;
+    }
+  }
+}
+
 function RegisterPage(props:RegisterPageProps) {
-  const dispatch = useDispatch();
+  const dispatch:any = useDispatch();
   return (
     <Formik
       initialValues={{
@@ -44,10 +53,10 @@ function RegisterPage(props:RegisterPageProps) {
             email: values.email,
             password: values.password,
             nickname: values.nickname,
-            image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
+            // image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
           };
 
-          dispatch(registerUser(dataToSubmit)).then(response => {
+          dispatch(registerUser(dataToSubmit)).then((response:RegisterUser) => {
             if (response.payload.success) {
               props.history.push("/login");
             } else {
