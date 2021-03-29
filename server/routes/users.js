@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require("../models/User");
+const mongoose = require("mongoose");
 
 const { auth } = require("../middleware/auth");
 
@@ -68,5 +69,45 @@ router.get("/logout", auth, (req, res) => {
         });
     });
 });
+
+router.get("/playing-list/clear", auth, async(req,res) =>{
+    try {
+        const user = await User.findOne({ _id: req.user._id })
+        user.gamePlaying = {
+            ...user.gamePlaying,
+            sceneIdList: user.gamePlaying.sceneIdList.slice(0, 1)
+        };
+    
+        user.save()
+        return res.json({
+                success: true,
+                teleportSceneId: user.gamePlaying.sceneIdList[0]
+            })
+    }
+    catch (err){
+        console.log("PLAYING LIST CLEAR FAIL")
+        console.log(err)
+        return res.json({ success: false, err });
+    }
+})
+
+
+router.get("/playing-list/pop", auth, async (req,res) =>{
+    try {
+        const user = await User.findOne({ _id: req.user._id })
+        user.gamePlaying.sceneIdList.pop()
+        user.save()
+        return res.json({
+            success: true,
+            teleportSceneId: user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1]
+        })
+        
+    }
+    catch (err) {
+        console.log("PLAYING LIST POP FAIL")
+        console.log(err)
+        return res.json({ success: false, err });
+    }
+})
 
 module.exports = router;

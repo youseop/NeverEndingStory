@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { message } from "antd";
 import InputModal from "../Modal/InputModal";
 import TextAnimation from './TextAnimation'
+import SceneEndingPage from "../Scene/SceneEndingPage/SceneEndingPage";
 
 // 일단 4 나중에 어떻게 할지 다시 결정..
 const CHOICE_NUM = 4;
@@ -43,8 +44,10 @@ export const TextBlockChoice = (props) => {
     scene_depth,
     setIsTyping,
     isTyping,
+    isEnding,
+    isLastMotion
   } = props;
-  
+
   const choices = scene_next_list.map((choice, index) => {
     return (
       <Link to={
@@ -62,6 +65,7 @@ export const TextBlockChoice = (props) => {
     );
   });
   return (
+
     <div className="text_container">
       <div className="name_block">{cut_name}</div>
       <hr className="text_line"></hr>
@@ -74,20 +78,37 @@ export const TextBlockChoice = (props) => {
         }
         <br />
         {/* 선택의 길이 등장할 수 있는 경우 */}
-        <div>{choices}</div>
         <br />
-        {scene_next_list.length < CHOICE_NUM ? (
-          <div>
-            <InputModal
-              scene_id={scene_id}
-              scene_depth={scene_depth}
-              game_id={game_id}
-              scene_next_list={scene_next_list}
-            />
-          </div>
-        ) : (
-          <div></div>
-        )}
+        {isLastMotion && 
+          <>
+          <div>{choices}</div>
+          {isEnding === true ?
+          
+              <SceneEndingPage gameId ={game_id} />
+            
+            :
+            scene_next_list.length < CHOICE_NUM ?
+              (
+                <div>
+                  <InputModal
+                    scene_id={scene_id}
+                    scene_depth={scene_depth}
+                    game_id={game_id}
+                    scene_next_list={scene_next_list}
+                  />
+                </div>
+              ) :
+              (
+                <div></div>
+              )
+
+
+          }
+          </>
+        
+        }
+       
+            
         {/* 항상 */}
       </div>
     </div>

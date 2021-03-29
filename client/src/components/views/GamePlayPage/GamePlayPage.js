@@ -63,6 +63,7 @@ const ProductScreen = (props) => {
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
   const [TreeMap, setTreeMap] = useState(false);
+  const [lastMotion, setLastMotion] = useState(false)
 
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
@@ -130,7 +131,7 @@ const ProductScreen = (props) => {
   const [isFirstCut, setIsFirstCut] = useState(true);
   function playMusic(i) {
     if (isFirstCut) setIsFirstCut(false);
-    if (Scene.cutList[i].bgm.music) {
+    if (Scene?.cutList[i]?.bgm.music) {
       //이전 곡과 같은 bgm이 아니라면
       if (
         !(i > 0 && Scene.cutList[i - 1].bgm.music == Scene.cutList[i].bgm.music)
@@ -140,7 +141,7 @@ const ProductScreen = (props) => {
         bgm_audio.play();
       }
     }
-    if (Scene.cutList[i].sound.music) {
+    if (Scene?.cutList[i]?.sound.music) {
       sound_audio.pause();
 
       sound_audio.src = Scene.cutList[i].sound.music;
@@ -150,13 +151,19 @@ const ProductScreen = (props) => {
 
   const [isTyping, setIsTyping] = useState(true);
   function handleEnter(event) {
-    if (!isTyping && i < Scene.cutList.length - 1 && !isPause) {
-      playMusic(i + 1);
-      setI(i + 1);
-      setIsTyping(true);
+    //! 타이핑 끝 & 미니맵 X
+    if (!isTyping && !isPause) {
+      if (i < Scene.cutList.length - 1) {
+        playMusic(i + 1);
+        setI(i + 1);
+        setIsTyping(true);
+      }
+      else if (i == Scene.cutList.length - 1) {
+          //! 엔딩자리
+          setLastMotion(true)
+      }
     }
   }
-
 
   function handleChoice(event) {
     if (i === Scene.cutList.length - 1 && !isPause) {
@@ -213,6 +220,7 @@ const ProductScreen = (props) => {
   }, [HistoryMap, Dislike, TreeMap]);
 
   useEffect(() => {
+    setLastMotion(false)
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
       (response) => {
         if (response.data.success) {
@@ -325,15 +333,18 @@ const ProductScreen = (props) => {
                 scene_next_list={Scene.nextList}
                 setIsTyping={setIsTyping}
                 isTyping={isTyping}
+                isEnding={Scene.isEnding}
+                isLastMotion={lastMotion}
               />
             ) : (
-              <TextBlock
-                cut_name={Scene.cutList[i].name}
-                cut_script={Scene.cutList[i].script}
-                setIsTyping={setIsTyping}
-                isTyping={isTyping}
-              />
-            )}
+                <TextBlock
+                  cut_name={Scene.cutList[i].name}
+                  cut_script={Scene.cutList[i].script}
+                  setIsTyping={setIsTyping}
+                  isTyping={isTyping}
+                />
+              )}
+
             <HistoryMapPopup
               userhistory={userHistory}
               history={History}
@@ -406,10 +417,10 @@ const ProductScreen = (props) => {
               <FontAwesomeIcon icon={faCompress} />
             </button>
           ) : (
-            <button onClick={setIsFullscreen} className="gamePlay__btn">
-              <FontAwesomeIcon icon={faExpand} />
-            </button>
-          )}
+                <button onClick={setIsFullscreen} className="gamePlay__btn">
+                  <FontAwesomeIcon icon={faExpand} />
+                </button>
+              )}
         </div>
         <DislikePopup
           sceneId={sceneId}

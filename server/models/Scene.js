@@ -120,6 +120,9 @@ const sceneSchema = mongoose.Schema({
         type: Number,
         default: 1,
     },
+    isEnding : {
+        type : Boolean,
+    }
 }, { timestamps: true });
 const Scene = mongoose.model("Scene", sceneSchema);
 module.exports = {
