@@ -10,97 +10,109 @@ import SceneEndingPage from "../Scene/SceneEndingPage/SceneEndingPage";
 const CHOICE_NUM = 4;
 
 export const TextBlock = (props) => {
-  const { cut_name, cut_script, setIsTyping, isTyping } = props;
-  return (
-    <div className="text_window">
+    let { cut_name, cut_script, setIsTyping, isTyping, theme } = props;
 
-      <div className="text_container">
-        <div className="name_block">{cut_name}</div>
-        <div className="text_block">
-          <div className="text_line">
-            {
-              isTyping ? <TextAnimation
-                cut_script={cut_script}
-                setIsTyping={setIsTyping}
-              /> : cut_script
-            }
-          </div>
+    theme = 'atorney';
+
+    return (
+        <div className={`text_window ${theme}`} >
+            <div className={`text_container ${theme}`} >
+                <div className={`name_block ${theme}`} >
+                    {cut_name}
+                </div>
+                <div className={`text_block ${theme}`} >
+                    <div className={`text_line ${theme}`} > {
+                        isTyping ? < TextAnimation
+                            cut_script={cut_script}
+                            setIsTyping={setIsTyping}
+                        /> : cut_script
+                    }
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 // 선택지 display
 export const TextBlockChoice = (props) => {
 
-  // 뭔가 한다..
+    // 뭔가 한다..
 
-  const {
-    game_id,
-    cut_name,
-    cut_script,
-    scene_next_list,
-    scene_id,
-    scene_depth,
-    setIsTyping,
-    isTyping,
-    isEnding,
-    isLastMotion
-  } = props;
+    let {
+        game_id,
+        cut_name,
+        cut_script,
+        scene_next_list,
+        scene_id,
+        scene_depth,
+        setIsTyping,
+        isTyping,
+        isEnding,
+        isLastMotion,
+        theme
+    } = props;
 
-  const choices = scene_next_list.map((choice, index) => {
+    theme = 'atorney';
+
+    const choices = scene_next_list.map((choice, index) => {
+        return (
+            <Link to={
+                {
+                    pathname: `/gameplay`,
+                    key: index,
+                    state: {
+                        gameId: game_id,
+                        sceneId: choice.sceneId
+                    }
+                }
+            } key={index}
+                style={{ textDecoration: 'none' }}
+                className={`text_line_choice ${theme}`}
+                onclick={() => setIsTyping(true)} >
+                { choice.script}
+            </Link>
+        );
+    });
+
     return (
-      <Link to={
-        {
-          pathname: `/gameplay`,
-          key: index,
-          state: {
-            gameId: game_id,
-            sceneId: choice.sceneId
-          }
-        }
-      } key={index} style={{ textDecoration: 'none' }} className="text_line_choice" onclick={()=>setIsTyping(true)}>
-        {choice.script}
-      </Link>
-    );
-  });
-  return (
-    <div className="text_window">
-      <div className="text_container">
-        <div className="name_block">{cut_name}</div>
-        <div className="text_block">
-          <div className="text_line">
-            {
-              isTyping ? <TextAnimation
-                cut_script={cut_script}
-                setIsTyping={setIsTyping}
-              /> : cut_script
+        <div className={`text_window ${theme}`} >
+            <div className={`text_container ${theme}`} >
+                <div className={`name_block ${theme}`} >
+                    {cut_name}
+                </div>
+                <div className={`text_block ${theme}`} >
+                    <div className={`text_line ${theme}`} >
+                        {
+                            isTyping ? < TextAnimation
+                                cut_script={cut_script}
+                                setIsTyping={setIsTyping}
+                            /> : cut_script
+                        }
+                    </div>
+                </div>
+            </div>
+            { isLastMotion &&
+                <div class={`choice_box ${isEnding} ${theme}`}>
+                    {isEnding === true ?
+                        <SceneEndingPage gameId={game_id} /> :
+                        <>
+                            {choices}
+                            {scene_next_list.length < CHOICE_NUM ?
+                                (
+                                    <InputModal scene_id={scene_id}
+                                        scene_depth={scene_depth}
+                                        game_id={game_id}
+                                        scene_next_list={scene_next_list}
+                                        theme={theme}
+                                    />
+                                ) :
+                                (<div > </div>)
+                            }
+                        </>
+                    }
+                </div>
             }
-          </div>
         </div>
-      </div>
-      {isLastMotion &&
-        <div class="choice_box">
-          {isEnding === true ?
-            <SceneEndingPage gameId={game_id} />
-            :
-            <>
-              {choices}
-              {scene_next_list.length < CHOICE_NUM ? (
-                <InputModal
-                  scene_id={scene_id}
-                  scene_depth={scene_depth}
-                  game_id={game_id}
-                  scene_next_list={scene_next_list}
-                />
-              ) : (
-                <div></div>
-              )}
-            </>
-          }
-        </div>
-      }
-    </div>
-  );
-};
+    );
+}

@@ -114,7 +114,6 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
   }
 
   const uploadCharDB = (fileNum, files) => {
-    console.log(process.env.NODE_ENV);
     let cnt = 0
     for (var i = 0; i < blobGame.character.length; i++) {
       if (!game.character[i])

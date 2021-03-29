@@ -5,6 +5,9 @@ import { useSelector } from "react-redux";
 import Axios from "axios";
 import { Button, Modal } from "antd";
 
+import "../SceneEndingPage/SceneEndingPage.css";
+
+
 
 const FirstSceneTeleport = ({ gameId }) => {
     const history = useHistory();
@@ -47,6 +50,7 @@ const FirstSceneTeleport = ({ gameId }) => {
         <React.Fragment>
             <Button
                 onClick={openModal}
+                className="ending_button"
             >처음으로 돌아가기
             </Button>
             <Modal
@@ -54,6 +58,7 @@ const FirstSceneTeleport = ({ gameId }) => {
                 visible={isWarningVisible}
                 maskClosable={false}
                 closable={false}
+                centered = {true}
                 footer={
                     <React.Fragment>
                         <Button key = "ok" type= "primary" onClick={playingListClear}>

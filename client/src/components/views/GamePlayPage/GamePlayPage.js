@@ -335,6 +335,7 @@ const ProductScreen = (props) => {
                 isTyping={isTyping}
                 isEnding={Scene.isEnding}
                 isLastMotion={lastMotion}
+                theme={Scene.theme}
               />
             ) : (
                 <TextBlock
@@ -342,6 +343,7 @@ const ProductScreen = (props) => {
                   cut_script={Scene.cutList[i].script}
                   setIsTyping={setIsTyping}
                   isTyping={isTyping}
+                  theme={Scene.theme}
                 />
               )}
 

@@ -9,7 +9,7 @@ import axios from "axios";
 import { gamePause } from "../../../_actions/gamePlay_actions";
 import { SecurityScanTwoTone } from "@ant-design/icons";
 
-const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
+const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) => {
   const dispatch = useDispatch()
   let history = useHistory();
   const user = useSelector((state) => state.user);
@@ -138,10 +138,10 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
         (scene_next_list?.length < 4) &&
         <>
           <div
-            className="text_line_choice"
+            className={`text_line_choice ${theme}`}
             onClick={emptyNum > 0 ? onClickHandler : null}
           >
-            선택의 길... (+{emptyNum})
+            선택지 추가 (+{emptyNum})
             </div>
         </>
       }

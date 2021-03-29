@@ -1,14 +1,30 @@
-a:link { color: white; text-decoration: none;}
-a:visited { color: white; text-decoration: none;}
-a:hover { color: white; text-decoration: none;}
-a:visited:hover { color: white; text-decoration: none;}
+a:link {
+    color: white;
+    text-decoration: none;
+}
+
+a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+a:visited:hover {
+    color: white;
+    text-decoration: none;
+}
 
 .text_window {
-  height: 100%;
-  width: 100%;
-  top: 0px;
-  position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    position: absolute;
 }
+
 .text_container {
     z-index: 99;
     background-color: rgba(0, 0, 0, 0.815);
@@ -19,73 +35,145 @@ a:visited:hover { color: white; text-decoration: none;}
     height: 24%;
     width: 100%;
     position: absolute;
-  }
-  
-.name_block {
-  font-size: 2vmin;
-  font-weight: 300;
-  padding: 0px 3%;
-  border: white solid 1px;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.815);
-  top: -1.2vmin;
-  left: 10%;
-  position: absolute;
 }
 
+.name_block {
+    font-size: 2vmin;
+    font-weight: 300;
+    padding: 0px 3%;
+    border: white solid 1px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.815);
+    top: -1.2vmin;
+    left: 10%;
+    position: absolute;
+}
 
 .text_block {
-  width: 64%;
-  height: 7vmin;
-  font-weight: 600;
-  font-size: 2.5vmin;
-  top: 26%;
-  left: 18%;
-  position: absolute;
-  overflow: scroll;
-  -ms-overflow-style: none;
-}       
-
-.text_block::-webkit-scrollbar{
-  display: none;
+    width: 64%;
+    height: 7vmin;
+    font-weight: 600;
+    font-size: 2.5vmin;
+    top: 26%;
+    left: 18%;
+    position: absolute;
+    overflow: scroll;
+    -ms-overflow-style: none;
 }
 
-.text_line_choice{
-  background-color: rgba(0, 0, 0, 0.747);
-  border: rgba(255, 255, 0, 0) solid 0.2vmin;
-  border-radius: 0.4vmin;
-  margin-top: 3%;
-  width: 45%;
-  height: 7%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.text_block::-webkit-scrollbar {
+    display: none;
 }
 
-.text_line_choice:first-child{
-  margin-top: 12%;
+.text_line_choice {
+    background-color: rgba(0, 0, 0, 0.747);
+    border: rgba(255, 255, 0, 0) solid 0.2vmin;
+    border-radius: 0.4vmin;
+    margin-top: 3%;
+    width: 45%;
+    height: 7%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-
-.text_line_choice:hover{
-  cursor: pointer;
-  border: yellow solid 0.2vmin;
+.text_line_choice:first-child {
+    margin-top: 12%;
 }
 
-.choice_box{
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.363);
+.text_line_choice:hover {
+    cursor: pointer;
+    border: yellow solid 0.2vmin;
+}
 
-  color: aliceblue;
-  font-size: 2vmin;
-  font-weight: 600;
+.choice_box {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.363);
+    color: aliceblue;
+    font-size: 2vmin;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    z-index: 100;
+}
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+@keyframes fadeInBlack {
+    from {
+        background-color: rgba(0, 0, 0, 0);
+        opacity: 0%;
+    }
+    to {
+        background-color: black;
+        opacity: 100%;
+    }
+}
 
-  position: absolute;
-  z-index: 100;
+.choice_box.true {
+    animation: fadeInBlack 1s forwards;
+}
+
+.text_container.atorney {
+    opacity: 1;
+    background-image: repeating-linear-gradient(45deg, #000114 25%, transparent 25%, transparent 75%, #000114 75%, #000114), repeating-linear-gradient(45deg, #000114 25%, #282846 25%, #282846 75%, #000114 75%, #000114);
+    background-position: 0 0, 2px 2px;
+    background-size: 4px 4px;
+    border-top: 1px solid rgb(196, 196, 196);
+    border-bottom: 1px solid rgb(196, 196, 196);
+    background-color: #e5e5f7;
+    color: rgb(255, 255, 255);
+    position: absolute;
+}
+
+.name_block.atorney {
+    border-top: 1px solid rgb(196, 196, 196);
+    border-bottom: 1px solid rgb(196, 196, 196);
+    border-radius: 0px;
+    background-color: #2882B4 !important;
+    top: -1.2vmin;
+    left: 10%;
+    position: absolute;
+}
+
+.text_block.atorney {
+    width: 64%;
+    height: 7vmin;
+    font-weight: 600;
+    font-size: 2.5vmin;
+    top: 26%;
+    left: 18%;
+    position: absolute;
+    overflow: scroll;
+    -ms-overflow-style: none;
+}
+
+.text_line_choice.atorney {
+    background-color: #2882B4;
+    border: rgb(255, 255, 255) solid 0.2vmin;
+    border-radius: 0.1vmin;
+    margin-top: 3%;
+    width: 45%;
+    height: 7%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text_line_choice:first-child.atorney {
+    margin-top: 12%;
+}
+
+.text_line_choice:hover.atorney {
+    cursor: pointer;
+    border: yellow solid 0.2vmin;
+}
+
+.choice_box.atorney {
+    background-color: rgba(0, 0, 0, 0.363);
+    color: aliceblue;
+    font-size: 2vmin;
+    font-weight: 400;
 }

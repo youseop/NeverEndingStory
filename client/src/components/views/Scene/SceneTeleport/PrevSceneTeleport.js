@@ -41,6 +41,7 @@ const PrevSceneTeleport = ({ gameId }) => {
     return (
         <Button
                 onClick={playingListPop}
+                className="ending_button"
         >이전으로 돌아가기
         </Button>
 

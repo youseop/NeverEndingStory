@@ -1,0 +1,35 @@
+button {
+    text-decoration: none;
+}
+
+.ending_box {
+    height: 100%;
+    font-size: 8vmin;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+}
+
+.ending_button_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 20%;
+}
+
+.ending_button {
+    background-color: black !important;
+    color:  white !important;
+    color: black;
+    border: none !important;
+    width: fit-content;
+    font-weight: 700;
+    font-size: 2vmin !important;
+}
+
+.ending_button:hover {
+    font-size: 2.1vmin !important;
+    color: yellow !important;
+}

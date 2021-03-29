@@ -7,7 +7,7 @@ const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 
 
-const MS_PER_HR = 3600000 //15000
+const MS_PER_HR = 3600000
 
 
 const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
