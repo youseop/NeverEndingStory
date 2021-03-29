@@ -455,7 +455,7 @@ const SceneMakePage = (props) => {
 
     useEffect(() => {
         if (gameDetail.character) {
-            const reload_Sidebar = (< div className="scenemake__toggleBar">
+            const reload_Sidebar = (< div className="scene__toggleBar">
                 <div ref={characterSidebarElement}>
                     <CharacterSideBar
                         gameDetail={gameDetail}
@@ -577,17 +577,17 @@ const SceneMakePage = (props) => {
                         onRemovech_aracter={onRemove_character}
                     />
                     {SidBar_script && (
-                        <div className="sceneMake__text_container">
-                            <div className="sceneMake__name_block">
+                        <div className="scene__text_container">
+                            <div className="scene__name_block">
                                 {Name ? Name : "이름을 입력해주세요."}
                             </div>
-                            <div className="sceneMake__text_line"></div>
-                            <div className="sceneMake__text_block">
+                            <div className="scene__text_line"></div>
+                            <div className="scene__text_block">
                                 {Script ? Script : "대사를 입력해주세요."}
                             </div>
                         </div>
                     )}
-                    <div className="sceneMake__sound_container">
+                    <div className="scene__sound_container">
                         {BgmFile.name ? (
                             <div
                                 onClick={onClick_bgm_player}

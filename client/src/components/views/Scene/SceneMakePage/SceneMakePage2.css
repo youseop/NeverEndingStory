@@ -13,7 +13,7 @@
 }
 
 .box {
-    background-color: #444;
+    /* background-color: #444; */
     /* color: #fff; */
     border-radius: 5px;
 }
@@ -62,7 +62,7 @@
     position:relative;
     display: flex;   
 }
-.sceneMake__sound_container {    
+.scene__sound_container {    
     top:20px;
     right:50px;
     width:200px;
@@ -95,7 +95,7 @@
     background-color: #333942;
 }
 
-.sceneMake__text_container {
+.scene__text_container {
     z-index: 98;
   
     bottom: 20px;
@@ -112,7 +112,7 @@
     justify-content: flex-start;
     
   }
-  .sceneMake__name_block {
+  .scene__name_block {
     all: unset;
     font-size: 18px;
     height:38px;
@@ -127,13 +127,13 @@
     border-radius: 2px;
   }  
 
-  .sceneMake__text_line {
+  .scene__text_line {
     height: 5px;
     opacity: 0.95;
     background-color: #BBBBBB;
   }
   
-  .sceneMake__text_block {
+  .scene__text_block {
     all: unset;
     font-size: 18px;
     font-weight: bold;
@@ -145,13 +145,13 @@
     background-color: #DDDDDD;
   }
 
-  .sceneMake__script_btn{
+  .scene__script_btn{
     z-index: 99;
     position: absolute;
     color:black;
   }
 
-.sceneMake__SceneBox_color {
+.scene__SceneBox_color {
     width: 17px;
     height: 17px;
     border-radius: 8px;
@@ -160,7 +160,7 @@
     cursor: pointer;
 }
 
-.sceneMake__CurrentSceneBox {
+.scene__CurrentSceneBox {
     width: 17px;
     height: 17px;
     border-radius: 8px;
@@ -168,7 +168,7 @@
     border: 1px solid rgba(70, 70, 70, 0.26);
 }
 
-.sceneMake__EmptySceneBox {
+.scene__EmptySceneBox {
     width: 17px;
     height: 17px;
     border-radius: 8px;
@@ -225,6 +225,8 @@
 .sideBar {
     grid-row: 4 / span 3;
     grid-column: 6 / span 2;
+
+    background-color: blanchedalmond;
 }
 
 .textbox_name{

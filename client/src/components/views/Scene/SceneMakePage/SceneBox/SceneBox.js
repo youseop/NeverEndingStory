@@ -22,13 +22,13 @@ function SceneBox(props) {
     const display_SceneBox = CutList.map((Cut, index) => {
         if (CutNumber === index) {
             return (
-                (<div className="sceneMake__CurrentSceneBox" key={`${index}`}></div>)
+                (<div className="scene__CurrentSceneBox" key={`${index}`}></div>)
             );
         } else {
             if (Hover) {
                 return (
                     <div
-                        className="sceneMake__SceneBox_color"
+                        className="scene__SceneBox_color"
                         key={`${index}`}
                         onMouseOver={() => onClick_GotoCut(index)}
                     ></div>
@@ -36,7 +36,7 @@ function SceneBox(props) {
             } else {
                 return (
                     <div
-                        className="sceneMake__SceneBox_color"
+                        className="scene__SceneBox_color"
                         key={`${index}`}
                         onClick={() => onClick_GotoCut(index)}
                     ></div>
@@ -48,11 +48,11 @@ function SceneBox(props) {
     const display_EmptyBox = EmptyCutList.map((EmptyCut, index) => {
         if (CutNumber - CutList.length === index) {
             return (
-                <div className="sceneMake__CurrentSceneBox" key={`${index}`}></div>
+                <div className="scene__CurrentSceneBox" key={`${index}`}></div>
             );
         } else {
             return (
-                <div className="sceneMake__EmptySceneBox" key={`${index}`}></div>
+                <div className="scene__EmptySceneBox" key={`${index}`}></div>
             );
         }
     });
