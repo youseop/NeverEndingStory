@@ -4,7 +4,7 @@ import CharacterSideBar from "./SideBar/CharacterSideBar";
 import BgmSideBar from "./SideBar/BgmSideBar";
 import SoundSideBar from "./SideBar/SoundSideBar";
 import { useSelector } from "react-redux";
-import { message, Button } from "antd";
+import { message, Button, Switch, Modal } from "antd";
 import Axios from "axios";
 import { useLocation } from "react-router";
 import SceneMakeModal from './SceneMakeModal';
@@ -79,7 +79,8 @@ const SceneMakePage = (props) => {
         Array.from({ length: 30 }, () => 0)
     );
 
-
+    const [isEnding, setIsEnding] = useState(false)
+    const [isWarningVisible, setIsWarningVisible] = useState(false)
     let scene;
     useEffect(() => {
         dispatch(navbarControl(false));
@@ -363,6 +364,7 @@ const SceneMakePage = (props) => {
                 sceneId: sceneId,
                 cutList: submitCutList,
                 isTmp,
+                isEnding
             };
 
             const response = await Axios.post(`/api/scene/save`, variable)
@@ -423,6 +425,14 @@ const SceneMakePage = (props) => {
 
     const onTmpSave = (event) => {
         onSubmit_saveScene(event, 1);
+    }
+
+    const warningOk = () =>{
+        setIsWarningVisible(false)
+    }
+    const showWarning = () =>{
+        if(!isEnding)
+            setIsWarningVisible(true)
     }
 
     const [gameDetail, setGameDetail] = useState([]);
@@ -658,23 +668,49 @@ const SceneMakePage = (props) => {
                     </Button>
                 )}
                 {isFirstScene ?
+                
                     <Button type="primary"
                         style={{ fontSize: "15px" }}
                         onClick={onSubmit_first}>
                         업로드
                         </Button>
-                    : <Button type="primary"
-                        style={{ fontSize: "15px" }}
-                        onClick={onSubmit_saveScene}>
-                        업로드
-                        </Button>
+                    : 
+                    <>
+                        <Button type="primary"
+                            style={{ fontSize: "15px" }}
+                            onClick={onSubmit_saveScene}>
+                            업로드
+                            </Button>
+                        <Switch
+                            //! 못생겨서 미안합니다...
+                            checkedChildren= {"ENDING"}
+                            unCheckedChildren={"CONTINUE"}
+                            onChange = {() => {setIsEnding((state) => !state)}}
+                            onClick = {showWarning}
+                        />
+                    </>
                 }
+
                 <UploadModal
                     gameId={gameId}
                     visible={uploadModalState}
                     setUploadModalState={setUploadModalState}
                     onSubmit_saveScene={onSubmit_saveScene}
                 />
+                <Modal 
+                    title="⚠ 주의 ⚠" 
+                    visible={isWarningVisible} 
+                    maskClosable = {false}
+                    closable = {false}
+                    footer = {
+                        <Button onClick = {warningOk}>
+                            확인
+                        </Button>
+                    }
+                    >
+                    
+                    <p>해당 씬 이후에는 더 이상 씬을 생성할 수 없습니다.</p>
+                </Modal>
             </div>
             <div className="scenemake__sideBar_container">
                 {sideBar !== 0 && sideBar}

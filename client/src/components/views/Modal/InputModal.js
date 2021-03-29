@@ -21,6 +21,8 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
   const [decreaseTimer, setDecreaseTimer] = useState(null);
   const [validated, setValidated] = useState(1)
 
+  const createFlag = useRef(false)
+
   const tick = 30;
 
 
@@ -28,10 +30,11 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
     formRef.validateFields(async (err, values) => {
       clearTimeout(decreaseTimer);
       console.log("deleted -- ", decreaseTimer)
-      if (err || !visible) {
+      if (createFlag.current || err || !visible) {
         return;
       }
 
+      createFlag.current = true;
       const data = {
         gameId: game_id,
         prevSceneId: scene_id,

@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { message } from "antd";
 import InputModal from "../Modal/InputModal";
 import TextAnimation from './TextAnimation'
+import SceneEndingPage from "../Scene/SceneEndingPage/SceneEndingPage";
 
 // 일단 4 나중에 어떻게 할지 다시 결정..
 const CHOICE_NUM = 4;
@@ -44,6 +45,8 @@ export const TextBlockChoice = (props) => {
     scene_depth,
     setIsTyping,
     isTyping,
+    isEnding,
+    isLastMotion
   } = props;
 
   const choices = scene_next_list.map((choice, index) => {
@@ -57,7 +60,7 @@ export const TextBlockChoice = (props) => {
             sceneId: choice.sceneId
           }
         }
-      } key={index} style={{ textDecoration: 'none' }} className="text_line_choice">
+      } key={index} style={{ textDecoration: 'none' }} className="text_line_choice" onclick={()=>setIsTyping(true)}>
         {choice.script}
       </Link>
     );
@@ -77,19 +80,27 @@ export const TextBlockChoice = (props) => {
           </div>
         </div>
       </div>
-      <div class="choice_box">
-        {choices}
-        {scene_next_list.length < CHOICE_NUM ? (
-          <InputModal
-            scene_id={scene_id}
-            scene_depth={scene_depth}
-            game_id={game_id}
-            scene_next_list={scene_next_list}
-          />
-        ) : (
-          <div></div>
-        )}
-      </div>
+      {isLastMotion &&
+        <div class="choice_box">
+          {isEnding === true ?
+            <SceneEndingPage gameId={game_id} />
+            :
+            <>
+              {choices}
+              {scene_next_list.length < CHOICE_NUM ? (
+                <InputModal
+                  scene_id={scene_id}
+                  scene_depth={scene_depth}
+                  game_id={game_id}
+                  scene_next_list={scene_next_list}
+                />
+              ) : (
+                <div></div>
+              )}
+            </>
+          }
+        </div>
+      }
     </div>
   );
 };
