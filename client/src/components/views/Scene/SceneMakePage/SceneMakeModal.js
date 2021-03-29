@@ -127,8 +127,8 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
 
       if (fileNum) {
         for (var j = cnt; j < cnt + fileNum[i]; j++) {
-          console.log(`${config.STORAGE}/${files[j].path}`);
-          game.character[i].image_array.push( process.env.NODE_ENV === 'development' ? `${config.STORAGE}/${files[j].path}` : files[j].location)
+          console.log(`${config.SERVER}/${files[j].path}`);
+          game.character[i].image_array.push( process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[j].path}` : files[j].location)
         }
         cnt += fileNum[i]
       }
@@ -185,19 +185,19 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
         case 1: //background
           DBForm.background.push({
             name: files[i].originalname,
-            image: ( process.env.NODE_ENV === 'development' ? `${config.STORAGE}/${files[i].path}` : files[i].location),
+            image: ( process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location),
           })
           break;
         case 2:
           DBForm.bgm.push({
             name: files[i].originalname,
-            music: ( process.env.NODE_ENV === 'development' ? `${config.STORAGE}/${files[i].path}` : files[i].location),
+            music: ( process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location),
           })
           break;
         case 3:
           DBForm.sound.push({
             name: files[i].originalname,
-            music: ( process.env.NODE_ENV === 'development' ? `${config.STORAGE}/${files[i].path}` : files[i].location),
+            music: ( process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location),
           })
           break;
         default:

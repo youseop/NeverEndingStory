@@ -50,7 +50,7 @@ function GameDetailPage(props) {
                         process.env.NODE_ENV === 'production' ?
                         gameDetail.thumbnail
                         :
-                        `${config.STORAGE}/${gameDetail.thumbnail}`}
+                        `${config.SERVER}/${gameDetail.thumbnail}`}
                     alt="thumbnail"
                 />}
             <div>제목: {gameDetail.title}</div>

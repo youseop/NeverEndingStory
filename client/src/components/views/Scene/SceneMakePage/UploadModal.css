@@ -1,0 +1,35 @@
+.scenemake_modal{
+    /* display : flex; */
+
+    height : 600px;
+}
+
+.scenemake_modal>.ant-modal-content{
+    /* display : flex; */
+    justify-content : center;
+    margin-left : 15%;
+    margin-right : 15%;
+    height : 600px;
+}
+.scenemake_modal>.ant-modal-content>.ant-modal-body>div{
+    display : flex;
+    flex-direction: column;
+    justify-content : center;
+}
+
+.scenemake_modal_description{
+    display : flex;
+    flex-direction: column;
+}
+
+.scenemake_modal> div.ant-modal-content > div.ant-modal-body>div{
+    display : flex;
+    justify-content : center;
+    width : 500;
+}
+
+.scenemake_modal> div.ant-modal-content > div.ant-modal-body>div>form>div{
+    display : flex;
+    justify-content : center;
+    padding-bottom : 50px
+}

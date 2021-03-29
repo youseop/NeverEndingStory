@@ -149,7 +149,7 @@ io.on('connection', socket => {
     }
 
     // 이미 cert에 user가 있는 경우, 예외처리.
-    user_token = {
+    let user_token = {
       userId,
       exp: Date.now() + 30000,
       timer: null,

@@ -25,7 +25,6 @@ const config = require('../config/key');
 // export let socket = io(`http://${LOCAL_HOST}:5000`, {transports : ['websocket']});
 export let socket = io(config.SOCKET, {transports : ['websocket']});
 
-
 window.onpopstate = () => {
   window.location.reload();
 };
