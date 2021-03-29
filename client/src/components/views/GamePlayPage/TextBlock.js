@@ -68,8 +68,7 @@ export const TextBlockChoice = (props) => {
                 }
             } key={index}
                 style={{ textDecoration: 'none' }}
-                className={`text_line_choice ${theme}`}
-                onclick={() => setIsTyping(true)} >
+                className={`text_line_choice ${theme}`} >
                 { choice.script}
             </Link>
         );

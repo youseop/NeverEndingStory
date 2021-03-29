@@ -75,7 +75,8 @@ router.get("/playing-list/clear", auth, async(req,res) =>{
         const user = await User.findOne({ _id: req.user._id })
         user.gamePlaying = {
             ...user.gamePlaying,
-            sceneIdList: user.gamePlaying.sceneIdList.slice(0, 1)
+            isMaking: false,
+            sceneIdList: user.gamePlaying.sceneIdList.splice(0, 1)
         };
     
         user.save()

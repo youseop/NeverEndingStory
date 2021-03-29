@@ -294,13 +294,13 @@ router.get("/gamestart/:id", auth, async (req, res) => {
     }
 });
 
-const validateScene = async (gamePlaying, sceneId, gameId) => {
+const validateScene = async (gamePlaying, sceneId, gameId, isMaking) => {
     if (objCmp(gamePlaying.gameId, gameId)) {
 
         const len = gamePlaying.sceneIdList.length - 1
         const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[len] });
-
-        if (objCmp(gamePlaying.sceneIdList[len], sceneId)) {
+        console.log(gamePlaying.isMaking);
+        if (gamePlaying.isMaking === isMaking && objCmp(gamePlaying.sceneIdList[len], sceneId)) {
             return true;
         }
 
@@ -309,10 +309,19 @@ const validateScene = async (gamePlaying, sceneId, gameId) => {
                 return true;
             }
         }
-
     }
     return false;
 };
+
+router.post("/scene/validate", auth, async (req, res) => {
+    const { user, body: {sceneId, gameId, isMaking} } = req;
+    console.log(isMaking);
+    const val = await validateScene(user.gamePlaying, sceneId, gameId, isMaking);
+    if (!val) {
+        return res.status(200).json({ success: false });
+    }
+    return res.status(200).json({ success: true });
+})
 
 router.get("/historycleanup", auth, async (req, res) => {
     User.updateOne({ _id: req.user._id },
@@ -333,7 +342,7 @@ router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
         const user = await User.findOne({ _id: userId });
         try {
             const scene = await Scene.findOne({ _id: sceneId });
-            const val = await validateScene(user.gamePlaying, sceneId, gameId);
+            const val = await validateScene(user.gamePlaying, sceneId, gameId, false);
             if (!val) {
                 return res.status(200).json({ success: false });
             }

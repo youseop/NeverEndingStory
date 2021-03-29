@@ -47,7 +47,7 @@ function RegisterPage(props:RegisterPageProps) {
             // image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
           };
 
-          dispatch(registerUser(dataToSubmit)).then(response => {
+          dispatch(registerUser(dataToSubmit)).then((response: any) => {
             if (response.payload.success) {
               props.history.push("/login");
             } else {

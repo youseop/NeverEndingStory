@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { Button, message } from "antd";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -17,6 +17,22 @@ function GameDetailPage(props) {
     const [sceneId, setSceneId] = useState([]);
     const [isMaking, setIsMaking] = useState(false);
 
+    const playFirstScene = async (isFirst) => {
+        console.log(sceneId)
+        try {     
+            const response = isFirst && await Axios.get("/api/users/playing-list/clear");
+            props.history.replace({
+                pathname: isMaking ? `/scene/make` : `/gameplay`,
+                state: {
+                    sceneId: isFirst ? response.data.teleportSceneId : sceneId,
+                    gameId: gameId,
+                }
+            })
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
         Axios.post("/api/game/getgamedetail", variable).then((response) => {
             if (response.data.success) {
@@ -26,9 +42,7 @@ function GameDetailPage(props) {
                 //Todo : 게임 정보를 로딩하는데 실패했습니다 메세지 변경하기(자세히)
             }
         });
-    }, []);
 
-    useEffect(() => {
         Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
             if (response.data.success) {
                 setSceneId(response.data.sceneId);
@@ -37,7 +51,9 @@ function GameDetailPage(props) {
                 message.error("로그인 해주세요.");
             }
         });
+
     }, []);
+
 
     return (
         <div className="detailPage__container">
@@ -48,9 +64,9 @@ function GameDetailPage(props) {
                     style={{ width: "30%", height: "30%" }}
                     src={
                         process.env.NODE_ENV === 'production' ?
-                        gameDetail.thumbnail
-                        :
-                        `${config.SERVER}/${gameDetail.thumbnail}`}
+                            gameDetail.thumbnail
+                            :
+                            `${config.SERVER}/${gameDetail.thumbnail}`}
                     alt="thumbnail"
                 />}
             <div>제목: {gameDetail.title}</div>
@@ -60,19 +76,12 @@ function GameDetailPage(props) {
             <br />
 
             {/* 게임 시작하기 or 이어 만들기 */}
-            <Link
-                style={{ color: "#f05454" }}
-                to={
-                    {
-                        pathname: isMaking ? `/scene/make` : `/gameplay`,
-                        state: {
-                            gameId: gameId,
-                            sceneId: sceneId
-                        },
-                    }
-                }>
-                게임 시작하기
-            </Link>
+            <Button onClick={() => playFirstScene(true)}>
+                처음부터 하기
+            </Button>
+            <Button onClick={() => playFirstScene(false)}>
+                게임 이어하기
+            </Button>
             <Comment gameId={gameId} />
         </div>
     );
