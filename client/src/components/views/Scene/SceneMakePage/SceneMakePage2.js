@@ -58,8 +58,8 @@ const SceneMakePage = (props) => {
 
     const [CharacterList, setCharacterList] = useState([]);
     const [BackgroundImg, setBackgroundImg] = useState("http://localhost:5000/uploads/defaultBackground.png");
-    const [Script, setScript] = useState("");
-    const [Name, setName] = useState("");
+    const [Script, setScript] = useState("대사를 입력해주세요.");
+    const [Name, setName] = useState("이름");
     const [BgmFile, setBgmFile] = useState({
         name: "",
         music: "",
@@ -417,7 +417,7 @@ const SceneMakePage = (props) => {
             }
 
         } else {
-            message.error("제출 취소요");
+            message.error("제출 취소");
         }
     };
 
@@ -517,10 +517,8 @@ const SceneMakePage = (props) => {
                     [{gameDetail?.title}]
                 </div> :
                 (
-                    <div>
-                        <div className="box title">
-                            [제목 먼저 짓게 수정]
-                    </div>
+                    <div className="box title">
+                        <div>[제목 먼저 짓게 수정]</div>
                         <div className="box title-btn">상세정보</div>
                     </div>
                 )
@@ -537,6 +535,57 @@ const SceneMakePage = (props) => {
             />
 
             <div className="box scene">
+                <div className="sceneMake__sound_container">
+                    {BgmFile.name ? (
+                        <div
+                            onClick={onClick_bgm_player}
+                        >
+                            {
+                                BgmFile.name && bgm_audio.paused &&
+                                <PlayCircleOutlined
+                                    style={{ fontSize: "20px" }} />
+                            }
+                            {
+                                BgmFile.name && !bgm_audio.paused &&
+                                <PauseCircleOutlined
+                                    style={{ fontSize: "20px" }} />
+                            }
+                            {BgmFile.name}
+                        </div>
+                    ) : (
+                        <div>
+                            <StopOutlined
+                                style={{ fontSize: "20px" }}
+                            />
+                    BGM
+                        </div>
+                    )}
+                    {SoundFile.name ? (
+                        <div
+                            onClick={onClick_sound_player}
+                        >
+                            {
+                                BgmFile.name && sound_audio.paused &&
+                                <PlayCircleOutlined
+                                    style={{ fontSize: "20px" }} />
+                            }
+                            {
+                                BgmFile.name && !sound_audio.paused &&
+                                <PauseCircleOutlined
+                                    style={{ fontSize: "20px" }} />
+                            }
+                            {SoundFile.name}
+                        </div>
+                    ) : (
+                        <div>
+                            <StopOutlined
+                                style={{ fontSize: "20px" }}
+                            />
+                    Sound
+                        </div>
+                    )}
+                </div>
+
                 <div className="scene left-arrow"
                     onClick={onLeft}>
                     <SVG src="arrow_1" width="50" height="50" color="#F5F5F5" />
@@ -554,14 +603,13 @@ const SceneMakePage = (props) => {
                 />
                 {SidBar_script && (
                     <div className="sceneMake__text_container">
-                        <input onChange={onNameChange} value={Name} className="sceneMake__name_block" />
-                        <hr className="sceneMake__text_line"></hr>
-                        <textarea
-                            onChange={onScriptChange}
-                            value={Script}
-                            className="sceneMake__text_block"
-                            ref={(input) => input && input.focus()}
-                        />
+                        <div className="sceneMake__name_block">
+                            {Name}
+                        </div>
+                        <div className="sceneMake__text_line"></div>
+                        <div className="sceneMake__text_block">
+                            {Script}
+                        </div>
                     </div>
                 )}
                 {CutNumber < 29 && (
@@ -571,18 +619,9 @@ const SceneMakePage = (props) => {
                     </div>
                 )}
             </div>
-            {/* 
-            <div className="box d">캐릭터이름</div>
-            <div className="box e">현재캐릭터</div>
-            <div className="box f">음악</div> */}
-
-            {/* <div className="box g">대사</div> */}
 
             <div className="box scene__btn_top">
-                <div className="box scene_btn"
-                    onClick={onRemove_cut}>
-                    컷 삭제
-                </div>
+
                 <div className="box scene_btn"
                     onClick={onTmpSave}>
                     임시 저장
@@ -597,15 +636,88 @@ const SceneMakePage = (props) => {
                         완료
                         </div>
                 }
-                <UploadModal
-                    gameId={gameId}
-                    visible={uploadModalState}
-                    setUploadModalState={setUploadModalState}
-                    onSubmit_saveScene={onSubmit_saveScene}
+
+            </div>
+            <div className="box btn_side">
+                <div
+                    className="box scene_btn"
+                    onClick={onClick_character}
+                >캐릭터</div>
+                <div
+                    className="box scene_btn"
+                    onClick={onClick_background}
+                >배경</div>
+
+                <div className="box scene_btn" onClick={onClick_bgm}>
+                    배경음
+                    </div>
+                <div className="box scene_btn" onClick={onClick_sound}>
+                    효과음
+                    </div>
+            </div>
+            <div className="box sideBar">
+                {sideBar !== 0 && sideBar}
+                캐릭터선택
+                </div>
+            <div
+                className="textbox_name">
+                <div className="textbox__name_block_btn">
+                    <SVG src="arrow_1" width="15" height="25" color="#FFFFFF" />
+                </div>
+            </div>
+            <input
+                onChange={onNameChange}
+                value={Name}
+                className="box textbox_name"
+            />
+            <div className="textbox_bottom">
+                <div className="enter">
+                    확인
+                </div>
+                <textarea
+                    onChange={onScriptChange}
+                    value={Script}
+                    className="box textbox_script"
+                    ref={(input) => input && input.focus()}
                 />
             </div>
-            <div className="box btn_side">사이드버튼</div>
-            <div className="box sideBar">캐릭터선택</div>
+            <div className="box options">
+                <div className="box scene_btn"
+                    onClick={onRemove_cut}>
+                    컷 삭제
+                </div>
+                <div className="box scene_btn"
+                    onClick={onClick_script}
+                >On/Off</div>
+                <div className="box scene_btn"
+                    onClick={onClick_script}
+                >Preview</div>
+                <div className="box scene_btn"
+                    onClick={onClick_script}
+                >배경음 음소거</div>
+                <div className="box scene_btn"
+                    onClick={onClick_script}
+                >효과음 음소거</div>
+                <div className="box scene_btn"
+                    onClick={onClick_script}
+                >테마 선택(개발자)</div>
+            </div>
+
+            <UploadModal
+                gameId={gameId}
+                visible={uploadModalState}
+                setUploadModalState={setUploadModalState}
+                onSubmit_saveScene={onSubmit_saveScene}
+            />
+            {
+                makeModalState !== 0 && <SceneMakeModal
+                    gameId={gameId}
+                    visible={Boolean(makeModalState)}
+                    setTag={setMakeModalState}
+                    tag={makeModalState}
+                    setReload={setReload}
+                />
+            }
         </div >
     )
 }

@@ -416,7 +416,7 @@ const SceneMakePage = (props) => {
             }
 
         } else {
-            message.error("제출 취소요");
+            message.error("제출 취소");
         }
     };
 
