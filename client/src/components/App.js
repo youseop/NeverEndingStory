@@ -5,8 +5,8 @@ import Valid from "../hoc/valid";
 // pages for this product
 import LandingPage from "./views/LandingPage/LandingPage.js";
 
-import LoginPage from "./views/LoginPage/LoginPage.js";
-import RegisterPage from "./views/RegisterPage/RegisterPage.js";
+import LoginPage from "./views/LoginPage/LoginPage.tsx";
+import RegisterPage from "./views/RegisterPage/RegisterPage.tsx";
 import Profile from './views/Profile/Profile.js';
 
 import GameDetailPage from './views/GameDetailPage/GameDetailPage.js';

@@ -65,8 +65,8 @@
   display: none;
   position: absolute;
   width: 45px;
-  height: 180px;
-  top: 60px;
+  height: 190px;
+  top: 59px;
   left: 0px;
 
   background-color: rgba(0, 0, 0, 0.472);
@@ -82,7 +82,7 @@
   position: absolute;
   width: 45px;
   height: 180px;
-  top: 60px;
+  top: 59px;
   right: 0px;
 
   background-color: rgba(0, 0, 0, 0.472);

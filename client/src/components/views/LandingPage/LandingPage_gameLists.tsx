@@ -209,6 +209,7 @@ function mouseOffEvent(target: Data) {
 export function GameList(props: ContainerProps) {
     const { data, games } = props;
     //* game list
+    data.length = 0;
     const gameList = games.map((game: Game, index: number) => {
         if (game.title) {
             console.log(game.title);
