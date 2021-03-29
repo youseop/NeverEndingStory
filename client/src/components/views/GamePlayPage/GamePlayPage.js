@@ -23,6 +23,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import Slider from 'react-rangeslider'
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+
 
 import {
   faCheckSquare,
@@ -150,6 +153,9 @@ const ProductScreen = (props) => {
   }
 
   const [isTyping, setIsTyping] = useState(true);
+
+
+  console.log("isTyping!!!",isTyping)
   function handleEnter(event) {
     //! 타이핑 끝 & 미니맵 X
     if (!isTyping && !isPause) {
@@ -161,6 +167,7 @@ const ProductScreen = (props) => {
       else if (i == Scene.cutList.length - 1) {
           //! 엔딩자리
           setLastMotion(true)
+          // setIsTyping(true)
       }
     }
   }
@@ -218,8 +225,8 @@ const ProductScreen = (props) => {
       dispatch(gamePause(false));
     }
   }, [HistoryMap, Dislike, TreeMap]);
-
-  useEffect(() => {
+  
+    useEffect(() => {
     setLastMotion(false)
     console.log(gameId, sceneId);
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
@@ -229,6 +236,7 @@ const ProductScreen = (props) => {
             gameId: gameId,
             sceneId: response.data.sceneIdList,
           };
+          setIsTyping(true)
           setHistory(history);
           setI(0);
           bgm_audio.pause();
@@ -245,6 +253,7 @@ const ProductScreen = (props) => {
       }
     );
   }, [sceneId]);
+
 
   useEffect(() => {
     function handleResize() {
@@ -324,6 +333,7 @@ const ProductScreen = (props) => {
               characterList={Scene.cutList[i].characterList}
             />
 
+            
             {i === Scene.cutList.length - 1 ? (
               <TextBlockChoice
                 game_id={gameId}
@@ -337,6 +347,7 @@ const ProductScreen = (props) => {
                 isEnding={Scene.isEnding}
                 isLastMotion={lastMotion}
                 theme={Scene.theme}
+                setScene = {setScene}
               />
             ) : (
                 <TextBlock
@@ -353,6 +364,7 @@ const ProductScreen = (props) => {
               history={History}
               trigger={HistoryMap}
               setTrigger={setHistoryMap}
+              setScene={setScene}
             />
             <TreeMapPopup
               userhistory={userHistory}
@@ -436,7 +448,12 @@ const ProductScreen = (props) => {
   } else {
     // dispatch(gameLoadingPage(0));
     // dispatch(gameLoadingPage(1));
-    return <LoadingPage />;
+
+    return (
+    <div className="loader_container">
+        <div class="loader">Loading...</div>
+    </div>
+    )
   }
 };
 

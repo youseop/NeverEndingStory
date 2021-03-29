@@ -6,7 +6,7 @@ import Axios from "axios";
 import { Button } from "antd";
 
 
-const PrevSceneTeleport = ({ gameId }) => {
+const PrevSceneTeleport = ({ gameId,setScene }) => {
     const history = useHistory();
     const user = useSelector((state) => state.user);
 
@@ -17,7 +17,7 @@ const PrevSceneTeleport = ({ gameId }) => {
             Axios.get("/api/users/playing-list/pop").
                 then(response => {
                     if (response.data.success) {
-
+                        setScene({})
                         history.push({
                             pathname: `/gameplay`,
                             state: {

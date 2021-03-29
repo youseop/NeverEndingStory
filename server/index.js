@@ -46,5 +46,6 @@ app.use('/api/test', require('./routes/subdoc_route'));
 app.use('/uploads', express.static('uploads'));
 
 const port = process.env.PORT
+console.log(port)
 const server = require('http').createServer(app);
 server.listen(port);
