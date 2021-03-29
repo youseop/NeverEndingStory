@@ -4,6 +4,7 @@ import { SVG, BAR } from "../../svg/icon";
 import "./LandingPage_gameLists.css"
 import { LOCAL_HOST } from "../../Config";
 
+const config = require('../../../config/key')
 interface Data {
     category: string;
     id: string;
@@ -212,12 +213,18 @@ export function GameList(props: ContainerProps) {
         if (game.title) {
             console.log(game.title);
             data.length += 1;
+            let thumbnailPath;
+            
+            if(process.env.NODE_ENV === "production")
+                thumbnailPath = game.thumbnail
+            else
+                thumbnailPath = `${config.STORAGE}/${game.thumbnail}`
             return (
                 <div key={index} className="gamelist-game">
                     <a href={`/game/${game._id}`}>
                         <img
                             className="game-image"
-                            src={`http://${LOCAL_HOST}:5000/${game.thumbnail}`}
+                            src={thumbnailPath}
                             alt={game.title}
                         />
                         <div className="game-title">{game.title}</div>

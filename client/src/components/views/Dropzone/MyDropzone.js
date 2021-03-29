@@ -16,7 +16,8 @@ function MyDropzone({ onDrop, multiple, maxSize, accept }) {
         {({ getRootProps, getInputProps }) => (
             <div className="dropzone" {...getRootProps()}>
                 <input {...getInputProps()} />
-                <FileAddOutlined className="dropzone-icon" />
+                <p>클릭 혹은 드래그...</p>
+                {/* <FileAddOutlined className="dropzone-icon" /> */}
             </div>
         )}
     </Dropzone>

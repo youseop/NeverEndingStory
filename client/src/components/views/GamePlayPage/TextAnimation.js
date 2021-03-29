@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import useKey from "../../functions/useKey";
 import { useWindupString } from "windups";
 import useMouse from "../../functions/useMouse";
-import { LOCAL_HOST } from "../../Config";
 
-// const voice = new Audio('http://localhost:5000/uploads/sfx-blipmale.wav')
-// const voice = new Audio(`http://${LOCAL_HOST}:5000/uploads/sfx-typwriter.wav`)
 // voice.volume = 0.8
 function TextAnimation({ cut_script, setIsTyping }) {
     const [flag, setFlag] = useState(false);

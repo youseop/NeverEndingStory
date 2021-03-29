@@ -3,6 +3,7 @@ import { Modal, Form, message, Input } from "antd";
 import Axios from "axios";
 import { useSelector } from "react-redux";
 import MyDropzone from "../../Dropzone/MyDropzone";
+import "./UploadModal.css";
 
 const { TextArea } = Input;
 
@@ -123,11 +124,12 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene 
     return (
         <Modal className="scenemake_modal"
             visible={visible}
-            okText="Upload"
+            okText="업로드"
+            cancelText = "취소"
             onCancel={cancel}
             onOk={upload}
             width={1000}
-            style={{ top: 20 }}
+            centered = {true}
         >
             <div>
                 <label>Upload Game</label>
@@ -152,27 +154,30 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene 
                             </div>
                         )}
                     </div>
-                    <label>Title</label>
-                    <Input onChange={onTitleChange} value={GameTitle} />
+                    <div className ="scenemake_modal_description">
+                        <label>Title</label>
+                        <Input onChange={onTitleChange} value={GameTitle} />
 
-                    <label>Description</label>
-                    <TextArea onChange={onDescriptionChange} value={description} />
+                        <label>Description</label>
+                        <TextArea onChange={onDescriptionChange} value={description} />
 
-                    <select onChange={onPrivateChange}>
-                        {PrivateOptions.map((item, index) => (
-                            <option key={index} value={item.value}>
-                                {item.label}
-                            </option>
-                        ))}
-                    </select>
+                        <select onChange={onPrivateChange}>
+                            {PrivateOptions.map((item, index) => (
+                                <option key={index} value={item.value}>
+                                    {item.label}
+                                </option>
+                            ))}
+                        </select>
 
-                    <select onChange={onCartegoryChange}>
-                        {CategoryOptions.map((item, index) => (
-                            <option key={index} value={item.value}>
-                                {item.label}
-                            </option>
-                        ))}
-                    </select>
+                        <select onChange={onCartegoryChange}>
+                            {CategoryOptions.map((item, index) => (
+                                <option key={index} value={item.value}>
+                                    {item.label}
+                                </option>
+                            ))}
+                        </select>
+
+                    </div>
 
                 </Form>
             </div>

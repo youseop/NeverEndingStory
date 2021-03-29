@@ -23,8 +23,8 @@ import { socket } from "../../../App";
 import { PlayCircleOutlined, PauseCircleOutlined, StopOutlined } from '@ant-design/icons';
 import "./SceneMakePage.css";
 import { detachCharacter } from "../../../../_actions/characterSelected_actions";
-import { LOCAL_HOST } from "../../../Config";
 
+const config = require("../../../../config/key")
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
@@ -57,7 +57,7 @@ const SceneMakePage = (props) => {
     const [SidBar_script, setSidBar_script] = useState(true);
 
     const [CharacterList, setCharacterList] = useState([]);
-    const [BackgroundImg, setBackgroundImg] = useState(`http://${LOCAL_HOST}:5000/uploads/defaultBackground.png`);
+    const [BackgroundImg, setBackgroundImg] = useState(`${config.STORAGE}/defaultBackground.png`);
     const [Script, setScript] = useState("");
     const [Name, setName] = useState("");
     const [BgmFile, setBgmFile] = useState({
@@ -80,7 +80,6 @@ const SceneMakePage = (props) => {
     );
 
     const [isEnding, setIsEnding] = useState(false)
-    const [isWarningVisible, setIsWarningVisible] = useState(false)
     let scene;
     useEffect(() => {
         dispatch(navbarControl(false));
@@ -427,12 +426,26 @@ const SceneMakePage = (props) => {
         onSubmit_saveScene(event, 1);
     }
 
-    const warningOk = () =>{
-        setIsWarningVisible(false)
-    }
+
     const showWarning = () =>{
+
         if(!isEnding)
-            setIsWarningVisible(true)
+        {
+            Modal.warning({
+                title: <b>주의!</b>,
+                content: (
+                    <div>
+                        <br></br>
+                        <h3>ENDING 체크 시, 이 게임의 엔딩으로 업로드 됩니다.</h3>
+                        <h3>따라서 이 씬에 연결되는 씬을 더이상 생성할 수 없습니다.</h3>
+                    </div>
+                ),
+                centered : true,
+                width : 650,
+                onOk() { },
+            });
+        }
+        
     }
 
     const [gameDetail, setGameDetail] = useState([]);
@@ -697,20 +710,7 @@ const SceneMakePage = (props) => {
                     setUploadModalState={setUploadModalState}
                     onSubmit_saveScene={onSubmit_saveScene}
                 />
-                <Modal 
-                    title="⚠ 주의 ⚠" 
-                    visible={isWarningVisible} 
-                    maskClosable = {false}
-                    closable = {false}
-                    footer = {
-                        <Button onClick = {warningOk}>
-                            확인
-                        </Button>
-                    }
-                    >
-                    
-                    <p>해당 씬 이후에는 더 이상 씬을 생성할 수 없습니다.</p>
-                </Modal>
+
             </div>
             <div className="scenemake__sideBar_container">
                 {sideBar !== 0 && sideBar}

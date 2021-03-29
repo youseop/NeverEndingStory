@@ -81,7 +81,7 @@ export const TextBlockChoice = (props) => {
         </div>
       </div>
       {isLastMotion &&
-        <div class="choice_box">
+        <div className="choice_box">
           {isEnding === true ?
             <SceneEndingPage gameId={game_id} />
             :
