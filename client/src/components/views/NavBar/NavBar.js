@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import RightMenu from "./Sections/RightMenu";
 import { Drawer, Button, Icon } from "antd";
 import "./Sections/Navbar.css";
@@ -33,7 +34,7 @@ function NavBar() {
   return (
     <nav className="menu" style={style}>
       <div className="menu__logo">
-        <a href="/">NEVER ENDING</a>
+        <Link to="/">NEVER ENDING</Link>
       </div>
       <div className="menu__container">
         <div className="menu_rigth">
