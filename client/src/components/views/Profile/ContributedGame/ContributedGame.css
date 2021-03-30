@@ -1,0 +1,84 @@
+.contribute__container{
+  min-height: 140px;
+  width: 1150px;
+  margin-top: 70px;
+  margin-bottom: 80px;
+  padding: 5px;
+  display: flex;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+}
+
+.contribute__img {
+  width: 170px;
+  height: 170px;
+  overflow: hidden;
+  object-fit: cover;
+  border-radius: 5px;
+  position: relative;
+  top: -32px;
+  box-shadow: 3px 3px 3px 3px #2228317e;
+  transition: 0.3s;
+}
+
+.contribute__img:hover {
+  width: 170px;
+  height: 170px;
+  overflow: hidden;
+  object-fit: cover;
+  border-radius: 5px;
+  position: relative;
+  top: -30px;
+  box-shadow: 1.5px 1.5px 1.5px 1.5px #2228312f;
+  transition: 0.3s;
+}
+
+.contribute__icon{
+  color: #222831;
+  display: flex;
+  gap: 17px;
+  position: relative;
+  bottom: 178px;
+  left: 998px;
+}
+
+.contribute__info {
+  padding-top: 25px;
+  padding-left: 20px;
+  padding-right: 8px;
+}
+
+.contribute__title {
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 16px;
+  color: rgb(44, 42, 42);
+  margin-bottom: 25px;
+}
+
+.contribute__text{
+
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  color: rgb(44, 42, 42);
+  margin-bottom: 20px;
+}
+
+.contribute__text {
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-size: 14px;
+  color: rgb(44, 42, 42);
+  margin-top: 5px;
+  display: flex;
+}
+
+.contribute__cnt{
+  padding-left: 10px;
+  font-size: 20px;
+  line-height: 19px;
+}

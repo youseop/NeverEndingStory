@@ -12,7 +12,7 @@ router.post('/', (req,res) => {
   View.findOne({"objectId" : objectId})
     .exec((err, view) => {
       if(err) return res.status(400).send(err);
-      if (view && view.userList){
+      if (userId && view && view.userList){
         if(
           !Object.keys(view.userList).includes(userId) ||
           TIME_THRESHOLD < (new Date()).getTime() - view.userList[userId]
@@ -29,7 +29,10 @@ router.post('/', (req,res) => {
           if(err) return res.json({success: false, err})
           res.status(200).json({success: true, view:view.cnt})
         })
-      }else{
+      } else if (view) {
+        return res.status(200).json({success: true, view: view.cnt})
+      }
+      else{
         return res.status(200).json({success: true, view: 0})
       }
     })
