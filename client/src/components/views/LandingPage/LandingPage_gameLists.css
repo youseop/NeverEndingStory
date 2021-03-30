@@ -133,3 +133,33 @@
 
   opacity: 0.9;
 }
+
+.game-sceneIcon{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 18%;
+  top: 8%;
+  padding-left: 1px;
+
+  border-radius: 3px;
+
+  background-color: rgb(235, 31, 31);
+}
+
+.game-sceneNum{
+  position: absolute;
+  width: 54px;
+  height: 20px;
+  right: 5%;
+  top: 8%;
+  padding-right: 3px;
+  
+  font-size: 13px;
+  font-weight: bold;
+  text-align: right;
+  color: #000000;
+  border-radius: 2px;
+  
+  background-color: rgba(255, 255, 255, 0.705);
+}

@@ -1,8 +1,8 @@
 import React from 'react'
-import { JsxElement } from 'typescript';
-import { SVG, BAR } from "../../svg/icon";
+import { SVG, BAR,SCENE_ICON } from "../../svg/icon";
 import "./LandingPage_gameLists.css"
 import { LOCAL_HOST } from "../../Config";
+import {Link} from "react-router-dom";
 
 const config = require('../../../config/key')
 interface Data {
@@ -18,7 +18,11 @@ interface Game {
     _id: string;
     thumbnail: string;
     category: string;
+<<<<<<< HEAD
     first_scene: string;
+=======
+    sceneCnt:number;
+>>>>>>> origin/play
 }
 
 interface ContainerProps {
@@ -219,14 +223,16 @@ export function GameList(props: ContainerProps) {
                 thumbnailPath = `${config.STORAGE}/${game.thumbnail}`
             return (
                 <div className="gamelist-game" key={index}>
-                    <a href={`/game/${game._id}`}>
+                    <Link to={`/game/${game._id}`}>
                         <img
                             className="game-image"
                             src={thumbnailPath}
                             alt={game.title}
                         />
                         <div className="game-title">{game.title}</div>
-                    </a>
+                    </Link>
+                    <div className="game-sceneNum">{game.sceneCnt}</div>
+                    <div className="game-sceneIcon"><SCENE_ICON/></div>
                     <div className="game-category">{game.category}</div>
                 </div>
             );
