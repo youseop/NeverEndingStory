@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React from 'react'
+import React, { memo } from 'react'
 import './BackgroundSideBar.css'
 import BackgroundImg from './BackgroundImg'
 
@@ -28,4 +28,4 @@ function BackgroundSideBar({ gameDetail, setBackgroundImg, setMakeModalState }) 
   )
 }
 
-export default BackgroundSideBar
+export default memo(BackgroundSideBar)

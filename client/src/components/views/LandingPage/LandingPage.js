@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
+import { useDispatch } from "react-redux";
 import Axios from "axios";
 import "./LandingPage.css";
 import { Banner_main1 } from "./LandingPage_banners";
 import { NewGameButton } from "./LandingPage_buttons";
 import { GameList } from "./LandingPage_gameLists";
+import { navbarControl } from "../../../_actions/controlPage_actions"
 
 const ListContainer = {
   recent_games: {
@@ -23,9 +25,14 @@ const ListContainer = {
 };
 
 function LandingPage(props) {
+  const dispatch = useDispatch();
+
   const [games, setGames] = useState([]);
 
   useEffect(() => {
+    //* navigation bar control
+    dispatch(navbarControl(true));
+    
     Axios.get("/api/game/getgames").then((response) => {
       if (response.data.success) {
         setGames(response.data.games);

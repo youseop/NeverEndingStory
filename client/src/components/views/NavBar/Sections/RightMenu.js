@@ -34,10 +34,14 @@ function RightMenu(props) {
         return (
             <Menu mode={props.mode}>
                 <Menu.Item key="profile">
-                    <Link to="/profile">프로필</Link>
+                    {user?.userData?._id ? 
+                        <Link to={`/profile/${user.userData._id}`}>프로필</Link>
+                        :
+                        "프로필"
+                    }
                 </Menu.Item>
                 <Menu.Item key="logout">
-                    <Link onClick={logoutHandler}>로그아웃</Link>
+                    <Link to="/" onClick={logoutHandler}>로그아웃</Link>
                 </Menu.Item>
             </Menu>
         );

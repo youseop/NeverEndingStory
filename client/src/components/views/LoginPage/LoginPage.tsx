@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import { useDispatch } from "react-redux";
 import "./LoginPage.css";
-import { yellow } from "@material-ui/core/colors";
 
 interface LoginPageProps {
   history: {
@@ -24,7 +23,7 @@ interface LoginUser {
 }
 
 function LoginPage(props: LoginPageProps) {
-  const dispatch : any = useDispatch();
+  const dispatch:any = useDispatch();
   const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
 
   const [formErrorMessage, setFormErrorMessage] = useState("");
@@ -60,7 +59,6 @@ function LoginPage(props: LoginPageProps) {
           };
 
           dispatch(loginUser(dataToSubmit))
-            // ! 여기 에러가 나는데.... redux까지 ts로 바꿔보고 해결해야할 듯....
             .then((response: LoginUser) => {
               if (response.payload.loginSuccess) {
                 if (rememberMe === true && values.email) {

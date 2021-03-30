@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const moment = require("moment");
 
 const { playingSchema } = require('./Game_Components');
+const { contributedSceneSchema, contributedGameSchema } = require('./User_Components');
 
 const Schema = mongoose.Schema;
 
@@ -88,7 +89,9 @@ const userSchema = mongoose.Schema({
                 type: Date
             }
         }
-    ]
+    ],
+    contributedSceneList: [contributedSceneSchema],
+    contributedGameList: [contributedGameSchema],
 })
 
 

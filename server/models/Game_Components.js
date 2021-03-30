@@ -47,6 +47,17 @@ const soundSchema = mongoose.Schema({
 
 const Sound = mongoose.model("sound", soundSchema);
 
+const contributerSchema = mongoose.Schema({
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    },
+    userSceneCnt: Number,
+    sceneIdList: [String]
+});
+
+const Contributer = mongoose.model("contributer", contributerSchema);
+
 module.exports = {
     Playing,
     playingSchema,
@@ -58,4 +69,6 @@ module.exports = {
     bgmSchema,
     Sound,
     soundSchema,
+    Contributer,
+    contributerSchema
 };

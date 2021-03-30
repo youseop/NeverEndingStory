@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactDOM from "react-dom";
 import { Button } from "antd";
@@ -156,4 +156,4 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   );
 };
 
-export default InputModal;
+export default memo(InputModal);

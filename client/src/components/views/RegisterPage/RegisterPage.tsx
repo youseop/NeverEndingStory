@@ -1,12 +1,13 @@
 import * as React from "react";
-import * as moment from "moment";
 import * as Yup from 'yup';
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../../_actions/user_actions";
-import { Formik } from 'formik';
+import { Formik, FormikErrors } from 'formik';
 import { Form, Input } from 'antd';
 import "./RegisterPage.css"
+import Axios from "axios"
+import { response } from "express";
 
 interface RegisterPageProps {
   history: {
@@ -14,7 +15,36 @@ interface RegisterPageProps {
   }
 }
 
-function RegisterPage(props:RegisterPageProps) {
+interface RegisterUser {
+  payload: {
+    success: boolean;
+    err: {
+      errmsg: string;
+    }
+  }
+}
+
+interface FormType {
+  email: string;
+  nickname: string;
+  password: string;
+  confirmPassword: string;
+}
+
+function checkEmail(email: string | null | undefined) {
+  console.log(email)
+  Axios.post("api/users/email-check", { email: email }).then((response) => {
+    console.log(response.data.usedEmail)
+    if (response.data.usedEmail) {
+      console.log("hi")
+      return false
+    }
+  })
+  console.log("hello")
+  return true
+}
+
+function RegisterPage(props: RegisterPageProps) {
   const dispatch: any = useDispatch();
   return (
     <Formik
@@ -30,24 +60,34 @@ function RegisterPage(props:RegisterPageProps) {
         email: Yup.string()
           .email('이메일 형식이 아닙니다.')
           .required('필수 정보입니다.'),
+          // .test("checkEmail", "이미 사용중인 이메일입니다.", value => checkEmail(value)),
         password: Yup.string()
-          .min(6, 'Password must be at least 6 characters')
-          .required('Password is required'),
+          .min(6, '패스워드는 최소 6글자 이상이어야합니다.')
+          .required('필수 정보입니다.'),
         confirmPassword: Yup.string()
-          .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
-          .required('Confirm Password is required')
+          .oneOf([Yup.ref('password'), undefined], '패스워드가 틀립니다.')
+          .required('패스워드를 다시 입력해주세요.')
       })}
       onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
+        setTimeout(async() => {
+          let flag
+          await Axios.post("api/users/email-check", { email: values.email }).then((response) => {
+            flag = response.data.usedEmail
+          })
+
+          if(flag){
+            alert("이미 사용 중인 아이디 입니다.")
+            return
+          }
 
           let dataToSubmit = {
             email: values.email,
             password: values.password,
             nickname: values.nickname,
-            // image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
-          };
+            image: `https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg`
+          }
 
-          dispatch(registerUser(dataToSubmit)).then((response: any) => {
+          await dispatch(registerUser(dataToSubmit)).then((response: RegisterUser) => {
             if (response.payload.success) {
               props.history.push("/login");
             } else {
@@ -160,7 +200,7 @@ function RegisterPage(props:RegisterPageProps) {
                     </button>
                   </div>
                 </Form.Item>
-                
+
               </Form>
             </div>
           </div>

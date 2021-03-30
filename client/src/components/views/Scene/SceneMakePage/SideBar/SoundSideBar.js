@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React from "react";
+import React, { memo } from "react";
 import "./SoundSideBar.css";
 
 import SoundFile from "./SoundFile";
@@ -36,4 +36,4 @@ function SoundSideBar({ gameDetail, sound_audio, setSoundFile, setMakeModalState
     );
 }
 
-export default SoundSideBar;
+export default memo(SoundSideBar);

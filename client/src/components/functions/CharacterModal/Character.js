@@ -21,8 +21,7 @@ function Character(props) {
   const [imgWidth, setImgWidth] = useState(0);
 
   const background_element = document.getElementById("backgroundImg_container");
-
-  let pivot = [0, 0];
+  let pivot = [0,0];
   let drag = false;
 
   function mouseMove(e) {

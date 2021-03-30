@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require("../models/User");
 const mongoose = require("mongoose");
+const { User } = require("../models/User");
 
 const { auth } = require("../middleware/auth");
 
@@ -72,6 +72,7 @@ router.get("/logout", auth, (req, res) => {
 
 router.get("/playing-list/clear", auth, async(req,res) =>{
     try {
+        //isMaking이었으면 만들던 씬 정리해야함...(똑같은 짓 하는거 찾아보고 합치기 가능하면 합치기)
         const user = await User.findOne({ _id: req.user._id })
         user.gamePlaying = {
             ...user.gamePlaying,
@@ -111,4 +112,33 @@ router.get("/playing-list/pop", auth, async (req,res) =>{
     }
 })
 
+router.post("/profile", (req, res) => {
+    User.findOne({ _id: req.body.userId }, (err, user) => {
+        if (!user)
+            return res.json({
+                loginSuccess: false,
+                message: "Auth failed, email not found"
+            });
+        return res.status(200).send({
+            success: true,
+            user: user
+        });
+    });
+});
+
+
+router.post("/email-check", (req, res) => {
+    User.findOne({ email: req.body.email }, (err, user) => {
+        if (err) return res.json({ success: false, err });
+        if (!user)
+            return res.status(200).send({
+                success: true,
+                usedEmail: false
+            });
+        return res.status(200).send({
+            success: true,
+            usedEmail: true
+        });
+    });
+});
 module.exports = router;

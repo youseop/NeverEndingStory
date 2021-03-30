@@ -15,35 +15,6 @@ router.post('/', async(req,res) => {
 })
 
 router.post('/setlike', async(req,res) => {
-  const like = new Like({
-    gameId: req.body.gameId,
-    userId: mongoose.Types.ObjectId(req.body.userId),
-    commentId: req.body.commentId,
-  })
-  like.save((err, comment) => {
-    if (err) return res.json({ success: false, err })
-    return res.status(200).json({ success: true})
-  })
-})
-
-module.exports = router;
-const express = require('express');
-const mongoose = require("mongoose");
-const router = express.Router();
-const { Like } = require("../models/Like");
-
-router.post('/', async(req,res) => {
-  Like.find({
-    'userId': mongoose.Types.ObjectId(req.body.userId),
-    'gameId': mongoose.Types.ObjectId(req.body.gameId),
-    'commentId': mongoose.Types.ObjectId(req.body.commentId),
-  }).exec((err, result) => {
-    if (err) return res.json({ success: false, err })
-    return res.status(200).json({ success: true, result })
-  })
-})
-
-router.post('/setlike', async(req,res) => {
   try{
     const like = await Like.find({
     'gameId': req.body.gameId,

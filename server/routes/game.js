@@ -11,7 +11,7 @@ const {
 } = require("../models/Game_Components");
 const { Game } = require("../models/Game");
 const { User } = require("../models/User");
-const { Scene } = require("../models/Scene");
+const { Scene, sceneSchema } = require("../models/Scene");
 const mongoose = require("mongoose");
 const { auth } = require("../middleware/auth");
 
@@ -20,6 +20,8 @@ const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 const { objCmp } = require("../lib/object");
 const { log } = require("winston");
+const { View } = require("../models/View");
+const { ThumbsUp } = require("../models/ThumbsUp");
 
 
 AWS.config.update({
@@ -83,18 +85,36 @@ router.post("/uploadgameInfo", (req, res) => {
         .exec((err, gameDetail) => {
             if (err) return res.status(400).send(err);
 
-            gameDetail.creator = req.body.creator
-            gameDetail.title = req.body.title
-            gameDetail.description = req.body.description
-            gameDetail.thumbnail = req.body.thumbnail
-            gameDetail.privacy = req.body.privacy
-            gameDetail.category = req.body.category
-            gameDetail.writer = req.body.writer
-
+            gameDetail.creator = req.body.creator;
+            gameDetail.title = req.body.title;
+            gameDetail.description = req.body.description;
+            gameDetail.thumbnail = req.body.thumbnail;
+            gameDetail.privacy = req.body.privacy;
+            gameDetail.category = req.body.category;
+            //? gameDetail.writer = req.body.writer; - contributerList로 대체
 
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
-                return res.status(200).json({ success: true, gameDetail });
+                const userId = req.body.creator;
+                const view = new View({
+                    objectId: req.body.gameId,
+                    userList: {
+                        [userId]: (new Date()).getTime()
+                    }
+                })
+                const thumbsUp = new ThumbsUp({
+                    objectId: req.body.gameId,
+                    userList: {
+                        [userId]: false
+                    }
+                })
+                thumbsUp.save((err) =>{
+                    if(err) return res.json({success: false, err});
+                });
+                view.save((err, doc) => {
+                    if(err) return res.json({success: false, err})
+                    return  res.status(200).json({success: true, gameDetail})
+                })
             });
         });
 });
@@ -118,6 +138,15 @@ router.get("/getgames", (req, res) => {
             if (err) return res.status(400).send(err);
             res.status(200).json({ success: true, games });
         });
+});
+
+router.post("/getgamedetail", (req, res) => {
+    Game.findOne({ _id: req.body.gameId })
+    .populate("creator")
+    .exec((err, gameDetail) => {
+        if (err) return res.status(400).send(err);
+        return res.status(200).json({ success: true, gameDetail });
+    });
 });
 
 router.post("/ratio", (req, res) => {
@@ -414,18 +443,66 @@ router.post("/getgamedetail", (req, res) => {
         });
 });
 
-//? youseop for charModal (practice)
-router.post("/char_game_tmp_youseop", (req, res) => {
-    Game.findOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
-        .exec((err, gameDetail) => {
-            if (err) return res.status(400).send(err);
-            const character = new Character(req.body.char);
-            gameDetail.character.push(character);
-            gameDetail.save((err, doc) => {
-                if (err) return res.json({ success: false, err });
-                return res.status(200).json({ success: true, doc });
-            });
+router.post("/rank", async (req, res) => {
+    try{
+        const gameDetail = await Game.findOne({ _id: req.body.gameId })
+        const contributerList = gameDetail.contributerList;
+        let totalSceneCnt = 0;
+        for (let i=0; i<contributerList.length; i++){
+            totalSceneCnt += contributerList[i].userSceneCnt;
+        }
+        const contributerCnt = contributerList.length;
+        contributerList.sort(function (a,b) {
+            return a.userSceneCnt < b.userSceneCnt ? 1 : a.userSceneCnt > b.userSceneCnt ? -1: 0;
         });
+        const topRank = contributerList.slice(0,5);
+
+        for(let i=0; i<topRank.length; i++){
+            const user = await User.findOne({_id: mongoose.Types.ObjectId(topRank[i].userId)})
+            topRank[i] = {
+                nickname: user.nickname,
+                email: user.email,
+                image: user.image,
+                userId: user._id,
+                userSceneCnt: topRank[i].userSceneCnt,
+                sceneIdList: topRank[i].sceneIdList
+            }
+        }
+        return res.status(200).json({ 
+            success: true, 
+            topRank: topRank,
+            contributerCnt: contributerCnt,
+            totalSceneCnt: totalSceneCnt
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ success: false });
+    }
+
 })
+
+router.get("/simple-scene-info", auth, async (req, res) => {
+    if (!req.user) {
+        return res.status(400).json({ success: false, msg: "Not a user" });
+    }
+    try {
+        const sceneList = req.user.gamePlaying.sceneIdList
+        let sceneinfo=[]
+        for(let i=0; i <sceneList.length; i++){
+            const sceneId = mongoose.Types.ObjectId(sceneList[i]);
+            const scene = await Scene.findOne({ _id: sceneId });
+            sceneinfo.push({
+                sceneId : sceneId,
+                background : scene.cutList[scene.cutList.length-1].background,
+                name : scene.cutList[scene.cutList.length-1].name,
+                script : scene.cutList[scene.cutList.length-1].script,
+            });
+        }
+        return res.status(200).json({sceneinfo:sceneinfo})
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ success: false });
+    }
+});
 
 module.exports = router;

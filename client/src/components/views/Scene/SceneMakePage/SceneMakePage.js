@@ -104,7 +104,7 @@ const SceneMakePage = (props) => {
     useEffect(() => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
-            const validation = await axios.post(`/api/game/scene/validate`, {sceneId, gameId, isMaking: true})
+            const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
             // console.log(res.data)
             if (res.data.success && validation.data.success) { scene = res.data.scene; }
             else {
@@ -427,10 +427,9 @@ const SceneMakePage = (props) => {
     }
 
 
-    const showWarning = () =>{
+    const showWarning = () => {
 
-        if(!isEnding)
-        {
+        if (!isEnding) {
             Modal.warning({
                 title: <b>주의!</b>,
                 content: (
@@ -440,12 +439,12 @@ const SceneMakePage = (props) => {
                         <h3>따라서 이 씬에 연결되는 씬을 더이상 생성할 수 없습니다.</h3>
                     </div>
                 ),
-                centered : true,
-                width : 650,
+                centered: true,
+                width: 650,
                 onOk() { },
             });
         }
-        
+
     }
 
     const [gameDetail, setGameDetail] = useState([]);
@@ -625,10 +624,8 @@ const SceneMakePage = (props) => {
                     </div>
                 ) : (
                     <div>
-                        <StopOutlined
-                            style={{ fontSize: "20px" }}
-                        />
-                    BGM
+                        [icon]
+                        BGM
                     </div>
                 )}
                 {SoundFile.name ? (
@@ -650,44 +647,42 @@ const SceneMakePage = (props) => {
                     </div>
                 ) : (
                     <div>
-                        <StopOutlined
-                            style={{ fontSize: "20px" }}
-                        />
-                    Sound
+                        [icon]
+                        Sound
                     </div>
                 )}
             </div>
             <div className="sceneMake__btn_container">
-                <Button type="primary"
+                <div type="primary"
                     style={{ fontSize: "15px" }}
                     onClick={onDeleteScene}>
                     작성 취소
-                </Button>
-                <Button type="primary"
+                </div>
+                <div type="primary"
                     style={{ fontSize: "15px" }}
                     onClick={onTmpSave}>
                     임시저장
-                </Button>
-                <Button type="primary"
+                </div>
+                <div type="primary"
                     style={{ fontSize: "15px" }}
                     onClick={onRemove_cut}>
                     컷 삭제
-                </Button>
+                </div>
                 {CutNumber < 29 && (
-                    <Button type="primary"
+                    <div type="primary"
                         style={{ fontSize: "15px" }}
                         onClick={onSubmit_nextCut}>
                         다음 컷
-                    </Button>
+                    </div>
                 )}
                 {isFirstScene ?
-                
+
                     <Button type="primary"
                         style={{ fontSize: "15px" }}
                         onClick={onSubmit_first}>
                         업로드
                         </Button>
-                    : 
+                    :
                     <>
                         <Button type="primary"
                             style={{ fontSize: "15px" }}
@@ -696,10 +691,10 @@ const SceneMakePage = (props) => {
                             </Button>
                         <Switch
                             //! 못생겨서 미안합니다...
-                            checkedChildren= {"ENDING"}
+                            checkedChildren={"ENDING"}
                             unCheckedChildren={"CONTINUE"}
-                            onChange = {() => {setIsEnding((state) => !state)}}
-                            onClick = {showWarning}
+                            onChange={() => { setIsEnding((state) => !state) }}
+                            onClick={showWarning}
                         />
                     </>
                 }

@@ -1,6 +1,7 @@
 import { Switch } from 'antd';
-import React from 'react';
+import React, { memo } from 'react';
 import '../SceneMakePage2.css';
+import './SceneBox.css';
 
 function SceneBox(props) {
     const { CutList, CutNumber, displayCut, setCutNumber,
@@ -71,4 +72,4 @@ function SceneBox(props) {
     )
 }
 
-export default SceneBox
+export default memo(SceneBox)
