@@ -99,8 +99,11 @@ router.post("/uploadgameInfo", (req, res) => {
         });
 });
 
-router.get("/uploadgameframe", (req, res) => {
+router.post("/uploadgameframe", (req, res) => {
     const game = new Game();
+    game.title = req.body.title;
+    if(req.body.description)
+        game.description = req.body.description
     game.save((err, game) => {
         if (err) return res.json({ success: false, err });
 

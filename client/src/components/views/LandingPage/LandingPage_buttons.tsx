@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState, useCallback } from "react";
 import "./LandingPage_buttons.css"
+import "antd/dist/antd.css";
 import Axios from "axios"
 import { message } from "antd";
 
+const {TitleModalForm}: any = require("../Modal/TitleModalForm")
 interface newGameButtonProps{
     replace : Function;
 }
@@ -19,9 +21,15 @@ interface responseTypes{
 
 export function NewGameButton({replace}:newGameButtonProps) {
 
-    const uploadGameFrame = async () => {
+    const [visible, setVisible] = useState<any>(false);
+    const [formRef, setFormRef] = useState<any>(null);
+    // const [formRef, setFormRef] = useState<null | {validateFileds:any}></null>;
+
+
+
+    const uploadGameFrame = async (title : String, description:any) => {
         // tmp scene create
-        const gameResponse : responseTypes = await Axios.get("/api/game/uploadgameframe");
+        const gameResponse : responseTypes = await Axios.post("/api/game/uploadgameframe", {title, description});
 
         if (!gameResponse.data.success) {
             alert("game Frame제작 실패");
@@ -47,7 +55,6 @@ export function NewGameButton({replace}:newGameButtonProps) {
         );
         
         setTimeout(() => {
-
             replace({
                 pathname: `/scene/make`,
                 state: {
@@ -57,10 +64,43 @@ export function NewGameButton({replace}:newGameButtonProps) {
             });
         }, 1000);
     };
+    
+    const handleCreate = () => {
+        formRef?.validateFields((err: Error, values: {title : String, description : any}) => {
+            if (err) {
+                return;
+            }
+
+            // console.log("Received values of form: ", values.title);
+            uploadGameFrame(values.title, values.description);
+            formRef?.resetFields();
+            setVisible(false);
+        });
+
+    }
+
+    const saveFormRef = useCallback(node => {
+        if (node !== null) {
+            setFormRef(node);
+        }
+    }, []);
+
 
     return (
-        <button className="button-newgame" onClick ={uploadGameFrame}>
-            NEW 게임 만들기
-        </button>
+        <>
+            {/* <button className="button-newgame" onClick ={uploadGameFrame}>
+                NEW 게임 만들기
+            </button> */}
+            <button className="button-newgame" onClick={() => setVisible(true)}>
+                NEW 게임 만들기
+            </button>
+        
+            <TitleModalForm 
+                ref={saveFormRef}
+                visible={visible}
+                onCancel={() => setVisible(false)}
+                onCreate={() => handleCreate()}
+            />
+        </>
     )
 }

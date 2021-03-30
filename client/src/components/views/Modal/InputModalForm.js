@@ -26,7 +26,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, remainTime }) =
               rules: [
                 {
                   required: true,
-                  message: "Please input the title of collection!",
+                  message: "제목을 입력해주세요!",
                 },
               ],
             })(<Input ref={(input) => input && input.focus()} />)}

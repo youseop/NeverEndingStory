@@ -1,14 +1,35 @@
 .dropzone{
     margin-top: 2rem;
     margin-left: 2rem;
-    width: 10rem;
-    height: 10rem;
+    width: 20rem;
+    height: 13rem;
     border: 0.1rem solid lightgray;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-Content: center;
 }
 
 .dropzone-icon{
    font-size: 7rem;
+
+}
+
+.thumbnail__container{
+    display: flex;
+    align-items: center;
+    justify-Content: center;
+    width : inherit;
+    height : 100%;
+
+}
+.thumbnail__img{
+    min-height: 100%; 
+    object-fit : contain;
+    width : inherit;
+    height : inherit;
+    
+}
+.thumbnail__msg{
+   font-size: medium;
 }

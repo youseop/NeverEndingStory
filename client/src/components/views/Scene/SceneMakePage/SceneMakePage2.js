@@ -79,7 +79,6 @@ const SceneMakePage = (props) => {
         Array.from({ length: 30 }, () => 0)
     );
 
-
     let scene;
     useEffect(() => {
         dispatch(navbarControl(false));
@@ -531,17 +530,10 @@ const SceneMakePage = (props) => {
 
     return (
         <div className="wrapper">
-            {gameDetail?.title ?
-                <div className="box title">
-                    [{gameDetail?.title}]
-                </div> :
-                (
-                    <div className="box title">
-                        <div>[제목 먼저 짓게 수정]</div>
-                        <div className="box title-btn">상세정보</div>
-                    </div>
-                )
-            }
+            <div className="box title">
+                <div>{gameDetail.title}</div>
+                <div className="box title-btn">상세정보</div>
+            </div>
             <SceneBox
                 CutList={CutList}
                 CutNumber={CutNumber}
@@ -739,6 +731,8 @@ const SceneMakePage = (props) => {
                 visible={uploadModalState}
                 setUploadModalState={setUploadModalState}
                 onSubmit_saveScene={onSubmit_saveScene}
+                defaultTitle={gameDetail.title}
+                defaultDescription={gameDetail.description}
             />
             {
                 makeModalState !== 0 && <SceneMakeModal
