@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Axios from "axios";
 import "./HistoryMap.css";
 import { message } from "antd";
@@ -77,6 +77,17 @@ function HistoryMapPopup(props) {
       }, 300)
     );
   }
+
+  useEffect(() => {
+    Axios.get("api/game/simple-scene-info").then((response)=>{
+      console.log("hello")
+      console.log(response)
+    })
+    // effect
+    return () => {
+      // cleanup
+    }
+  }, [props.trigger])
 
   function delay_reset() {
     setSceneInfo(null);
