@@ -1,14 +1,15 @@
 import { message } from 'antd';
 import React, { memo } from 'react';
-import { useDispatch } from 'react-redux';
-import { selectCharacter } from '../../../../_actions/characterSelected_actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { pushCharacter, selectCharacter } from '../../../../_actions/characterSelected_actions';
 import './CharacterInfoDisplay.css';
 
-function CharacterInfoDisplay({ setName, character, setCharacterList, CharacterList, GameCharacterList }) {
+function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
   const dispatch = useDispatch();
+  const CharacterList = useSelector(state => state.character.CharacterList)
 
   const onClick_putCharacter = (index, url) => {
-    const CharacterSchema = {
+    const characterSchema = {
       index: character.index,
       image: url,
       posX: 30,
@@ -16,17 +17,7 @@ function CharacterInfoDisplay({ setName, character, setCharacterList, CharacterL
       reverse: 0,
       size: 90,
     }
-    setCharacterList((oldArray) => {
-      for (let i = 0; i < oldArray.length; i++) {
-        if (oldArray[i].index === character.index)
-          return [...oldArray.slice(0, i), { ...oldArray[i], image: url }, ...oldArray.slice(i + 1, 4)]
-      }
-      if (oldArray.length >= 3) {
-        message.info("인물은 최대 세명까지 추가 가능합니다.");
-        return oldArray;
-      }
-      return [...oldArray, CharacterSchema]
-    })
+    dispatch(pushCharacter({oldArray: CharacterList, characterSchema}))
     setName(character.name)
   }
 
@@ -35,7 +26,7 @@ function CharacterInfoDisplay({ setName, character, setCharacterList, CharacterL
     dispatch(selectCharacter({ ...GameCharacterList[index], index: index }));
   }
 
-  const CharacterListImages = CharacterList.map((character, index) => {
+  const CharacterListImages = CharacterList?.map((character, index) => {
     const img = new Image();
     img.src = character.image;
     return (

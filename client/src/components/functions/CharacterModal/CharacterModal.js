@@ -6,24 +6,18 @@ import Character from './Character';
 import CharacterInfoDisplay from './CharacterInfoDisplay/CharacterInfoDisplay';
 import './CharacterModal.css';
 
-function CharacterModal({ setCharacterList, CharacterList, GameCharacterList, setName }) {
+function CharacterModal({GameCharacterList, setName }) {
   const dispatch = useDispatch();
-
-  const onClick_detachCharacter = () => {
-    dispatch(detachCharacter());
-  }
+  const CharacterList = useSelector(state => state.character.CharacterList)
+  // const onClick_detachCharacter = () => {
+  //   dispatch(detachCharacter());
+  // }
 
   const currentCharacter = useSelector((state) => state.character);
 
   const onClick_removeCharacter = () => {
-    setCharacterList((oldArray) => {
-      for (let i = 0; i < oldArray.length; i++) {
-        if (oldArray[i].index === currentCharacter.characterSelected.index) {
-          message.info("삭제되었습니다.");
-          return [...oldArray.slice(0, i), ...oldArray.slice(i + 1, 4)]
-        }
-      }
-    })
+    let index = currentCharacter.characterSelected.index;
+    dispatch({oldArray:CharacterList, index})
     setName("")
   }
 
@@ -31,7 +25,7 @@ function CharacterModal({ setCharacterList, CharacterList, GameCharacterList, se
 
   useEffect(() => {
     let flag = 0;
-    for (let i = 0; i < CharacterList.length; i++) {
+    for (let i = 0; i < CharacterList?.length; i++) {
       if (CharacterList[i].index === currentCharacter.characterSelected.index) {
         flag = 1;
         break;
@@ -53,8 +47,6 @@ function CharacterModal({ setCharacterList, CharacterList, GameCharacterList, se
           setName={setName}
           GameCharacterList={GameCharacterList}
           character={currentCharacter.characterSelected}
-          setCharacterList={setCharacterList}
-          CharacterList={CharacterList}
         />
         {isAdded && <div onClick={onClick_removeCharacter}>삭제</div>}
       </div>

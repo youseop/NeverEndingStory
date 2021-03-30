@@ -3,14 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import './Character.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCharacter } from '../../../_actions/characterSelected_actions';
+import { popCharacter, selectCharacter, updateCharacter } from '../../../_actions/characterSelected_actions';
 import { addEvent, removeAllEvents } from '../handleEventListener';
 import { faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 function Character(props) {
   const dispatch = useDispatch();
-
-  const { charSchema, GameCharacterList, setCharacterList, index, CharacterList } = props;
+  const CharacterList = useSelector(state => state.character.CharacterList)
+  const { charSchema, GameCharacterList, index } = props;
 
   const element_X = useRef();
   const element_Y = useRef();
@@ -79,16 +79,16 @@ function Character(props) {
   const onMouseUp = (e) => {
     removeAllEvents(background_element, "mousemove");
     removeAllEvents(background_element, "mouseup");
-    setCharacterList((oldArray) => {
-      return [
-        ...oldArray.slice(0, index),
-        { ...oldArray[index], posX: Number(element_X.current.style.left.replace(/%/g, '')), posY: Number(element_Y.current.style.top.replace(/%/g, '').replace(/px/g, '')) },
-        ...oldArray.slice(index + 1, 4)
-      ]
-    })
-    setCharacterList((oldArray) => {
-      return [...oldArray.slice(0, index), { ...oldArray[index], size: Number(element_Y.current.style.height.replace(/%/g, '')) }, ...oldArray.slice(index + 1, 4)]
-    })
+    dispatch(updateCharacter({
+      oldArray:CharacterList, 
+      data: {
+        posX: Number(element_X.current.style.left.replace(/%/g, '')),
+        posY: Number(element_Y.current.style.top.replace(/%/g, '').replace(/px/g, '')),
+        size: Number(element_Y.current.style.height.replace(/%/g, ''))
+      },
+      index
+    }))
+
     pivot = [e.pageX, e.pageY];
     drag = false;
     setSizing(false);
@@ -104,6 +104,10 @@ function Character(props) {
   const onMouseOut = (e) => {
     setMoving(true);
     setSizing(false);
+  }
+
+  const onClick = () => {
+    dispatch(popCharacter({oldArray:CharacterList, index}));
   }
 
   return (
@@ -125,6 +129,7 @@ function Character(props) {
           icon={faTimesCircle}
           className="btn_character_delete"
           style={{left: `${imgWidth-17}px` }}
+          onClick={onClick}
         />
         <img
           onMouseDown={onMouseDown}

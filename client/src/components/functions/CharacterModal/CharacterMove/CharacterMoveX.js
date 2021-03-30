@@ -1,7 +1,10 @@
 import React, { memo, useEffect, useState } from 'react';
+import { updateCharacter } from '../../../../_actions/characterSelected_actions';
 import './CharacterMoveX.css';
 
-function CharacterMoveX({posX, setCharacterList, index, element}) {
+function CharacterMoveX({ posX, index, element }) {
+  const dispatch = useDispatch();
+  const CharacterList = useSelector(state => state.character.CharacterList)
   let pivotX = 0;
   let drag = false;
 
@@ -21,25 +24,29 @@ function CharacterMoveX({posX, setCharacterList, index, element}) {
   function mouseMove(e) {
     if (drag) {
       if (pivotX != e.pageX) {
-        setCharacterList((oldArray)=> {
-          const background_width = document.getElementById("backgroundImg_container").offsetWidth;
-          const prev_posX = oldArray[index].posX;
-          const next_posX = prev_posX + 100*(e.pageX-pivotX)/background_width;
-          return [...oldArray.slice(0,index), {...oldArray[index], posX: next_posX} ,...oldArray.slice(index+1,4)]
-        })
+        const background_width = document.getElementById("backgroundImg_container").offsetWidth;
+        const prev_posX = CharacterList[index].posX;
+        const next_posX = prev_posX + 100 * (e.pageX - pivotX) / background_width;
+        dispatch(updateCharacter({
+          oldArray: CharacterList,
+          data: {
+            posX: next_posX
+          },
+          index
+        }))
         pivotX = e.pageX;
       }
     }
     e.preventDefault();
   }
 
-  
+
   useEffect(() => {
     const char_element = document.getElementById(`${index}`);
     char_element.addEventListener("mousedown", mouseDown);
     char_element.addEventListener("mouseup", mouseUp);
     char_element.addEventListener("mousemove", mouseMove);
-  },[index])
+  }, [index])
 
 
   return (

@@ -1,19 +1,18 @@
 import React, { memo, useEffect } from 'react'
+import { useSelector } from 'react-redux';
 import Character from "../../functions/CharacterModal/Character";
 
 import "./CharacterBlock.css";
-
 const CharacterBlock = (props) => {
-  const { onRemove_character, CharacterList, GameCharacterList, setCharacterList } = props;
+  const { onRemove_character, GameCharacterList } = props;
 
-  const characterblocks = CharacterList.map((charSchema, index) => {
+  const CharacterList = useSelector(state => state.character.CharacterList)
+  const characterblocks = CharacterList?.map((charSchema, index) => {
     return (
       <div key={index}>
         <Character
-          setCharacterList={setCharacterList}
           GameCharacterList={GameCharacterList}
           onRemove_character={onRemove_character}
-          CharacterList={CharacterList}
           index={index}
           charSchema={charSchema}
         />
@@ -22,7 +21,7 @@ const CharacterBlock = (props) => {
   });
 
   return (
-    CharacterList.length > 0 &&
+    CharacterList?.length > 0 &&
     <div className="CharacterBlocks" id="CharacterBlocks">
       {characterblocks}
     </div>

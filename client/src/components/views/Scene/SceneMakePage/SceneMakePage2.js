@@ -22,7 +22,7 @@ import { SVG } from "../../../svg/icon";
 import { useHistory } from "react-router-dom"
 import { socket } from "../../../App";
 import { PlayCircleOutlined, PauseCircleOutlined, StopOutlined } from '@ant-design/icons';
-import { detachCharacter } from "../../../../_actions/characterSelected_actions";
+import { detachCharacter, popCharacter, setCharacterList } from "../../../../_actions/characterSelected_actions";
 import "./SceneMakePage2.css";
 import { TextBlock } from "../../GamePlayPage/TextBlock";
 import { MS_PER_HR } from "../../../App"
@@ -44,6 +44,7 @@ const SceneMakePage = (props) => {
     }
 
     const user = useSelector((state) => state.user);
+    const CharacterList = useSelector((state) => state.character.CharacterList);
 
     const padding = 0.1;
     const minSize = 300;
@@ -60,7 +61,6 @@ const SceneMakePage = (props) => {
 
     const [SidBar_script, setSidBar_script] = useState(true);
 
-    const [CharacterList, setCharacterList] = useState([]);
     const [BackgroundImg, setBackgroundImg] = useState("http://localhost:5000/uploads/defaultBackground.png");
     const [Script, setScript] = useState("");
     const [Name, setName] = useState("");
@@ -126,7 +126,7 @@ const SceneMakePage = (props) => {
                 // 임시저장된 녀석 불러오기
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
-                setCharacterList(tmpFirstCut.characterList)
+                dispatch(setCharacterList(tmpFirstCut.characterList));
                 setBackgroundImg(tmpFirstCut.background)
                 setName(tmpFirstCut.name);
                 setScript(tmpFirstCut.script);
@@ -144,7 +144,7 @@ const SceneMakePage = (props) => {
                             //! 이전 씬의 마지막 컷 설정 유지
                             if (response.data.success) {
                                 const lastCut = response.data.lastCut;
-                                setCharacterList(lastCut.characterList);
+                                dispatch(setCharacterList(lastCut.characterList));
                                 setBackgroundImg(lastCut.background);
                                 setName(lastCut.name);
                                 dispatch(gameLoadingPage(0));
@@ -279,7 +279,7 @@ const SceneMakePage = (props) => {
     };
 
     const displayCut = (index) => {
-        setCharacterList(CutList[index].characterList);
+        dispatch(setCharacterList(CutList[index].characterList));
         setBackgroundImg(CutList[index].background);
         setScript(CutList[index].script);
         setName(CutList[index].name);
@@ -300,10 +300,10 @@ const SceneMakePage = (props) => {
     };
 
     const onRemove_character = (index) => {
-        setCharacterList((oldArray) => [
-            ...oldArray.slice(0, index),
-            ...oldArray.slice(index + 1, 4),
-        ]);
+        dispatch(popCharacter({
+            oldArray: CharacterList,
+            index
+        }))
     };
 
     const onSubmit_nextCut = (event) => {
@@ -464,14 +464,11 @@ const SceneMakePage = (props) => {
                 <div ref={characterSidebarElement}>
                     <CharacterModal
                         setName={setName}
-                        setCharacterList={setCharacterList}
-                        CharacterList={CharacterList}
                         GameCharacterList={gameDetail.character}
                     />
                     <CharacterSideBar
                         gameDetail={gameDetail}
                         setMakeModalState={setMakeModalState}
-                        setCharacterList={setCharacterList}
                         setName={setName}
                     />
                 </div>
@@ -571,8 +568,6 @@ const SceneMakePage = (props) => {
                     />
                     <CharacterBlock
                         GameCharacterList={gameDetail.character}
-                        CharacterList={CharacterList}
-                        setCharacterList={setCharacterList}
                         onRemovech_aracter={onRemove_character}
                     />
                     {SidBar_script && Script && (
