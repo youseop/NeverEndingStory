@@ -3,11 +3,10 @@ import * as Yup from 'yup';
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../../_actions/user_actions";
-import { Formik, FormikErrors } from 'formik';
+import { Formik } from 'formik';
 import { Form, Input } from 'antd';
 import "./RegisterPage.css"
 import Axios from "axios"
-import { response } from "express";
 
 interface RegisterPageProps {
   history: {
