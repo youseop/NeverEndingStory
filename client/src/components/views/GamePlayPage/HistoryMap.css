@@ -16,24 +16,26 @@
 .HistoryMap_inner {
   z-index: 98;
   position: absolute;
-  /* background-color: gold; */
-  height: 7em;
-  top: 40%;
+  width: 50%;
+  height: 18%;
+  top: 45%;
   right: 45%;
 
-  display: inline-flex;
-  list-style: none;
-  /* float:right; */
+  display: flex;
+  border: none;
+  flex-direction: row;
+  gap: 1px;
+
   white-space: nowrap;
   transition-duration: 0.5s;
-
-  /* margin-left: 3px; */
+  /* background-color: aqua; */
 }
 
 .HistoryMap_scene {
   z-index: 97;
-  width: 10em;
-  height: 7em;
+  position: relative;
+
+  flex: 1;
   margin-left: 0.5em;
   border-radius: 0.5em;
   position: relative;
@@ -50,96 +52,112 @@
 
   border: 0.1em white solid;
   color: white;
-
 }
-.HistoryMap_scene:hover{
+.HistoryMap_scene:hover {
   z-index: 101;
-  transform:scale(1.8);
+  transform: scale(1.8);
   transition-duration: 0.7s;
 }
 
-.HistoryMap_scene_num{
+.HistoryMap_scene_num {
   z-index: 100;
-  font-size:1.5em;
+  font-size: 1.5em;
   position: absolute;
-  top:0%;
-  left:0%;
+  top: 0%;
+  left: 0%;
 
-  filter:brightness(100%);
+  filter: brightness(100%);
 }
 
-.HistoryMap_scene_img{
+.HistoryMap_scene_img {
   z-index: 97;
   position: absolute;
   width: 100%;
   height: 100%;
-  object-fit:fill;
-  filter:brightness(50%);
+  object-fit: fill;
+  filter: brightness(50%);
   margin: 0;
   border-radius: 0;
 }
 
-.HistoryMap_scene_name{
+.HistoryMap_scene_name {
   z-index: 100;
-  font-size:1em;
+  font-size: 1em;
   position: absolute;
-  top:30%;
-  left:0%;
+  top: 30%;
+  left: 0%;
 }
 
-.HistoryMap_scene_text{
+.HistoryMap_scene_text {
   z-index: 100;
-  font-size:0.5em;
+  font-size: 0.5em;
   position: absolute;
-  top:50%;
-  left:0;
+  top: 50%;
+  left: 0;
 }
 
 .close_btn {
-    position: absolute;
-    top: 5%;
-    right: 5%;
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  width:4%;
+  height:5%;
+  font-family: Noto Sans KR;
+  font-size: 0.8em;
 }
 
-.toleft_btn{
+.toleft_btn {
   z-index: 100;
   position: absolute;
+
+  height: 10%;
+  width: 5%;
   top: 50%;
   left: 5%;
-  background-color: aqua;
+  rotate: -1;
+  transform: rotate(180deg)
+}
+.toleft_btn:hover {
+  transform: scale(-1.3);
+  transition-duration: 0.7s;
 }
 
-.toright_btn{
+.toright_btn {
   z-index: 100;
+  height: 10%;
+  width: 5%;
   position: absolute;
   top: 50%;
   right: 5%;
-  background-color: aqua;
+}
+.toright_btn:hover {
+  transform: scale(1.3);
+  transition-duration: 0.7s;
 }
 
-.warning_popup{
-  z-index:100;
+.warning_popup {
+  z-index: 100;
   /* position: relative; */
   position: absolute;
-  top:35%;
-  left:35%;
+  top: 35%;
+  left: 35%;
   margin: auto;
 
   width: 33%;
   height: 33%;
-  
+
   background-color: aqua;
   /* transform: translate(50%, 50%); */
   /* transform-origin: center center; */
 }
 
-.warning_text{
+.warning_text {
   position: absolute;
   bottom: 40%;
   left: 15%;
 }
 
-.ok_btn{
+.ok_btn {
   position: absolute;
   bottom: 10%;
   left: 45%;

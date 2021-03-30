@@ -1,7 +1,8 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import "./HistoryMap.css";
-import { message } from "antd";
+import { message, Button, Modal } from "antd";
+import { SVG } from "../../svg/icon";
 
 function MapToLeft() {
   var map = document.getElementsByClassName("HistoryMap_inner")[0];
@@ -24,8 +25,8 @@ function MapToRight() {
 }
 
 function GoToScene(props) {
-  const { userhistory, gameId, sceneId, GoScene } = props;
-  const data = { data: { sceneIndex: GoScene - 1 } };
+  const { userhistory, gameId, sceneId, targetScene } = props;
+  const data = { data: { sceneIndex: targetScene - 1 } };
   Axios.post("/api/game/refreshHistory", data).then((response) => {
     if (!response.data.success) {
       message.error("Scene 변경 요청 실패");
@@ -33,10 +34,10 @@ function GoToScene(props) {
       userhistory.replace({
         pathname: `/gameplay`,
         state: {
-          sceneId: sceneId[GoScene - 1],
+          sceneId: sceneId[targetScene - 1],
           gameId: gameId,
-        }
-      })
+        },
+      });
       const close = document.getElementsByClassName("close_btn");
       for (let i = close.length - 1; i >= 0; i--) {
         close[i].click();
@@ -45,117 +46,104 @@ function GoToScene(props) {
   });
 }
 
-function GetSceneInfo(props) {
-  const { index, scene, setSceneInfo } = props;
-  Axios.get(`/api/game/getSceneInfo/${scene}`).then((response) => {
-    if (!response.data.success) {
-      alert("Scene 정보 없음...");
-    } else {
-      const cutList = response.data.scene.cutList;
-      const lastcut = cutList[cutList.length - 1];
-      setSceneInfo({
-        sceneindex: index,
-        background: lastcut.background,
-        name: lastcut.name,
-        script: lastcut.script,
-      });
-    }
-  });
-}
+let sceneInfo = [];
+let targetScene = 1;
 
 function HistoryMapPopup(props) {
   const { userhistory, setTrigger } = props;
   const { gameId, sceneId } = props.history;
-  const [GoScene, setGoScene] = useState(null);
-  const [DelayHandler, setDelayHandler] = useState(null);
-  const [SceneInfo, setSceneInfo] = useState(null);
+  const [SceneInfo, setSceneInfo] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  function delay(index, scene, setSceneInfo) {
-    setDelayHandler(
-      setTimeout(() => {
-        GetSceneInfo({ index, scene, setSceneInfo });
-      }, 300)
-    );
-  }
+  const showModal = (target) => {
+    targetScene = target;
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    GoToScene({ userhistory, gameId, sceneId, targetScene });
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   useEffect(() => {
-    Axios.get("api/game/simple-scene-info").then((response)=>{
-      console.log("hello")
-      console.log(response)
-    })
-    // effect
-    return () => {
-      // cleanup
+    if (props.trigger) {
+      Axios.get("api/game/simple-scene-info").then((response) => {
+        sceneInfo = response.data.sceneinfo;
+        setSceneInfo(sceneInfo);
+      });
+      return () => {
+        setSceneInfo([]);
+      };
     }
-  }, [props.trigger])
-
-  function delay_reset() {
-    setSceneInfo(null);
-    clearTimeout(DelayHandler);
-  }
+  }, [props.trigger]);
 
   function close_button() {
     setTrigger(false);
   }
 
-  const HistoryMap_scenes = sceneId.map((scene, index) => {
+  const HistoryMap_scenes = SceneInfo.map((scene, index) => {
     return (
       <div
         className="HistoryMap_scene"
         key={index + 1}
-        onMouseEnter={() => delay(index, scene, setSceneInfo)}
-        onMouseLeave={() => delay_reset()}
-        onClick={() => setGoScene(index + 1)}
+        onClick={() => showModal(index + 1)}
       >
-        {SceneInfo && SceneInfo.sceneindex === index ? (
-          <div>
-            <div className="HistoryMap_scene_num"> #{index + 1}</div>
-            <img className="HistoryMap_scene_img" src={SceneInfo.background} />
-            <div className="HistoryMap_scene_name">{SceneInfo.name}:</div>
-            <div className="HistoryMap_scene_text">"{SceneInfo.script}"</div>
-          </div>
-        ) : (
-          <div>
-            <div className="HistoryMap_scene_num"> #{index + 1}</div>
-          </div>
-        )}
+        <div className="HistoryMap_scene_num"> #{index + 1}</div>
+        <img className="HistoryMap_scene_img" src={scene.background} />
+        <div className="HistoryMap_scene_name">{scene.name}:</div>
+        <div className="HistoryMap_scene_text">"{scene.script}"</div>
       </div>
     );
   });
 
-  //! 해당 녀석 클릭과 화면 클릭을 같게 인식한다.. 이부분을 고쳐야합니다!!
   return props.trigger ? (
     <div className="HistoryMap_popup">
       <button className="close_btn" onClick={() => close_button()}>
-        close
+        닫기
       </button>
 
       <div className="toleft_btn" onClick={MapToLeft}>
-        to left 나중에 이미지로 대체
+        <SVG
+          className="toleft_btn"
+          src="arrow_1"
+          width="45"
+          height="50"
+          color="#F5F5F5"
+        />
       </div>
 
       <div className="toright_btn" onClick={MapToRight}>
-        to right 나중에 이미지로 대체
+        <SVG
+          className="toright_btn"
+          src="arrow_1"
+          width="100%"
+          height="100%"
+          color="#F5F5F5"
+        />
       </div>
 
-      <div className="HistoryMap_inner">{HistoryMap_scenes}</div>
+      <div
+        className="HistoryMap_inner"
+        style={{ width: sceneInfo.length * 15 + "%" }}
+      >
+        {HistoryMap_scenes}
+      </div>
 
-      {GoScene ? (
-        <div className="warning_popup">
-          <button
-            className="ok_btn"
-            onClick={() => GoToScene({ userhistory, gameId, sceneId, GoScene })}
-          >
-            ok
-          </button>
-          <button className="close_btn" onClick={() => setGoScene(null)}>
-            close
-          </button>
-          <div className="warning_text">
-            are you sure? 다시는 돌아올 수 없다?
-          </div>
-        </div>
-      ) : null}
+      <Modal
+        title="경고"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>
+          {targetScene} 번째 씬으로 돌아갑니다. 돌아가려는 씬까지의 기록은
+          삭제됩니다.
+        </p>
+      </Modal>
     </div>
   ) : null;
 }
