@@ -11,7 +11,7 @@ const {
 } = require("../models/Game_Components");
 const { Game } = require("../models/Game");
 const { User } = require("../models/User");
-const { Scene } = require("../models/Scene");
+const { Scene, sceneSchema } = require("../models/Scene");
 const mongoose = require("mongoose");
 const { auth } = require("../middleware/auth");
 
@@ -452,23 +452,27 @@ router.post("/rank", async (req, res) => {
 })
 
 router.get("/simple-scene-info", auth, async (req, res) => {
-    // let { sceneId } = req.params;
     if (!req.user) {
         return res.status(400).json({ success: false, msg: "Not a user" });
     }
-    console.log(req)
-    // sceneId = mongoose.Types.ObjectId(sceneId);
-    // try {
-    //     const scene = await Scene.findOne({ _id: sceneId });
-    //     if ( scene === null ) {
-    //         // console.log("??????")
-    //         return res.status(200).json({ success: false });
-    //     }
-    //     return res.status(200).json({ success: true, scene });
-    // } catch (err) {
-    //     console.log(err);
-    //     return res.status(400).json({ success: false });
-    // }
+    try {
+        const sceneList = req.user.gamePlaying.sceneIdList
+        let sceneinfo=[]
+        for(let i=0; i <sceneList.length; i++){
+            const sceneId = mongoose.Types.ObjectId(sceneList[i]);
+            const scene = await Scene.findOne({ _id: sceneId });
+            sceneinfo.push({
+                sceneId : sceneId,
+                background : scene.cutList[scene.cutList.length-1].background,
+                name : scene.cutList[scene.cutList.length-1].name,
+                script : scene.cutList[scene.cutList.length-1].script,
+            });
+        }
+        return res.status(200).json({sceneinfo:sceneinfo})
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ success: false });
+    }
 });
 
 module.exports = router;

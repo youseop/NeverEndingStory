@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import { useDispatch } from "react-redux";
 import "./LoginPage.css";
-import { yellow } from "@material-ui/core/colors";
 
 interface LoginPageProps {
   history: {

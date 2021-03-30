@@ -1,8 +1,8 @@
 import React from 'react'
-import { JsxElement } from 'typescript';
-import { SVG, BAR } from "../../svg/icon";
+import { SVG, BAR, SCENE_ICON } from "../../svg/icon";
 import "./LandingPage_gameLists.css"
 import { LOCAL_HOST } from "../../Config";
+import {Link} from "react-router-dom";
 
 interface Data {
     category: string;
@@ -17,6 +17,7 @@ interface Game {
     _id: string;
     thumbnail: string;
     category: string;
+    sceneCnt:number;
 }
 
 interface ContainerProps {
@@ -208,29 +209,19 @@ export function GameList(props: ContainerProps) {
     data.length = 0;
     const gameList = games.map((game: Game, index: number) => {
         if (game.title) {
-            // console.log(game.title);
-            // console.log(index);
             data.length += 1;
             return (
                 <div className="gamelist-game" key={index}>
-                    <a href={`/game/${game._id}`}>
+                    <Link to={`/game/${game._id}`}>
                         <img
                             className="game-image"
                             src={`http://${LOCAL_HOST}:5000/${game.thumbnail}`}
                             alt={game.title}
                         />
-                        <div className="game-title">
-                            {game.title.length>30 
-                            ? 
-                            <>
-                            {game.title.substr(0,30) }
-                            ...
-                            </>
-                            :
-                            game.title
-                            }
-                        </div>
-                    </a>
+                        <div className="game-title">{game.title}</div>
+                    </Link>
+                    <div className="game-sceneNum">{game.sceneCnt}</div>
+                    <div className="game-sceneIcon"><SCENE_ICON/></div>
                     <div className="game-category">{game.category}</div>
                 </div>
             );
@@ -238,7 +229,7 @@ export function GameList(props: ContainerProps) {
         return null;
     });
 
-    data.limit = Math.round(data.length / 4) + 1
+    data.limit = Math.round(data.length / 4)
 
     //* bars
     const bars = [];

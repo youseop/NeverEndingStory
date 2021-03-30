@@ -53,6 +53,13 @@ const LoadingPage = () => {
           className="loading_page"
         />
       );
+    case LOADING_TYPE.BLACKIN:
+      return (
+        <div
+          style={{ animation: "1s ease-out 0s 1 blackIn" }}
+          className="loading_page"
+        />
+      );
     default:
       return null;
   }
