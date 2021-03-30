@@ -8,6 +8,7 @@ const { auth } = require("../middleware/auth");
 const { View } = require('../models/View');
 const { ThumbsUp } = require('../models/ThumbsUp');
 
+const {sanitize} = require("../lib/sanitize")
 
 const MS_PER_HR = 3600000
 
@@ -49,7 +50,7 @@ router.post('/create', auth, async (req, res) => {
   const scene = new Scene({
     gameId: req.body.gameId,
     writer: userId,
-    title: req.body.title,
+    title: sanitize(req.body.title),
     nextList: [],
     cutList: [],
     isFirst: req.body.isFirst,
@@ -134,6 +135,8 @@ router.post('/save', auth, async (req, res) => {
       const characterCut = new CharacterCut(req.body.cutList[i].characterList[j]);
       scene.cutList[i].characterList.push(characterCut);
     }
+    scene.cutList[i].name = sanitize(scene.cutList[i].name);
+    scene.cutList[i].script = sanitize(scene.cutList[i].script);
   }
 
   const view = new View({

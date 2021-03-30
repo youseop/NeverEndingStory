@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Form, message, Input } from "antd";
 import Axios from "axios";
 import { useSelector } from "react-redux";
@@ -20,15 +20,22 @@ const CategoryOptions = [
     { value: 4, label: "병맛" },
 ];
 
-const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene }) => {
+const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene, defaultTitle, defaultDescription }) => {
     const user = useSelector((state) => state.user);
-    const [GameTitle, setGameTitle] = useState("");
-    const [description, setDescription] = useState("");
+    const [GameTitle, setGameTitle] = useState({defaultTitle});
+    const [description, setDescription] = useState({defaultDescription});
     const [isPrivate, setIsPrivate] = useState(0);
     const [category, setCategory] = useState(CategoryOptions[0].label);
 
     const [blobURL, setBlobURL] = useState("");
     const [thumbFile, setThumbFile] = useState([]);
+
+    //! 렌더링의 타이밍으로 부득이하게..
+    useEffect(() => {
+        setGameTitle(defaultTitle)
+        setDescription(defaultDescription)
+    }, [defaultTitle, defaultDescription])
+
 
     const onTitleChange = (event) => {
         setGameTitle(event.currentTarget.value);
@@ -130,6 +137,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene 
             onOk={upload}
             width={1000}
             centered = {true}
+            closable ={false}
         >
             <div>
                 <label>Upload Game</label>
@@ -140,25 +148,17 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene 
                             multiple={false}
                             maxSize={10485761} // 10MB + 1
                             accept="image/*"
+                            blobURL = {blobURL}
                         >
                         </MyDropzone>
 
-                        {blobURL && (
-                            <div>
-                                <img
-                                    className="thumbnail__img"
-                                    src={blobURL}
-                                    alt="thumbnail"
-                                />
 
-                            </div>
-                        )}
                     </div>
                     <div className ="scenemake_modal_description">
-                        <label>Title</label>
-                        <Input onChange={onTitleChange} value={GameTitle} />
+                        <label>제목</label>
+                        <Input onChange={onTitleChange} value={GameTitle}/>
 
-                        <label>Description</label>
+                        <label>게임 설명</label>
                         <TextArea onChange={onDescriptionChange} value={description} />
 
                         <select onChange={onPrivateChange}>

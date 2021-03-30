@@ -4,7 +4,7 @@ import Dropzone from "react-dropzone";
 import "./MyDropzone.css";
 
 
-function MyDropzone({ onDrop, multiple, maxSize, accept }) {
+function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL }) {
     return <Dropzone
         onDrop={onDrop}
         multiple={multiple}
@@ -13,11 +13,26 @@ function MyDropzone({ onDrop, multiple, maxSize, accept }) {
         // accept="image/*,audio/*,video/*"
         accept={accept}
     >
+
         {({ getRootProps, getInputProps }) => (
             <div className="dropzone" {...getRootProps()}>
                 <input {...getInputProps()} />
-                <p>클릭 혹은 드래그...</p>
-                {/* <FileAddOutlined className="dropzone-icon" /> */}
+                {blobURL ? (
+                    <div className = "thumbnail__container">
+                        <img
+                            className="thumbnail__img"
+                            src={blobURL}
+                            alt="thumbnail"
+                        />
+
+                    </div>
+                    )
+                :
+                <>
+                        <div><p className="thumbnail__msg"><b>Click or Drop</b></p>  </div>
+                    <FileAddOutlined className="dropzone-icon" />
+                </>
+                }
             </div>
         )}
     </Dropzone>
