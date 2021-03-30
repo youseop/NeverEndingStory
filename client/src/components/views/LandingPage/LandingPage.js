@@ -42,7 +42,7 @@ function LandingPage(props) {
         <NewGameButton replace={props.history.replace} />
       </div>
       <GameList data={ListContainer.recent_games} games={games} />
-      {/* <GameList data={ListContainer.popular_games} games={games} /> */}
+      <GameList data={ListContainer.popular_games} games={games} />
     </div>
   );
 }

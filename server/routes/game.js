@@ -453,34 +453,34 @@ router.post("/rank", async (req, res) => {
 
 })
 
-router.get("/simple-scene-info", auth, async (req, res) => {
-    // let { sceneId } = req.params;
-    console.log("hi")
-    if (!req.user) {
-        return res.status(400).json({ success: false, msg: "Not a user" });
-    }
+// router.get("/simple-scene-info", auth, async (req, res) => {
+//     // let { sceneId } = req.params;
+//     console.log("hi")
+//     if (!req.user) {
+//         return res.status(400).json({ success: false, msg: "Not a user" });
+//     }
 
-    try {
-        req.user.gamePlaying.sceneIdList.forEach(sceneId => {
-            const sceneId = mongoose.Types.ObjectId(sceneId);
-            // gameDetail.sound.push(sound);
-            console.log(sceneId);
-            const scene = await Scene.findOne({ _id: sceneId });
+//     try {
+//         req.user.gamePlaying.sceneIdList.forEach(sceneId => {
+//             const sceneId = mongoose.Types.ObjectId(sceneId);
+//             // gameDetail.sound.push(sound);
+//             console.log(sceneId);
+//             const scene = await Scene.findOne({ _id: sceneId });
 
-        });
+//         });
     
-        return res.status(200).json({body: req.user.gamePlaying.sceneIdList})
+//         return res.status(200).json({body: req.user.gamePlaying.sceneIdList})
 
 
-        // if ( scene === null ) {
-        //     // console.log("??????")
-        //     return res.status(200).json({ success: false });
-        // }
-        // return res.status(200).json({ success: true, scene });
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({ success: false });
-    }
-});
+//         // if ( scene === null ) {
+//         //     // console.log("??????")
+//         //     return res.status(200).json({ success: false });
+//         // }
+//         // return res.status(200).json({ success: true, scene });
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(400).json({ success: false });
+//     }
+// });
 
 module.exports = router;
