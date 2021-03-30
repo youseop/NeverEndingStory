@@ -84,4 +84,19 @@ router.post("/profile", (req, res) => {
     });
 });
 
+
+router.post("/email-check", (req, res) => {
+    User.findOne({ email: req.body.email }, (err, user) => {
+        if (err) return res.json({ success: false, err });
+        if (!user)
+            return res.status(200).send({
+                success: true,
+                usedEmail: false
+            });
+        return res.status(200).send({
+            success: true,
+            usedEmail: true
+        });
+    });
+});
 module.exports = router;
