@@ -7,7 +7,7 @@ interface newGameButtonProps{
     replace : Function;
 }
 
-interface responseProps{
+interface responseTypes{
     data: {
         game: {
             _id:string;
@@ -21,7 +21,7 @@ export function NewGameButton({replace}:newGameButtonProps) {
 
     const uploadGameFrame = async () => {
         // tmp scene create
-        const gameResponse : responseProps = await Axios.get("/api/game/uploadgameframe");
+        const gameResponse : responseTypes = await Axios.get("/api/game/uploadgameframe");
 
         if (!gameResponse.data.success) {
             alert("game Frame제작 실패");
@@ -36,7 +36,7 @@ export function NewGameButton({replace}:newGameButtonProps) {
             title: "",
         };
 
-        const sceneResponse : responseProps = await Axios.post("/api/scene/create", firstScene);
+        const sceneResponse : responseTypes = await Axios.post("/api/scene/create", firstScene);
         if (!sceneResponse.data.success) {
             alert("scene Frame제작 실패");
             return;

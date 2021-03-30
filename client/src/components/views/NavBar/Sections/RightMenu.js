@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { Menu, message } from "antd";
+import { Menu } from "antd";
 import axios from "axios";
 import { USER_SERVER } from "../../../Config";
-import { withRouter } from "react-router-dom";
+import { withRouter ,Link} from "react-router-dom";
 import { useSelector } from "react-redux";
-import Axios from "axios";
 
 function RightMenu(props) {
     const user = useSelector((state) => state.user);
@@ -20,75 +19,29 @@ function RightMenu(props) {
         });
     };
 
-    const uploadGameFrame = async () => {
-        // console.log(props)
-
-        // tmp scene create
-        const gameResponse = await Axios.get("/api/game/uploadgameframe")
-
-        if (!gameResponse.data.success) {
-            alert("game Frame제작 실패");
-            return;
-        }
-
-        const firstScene = {
-            gameId: gameResponse.data.game._id,
-            prevSceneId: null,
-            sceneDepth: 0,
-            isFirst: 1,
-            title: ""
-        };
-
-
-        const sceneResponse = await Axios.post("/api/scene/create", firstScene)
-        if (!sceneResponse.data.success) {
-            alert("scene Frame제작 실패");
-            return;
-        }
-
-        message.success(
-            "첫 Scene을 생성해주세요. 오른쪽의 버튼을 활용해 이미지들을 추가할 수 있습니다."
-        );
-        setTimeout(() => {
-            props.history.replace({
-                pathname: `/scene/make`,
-                state: {
-                    gameId: gameResponse.data.game._id,
-                    sceneId: sceneResponse.data.sceneId
-                }
-            });
-        }, 1000);
-
-
-    }
-
     if (user.userData && !user.userData.isAuth) {
         return (
             <Menu mode={props.mode}>
-                <Menu.Item key="mail">
-                    <a href="/login">Signin</a>
+                <Menu.Item key="login">
+                    <Link to="/login">로그인</Link>
                 </Menu.Item>
-                <Menu.Item key="app">
-                    <a href="/register">Signup</a>
+                <Menu.Item key="register">
+                    <Link to="/register">회원가입</Link>
                 </Menu.Item>
             </Menu>
         );
     } else {
         return (
             <Menu mode={props.mode}>
-                <Menu.Item key="upload">
-                    <a onClick={uploadGameFrame}>Game Upload</a>
-                    {/* <a href="/game/upload">Game Upload</a> */}
-                </Menu.Item>
                 <Menu.Item key="profile">
                     {user?.userData?._id ? 
-                        <a href={`/profile/${user.userData._id}`}>Profile</a>
+                        <Link to={`/profile/${user.userData._id}`}>프로필</Link>
                         :
-                        "Profile"
+                        "프로필"
                     }
                 </Menu.Item>
                 <Menu.Item key="logout">
-                    <a onClick={logoutHandler}>Logout</a>
+                    <Link to="/" onClick={logoutHandler}>로그아웃</Link>
                 </Menu.Item>
             </Menu>
         );
