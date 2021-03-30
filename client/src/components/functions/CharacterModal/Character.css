@@ -56,7 +56,7 @@
   top: -50%;
   height: 20%;
   max-height: 70px;
-  width: 3px;
+  width: 10px;
   transform: translate(-100%, -50%);
 
 
@@ -73,7 +73,7 @@
   top: -50%;
   height: 20%;
   max-height: 70px;
-  width: 3px;
+  width: 10px;
   transform: translate(-100%, -50%);
 
   font-size: 0.2rem;
