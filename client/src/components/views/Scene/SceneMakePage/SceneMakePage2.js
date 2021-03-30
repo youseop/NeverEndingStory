@@ -24,6 +24,10 @@ import { socket } from "../../../App";
 import { PlayCircleOutlined, PauseCircleOutlined, StopOutlined } from '@ant-design/icons';
 import { detachCharacter } from "../../../../_actions/characterSelected_actions";
 import "./SceneMakePage2.css";
+import { TextBlock } from "../../GamePlayPage/TextBlock";
+import { MS_PER_HR } from "../../../App"
+import moment from "moment";
+
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
@@ -32,7 +36,7 @@ const SceneMakePage = (props) => {
     const history = useHistory();
     const location = useLocation();
     const { gameId, sceneId } = location.state
-
+    let exp;
     // const {gameId,sceneId} = location.state ;
     if (location.state === undefined) {
         window.history.back();
@@ -112,6 +116,8 @@ const SceneMakePage = (props) => {
                 return;
             }
             // 임시저장한 녀석
+
+
             if (scene.cutList.length) {
 
                 if (scene.isFirst) {
@@ -126,7 +132,6 @@ const SceneMakePage = (props) => {
                 setName(tmpFirstCut.name);
                 setScript(tmpFirstCut.script);
                 setCutNumber(scene.cutList.length - 1);
-
                 dispatch(gameLoadingPage(0));
                 dispatch(gameLoadingPage(1));
 
@@ -331,8 +336,12 @@ const SceneMakePage = (props) => {
     };
 
     const onRemove_cut = () => {
-        if (CutList.length - 1 <= CutNumber) {
-            message.info('마지막 컷 입니다.');
+        if (CutNumber === 0) {
+            message.info('첫번째 컷 입니다.');
+            return;
+        } else if (CutList.length - 1 <= CutNumber) {
+            displayCut(CutNumber - 1);
+            setCutNumber(CutNumber - 1);
             return;
         }
         message.success(`${CutNumber + 1}번째 컷이 삭제되었습니다.`);
@@ -533,7 +542,8 @@ const SceneMakePage = (props) => {
         <div className="wrapper">
             {gameDetail?.title ?
                 <div className="box title">
-                    [{gameDetail?.title}]
+                    <span>[{gameDetail?.title}]</span>
+                    {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
                 </div> :
                 (
                     <div className="box title">
@@ -576,16 +586,14 @@ const SceneMakePage = (props) => {
                         setCharacterList={setCharacterList}
                         onRemovech_aracter={onRemove_character}
                     />
-                    {SidBar_script && (
-                        <div className="scene__text_container">
-                            <div className="scene__name_block">
-                                {Name ? Name : "이름을 입력해주세요."}
-                            </div>
-                            <div className="scene__text_line"></div>
-                            <div className="scene__text_block">
-                                {Script ? Script : "대사를 입력해주세요."}
-                            </div>
-                        </div>
+                    {SidBar_script && Script && (
+                        <TextBlock
+                            cut_name={Name ? Name : "이름을 입력해주세요."}
+                            cut_script={Script ? Script : "대사를 입력해주세요."}
+                            setIsTyping={null}
+                            isTyping={null}
+                            theme={null}
+                        />
                     )}
                     <div className="scene__sound_container">
                         {BgmFile.name ? (
@@ -639,12 +647,10 @@ const SceneMakePage = (props) => {
                     </div>
                 </div>
 
-                {CutNumber < 29 && (
-                    <div className="scene right-arrow"
-                        onClick={onSubmit_nextCut}>
-                        <SVG src="arrow_1" width="50" height="50" color="#F5F5F5" />
-                    </div>
-                )}
+                <div className="scene right-arrow"
+                    onClick={CutNumber < 29 && onSubmit_nextCut}>
+                    <SVG src="arrow_1" width="50" height="50" color={CutNumber < 29 ? "#F5F5F5" : "black"} />
+                </div>
             </div>
 
             <div className="box scene__btn_top">
@@ -694,6 +700,7 @@ const SceneMakePage = (props) => {
             </div>
             <input
                 onChange={onNameChange}
+                placeholder="이름"
                 value={Name}
                 ref={nameElement}
                 className="box textbox_name"
@@ -708,6 +715,7 @@ const SceneMakePage = (props) => {
                 <textarea
                     onChange={onScriptChange}
                     value={Script}
+                    placeholder="대사가 없으면 스크립트 창이 표시되지 않습니다."
                     className="box textbox_script"
                     ref={scriptElement}
                 />

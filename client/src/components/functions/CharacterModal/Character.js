@@ -1,8 +1,11 @@
 import React, { useRef, memo, useState, useEffect } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import './Character.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCharacter } from '../../../_actions/characterSelected_actions';
 import { addEvent, removeAllEvents } from '../handleEventListener';
+import { faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 function Character(props) {
   const dispatch = useDispatch();
@@ -119,6 +122,11 @@ function Character(props) {
           top: `${charSchema.posY}%`
         }}
       >
+        <FontAwesomeIcon
+          icon={faTimesCircle}
+          className="btn_character_delete"
+          style={{left: `${imgWidth-17}px` }}
+        />
         <img
           onMouseDown={onMouseDown}
           className={`${clicked ? "characterImg_clicked" : "characterImg"}`}

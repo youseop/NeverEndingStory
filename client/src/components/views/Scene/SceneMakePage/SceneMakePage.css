@@ -1,4 +1,9 @@
-
+.box.title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 50px;
+}
 .scenemake__container {
     /* height: 84vh; */
     width: 100vw;
@@ -191,4 +196,5 @@
     object-fit: cover;
     margin:0;
     border-radius: 0;
+    position: relative;
   }

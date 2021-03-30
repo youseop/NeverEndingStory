@@ -123,3 +123,12 @@
   width: 0%;
   position: absolute;
 }
+
+.btn_character_delete {
+  position:relative;
+  top: 24px
+}
+.btn_character_delete:hover {
+  color: rgb(170, 44, 44);
+  cursor: pointer;
+}

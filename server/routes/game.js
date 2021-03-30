@@ -120,13 +120,6 @@ router.get("/getgames", (req, res) => {
         });
 });
 
-router.post("/getgamedetail", (req, res) => {
-    Game.findOne({ _id: req.body.gameId }).exec((err, gameDetail) => {
-        if (err) return res.status(400).send(err);
-        return res.status(200).json({ success: true, gameDetail });
-    });
-});
-
 router.post("/ratio", (req, res) => {
     Game.findOne({ _id: req.body.gameId }).exec((err, gameDetail) => {
         if (err) return res.status(400).send(err);
@@ -323,15 +316,6 @@ router.post("/scene/validate", auth, async (req, res) => {
     return res.status(200).json({ success: true });
 })
 
-router.get("/historycleanup", auth, async (req, res) => {
-    User.updateOne({ _id: req.user._id },
-        {
-            $set: {
-                'gamePlaying.sceneIdList': [req.user.gamePlaying.sceneIdList.shift()]
-            }
-        }).then(() => res.status(200).json({ success: true }))
-})
-
 router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
     const userId = req.user._id;
     let { gameId, sceneId } = req.params;
@@ -423,7 +407,7 @@ router.post("/updatescenestatus", auth, async (req, res) => {
 
 router.post("/getgamedetail", (req, res) => {
     Game.findOne({ _id: req.body.gameId })
-        .populate("game_creater")
+        .populate("creator")
         .exec((err, gameDetail) => {
             if (err) return res.status(400).send(err);
             return res.status(200).json({ success: true, gameDetail });

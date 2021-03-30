@@ -14,24 +14,35 @@ export const TextBlock = (props) => {
 
     theme = 'atorney';
 
-    return (
-        <div className={`text_window ${theme}`} >
-            <div className={`text_container ${theme}`} >
-                <div className={`name_block ${theme}`} >
-                    {cut_name}
-                </div>
-                <div className={`text_block ${theme}`} >
-                    <div className={`text_line ${theme}`} > {
-                        isTyping ? < TextAnimation
-                            cut_script={cut_script}
-                            setIsTyping={setIsTyping}
-                        /> : cut_script
-                    }
+    return <>
+        {
+            cut_script ?
+                <div className={`text_window ${theme}`} >
+                    <div className={`text_container ${theme}`} >
+                        <div className={`name_block ${theme}`} >
+                            {cut_name}
+                        </div>
+                        <div className={`text_block ${theme}`} >
+                            <div className={`text_line ${theme}`} > {
+                                isTyping ? < TextAnimation
+                                    cut_script={cut_script}
+                                    setIsTyping={setIsTyping}
+                                /> : cut_script
+                            }
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    );
+                :
+                <div className={`text_line ${theme}`} > {
+                    isTyping ? < TextAnimation
+                        cut_script={cut_script}
+                        setIsTyping={setIsTyping}
+                    /> : cut_script
+                }
+                </div>
+        }
+    </>
 };
 
 // 선택지 display
@@ -71,8 +82,8 @@ export const TextBlockChoice = (props) => {
             } key={index}
                 style={{ textDecoration: 'none' }}
                 className={`text_line_choice ${theme}`}
-                onClick = {() => setScene({})}
-                 >
+                onClick={() => setScene({})}
+            >
                 { choice.script}
             </Link>
         );
@@ -80,21 +91,13 @@ export const TextBlockChoice = (props) => {
 
     return (
         <div className={`text_window ${theme}`} >
-            <div className={`text_container ${theme}`} >
-                <div className={`name_block ${theme}`} >
-                    {cut_name}
-                </div>
-                <div className={`text_block ${theme}`} >
-                    <div className={`text_line ${theme}`} >
-                        {
-                            isTyping ? < TextAnimation
-                                cut_script={cut_script}
-                                setIsTyping={setIsTyping}
-                            /> : cut_script
-                        }
-                    </div>
-                </div>
-            </div>
+            <TextBlock
+                cut_name={cut_name}
+                cut_script={cut_script}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
+                theme={theme}
+            />
             { isLastMotion &&
                 <div class={`choice_box ${isEnding} ${theme}`}>
                     {isEnding === true ?

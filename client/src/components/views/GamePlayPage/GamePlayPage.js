@@ -155,7 +155,7 @@ const ProductScreen = (props) => {
   const [isTyping, setIsTyping] = useState(true);
 
 
-  console.log("isTyping!!!",isTyping)
+  console.log("isTyping!!!", isTyping)
   function handleEnter(event) {
     //! 타이핑 끝 & 미니맵 X
     if (!isTyping && !isPause) {
@@ -165,9 +165,9 @@ const ProductScreen = (props) => {
         setIsTyping(true);
       }
       else if (i == Scene.cutList.length - 1) {
-          //! 엔딩자리
-          setLastMotion(true)
-          // setIsTyping(true)
+        //! 엔딩자리
+        setLastMotion(true)
+        // setIsTyping(true)
       }
     }
   }
@@ -225,8 +225,8 @@ const ProductScreen = (props) => {
       dispatch(gamePause(false));
     }
   }, [HistoryMap, Dislike, TreeMap]);
-  
-    useEffect(() => {
+
+  useEffect(() => {
     setLastMotion(false)
     console.log(gameId, sceneId);
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
@@ -333,7 +333,7 @@ const ProductScreen = (props) => {
               characterList={Scene.cutList[i].characterList}
             />
 
-            
+
             {i === Scene.cutList.length - 1 ? (
               <TextBlockChoice
                 game_id={gameId}
@@ -347,17 +347,17 @@ const ProductScreen = (props) => {
                 isEnding={Scene.isEnding}
                 isLastMotion={lastMotion}
                 theme={Scene.theme}
-                setScene = {setScene}
+                setScene={setScene}
               />
-            ) : (
-                <TextBlock
-                  cut_name={Scene.cutList[i].name}
-                  cut_script={Scene.cutList[i].script}
-                  setIsTyping={setIsTyping}
-                  isTyping={isTyping}
-                  theme={Scene.theme}
-                />
-              )}
+            ) :
+              <TextBlock
+                cut_name={Scene.cutList[i].name}
+                cut_script={Scene.cutList[i].script}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
+                theme={Scene.theme}
+              />
+            }
 
             <HistoryMapPopup
               userhistory={userHistory}
@@ -432,10 +432,10 @@ const ProductScreen = (props) => {
               <FontAwesomeIcon icon={faCompress} />
             </button>
           ) : (
-                <button onClick={setIsFullscreen} className="gamePlay__btn">
-                  <FontAwesomeIcon icon={faExpand} />
-                </button>
-              )}
+            <button onClick={setIsFullscreen} className="gamePlay__btn">
+              <FontAwesomeIcon icon={faExpand} />
+            </button>
+          )}
         </div>
         <DislikePopup
           sceneId={sceneId}
@@ -450,9 +450,9 @@ const ProductScreen = (props) => {
     // dispatch(gameLoadingPage(1));
 
     return (
-    <div className="loader_container">
+      <div className="loader_container">
         <div class="loader">Loading...</div>
-    </div>
+      </div>
     )
   }
 };
