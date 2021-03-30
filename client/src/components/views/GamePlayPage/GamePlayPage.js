@@ -48,13 +48,13 @@ function useConstructor(callBack = () => { }) {
 //! playscreen
 const ProductScreen = (props) => {
   const location = useLocation();
-  
+
   const { gameId, sceneId } = location.state;
-  
+
   const userHistory = props.history;
-  
+
   const dispatch = useDispatch();
-  
+
   const user = useSelector((state) => state.user);
   const isPause = useSelector((state) => state.gameplay.isPause);
 
@@ -138,17 +138,17 @@ const ProductScreen = (props) => {
     if (Scene?.cutList[i]?.bgm.music) {
       //이전 곡과 같은 bgm이 아니라면
       if (
-        !(i > 0 && Scene.cutList[i - 1].bgm.music == Scene.cutList[i].bgm.music)
+        !(i > 0 && Scene.cutList[i - 1].bgm.music == Scene.cutList[i]?.bgm.music)
       ) {
         bgm_audio.pause();
-        bgm_audio.src = Scene.cutList[i].bgm.music;
+        bgm_audio.src = Scene.cutList[i]?.bgm.music;
         bgm_audio.play();
       }
     }
     if (Scene?.cutList[i]?.sound.music) {
       sound_audio.pause();
 
-      sound_audio.src = Scene.cutList[i].sound.music;
+      sound_audio.src = Scene.cutList[i]?.sound.music;
       sound_audio.play();
     }
   }
@@ -196,45 +196,45 @@ const ProductScreen = (props) => {
     }
   }
 
-  function onClick_thumbsUp () {
-    if(user && user.userData){
-        // setUpdate((state) => state+1);
-        const variable = {
-            userId: user.userData._id,
-            objectId: sceneId
+  function onClick_thumbsUp() {
+    if (user && user.userData) {
+      // setUpdate((state) => state+1);
+      const variable = {
+        userId: user.userData._id,
+        objectId: sceneId
+      }
+      Axios.post("/api/thumbsup/", variable).then((response) => {
+        if (response.data.success) {
+          setIsClicked(response.data.isClicked);
+          setThumbsUp(response.data.thumbsup);
         }
-        Axios.post("/api/thumbsup/", variable).then((response) =>{
-            if (response.data.success){
-                setIsClicked(response.data.isClicked);
-                setThumbsUp(response.data.thumbsup);
-            }
-        })
+      })
     }
   }
 
   useEffect(() => {
-    if(user && user.userData){
+    if (user && user.userData) {
       const variable_thumbsup = {
         objectId: sceneId,
         userId: user.userData._id,
       }
-      Axios.post("/api/thumbsup/count", variable_thumbsup).then((response) =>{
-        if (response.data.success){
-            setIsClicked(response.data.isClicked);
-            setThumbsUp(response.data.thumbsup);
+      Axios.post("/api/thumbsup/count", variable_thumbsup).then((response) => {
+        if (response.data.success) {
+          setIsClicked(response.data.isClicked);
+          setThumbsUp(response.data.thumbsup);
         }
       })
       const variable_view = {
-          userId: user.userData._id,
-          objectId: sceneId
+        userId: user.userData._id,
+        objectId: sceneId
       }
-      Axios.post("/api/view/", variable_view).then((response) =>{
-          if (response.data.success){
-              setView(response.data.view);
-          }
+      Axios.post("/api/view/", variable_view).then((response) => {
+        if (response.data.success) {
+          setView(response.data.view);
+        }
       })
     }
-  },[sceneId,user])
+  }, [sceneId, user])
 
   useEffect(() => {
     socket.emit("leave room", { room: prevSceneId });
@@ -360,25 +360,25 @@ const ProductScreen = (props) => {
             onClick={(event) => handleEnter(event)}
           >
             <LoadingPage />
-            {(Scene.cutList[i] && Scene.cutList[i].background) ?
+            {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
               <img
                 className="backgroundImg"
-                src={Scene.cutList[i].background}
+                src={Scene.cutList[i]?.background}
                 alt="Network Error"
               />
               : (
                 <div></div>
               )}
             <GameCharacterBlock
-              characterList={Scene.cutList[i].characterList}
+              characterList={Scene?.cutList[i]?.characterList}
             />
 
 
             {i === Scene.cutList.length - 1 ? (
               <TextBlockChoice
                 game_id={gameId}
-                cut_name={Scene.cutList[i].name}
-                cut_script={Scene.cutList[i].script}
+                cut_name={Scene.cutList[i]?.name}
+                cut_script={Scene.cutList[i]?.script}
                 scene_depth={Scene.depth}
                 scene_id={Scene._id}
                 scene_next_list={Scene.nextList}
@@ -391,8 +391,8 @@ const ProductScreen = (props) => {
               />
             ) :
               <TextBlock
-                cut_name={Scene.cutList[i].name}
-                cut_script={Scene.cutList[i].script}
+                cut_name={Scene.cutList[i]?.name}
+                cut_script={Scene.cutList[i]?.script}
                 setIsTyping={setIsTyping}
                 isTyping={isTyping}
                 theme={Scene.theme}
@@ -436,19 +436,19 @@ const ProductScreen = (props) => {
           </div>
           <div>
             {i === Scene.cutList.length - 1 &&
-            <>
-              <button
-                className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
-                onClick={onClick_thumbsUp}
-              >
-                좋아요: {thumbsUp}
-              </button>
-              <button
-                className="gamePlay__btn"
-              >
-                조회수: {view}
-              </button>
-            </>
+              <>
+                <button
+                  className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
+                  onClick={onClick_thumbsUp}
+                >
+                  좋아요: {thumbsUp}
+                </button>
+                <button
+                  className="gamePlay__btn"
+                >
+                  조회수: {view}
+                </button>
+              </>
             }
             <button
               className="gamePlay__btn"

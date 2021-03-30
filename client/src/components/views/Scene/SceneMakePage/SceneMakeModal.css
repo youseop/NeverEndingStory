@@ -1,20 +1,35 @@
-.tabs {
-  display: flex;
-  flex-flow: row nowrap;
-  text-align: center;
-  /* color: #fff; */
-  color: #dddddd;
-  /* background-color: #94ebcd; */
-  background-color: #30475e;
-  /* border-bottom: 4px solid #6ddccf; */
-  border-bottom: 4px solid #222831;
+.sceenmake_modal_container{
+  
+  /* width:100%; */
+  height:600px;
+  position: relative;
+  /* position: absolute; */
+  /* background-color: blue; */
+}
 
+
+.tabs {  
+  position: absolute;
+  top:0px;
+  width:100%;
+  display: flex;
+  text-align: center;
+  color: #dddddd;
+  background-color: #30475e;
+  border-bottom: 4px solid #222831;
 }
 .tab {
   flex: 1 0 auto;
   padding: 1rem 1.5rem calc(1rem - 4px);  
+  cursor: pointer;
+}
+
+.tab:hover{
+  background-color: #41586f;
 }
 .is-selected {
-  /* background-color: #6ddccf; */
+  background-color: #222831;
+}
+.is-selected:hover{
   background-color: #222831;
 }
