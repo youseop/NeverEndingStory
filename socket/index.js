@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const morgan = require('morgan');
+const helmet = require('helmet');
+const hpp = require('hpp');
 dotenv.config();
 
 
