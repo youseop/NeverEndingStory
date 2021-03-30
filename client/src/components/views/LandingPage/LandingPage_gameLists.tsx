@@ -18,11 +18,8 @@ interface Game {
     _id: string;
     thumbnail: string;
     category: string;
-<<<<<<< HEAD
     first_scene: string;
-=======
     sceneCnt:number;
->>>>>>> origin/play
 }
 
 interface ContainerProps {

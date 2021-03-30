@@ -190,16 +190,12 @@ const SceneMakePage = (props) => {
     const onClick_character = () => {
         if (characterSidebarElement.current.style.display === 'none') {
             makeVisible(characterSidebarElement);
-        } else {
-            makeInvisible();
         }
     };
 
     const onClick_background = () => {
         if (backgroundSidebarElement.current.style.display === 'none') {
             makeVisible(backgroundSidebarElement);
-        } else {
-            makeInvisible();
         }
     };
 
@@ -207,16 +203,12 @@ const SceneMakePage = (props) => {
     const onClick_bgm = () => {
         if (bgmSidebarElement.current.style.display === 'none') {
             makeVisible(bgmSidebarElement);
-        } else {
-            makeInvisible();
         }
     };
 
     const onClick_sound = () => {
         if (soundSidebarElement.current.style.display === 'none') {
             makeVisible(soundSidebarElement);
-        } else {
-            makeInvisible();
         }
     };
 
@@ -241,16 +233,16 @@ const SceneMakePage = (props) => {
     };
 
     function handleEnter(event) {
-        if (nameElement.current == document.activeElement)
+        if (nameElement.current === document.activeElement)
             scriptElement.current.focus();
-        else if (scriptElement.current == document.activeElement)
+        else if (scriptElement.current === document.activeElement)
             onSubmit_nextCut(event);
     }
 
     function handleTab(event) {
-        if (nameElement.current == document.activeElement)
+        if (nameElement.current === document.activeElement)
             scriptElement.current.focus();
-        else if (scriptElement.current == document.activeElement)
+        else if (scriptElement.current === document.activeElement)
             nameElement.current.focus();
     }
 
@@ -316,7 +308,7 @@ const SceneMakePage = (props) => {
 
     const onSubmit_nextCut = (event) => {
         event.preventDefault();
-        if (CutNumber > 29) {
+        if (CutNumber >= 29) {
             message.error("더이상 Cut을 생성할 수 없습니다.");
             return;
         } else if (CutNumber === 24) {
@@ -332,6 +324,7 @@ const SceneMakePage = (props) => {
         }
         setCutNumber((oldNumber) => oldNumber + 1);
         scriptElement.current.focus()
+
     };
 
     const onRemove_cut = () => {
@@ -446,6 +439,10 @@ const SceneMakePage = (props) => {
         onSubmit_saveScene(event, 1);
     }
 
+    const onSetModal = () => {
+        setMakeModalState(1);
+    }
+
     const [gameDetail, setGameDetail] = useState([]);
     const [sideBar, setSideBar] = useState([]);
 
@@ -463,19 +460,19 @@ const SceneMakePage = (props) => {
 
     useEffect(() => {
         if (gameDetail.character) {
-            const reload_Sidebar = (< div className="scene__toggleBar">
+            const reload_Sidebar = (< div className="sideBar">
                 <div ref={characterSidebarElement}>
-                    <CharacterSideBar
-                        gameDetail={gameDetail}
-                        setMakeModalState={setMakeModalState}
-                        setCharacterList={setCharacterList}
-                        setName={setName}
-                    />
                     <CharacterModal
                         setName={setName}
                         setCharacterList={setCharacterList}
                         CharacterList={CharacterList}
                         GameCharacterList={gameDetail.character}
+                    />
+                    <CharacterSideBar
+                        gameDetail={gameDetail}
+                        setMakeModalState={setMakeModalState}
+                        setCharacterList={setCharacterList}
+                        setName={setName}
                     />
                 </div>
                 <div ref={backgroundSidebarElement} style={{ display: 'none' }}>
@@ -555,7 +552,7 @@ const SceneMakePage = (props) => {
                 saveCut={saveCut}
             />
 
-            <div className="box scene">
+            <div className="scene">
                 <div className="scene left-arrow"
                     onClick={onLeft}>
                     <SVG src="arrow_1" width="50" height="50" color="#F5F5F5" />
@@ -645,45 +642,46 @@ const SceneMakePage = (props) => {
                 </div>
             </div>
 
-            <div className="box scene__btn_top">
+            <div className="scene__btn_top">
 
-                <div className="box scene_btn"
+                <div className="scene_btn"
+                    onClick={onSetModal}>
+                    에셋 추가
+                </div>
+                <div className="scene_btn"
                     onClick={onTmpSave}>
                     임시 저장
                 </div>
                 {isFirstScene ?
-                    <div className="box scene_btn scene_btn_blue"
+                    <div className="scene_btn scene_btn_blue"
                         onClick={onSubmit_first}>
                         완료
                         </div>
-                    : <div className="box scene_btn scene_btn_blue"
+                    : <div className="scene_btn scene_btn_blue"
                         onClick={onSubmit_saveScene}>
                         완료
                         </div>
                 }
 
             </div>
-            <div className="box btn_side">
+            <div className=" btn_side">
                 <div
-                    className="box scene_btn"
+                    className="scene_side_btn"
                     onClick={onClick_character}
                 >캐릭터</div>
                 <div
-                    className="box scene_btn"
+                    className="scene_side_btn"
                     onClick={onClick_background}
                 >배경</div>
 
-                <div className="box scene_btn" onClick={onClick_bgm}>
+                <div className="scene_side_btn" onClick={onClick_bgm}>
                     배경음
                     </div>
-                <div className="box scene_btn" onClick={onClick_sound}>
+                <div className="scene_side_btn" onClick={onClick_sound}>
                     효과음
                     </div>
             </div>
-            <div className="box sideBar">
-                {sideBar !== 0 && sideBar}
-                캐릭터선택
-                </div>
+            {sideBar !== 0 && sideBar}
             <div
                 className="textbox_name">
                 <div className="textbox__name_block_btn">
@@ -695,41 +693,41 @@ const SceneMakePage = (props) => {
                 placeholder="이름"
                 value={Name}
                 ref={nameElement}
-                className="box textbox_name"
+                className="textbox_name"
             />
             <div className="textbox_bottom">
                 <div className="enter"
                     onClick={onSubmit_nextCut}>
                     Enter
                     <br />
-                    {CutNumber}/30
+                    {CutNumber + 1}/30
                 </div>
                 <textarea
                     onChange={onScriptChange}
                     value={Script}
                     placeholder="대사가 없으면 스크립트 창이 표시되지 않습니다."
-                    className="box textbox_script"
+                    className="textbox_script"
                     ref={scriptElement}
                 />
             </div>
-            <div className="box options">
-                <div className="box scene_btn"
+            <div className="options">
+                <div className="scene_btn"
                     onClick={onRemove_cut}>
                     컷 삭제
                 </div>
-                <div className="box scene_btn"
+                <div className="scene_btn"
                     onClick={onClick_script}
                 >On/Off</div>
-                <div className="box scene_btn"
+                <div className="scene_btn"
                     onClick={onClick_script}
                 >Preview</div>
-                <div className="box scene_btn"
+                <div className="scene_btn"
                     onClick={onClick_script}
                 >배경음 음소거</div>
-                <div className="box scene_btn"
+                <div className="scene_btn"
                     onClick={onClick_script}
                 >효과음 음소거</div>
-                <div className="box scene_btn"
+                <div className="scene_btn"
                     onClick={onClick_script}
                 >테마 선택(개발자)</div>
             </div>

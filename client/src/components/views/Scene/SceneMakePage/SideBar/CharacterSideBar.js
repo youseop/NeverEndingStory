@@ -3,8 +3,10 @@ import React, { memo, useEffect } from 'react'
 import './CharacterSideBar'
 
 import CharacterImg from './CharacterImg'
+import './CharacterSideBar.css'
 
-function CharacterSideBar({ gameDetail, setCharacterList, setMakeModalState, setName }) {
+
+function CharacterSideBar({ gameDetail, setCharacterList, setName }) {
 
   const renderCharacter = gameDetail.character.map((character, index) => {
     return <div className="character" key={`${index}`}>
@@ -16,19 +18,9 @@ function CharacterSideBar({ gameDetail, setCharacterList, setMakeModalState, set
     </div>
   })
 
-  const setModal = () => {
-    setMakeModalState(1);
-  }
-
   return (
-    <div className="sidebar__container">
-      <Button
-        type="primary"
-        style={{ fontSize: "15px" }}
-        onClick={setModal}>
-        추가
-      </Button>
-      <div>{renderCharacter}</div>
+    <div className="characterSidebar__container">
+      {renderCharacter}
     </div>
   )
 }

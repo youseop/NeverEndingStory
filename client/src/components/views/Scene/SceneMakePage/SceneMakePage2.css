@@ -7,14 +7,13 @@
 
     display: grid;
     grid-template-columns: 50px 280px 520px 50px 50px 400px 90px;
-    grid-template-rows: 80px 45px 55px 390px 50px 130px;
+    grid-template-rows: 80px 45px 45px 400px 50px 120px;
     /* background-color: #fff; */
     /* color: #444; */
 }
 
-.box {
-    /* background-color: #444; */
-    /* color: #fff; */
+.debug-box {
+    background-color: blue;
     border-radius: 5px;
 }
 
@@ -39,6 +38,7 @@
     background-color: #f05454;
     color:#fff;
     font-weight: 100;
+    cursor: pointer;
     /* border: 1px solid rgba(70, 70, 70, 0.26); */
 }
 .title-btn:hover{    
@@ -80,6 +80,7 @@
     padding-top:200px;  
     background-color: #222831;
     transform: scaleX(-1);  
+    cursor: pointer;
 }
 .left-arrow:hover{
     background-color: #333942;
@@ -89,6 +90,7 @@
     width: 50px;
     padding-top:200px;    
     background-color: #222831;
+    cursor: pointer;
 }
   
 .right-arrow:hover{
@@ -146,9 +148,10 @@
   }
 
   .scene__script_btn{
-    z-index: 99;
-    position: absolute;
-    color:black;
+      z-index: 99;
+      position: absolute;
+      color:black;
+      cursor: pointer;
   }
 
 .scene__SceneBox_color {
@@ -166,6 +169,7 @@
     border-radius: 8px;
     background-color: #f05454;
     border: 1px solid rgba(70, 70, 70, 0.26);
+    cursor: pointer;
 }
 
 .scene__EmptySceneBox {
@@ -180,7 +184,7 @@
 .scene__btn_top {
     grid-row: 1;
     grid-column: 6 /span 2;
-
+    
     margin-right: 15px;
     margin-top: 12px;
     margin-bottom: 28px;
@@ -200,6 +204,7 @@
     font-family: Noto Sans KR;
     background-color: #DDDDDD;
     color: #30475e;
+    cursor: pointer;
 }
 
 .scene_btn:hover{
@@ -215,18 +220,26 @@
 }
 
 .btn_side {
-    grid-row: 3 /span 1;
-    grid-column: 6 / span 2;
+    grid-row: 3;
+    grid-column: 6;
 
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     display: inline-flex;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
-.sideBar {
-    grid-row: 4 / span 3;
-    grid-column: 6 / span 2;
 
-    background-color: blanchedalmond;
+.scene_side_btn{ 
+    all: unset;
+    width:95px;
+    padding-top:6.5px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    font-family: Noto Sans KR;
+    background-color: #DDDDDD;
+    color: #30475e;
+    cursor: pointer;
 }
 
 .textbox_name{
@@ -254,6 +267,8 @@
     /* background-color: violet; */
     position: absolute; 
     transform:rotate(90deg);
+    cursor: pointer;
+
 }
 
 .textbox__name_block_btn:hover{
@@ -296,6 +311,7 @@
     font-size: 18px;
     font-weight: bold;
     text-align: center;
+    cursor: pointer;
 }
 .enter:hover{
     background-color: #CCCCCC;
@@ -304,4 +320,11 @@
     grid-row: 5;
     grid-column: 3/ span 2;
     justify-content: flex-end;
+}
+
+.sideBar {
+    grid-row: 4 / span 3;
+    grid-column: 6;
+
+    background-color: blanchedalmond;
 }

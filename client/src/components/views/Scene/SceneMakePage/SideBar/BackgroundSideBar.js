@@ -2,6 +2,7 @@ import { Button } from 'antd';
 import React, { memo } from 'react'
 import './BackgroundSideBar.css'
 import BackgroundImg from './BackgroundImg'
+import './BackgroundSideBar.css'
 
 function BackgroundSideBar({ gameDetail, setBackgroundImg, setMakeModalState }) {
 
@@ -11,18 +12,8 @@ function BackgroundSideBar({ gameDetail, setBackgroundImg, setMakeModalState }) 
     </div>
   })
 
-  const setModal = () => {
-    setMakeModalState(2);
-  }
-
   return (
     <div className="sidebar__container">
-      <Button
-        type="primary"
-        style={{ fontSize: "15px" }}
-        onClick={setModal}>
-        추가
-      </Button>
       <div>{renderBackground}</div>
     </div>
   )
