@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const { User } = require("../models/User");
 
-const sanitize = require("../lib/sanitize")
+const {sanitize} = require("../lib/sanitize")
 const { auth } = require("../middleware/auth");
 
 //=================================
