@@ -1,7 +1,4 @@
-import { Button } from 'antd';
 import React from "react";
-import "./BgmSideBar.css";
-
 import BgmFile from "./BgmFile";
 
 function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, setMakeModalState }) {
@@ -19,18 +16,8 @@ function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, setMakeModalState }) {
         );
     });
 
-    const setModal = () => {
-        setMakeModalState(3);
-    }
-
     return (
         <div className="sidebar__container">
-            <Button
-                type="primary"
-                style={{ fontSize: "15px" }}
-                onClick={setModal}>
-                추가
-            </Button>
             <div>{renderBgm}</div>
         </div>
     );
