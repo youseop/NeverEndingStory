@@ -87,7 +87,6 @@ router.post('/create', auth, async (req, res) => {
 })
 
 router.post('/save', auth, async (req, res) => {
-
   const sceneId = mongoose.Types.ObjectId(req.body.sceneId);
   const scene = await Scene.findOne({ _id: sceneId });
   const userId = req.user._id;
@@ -163,27 +162,26 @@ router.post('/save', auth, async (req, res) => {
     if (err) return res.json({ success: false, err })
     if (isTmp) return res.status(200).json({ success: true, scene })
   })
-
   if (!isTmp && scene.isFirst) {
+
     try {
       const game = await Game.findOne({ _id: scene.gameId });
       const user = await User.findOne({ _id: userId });
       if (!game.first_scene) {
-        user.contributedSceneList = [{
+        user.contributedSceneList = [
+          ...user.contributedSceneList,
+          {
           gameId: game._id,
-          title: game.title,
-          thumbnail: game.thumbnail,
-          description: game.description.substring(0,15),
+          sceneCnt: 1,
           sceneList: [{
             sceneId: sceneId.toString(),
             depth: 0
           }]
         }]
-        user.contributedGameList = [{
+        user.contributedGameList = [
+          ...user.contributedGameList,
+          {
           gameId: game._id,
-          title: game.title,
-          thumbnail: game.thumbnail,
-          description: game.description.substring(0,15),
         }]
         user.save((err) => {
           if (err) return res.json({ success: false, err })
@@ -207,7 +205,7 @@ router.post('/save', auth, async (req, res) => {
   }
 
   else if (!isTmp) {
-    try {
+  try {
       const prev_scene = await Scene.findOne({ _id: scene.prevSceneId })
       const game = await Game.findOne({ _id: scene.gameId });
       const user = await User.findOne({ _id: userId });
@@ -227,6 +225,7 @@ router.post('/save', auth, async (req, res) => {
           sceneIdList: [scene._id.toString()]
         })
       }
+      game.sceneCnt += 1;
       game.save((err) => {
         if (err) return res.json({ success: false, err })
       })
@@ -234,7 +233,6 @@ router.post('/save', auth, async (req, res) => {
       flag = true;
       for (let i=0; i<user.contributedSceneList.length; i++){
         if (user.contributedSceneList[i].gameId.toString() === game._id.toString()){
-          console.log("======== 1")
           flag = false;
           user.contributedSceneList[i].sceneList.push({
             sceneId: scene._id.toString(),
@@ -245,9 +243,11 @@ router.post('/save', auth, async (req, res) => {
         }
       }
       if(flag){
-          console.log("======== 2")
           user.contributedSceneList.push({
           gameId: game._id,
+          title: game.title,
+          thumbnail: game.thumbnail,
+          description: game.description.substring(0,15),
           sceneCnt: 1,
           sceneList: [{
             sceneId: scene._id.toString(),

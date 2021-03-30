@@ -38,7 +38,8 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
 
 
     const onTitleChange = (event) => {
-        setGameTitle(event.currentTarget.value);
+        //최대 50자 제한
+        setGameTitle(event.currentTarget.value.substr(0,50));
     };
 
     const onDescriptionChange = (event) => {
@@ -71,7 +72,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
         setUploadModalState(false)
     }
 
-    const upload = (event) => {
+    const upload = async (event) => {
         event.preventDefault();
         if (GameTitle === "" || description === "" || blobURL === "") {
             message.error("모든 정보를 입력해주세요.");
@@ -83,7 +84,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
         onSubmit_saveScene()
     }
 
-    const uploadThumb = () => {
+    const uploadThumb = async () => {
         //revoke blobURL
         URL.revokeObjectURL(blobURL)
 
@@ -96,7 +97,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
             formData.append('files', value);
         })
 
-        Axios.post("/api/game/uploadfile", formData, config).then(
+        await Axios.post("/api/game/uploadfile", formData, config).then(
             (response) => {
                 if (response.data.success) {
                     uploadGame( process.env.NODE_ENV === 'development' ? response.data.files[0].path : response.data.files[0].location );
@@ -107,7 +108,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
         );
     }
 
-    const uploadGame = (filePath) => {
+    const uploadGame = async (filePath) => {
         const game_variables = {
             gameId: gameId,
             creator: user.userData._id,
@@ -119,7 +120,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
             writer: [user.userData._id],
         };
 
-        Axios.post("/api/game/uploadgameInfo", game_variables).then((response) => {
+        await Axios.post("/api/game/uploadgameInfo", game_variables).then((response) => {
             if (response.data.success) {
 
             } else {
@@ -155,7 +156,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
 
                     </div>
                     <div className ="scenemake_modal_description">
-                        <label>제목</label>
+                        <label>Title(최대 50자)</label>
                         <Input onChange={onTitleChange} value={GameTitle}/>
 
                         <label>게임 설명</label>

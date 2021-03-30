@@ -95,7 +95,7 @@ function Comment({gameId}) {
 
   const mapComment = comments.map((comment, index) => {
     return (
-      <div key={index}>
+      <div key={comment._id}>
         {comment &&
           <SingleComment 
             updateToggle_comment={updateToggle}
@@ -107,22 +107,22 @@ function Comment({gameId}) {
   })
 
   return (
-    <div className="container">
+    <div className="comment__container">
+      <div className="comment__commentCnt">
+        댓글 {totalComment.length}개
+      </div>
+      <hr/>
       <br />
       {isAuth &&
-      <form className="form">
+      <form className="comment__form">
         <textarea
-          className="textarea"
+          className="comment__textarea"
           onChange={onChange_comment}
           value={commentContent}
-          placeholder="코멘트를 작성해 주세요."
         />
-        <button className="comment_btn" onClick={onSubmit_comment}>댓글 작성</button>
+        <button className="comment__btn" onClick={onSubmit_comment}>댓글</button>
       </form>
       }
-      <br />
-      <div>댓글 {totalComment.length}개</div>
-      <hr/>
       {mapComment}
       <br />
 

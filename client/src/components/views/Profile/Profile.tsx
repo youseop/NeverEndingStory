@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import {LOCAL_HOST} from "../../Config";
+import ContributedGame from './ContributedGame/ContributedGame';
 
 import './Profile.css';
 
@@ -17,7 +18,7 @@ interface SceneInfo {
   depth: number;
 }
 
-interface ContributedScene {
+interface ContributedScene_type {
   sceneCnt: number;
   gameId: string;
   title: string;
@@ -25,7 +26,7 @@ interface ContributedScene {
   sceneList: SceneInfo[];
 }
 
-interface ContributedGame {
+interface ContributedGame_type {
   gameId: string;
   title: string;
   thumbnail: string;
@@ -37,8 +38,8 @@ interface UserData {
   email: string;
   nickname: string;
   _id: string;
-  contributedSceneList: ContributedScene[];
-  contributedGameList: ContributedGame[];
+  contributedSceneList: ContributedScene_type[];
+  contributedGameList: ContributedGame_type[];
 }
 
 interface State_user {
@@ -49,8 +50,10 @@ interface State_user {
 
 function Profile(props: any) {
   const userId: string = props.match.params.userId;
+  console.log('id!!!',userId)
   const currUserData: UserData = useSelector((state: State_user) => state.user.userData);
   let isUser: boolean = false;
+  const FETCHNIG_CNT: number = 5;
 
   const [user, setUser] = useState<UserData>({
     makingGameList: [],
@@ -61,6 +64,10 @@ function Profile(props: any) {
     contributedSceneList: [],
     contributedGameList: [],
   });
+  const [fetching, setFetching] = useState(false);
+  const [gameContentsNumber, setGameContentsNumber] = useState<number>(FETCHNIG_CNT);
+  const [sceneContentsNumber, setSceneContentsNumber] = useState<number>(FETCHNIG_CNT);
+
 
   useEffect(() => {
     Axios.post("/api/users/profile", {userId: userId}).then((response) => {
@@ -76,51 +83,59 @@ function Profile(props: any) {
     isUser = true;
   }
 
-  console.log(user)
-
-  const displayContributedScene = () => {
-    const contributedSceneList: ContributedScene[] = user.contributedSceneList;
+  const displayContributedScene = (user: UserData) => {
+    const contributedSceneList: ContributedScene_type[] = user.contributedSceneList.slice(0,sceneContentsNumber);
     if(contributedSceneList){
-      return contributedSceneList.map((
-        game: ContributedScene, index: number
+      const contributedScene =  contributedSceneList.map((
+        game: ContributedScene_type
       ) => {
         return (
-          <div key={index}>
-            <a href={`/game/${game.gameId}`}>
-              <img
-                src={`http://${LOCAL_HOST}:5000/${game.thumbnail}`}
-                alt={game.title}
-              />
-              <div>{game.title}</div>
-              <div>{game.sceneCnt}</div>
-            </a>
+          <div key={game.gameId}>
+            <ContributedGame 
+              gameId={game.gameId}
+              sceneCnt={game.sceneCnt}
+            />
           </div>
         )
       })
+      return (
+        <>
+        {contributedScene}
+        {user.contributedSceneList.length > sceneContentsNumber?
+          <div onClick={()=>setSceneContentsNumber((state)=>state+FETCHNIG_CNT)}>더보기</div>
+          :
+          <div></div>
+        }
+        </>
+      )
     }
   }
 
-  const displayContributedGame = () => {
-    const contributedGameList: ContributedGame[] = user.contributedGameList;
+  const displayContributedGame = (user: UserData) => {
+    const contributedGameList: ContributedGame_type[] = user.contributedGameList.slice(0,gameContentsNumber);;
     if(contributedGameList){
-      return contributedGameList.map((
-        game: ContributedGame, index: number
+      const contributedGame =  contributedGameList.map((
+        game: ContributedGame_type
       ) => {
         return (
-          <div key={index}>
-            <a href={`/game/${game.gameId}`}>
-              <img
-                src={`http://${LOCAL_HOST}:5000/${game.thumbnail}`}
-                alt={game.title}
-              />
-              <div>{game.title}</div>
-            </a>
-            <div></div>
-            <div></div>
-            <div></div>
+          <div key={game.gameId}>
+            <ContributedGame 
+              gameId={game.gameId}
+              sceneCnt={-1}
+            />
           </div>
         )
       })
+      return (
+        <>
+        {contributedGame}
+        {user.contributedGameList.length > gameContentsNumber?
+          <div onClick={()=>setGameContentsNumber((state)=>state+FETCHNIG_CNT)}>더보기</div>
+          :
+          <div></div>
+        }
+        </>
+      )
     }
   }
 
@@ -152,24 +167,70 @@ function Profile(props: any) {
     }
   }
 
+  const onClick_tab = (name: string): void => {
+    const element: HTMLElement | null = document.getElementById(name);
+    document.getElementById("contributedGame")!.style.display = "none";
+    document.getElementById("contributedScene")!.style.display = "none";
+    if(isUser)
+      document.getElementById("makingGame")!.style.display = "none";
+    element!.style.display = "block";
+  }
+
   if (currUserData){
     return (
-      <div className="profile">
-        <img src={currUserData.image} alt="" />
-        <div>{currUserData.email}</div>
-        <div>{currUserData.nickname}</div>
-        <div>
-          displayMAkingGame
+      <div className="profile__container">
+        
+        <div className="detailPage__thumbnail_container">
+          <img
+              className="profile__thumbnail"
+              src={`https://i.imgur.com/UwPKBqQ.jpg`}
+              alt=""
+          />
+          <div className="profile__gradation"></div>
+          <div className="profile__userInfo">
+            <img 
+              src={user.image} alt="" 
+              className="profile__img"
+            />
+            <div className="profile__text">
+              <div>{user.nickname}</div>
+              <div>{user.email}</div>
+            </div>
+        </div>
+        </div>
+        
+        <div className="profile__btn_container">
+          <div onClick={() => onClick_tab("contributedScene")}>내가 기여한 신</div>
+          <div onClick={() => onClick_tab("contributedGame")}>내가 기여한 게임</div>
+          
+          {isUser &&
+          <div onClick={() => onClick_tab("makingGame")}>만들던 게임</div>
+          }
+        </div>
+        <div 
+          id="contributedScene"
+          style={{display:"block"}}
+        >
+          내가 기여한 신
+          {displayContributedScene(user)}
+        </div>
+        <div 
+          id="contributedGame"
+          style={{display:"none"}}
+        >
+          내가 기여한 게임
+          {displayContributedGame(user)}
+        </div>
+        
+        {isUser &&
+        <div 
+          id="makingGame"
+          style={{display:"none"}}
+        >
+          만들던 게임
           {displayMakingGame(currUserData)}
         </div>
-        <div>
-          displayContributedGame
-          {displayContributedGame()}
-        </div>
-        <div>
-          displayContributedScene
-          {displayContributedScene()}
-        </div>
+        }
         {isUser ? 
         <div>isuser</div>
         :

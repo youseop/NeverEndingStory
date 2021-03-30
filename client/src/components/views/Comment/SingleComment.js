@@ -74,6 +74,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
     if (reference.current.style.display === 'block') {
       reference.current.style.display = 'none';
       setShowComment(false);
+      setWriteReply(false);
     } else {
       reference.current.style.display = 'block'
       setShowComment(true);
@@ -167,7 +168,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
 
   const mapReply = Replys.map((reply, index) => {
     return (
-      <div key={index} style={{marginLeft:'10px'}}>
+      <div key={reply._id} style={{marginLeft:'10px'}}>
         {reply &&
           <SingleReply
             updateToggle_comment={updateToggle}
@@ -186,8 +187,8 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
           <div className="nickname">{comment.writer.nickname}</div>
           {isEdit ? 
           <div className="edit_container">
-          <Input className="comment_input" onChange={onChange_editcomment} value={editComment} />
-          <button className="edit_btn" onClick={onClick_editComment}>수정</button>
+            <textarea className="singleComment_input" onChange={onChange_editcomment} value={editComment} />
+            <button className="comment__btn" onClick={onClick_editComment}>수정</button>
           </div>
           :
           <div className="content">{comment.content}</div>
@@ -196,11 +197,17 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
             <div onClick={onClick_like} className="comment_like">좋아요 : {like}</div>
             { Replys.length ? 
             <>
+            <div onClick={onClick_displayReply} className="comment_displayReplyToggle">
             { showComment ?
-            <div onClick={onClick_displayReply} className="comment_displayReplyToggle">댓글 닫기</div>
-            :
-            <div onClick={onClick_displayReply} className="comment_displayReplyToggle">댓글 {Replys.length}개 보기</div>
+              <div>
+                댓글 닫기
+              </div>
+              :
+              <div>
+                댓글 {Replys.length}개 보기
+              </div>
             }
+            </div>
             </>
             :
             <div></div>
@@ -214,14 +221,14 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
             }
           </div>
           {(isAuth & writeReply) ?
-          <form className="form">
+          <form className="comment__form">
             <textarea
-              className="textarea"
+              className="singleComment__textarea"
               onChange={onChange_comment}
               value={commentContent}
               placeholder="코멘트를 작성해 주세요."
               />
-            <button className="comment_btn" onClick={onSubmit_response}>댓글 작성</button>
+            <button className="comment__btn" onClick={onSubmit_response}>댓글</button>
           </form> 
           :
           <div></div>

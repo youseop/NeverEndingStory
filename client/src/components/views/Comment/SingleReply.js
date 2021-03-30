@@ -107,11 +107,11 @@ function SingleReply({comment, updateToggle_comment, gameId}) {
           <div className="SingleReply__nickname">{comment.writer.nickname}</div>
           {isAuth &isEdit ? 
           <div className="edit_container">
-          <Input className="comment_input" onChange={onChange_editcomment} value={editComment} />
-          <button className="edit_btn" onClick={onClick_editComment}>수정</button>
+          <textarea className="comment_input" onChange={onChange_editcomment} value={editComment} />
+          <button className="comment__btn" onClick={onClick_editComment}>수정</button>
           </div>
           :
-          <div className="content">{comment.content}</div>
+          <div className="SingleReply__content">{comment.content}</div>
           }
           <div className="SingleReply__comment_info">
           <div onClick={onClick_like} className="comment_like">좋아요 : {like}</div>

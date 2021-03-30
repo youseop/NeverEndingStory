@@ -40,7 +40,7 @@ function NavBar() {
   return (
     <nav className="menu" style={style}>
       <div className="menu__logo">
-        <Link to="/">NEVER ENDING</Link>
+        <Link to="/">이어봐</Link>
       </div>
       <div className="menu__container">
         <div className="menu_rigth">
@@ -54,7 +54,7 @@ function NavBar() {
           <Icon type="align-right" />
         </Button>
         <Drawer
-          title="NEVER ENDING"
+          title="이어봐"
           placement="right"
           className="menu_drawer"
           closable={false}
