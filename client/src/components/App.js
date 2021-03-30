@@ -7,7 +7,7 @@ import LandingPage from "./views/LandingPage/LandingPage.js";
 
 import LoginPage from "./views/LoginPage/LoginPage.tsx";
 import RegisterPage from "./views/RegisterPage/RegisterPage.tsx";
-import Profile from './views/Profile/Profile.js';
+import Profile from './views/Profile/Profile.tsx';
 
 import GameDetailPage from './views/GameDetailPage/GameDetailPage.js';
 import GameUploadPage from "./views/GameUploadPage/GameUploadPage.js";
@@ -15,8 +15,8 @@ import GameBuildUpPage from "./views/GameUploadPage/GameBuildUpPage.js";
 import GamePlayPage from "./views/GamePlayPage/GamePlayPage.js";
 import SceneMakePage from "./views/Scene/SceneMakePage/SceneMakePage";
 
-import NavBar from "./views/NavBar/NavBar";
-import Footer from "./views/Footer/Footer"
+import NavBar from "./views/NavBar/NavBar.tsx";
+import Footer from "./views/Footer/Footer.tsx"
 import { LOCAL_HOST } from './Config';
 
 import './App.css';
@@ -40,7 +40,7 @@ function App() {
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
-          <Route exact path="/profile" component={Auth(Profile, true)} />
+          <Route exact path="/profile/:userId" component={Auth(Profile, true)} />
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
           <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />

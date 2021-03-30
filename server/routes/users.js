@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require("mongoose");
 const { User } = require("../models/User");
 
 const { auth } = require("../middleware/auth");
@@ -65,6 +66,20 @@ router.get("/logout", auth, (req, res) => {
         if (err) return res.json({ success: false, err });
         return res.status(200).send({
             success: true
+        });
+    });
+});
+
+router.post("/profile", (req, res) => {
+    User.findOne({ _id: req.body.userId }, (err, user) => {
+        if (!user)
+            return res.json({
+                loginSuccess: false,
+                message: "Auth failed, email not found"
+            });
+        return res.status(200).send({
+            success: true,
+            user: user
         });
     });
 });

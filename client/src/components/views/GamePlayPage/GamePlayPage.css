@@ -56,8 +56,24 @@
   font-size: 0.9rem;
 }
 
+.gamePlay__btnClicked {
+  all: unset;
+  color: rgb(179, 149, 149);
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin: 2px;
+  font-size: bold;
+  transition-duration: 0.2s;
+  font-size: 0.9rem;
+}
+
 .gamePlay__btn:hover {
   color: rgb(63, 63, 63);
+  transition-duration: 0.2s;
+  cursor: pointer;
+}
+
+.gamePlay__btnClicked:hover {
   transition-duration: 0.2s;
   cursor: pointer;
 }

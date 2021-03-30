@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const { Comment } = require("../models/Comment");
 
-router.post('/saveComment', async (req, res) => {
+router.post('/save-comment', async (req, res) => {
   const comment = new Comment({
     content: req.body.content,
     writer: req.body.writer,
@@ -24,7 +24,7 @@ router.post('/saveComment', async (req, res) => {
 })
 
 
-router.post('/getComment', async (req, res) => {
+router.post('/get-comment', async (req, res) => {
   Comment.find({
     'gameId': mongoose.Types.ObjectId(req.body.gameId)
     , 'responseTo': ""
@@ -38,7 +38,7 @@ router.post('/getComment', async (req, res) => {
     })
 })
 
-router.post('/removeComment', async (req, res) => {
+router.post('/remove-comment', async (req, res) => {
   try {
     await Comment.deleteOne({ '_id': mongoose.Types.ObjectId(req.body.commentId) });
     await Comment.deleteMany({responseTo: req.body.commentId});
@@ -48,7 +48,7 @@ router.post('/removeComment', async (req, res) => {
   }
 })
 
-router.post('/editComment', async (req, res) => {
+router.post('/edit-comment', async (req, res) => {
   try {
     await Comment.updateOne(
       { _id: mongoose.Types.ObjectId(req.body.commentId) },
@@ -60,7 +60,7 @@ router.post('/editComment', async (req, res) => {
   }
 })
 
-router.post('/getReply', async (req, res) => {
+router.post('/get-reply', async (req, res) => {
   Comment.find({
     'gameId': mongoose.Types.ObjectId(req.body.gameId)
     , 'responseTo': req.body.responseTo

@@ -1,6 +1,6 @@
 import { Input, message } from 'antd';
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import SingleReply from './SingleReply';
 import './SingleComment.css';
@@ -45,7 +45,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
       gameId: gameId,
       responseTo: comment._id.toString()
     }
-    axios.post('/api/comment/getReply', comment_variable).then(response => {
+    axios.post('/api/comment/get-reply', comment_variable).then(response => {
       if (response.data.success) {
         setReplys(response.data.result);
       } else {
@@ -96,7 +96,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
       responseTo: comment._id.toString()
     };
 
-    axios.post('/api/comment/saveComment', variables).then(response => {
+    axios.post('/api/comment/save-comment', variables).then(response => {
       if(response.data.success) {
         message.success('댓글 감사합니다!');
         updateToggle();
@@ -112,7 +112,8 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
   }
 
   const onClick_removeComment = () => {
-    axios.post('/api/comment/removeComment', {commentId: comment._id}).then(response => {
+    setIsEdit(false);
+    axios.post('/api/comment/remove-comment', {commentId: comment._id}).then(response => {
       if(response.data.success) {
         message.success('댓글이 삭제되었습니다.');
         updateToggle_comment();
@@ -133,7 +134,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
 
   const onClick_editComment = (e) => {
     e.preventDefault();
-    axios.post('/api/comment/editComment', 
+    axios.post('/api/comment/edit-comment', 
       {commentId: comment._id, comment: editComment}
     ).then(response => {
       if(response.data.success) {
@@ -234,4 +235,4 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
   )
 }
 
-export default SingleComment
+export default memo(SingleComment)

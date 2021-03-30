@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React, { useEffect } from 'react'
+import React, { memo, useEffect } from 'react'
 import './CharacterSideBar'
 
 import CharacterImg from './CharacterImg'
@@ -33,4 +33,4 @@ function CharacterSideBar({ gameDetail, setCharacterList, setMakeModalState, set
   )
 }
 
-export default CharacterSideBar
+export default memo(CharacterSideBar)

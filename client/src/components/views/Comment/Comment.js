@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
 import './Comment.css';
 import SingleComment from './SingleComment';
@@ -18,15 +18,47 @@ function Comment({gameId}) {
   const [update, setUpdate] = useState(true);
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
+
+  const FETCHNIG_CNT = 8;
+  const [fetching, setFetching] = useState(false);
+  const [totalComment, setTotalComment] = useState([]);
+  const [contentNumber, setContentNumber] = useState(FETCHNIG_CNT);
+
+  const fetchNextData = async () => {
+    setFetching(true);
+    
+    setComments(totalComment.slice(0,contentNumber+FETCHNIG_CNT));
+    setContentNumber((state) => state+FETCHNIG_CNT);
+
+    setFetching(false);
+  };
+
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    // console.log("scrollHeight", scrollHeight,"scrollTop" ,scrollTop,"clientHeight",clientHeight)
+    if (scrollTop + clientHeight*(3/2) >= scrollHeight && fetching === false) {
+      fetchNextData();
+    }
+   };
+
+   useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
  
   const updateToggle = () => {
     setUpdate((state) => !state);
   }
 
   useEffect(() => {
-    axios.post('/api/comment/getComment', {gameId: gameId}).then(response => {
+    axios.post('/api/comment/get-comment', {gameId: gameId}).then(response => {
       if (response.data.success) {
-        setComments(response.data.result);
+        setTotalComment(response.data.result);
+        setComments(response.data.result.slice(0,contentNumber));
       } else {
         message.error('댓글을 불러오는데 실패했습니다.')
       }
@@ -50,7 +82,7 @@ function Comment({gameId}) {
       responseTo : ""
     };
 
-    axios.post('/api/comment/saveComment', variables).then(response => {
+    axios.post('/api/comment/save-comment', variables).then(response => {
       if(response.data.success) {
         message.success('댓글 감사합니다!');
         updateToggle();
@@ -89,7 +121,7 @@ function Comment({gameId}) {
       </form>
       }
       <br />
-      <div>댓글 {comments.length}개</div>
+      <div>댓글 {totalComment.length}개</div>
       <hr/>
       {mapComment}
       <br />
@@ -98,4 +130,4 @@ function Comment({gameId}) {
   )
 }
 
-export default Comment
+export default memo(Comment)

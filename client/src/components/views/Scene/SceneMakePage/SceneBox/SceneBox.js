@@ -1,5 +1,5 @@
 import { Switch } from 'antd';
-import React from 'react';
+import React, { memo } from 'react';
 import './SceneBox.css';
 
 function SceneBox(props) {
@@ -75,4 +75,4 @@ function SceneBox(props) {
     )
 }
 
-export default SceneBox
+export default memo(SceneBox)

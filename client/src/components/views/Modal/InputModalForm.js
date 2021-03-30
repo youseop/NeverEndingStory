@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Modal, Form, Input } from "antd";
 import useKey from "../../functions/useKey";
 
@@ -41,4 +41,4 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, remainTime }) =
 
 const ModalForm = Form.create({ name: "modal_form" })(ModalFormComponent);
 
-export default ModalForm;
+export default memo(ModalForm);

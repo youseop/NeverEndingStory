@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Input, message } from 'antd';
 import { useSelector } from 'react-redux';
 import './SingleReply.css';
@@ -45,7 +45,8 @@ function SingleReply({comment, updateToggle_comment, gameId}) {
   }, [update])
 
   const onClick_removeComment = () => {
-    axios.post('/api/comment/removeComment', {commentId: comment._id}).then(response => {
+    setIsEdit(false);
+    axios.post('/api/comment/remove-comment', {commentId: comment._id}).then(response => {
       if(response.data.success) {
         message.success('댓글이 삭제되었습니다.');
         updateToggle_comment();
@@ -66,7 +67,7 @@ function SingleReply({comment, updateToggle_comment, gameId}) {
 
   const onClick_editComment = (e) => {
     e.preventDefault();
-    axios.post('/api/comment/editComment', 
+    axios.post('/api/comment/edit-comment', 
       {commentId: comment._id, comment: editComment}
     ).then(response => {
       if(response.data.success) {
@@ -127,4 +128,4 @@ function SingleReply({comment, updateToggle_comment, gameId}) {
   )
 }
 
-export default SingleReply
+export default memo(SingleReply)

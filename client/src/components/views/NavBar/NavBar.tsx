@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import RightMenu from "./Sections/RightMenu";
 import { Drawer, Button, Icon } from "antd";
 import "./Sections/Navbar.css";
 import { useSelector } from "react-redux";
 
+interface State_controlpage {
+  controlpage: {
+    navbarOn: boolean;
+  }
+}
+
 function NavBar() {
-  const [visible, setVisible] = useState(false);
-  const navbarOn = useSelector((state) => state.controlpage.navbarOn);
+  const [visible, setVisible] = useState<boolean>(false);
+  const navbarOn: boolean = useSelector((state: State_controlpage) => state.controlpage.navbarOn);
   let style = {};
 
-  const showDrawer = () => {
+  const showDrawer = ():void => {
     setVisible(true);
   };
 
-  const onClose = () => {
+  const onClose = ():void => {
     setVisible(false);
   };
   
@@ -62,4 +68,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default memo(NavBar);
