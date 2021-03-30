@@ -13,6 +13,11 @@ export const NAVBAR_CONTROL = "navbar_control";
 
 export const SELECT_CHARACTER = "select_character";
 export const DETACH_CHARACTER = "detach_character";
+export const POP_CHARACTER = "pop_character";
+export const PUSH_CHARACTER = "push_character";
+export const UPDATE_CHARACTER = "update_character";
+export const SET_CHARACTER_LIST = "set_character_list";
+
 
 export const SELECT_MOVINGTARGET = "select_movingtarget";
 export const DETACH_MOVINGTARGET = "detach_movingtarget"; 

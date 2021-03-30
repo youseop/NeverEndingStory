@@ -2,9 +2,338 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
-  color:#dddddd;
+  color: #FFFFFF;
+  width: 1152px;
+  /* width: 1440px; */
+  margin: auto;
+}
+
+.detailPage__gradation {
+  width: 1155px;
+  height: 200px;
+  position: relative;
+  bottom: 675px;
+  left: 4px;
+  background: linear-gradient( to top, #222831 , #22283100);
+  z-index: 1;
+}
+
+.detailPage__UPTitle {
+  position: relative;
+  bottom: 753px;
+  left: 39px;
+  z-index: 2;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 47px;
+  line-height: 36px;
+  width: 800px;
+}
+
+.detailPage__thumbnail_container{
+  width: 100%;
+  height: 605px;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 38px;
+  line-height: 36px;
+  color: #E5E5E5;
+}
+
+.detailPage__thumbnail {
+  width: 100%;
+  /* height: 790px; */
+  height: 580px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.detailPage__contributer_title {
+  color: white;
+  font-size: 20px;
+  font-weight: bolder;
+  width: 100%;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.detailPage__contributer_container {
+  width: 300px;
+  position: relative;
+  bottom: 573px;
+  left: 845px;
+  background-color: rgba(8, 8, 8, 0.684);
+  border-radius: 5px;
+  height: 400px;
+}
+
+.detailPage__contributer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  transition-duration: 0.5s;
+}
+
+.detailPage__contributer_rankNum {
+  color:white;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  margin-left: 20px;
+  font-size: 20px;
+}
+
+.detailPage__contributer_img {
+  width: 60px;
+  border-radius: 50%;
+}
+
+.detailPage__creater_nickname {
+  cursor: pointer;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 22px;
+  border-radius: 5px;
+  padding: 2px;
+  color: rgb(230, 5, 5);
+}
+
+.detailPage__creater_nickname:hover {
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 22px;
+  border-radius: 5px;
+  padding: 2px;
+  color: rgb(230, 5, 5);
+}
+
+.detailPage__contributer_nickname {
+  cursor: pointer;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 22px;
+  color: white;
+}
+
+.detailPage__contributer_nickname:hover {
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 22px;
+  color: white;
+}
+
+.detailPage__contributer_graph{
+  width: 150px;
+  height: 20px;
+  margin: 5px 0 5px;
+  /* background: rgb(255, 255, 255); */
+  border-radius: 20px;
+  line-height: 20px;
+  text-align: right;
+  box-sizing: border-box;
+}
+
+
+@keyframes stack {
+  0% {
+    width: 0%;
+    color: rgba(0, 0, 0, 0);
+  }
+  40%{
+    color: rgba(255, 255, 255, 0.096)
+  }
+  100% {
+    width: 100%;
+    color: white;
+  }
+}
+
+.detailPage__graph{
+  padding-right: 4px;
+  width: 100%;
+  color: white;
+  background-color: #6e6e6e;
+  animation: stack 2s 1;
+  border-radius: 9px;
+  font-size: 8px;
+}
+
+.detailPage__gamePlay {
+  width: 300px;
+  position: relative;
+  bottom: 510px;
+  left: 845px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-size: 15px;
+  line-height: 22px;
+  text-align: center;
+  z-index: 2;
+}
+
+.detailPage__gamePlay_container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.detailPage__gamePlay_text {
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: center;
+}
+
+.detailPage__gamePlay_sceneCntContainer {
+
+  width: 100px;
+  height: 50px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.detailPage__gamePlay_sceneCnt {
+  font-size: 50px;
+  margin-bottom: 13px;
+  padding-right: 5px;
+}
+
+.detailPage__gamePlay_text{
+
+}
+
+.detailPage__gamePlay_cntText{
+  margin-bottom: 0px;
+}
+
+.detailPage__gamePlay_link{
+  cursor: pointer;
+  margin-left: 20px;
+  width: 130px;
+  height: 36px;
+  background: rgb(221, 44, 44);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detailPage__gamePlay_link:hover{
+  cursor: pointer;
+  margin-left: 20px;
+  width: 130px;
+  height: 36px;
+  background: rgb(240, 33, 33);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detailPage__gamePlay_link .icon{
+  padding-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detailPage__gamePlay_link .text{
+  color: white;
+  padding-right: 10px;
+}
+
+.detailPage__interaction {
+  width: 200px;
+  position: relative;
+  bottom: 660px;
+  left: 950px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-size: 20px;
+  font-weight: 100;
+  color: #E5E5E5;
+}
+
+.detailPage__like{
+  height: 50px;
+  margin-right: 20px;
+}
+
+.detailPage__view{
+  height: 50px;
+}
+
+.detailPage__info_container {
+  width: 1152px;
+  /* width: 1440px; */
+  margin: auto;
+  padding-right: 10px;
+  padding-left: 20px;
+}
+
+.detailPage__title{
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 38px;
+  line-height: 36px;
+  color: #E5E5E5;
+  margin-bottom: 40px;
+  margin-top: 20px;
+  width: 990px;
+}
+
+
+.detailPage__genre {
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-size: 17px;
+  font-weight: 100;
+  color: #E5E5E5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 35px;
+}
+
+.detailPage__genre .bold_text {
+  font-weight: bold;
+  margin-left: 8px;
+  margin-right: 25px;
+}
+
+.detailPage__description{
+  all: unset;
+  white-space: pre-line;
+  width: 100%;
+  height: auto;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-size: 17px;
+  font-weight: 100;
+  color: #E5E5E5;
 }
 
 .loader_container {

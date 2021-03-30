@@ -1,3 +1,63 @@
-.profile {
-  background-color: blanchedalmond;
+.profile__container {
+  background-color: #222831;
+  width: 1152px;
+  margin: auto;
+  margin-top: 10px;
+}
+
+.profile__thumbnail{
+  width: 100%;
+  /* height: 790px; */
+  height: 330px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.profile__gradation{
+  width: 1155px;
+  height: 280px;
+  position: relative;
+  bottom: 280px;
+  left: 4px;
+  background: linear-gradient( to top, #222831 , #22283100);
+  z-index: 1;
+}
+
+.profile__userInfo {
+  position: relative;
+  bottom: 388px;
+  left: 4px;
+  display: flex;
+  z-index: 2;
+}
+
+.profile__img {
+  width: 200px;
+}
+
+.profile__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 200px;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-size: 20px;
+  font-weight: 600;
+  color: #E5E5E5;
+  margin-top: 5px;
+}
+
+
+
+
+.profile__btn_container {
+  width: 800px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background-color: rgb(222, 195, 248);
+  gap: 20px;
+  font-size: 20px;
 }

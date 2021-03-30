@@ -1,5 +1,5 @@
 import React from 'react'
-import { SVG, BAR,SCENE_ICON } from "../../svg/icon";
+import { SVG, BAR, SCENE_ICON } from "../../svg/icon";
 import "./LandingPage_gameLists.css"
 import { LOCAL_HOST } from "../../Config";
 import {Link} from "react-router-dom";

@@ -506,7 +506,7 @@ const ProductScreen = (props) => {
 
     return (
       <div className="loader_container">
-        <div class="loader">Loading...</div>
+        <div className="loader">Loading...</div>
       </div>
     )
   }

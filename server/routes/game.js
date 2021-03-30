@@ -98,7 +98,7 @@ router.post("/uploadgameInfo", (req, res) => {
 
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
-                const userId = req.body.creator;
+            const userId = req.body.creator;
                 const view = new View({
                     objectId: req.body.gameId,
                     userList: {
@@ -113,10 +113,10 @@ router.post("/uploadgameInfo", (req, res) => {
                 })
                 thumbsUp.save((err) =>{
                     if(err) return res.json({success: false, err});
-                });
+        });
                 view.save((err, doc) => {
                     if(err) return res.json({success: false, err})
-                    return  res.status(200).json({success: true, gameDetail})
+            return  res.status(200).json({success: true, gameDetail})
                 })
             });
         });

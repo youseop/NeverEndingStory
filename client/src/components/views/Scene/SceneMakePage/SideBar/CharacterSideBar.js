@@ -6,14 +6,13 @@ import CharacterImg from './CharacterImg'
 import './CharacterSideBar.css'
 
 
-function CharacterSideBar({ gameDetail, setCharacterList, setName }) {
+function CharacterSideBar({ gameDetail, setName }) {
 
   const renderCharacter = gameDetail.character.map((character, index) => {
     return <div className="character" key={`${index}`}>
       <CharacterImg
         character={character}
         index={index}
-        setCharacterList={setCharacterList}
         setName={setName} />
     </div>
   })

@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const morgan = require('morgan');
+const helmet = require('helmet');
+const hpp = require('hpp');
 dotenv.config();
 
 
@@ -19,7 +21,7 @@ const connect = mongoose.connect(config.mongoURI,
     useNewUrlParser: true, useUnifiedTopology: true,
     useCreateIndex: true, useFindAndModify: false
   })
-  .then(() => logger.info(`mongoose connected... ${config.mongoURI}`))
+  .then(() => logger.info(`mongoose connected...`))
   .catch(err => console.log(err));
 
 if (process.env.NODE_ENV === 'production') {
@@ -113,7 +115,7 @@ const updateCache = async (sceneId, userId, plus, exp) => {
 }
 
 io.on('connection', socket => {
-  // console.log('a user connected');
+  console.log('a user connected');
 
   socket.on('disconnect', reason => {
     console.log(reason);

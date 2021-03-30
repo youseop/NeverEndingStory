@@ -1,7 +1,10 @@
 import React, { memo, useEffect, useState } from 'react';
+import { updateCharacter } from '../../../../_actions/characterSelected_actions';
 import './CharacterSize.css';
 
-function CharacterSize({setCharacterList, index, element}) {
+function CharacterSize({index, element}) {
+  const dispatch = useDispatch();
+  const CharacterList = useSelector(state => state.character.CharacterList)
   let pivotX = 0;
   let drag = false;
   function mouseDown(e) {
@@ -19,12 +22,16 @@ function CharacterSize({setCharacterList, index, element}) {
   function mouseMove(e) {
     if (drag) {
       if (pivotX != e.pageX) {
-        setCharacterList((oldArray)=> {
-          const img_height = element.current.offsetHeight;
+        const img_height = element.current.offsetHeight;
           const prev_size = oldArray[index].size;
           const next_size = prev_size*(img_height-(pivotX-e.pageX))/img_height;
-          return [...oldArray.slice(0,index), {...oldArray[index], size: next_size} ,...oldArray.slice(index+1,4)]
-        })
+        dispatch(updateCharacter({
+          oldArray: CharacterList,
+          data: {
+            size: next_size
+          },
+          index,
+        }))
         pivotX = e.pageX;
       }
     }

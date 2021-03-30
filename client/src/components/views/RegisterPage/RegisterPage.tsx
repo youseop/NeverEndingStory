@@ -83,8 +83,9 @@ function RegisterPage(props: RegisterPageProps) {
             email: values.email,
             password: values.password,
             nickname: values.nickname,
-            image: `https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg`
-          }
+            image: "https://i.imgur.com/rF80MBo.png",
+            // image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
+          };
 
           await dispatch(registerUser(dataToSubmit)).then((response: RegisterUser) => {
             if (response.payload.success) {
