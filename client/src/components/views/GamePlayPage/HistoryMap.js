@@ -102,9 +102,18 @@ function HistoryMapPopup(props) {
 
   return props.trigger ? (
     <div className="HistoryMap_popup">
-      <button className="close_btn" onClick={() => close_button()}>
+      {/* <button className="close_btn" onClick={() => close_button()}>
         닫기
-      </button>
+      </button> */}
+      <div className="close_btn" onClick={() => close_button()}>
+        <SVG
+          className="close_btn"
+          src="close_2"
+          width="45"
+          height="50"
+          color="#F5F5F5"
+        ></SVG>
+      </div>
 
       <div className="toleft_btn" onClick={MapToLeft}>
         <SVG

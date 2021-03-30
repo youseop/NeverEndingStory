@@ -104,6 +104,10 @@
   height:5%;
   font-family: Noto Sans KR;
   font-size: 0.8em;
+  cursor: pointer;
+}
+.close_btn:hover{
+  transform: scale(1.3);
 }
 
 .toleft_btn {
