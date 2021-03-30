@@ -19,8 +19,12 @@ function CharacterSideBar({ gameDetail, setCharacterList, setName }) {
   })
 
   return (
-    <div className="characterSidebar__container">
-      {renderCharacter}
+    <div>
+      <div className="characterSidebar__container">
+        {renderCharacter}
+      </div>
+      <div className="characterSidebar_line">
+      </div>
     </div>
   )
 }

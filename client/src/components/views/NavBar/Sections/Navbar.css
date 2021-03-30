@@ -43,6 +43,9 @@
   transform: opacity(0);
   transition-duration: 1.0s;
 }
+.menu::-webkit-scrollbar {
+  display: none;
+}
 
 .menu:hover{
   /* opacity: 1; */

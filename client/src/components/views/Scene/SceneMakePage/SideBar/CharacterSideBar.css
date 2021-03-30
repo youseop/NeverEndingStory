@@ -1,8 +1,9 @@
   .characterSidebar__container{
       all:unset;
       position: absolute;
-      top:250px;
+      top:254px;
       width:370px;
+      height: 145px;
       display: flex;
       
       background-color: darkgoldenrod;
@@ -27,6 +28,9 @@
     background-color: #808080;
   }
 
+  .characterSidebar_box:hover{
+    opacity: 0.9;
+  }
 
   .characterSidebar_Image_width {
     position: absolute;
@@ -42,3 +46,13 @@
     width:100%;
     height: auto;
   }  
+
+  .characterSidebar_line{
+    position: absolute;
+    top:410px;
+    width:370px;
+    margin-left: 15px;
+    height: 2px;
+    opacity: 0.7;
+    background-color: #808080;
+  }

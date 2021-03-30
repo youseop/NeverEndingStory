@@ -36,8 +36,8 @@ function CharacterInfoDisplay({ setName, character, setCharacterList, CharacterL
   }
 
   const CharacterListImages = CharacterList.map((character, index) => {
-    const img = new Image();
-    img.src = character.image;
+    // const img = new Image();
+    // img.src = character.image;
     return (
       <div key={index}>
         <div
@@ -47,8 +47,9 @@ function CharacterInfoDisplay({ setName, character, setCharacterList, CharacterL
           <img
             src={character.image}
             alt=""
-            className={img.height > img.width ?
-              "characterList_image_height" : "characterList_image_width"}
+            // className={img.height > img.width ?
+            //   "characterList_image_height" : "characterList_image_width"}
+            className="characterList_image_height"
           />
           {/* <div className="characterList_Text">
         x: {character.posX} y: {character.posY} size: {character.size}
@@ -60,8 +61,8 @@ function CharacterInfoDisplay({ setName, character, setCharacterList, CharacterL
   })
 
   const characterDetailImages = character.image_array.map((url, index) => {
-    const img = new Image();
-    img.src = url;
+    // const img = new Image();
+    // img.src = url;
     return (
       <div
         key={index}
@@ -71,8 +72,9 @@ function CharacterInfoDisplay({ setName, character, setCharacterList, CharacterL
         <img
           src={url}
           alt=""
-          className={img.height > img.width ?
-            "image_array_image_height" : "image_array_image_width"}
+          // className={img.height > img.width ?
+          //   "image_array_image_height" : "image_array_image_width"}
+          className="image_array_image_height"
         />
       </div>
     )

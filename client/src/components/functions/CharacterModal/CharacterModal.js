@@ -47,7 +47,7 @@ function CharacterModal({ setCharacterList, CharacterList, GameCharacterList, se
 
   return (
     <div>
-      <div className="modal_Character">
+      <div className="modal">
         {/* <div onClick={onClick_detachCharacter}>캐릭터 선택 해제</div> */}
         <CharacterInfoDisplay
           setName={setName}
@@ -56,7 +56,7 @@ function CharacterModal({ setCharacterList, CharacterList, GameCharacterList, se
           setCharacterList={setCharacterList}
           CharacterList={CharacterList}
         />
-        {isAdded && <div onClick={onClick_removeCharacter}>삭제</div>}
+        {/* {isAdded && <div onClick={onClick_removeCharacter}>삭제</div>} */}
       </div>
     </div>
   )
