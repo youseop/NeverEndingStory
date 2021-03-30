@@ -19,6 +19,8 @@ const multer = require("multer");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 const { objCmp } = require("../lib/object");
+const {sanitize} = require("../lib/sanitize")
+
 const { log } = require("winston");
 
 
@@ -84,8 +86,8 @@ router.post("/uploadgameInfo", (req, res) => {
             if (err) return res.status(400).send(err);
 
             gameDetail.creator = req.body.creator
-            gameDetail.title = req.body.title
-            gameDetail.description = req.body.description
+            gameDetail.title = sanitize(req.body.title)
+            gameDetail.description = sanitize(req.body.description)
             gameDetail.thumbnail = req.body.thumbnail
             gameDetail.privacy = req.body.privacy
             gameDetail.category = req.body.category
@@ -101,9 +103,9 @@ router.post("/uploadgameInfo", (req, res) => {
 
 router.post("/uploadgameframe", (req, res) => {
     const game = new Game();
-    game.title = req.body.title;
+    game.title = sanitize(req.body.title);
     if(req.body.description)
-        game.description = req.body.description
+        game.description = sanitize(req.body.description);
     game.save((err, game) => {
         if (err) return res.json({ success: false, err });
 
@@ -121,13 +123,6 @@ router.get("/getgames", (req, res) => {
             if (err) return res.status(400).send(err);
             res.status(200).json({ success: true, games });
         });
-});
-
-router.post("/getgamedetail", (req, res) => {
-    Game.findOne({ _id: req.body.gameId }).exec((err, gameDetail) => {
-        if (err) return res.status(400).send(err);
-        return res.status(200).json({ success: true, gameDetail });
-    });
 });
 
 router.post("/ratio", (req, res) => {
@@ -171,6 +166,10 @@ router.post("/putCharDB", (req, res) => {
             if (err) return res.status(400).send(err);
 
             gameDetail.character = req.body.character;
+            for(let i = 0 ; i <gameDetail.character.length;i++){
+                gameDetail.character[i].name = sanitize(gameDetail.character[i].name)
+                gameDetail.character[i].description = sanitize(gameDetail.character[i].description)
+            }
 
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
@@ -426,7 +425,7 @@ router.post("/updatescenestatus", auth, async (req, res) => {
 
 router.post("/getgamedetail", (req, res) => {
     Game.findOne({ _id: req.body.gameId })
-        .populate("game_creater")
+        .populate("creator")
         .exec((err, gameDetail) => {
             if (err) return res.status(400).send(err);
             return res.status(200).json({ success: true, gameDetail });

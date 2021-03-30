@@ -18,6 +18,7 @@ interface Game {
     _id: string;
     thumbnail: string;
     category: string;
+    first_scene: string;
 }
 
 interface ContainerProps {
@@ -211,8 +212,7 @@ export function GameList(props: ContainerProps) {
     //* game list
     data.length = 0;
     const gameList = games.map((game: Game, index: number) => {
-        if (game.title) {
-            console.log(game.title);
+        if (game.first_scene) {
             data.length += 1;
             let thumbnailPath;
             

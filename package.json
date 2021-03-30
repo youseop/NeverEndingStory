@@ -41,6 +41,7 @@
     "pm2": "^4.5.5",
     "react-redux": "^5.0.7",
     "redis": "^3.0.2",
+    "sanitize-html": "^2.3.3",
     "saslprep": "^1.0.3",
     "socket.io": "^4.0.0",
     "socket.io-redis": "^6.1.0",
