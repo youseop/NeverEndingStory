@@ -25,10 +25,7 @@ interface ContainerProps {
 }
 
 function ContainerToRight(target: Data) {
-    console.log(target)
     if (target.pos < target.limit - 1) {
-        console.log(target.pos);
-
         //* bar
         var bar = document.getElementById(
             target.id + "_bar" + String(target.pos)
@@ -130,7 +127,6 @@ function ContainerToLeft(target: Data) {
 }
 
 function mouseOnEvent(target: Data) {
-    console.log("work" + target.pos)
     //* arrow right
     let arrow = document.getElementById(
         target.id + "_right_arrow"
@@ -170,7 +166,6 @@ function mouseOnEvent(target: Data) {
 }
 
 function mouseOffEvent(target: Data) {
-    console.log("out")
     //* arrow right
     let arrow = document.getElementById(
         target.id + "_right_arrow"
@@ -213,10 +208,11 @@ export function GameList(props: ContainerProps) {
     data.length = 0;
     const gameList = games.map((game: Game, index: number) => {
         if (game.title) {
-            console.log(game.title);
+            // console.log(game.title);
+            // console.log(index);
             data.length += 1;
             return (
-                <div key={index} className="gamelist-game">
+                <div className="gamelist-game" key={index}>
                     <a href={`/game/${game._id}`}>
                         <img
                             className="game-image"
@@ -247,11 +243,10 @@ export function GameList(props: ContainerProps) {
         id={`${data.id}_bar0`}
         className="bar"
         style={{ filter: "brightness(100%)" }}
+        key={0}
     >
         <BAR />
     </div>)
-
-    console.log(data.category)
 
     //* return component
     return (
