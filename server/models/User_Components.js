@@ -17,6 +17,9 @@ const contributedSceneSchema = Schema({
       type: Number,
       default: 1
     },
+    title: String,
+    thumbnail: String,
+    description: String,
 })
 
 const contributedGameSchema = Schema({
@@ -26,6 +29,7 @@ const contributedGameSchema = Schema({
   }, 
   title: String,
   thumbnail: String,
+  description: String,
 })
 
 const ContributedScene = mongoose.model('ContributedScene', contributedSceneSchema);

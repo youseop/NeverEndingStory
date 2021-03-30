@@ -6,7 +6,11 @@ import "./GameDetailPage.css";
 import { LOCAL_HOST } from "../../Config"
 import Comment from '../Comment/Comment.js';
 import { socket } from "../../App";
+import { SVG } from "../../svg/icon";
 import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
+import TopRatingContributer from "./TopRatingContributer";
 
 function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
@@ -15,7 +19,6 @@ function GameDetailPage(props) {
     const [gameDetail, setGameDetail] = useState([]);
     const [sceneId, setSceneId] = useState([]);
     const [isMaking, setIsMaking] = useState(false);
-    const [update, setUpdate] = useState(false);
     const [view, setView] = useState(0);
     const [thumbsUp, setThumbsUp] = useState(0);
     const [thumbsUpClicked, setThumbsUpClicked] = useState(false);
@@ -80,11 +83,11 @@ function GameDetailPage(props) {
                 }
             })
         }
-    },[update,user])
+    },[user])
 
     function onClick_thumbsUp () {
         if(user && user.userData){
-            // setUpdate((state) => state+1);
+            // ((state) => state+1);
             const variable = {
                 userId: user.userData._id,
                 objectId: gameId
@@ -92,59 +95,111 @@ function GameDetailPage(props) {
             Axios.post("/api/thumbsup/", variable).then((response) =>{
                 if (response.data.success){
                     setThumbsUp(response.data.thumbsup);
+                    setThumbsUpClicked(response.data.isClicked);
                 }
             })
         }
     }
 
-    const topContributer = contributerList.map((contributer, index) => {
-        return (
-            <div key={contributer.userId}>
-                <div>{index+1}위</div>
-                <img src={contributer.image} alt=""/>
-                <div>{contributer.nickname}</div>
-                <div>{contributer.email}</div>
-                <div>만든 신 개수{contributer.userSceneCnt}</div>
-            </div>
-        )
-    })
-
     return (
         <div className="detailPage__container">
 
             {/* 이미지 불러오는게 늦음 디버깅 필요 */}
-            {gameDetail.thumbnail &&
+            <div className="detailPage__thumbnail_container">
                 <img
-                    style={{ width: "30%", height: "30%" }}
-                    src={`http://${LOCAL_HOST}:5000/${gameDetail.thumbnail}`}
-                    alt="thumbnail"
-                />}
-            <div>제목: {gameDetail.title}</div>
-            <div>카테고리 : {gameDetail.category}</div>
-            <div>크리에이터: {gameDetail?.creator?.nickname}</div>
-            <div>조회수: {view}</div>
-            <div onClick={onClick_thumbsUp}>좋아요: {thumbsUp}</div>
-            <div>상세 설명: {gameDetail.description}</div>
-            <div>기여한 사람수: {ContributerCnt}</div>
-            <div>씬 총 개수: {totalSceneCnt}</div>
-            <div>{topContributer}</div>
-            <br />
+                    className="detailPage__thumbnail"
+                    src={`http://${LOCAL_HOST}:5000/${gameDetail?.thumbnail}`}
+                    alt=""
+                />
+                <div className="detailPage__contributer_container">
+                    <div className="detailPage__contributer_title"> {ContributerCnt}명이 함께하는 이야기</div>
+                    <TopRatingContributer 
+                        contributerList={contributerList}
+                        creatorNickname={gameDetail?.creator?.nickname}
+                        totalSceneCnt={totalSceneCnt}
+                    />
+                </div>
+                <div className="detailPage__gamePlay">
+                    <div className="detailPage__gamePlay_container">
+                        <div className="detailPage__gamePlay_text">
+                            현재 스토리
+                        </div>
+                        <div className="detailPage__gamePlay_sceneCntContainer">
+                            <div className="detailPage__gamePlay_sceneCnt">
+                                {totalSceneCnt}
+                            </div>
+                            <div className="detailPage__gamePlay_cntText">
+                                개
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <Link
+                        className="detailPage__gamePlay_link"
+                        style={{ color: "#f05454" }}
+                        to={
+                            {
+                                pathname: isMaking ? `/scene/make` : `/gameplay`,
+                                state: {
+                                    gameId: gameId,
+                                    sceneId: sceneId
+                                },
+                            }
+                        }>
+                            <div className="icon">
+                                <SVG 
+                                    src="playIcon_1"
+                                    width="30"
+                                    height="30"
+                                    color="#FFF"
+                                />
+                            </div>
+                            <div className="text">시작하기</div>
+                    </Link>
+                </div>
+                <div className="detailPage__gradation"></div>
+                <div className="detailPage__UPTitle">
+                    {gameDetail.title}
+                </div>
+                <div className="detailPage__interaction">
+                    <div 
+                        onClick={onClick_thumbsUp}
+                        className="detailPage__like"
+                    >
+                        {thumbsUp}
+                        {thumbsUpClicked? 
+                        <FontAwesomeIcon style={{color: "red",marginLeft: "10px"}} icon={faHeart}/>
+                        :
+                        <FontAwesomeIcon icon={faHeart} style={{marginLeft: "10px"}}/>
+                        }
+                    </div>
+                    <div className="detailPage__view">       
+                        {view}            
+                        <FontAwesomeIcon icon={faEye} style={{marginLeft: "10px"}}/>
+                    </div>
+                </div>
+            </div>
+            <div className="detailPage__info_container">
+                <div className="detailPage__title">
+                    {/* {gameDetail.title} */}
+                     
+                </div>
+                <div className="detailPage__genre">
+                    장르: 
+                    <div className="bold_text">
+                        {gameDetail.category}
+                    </div> 
+                    작가: 
+                    <div className="bold_text">
+                        {gameDetail?.creator?.nickname.substr(0,20)}
+                    </div>
+                </div>
+                <div className="detailPage__description">
+                    {gameDetail.description}
+                </div>
 
-            {/* 게임 시작하기 or 이어 만들기 */}
-            <Link
-                style={{ color: "#f05454" }}
-                to={
-                    {
-                        pathname: isMaking ? `/scene/make` : `/gameplay`,
-                        state: {
-                            gameId: gameId,
-                            sceneId: sceneId
-                        },
-                    }
-                }>
-                게임 시작하기
-            </Link>
-            <Comment gameId={gameId} />
+                <Comment gameId={gameId} />
+            </div>
         </div>
     );
 }

@@ -53,6 +53,7 @@ function RegisterPage(props:RegisterPageProps) {
             email: values.email,
             password: values.password,
             nickname: values.nickname,
+            image: "https://i.imgur.com/rF80MBo.png",
             // image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
           };
 

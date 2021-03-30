@@ -4,8 +4,10 @@
 
 .container_box {
   width: 100%;
-  margin: 5px;
-  padding: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .comment_container {
@@ -18,23 +20,24 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .SingleReply__img {
   border-radius: 50%;
-  width: 30px;
+  width: 55px;
   margin: 2px;
-  margin-left: 5px;
+  margin-left: 35px;
 }
 
 .SingleReply__nickname {
-  font-size: 0.6rem;
+  font-size: 13px;
   color: rgb(255, 255, 255);
 }
 
-.SingleReply__content {
-  font-size: 0.8rem;
+.SingleReply__content {  
+  font-size: 14px;
   font-weight: 400;
   margin-bottom: 10px;
 

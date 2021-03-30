@@ -27,7 +27,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
   const handleCreate = () => {
     formRef.validateFields(async (err, values) => {
       clearTimeout(decreaseTimer);
-      console.log("deleted -- ", decreaseTimer)
       if (err || !visible) {
         return;
       }
@@ -70,7 +69,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
   const onClickHandler = () => {
     dispatch(gamePause(true));
     clearTimeout(decreaseTimer);
-    console.log("deleted -- ", decreaseTimer)
     let tick = 30;
     setRemainTime(tick);
     decTimer = setInterval(() => {
@@ -97,7 +95,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
     }
     socket.emit("empty_num_increase", { scene_id, user_id });
     clearTimeout(decreaseTimer);
-    console.log("deleted -- ", decreaseTimer)
     setVisible(false);
     dispatch(gamePause(false));
   }
@@ -127,8 +124,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list }) => {
   useEffect(() => {
     if (dino) {
       clearTimeout(decreaseTimer);
-      console.log("failed.. deleted -- ", decreaseTimer)
-      console.log("visible false");
     }
   }, [dino]);
 

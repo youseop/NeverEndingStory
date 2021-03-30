@@ -12,13 +12,16 @@ router.post('/count', (req,res) => {
       if(err) return res.status(400).send(err);
       let isClicked = false;
       if(
-        Object.keys(thumbsup.userList).includes(req.body.userId) && 
+        thumbsup?.userList &&
+        Object.keys(thumbsup?.userList).includes(req.body.userId) && 
         thumbsup.userList[req.body.userId] === true
       ){
         isClicked = true;
+        res.status(200).json({success: true, thumbsup:thumbsup.cnt, isClicked: isClicked})
+      } else {
+        res.status(200).json({success: true, thumbsup: 0, isClicked: false})
       }
-      res.status(200).json({success: true, thumbsup:thumbsup.cnt, isClicked: isClicked})
-  })
+  }) 
 })
 
 

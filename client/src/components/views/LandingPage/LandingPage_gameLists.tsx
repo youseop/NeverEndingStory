@@ -219,7 +219,17 @@ export function GameList(props: ContainerProps) {
                             src={`http://${LOCAL_HOST}:5000/${game.thumbnail}`}
                             alt={game.title}
                         />
-                        <div className="game-title">{game.title}</div>
+                        <div className="game-title">
+                            {game.title.length>30 
+                            ? 
+                            <>
+                            {game.title.substr(0,30) }
+                            ...
+                            </>
+                            :
+                            game.title
+                            }
+                        </div>
                     </a>
                     <div className="game-category">{game.category}</div>
                 </div>

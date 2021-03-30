@@ -72,7 +72,7 @@ router.post("/uploadgameInfo", (req, res) => {
 
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
-                const userId = req.body.creator;
+            const userId = req.body.creator;
                 const view = new View({
                     objectId: req.body.gameId,
                     userList: {
@@ -87,10 +87,10 @@ router.post("/uploadgameInfo", (req, res) => {
                 })
                 thumbsUp.save((err) =>{
                     if(err) return res.json({success: false, err});
-                });
+        });
                 view.save((err, doc) => {
                     if(err) return res.json({success: false, err})
-                    return  res.status(200).json({success: true, gameDetail})
+            return  res.status(200).json({success: true, gameDetail})
                 })
             });
         });
@@ -221,7 +221,6 @@ router.get("/gamestart/:id", auth, async (req, res) => {
             // 유효성 검증 fail
             if(user.makingGameList[idx].exp < Date.now()){
                 trashSceneId = user.makingGameList[idx].sceneId; 
-                // console.log(trashSceneId)
                 user.makingGameList.splice(idx,1)
             }
         }
@@ -230,7 +229,6 @@ router.get("/gamestart/:id", auth, async (req, res) => {
         if (user.gamePlaying.gameId && gameId.toHexString() === user.gamePlaying.gameId.toHexString()) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
             if(trashSceneId.toHexString() === user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1].toHexString()){
-                // console.log("I'm GAME PLAYYING zz")
                 user.gamePlaying.sceneIdList.splice(user.gamePlaying.sceneIdList.length - 1,1)
                 user.gamePlaying.isMaking = false;
                 user.save((err) => {
@@ -429,7 +427,7 @@ router.post("/rank", async (req, res) => {
         });
         const topRank = contributerList.slice(0,5);
 
-        for(let i=0; i<5; i++){
+        for(let i=0; i<topRank.length; i++){
             const user = await User.findOne({_id: mongoose.Types.ObjectId(topRank[i].userId)})
             topRank[i] = {
                 nickname: user.nickname,

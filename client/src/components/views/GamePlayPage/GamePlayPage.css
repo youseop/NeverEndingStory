@@ -81,7 +81,7 @@
 .backgroundImg_container_fullscreen{
   position: absolute;
   left: 50%;
-  top: -3%;
+  top: -10%;
   transform: translate(-50%, 10%);
   transform-origin: center center;
   overflow: hidden;
