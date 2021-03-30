@@ -4,25 +4,10 @@ import React, { memo, useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
 import './Comment.css';
 import SingleComment from './SingleComment';
-import mongodb from "mongodb";
-import { Mongoose } from 'mongoose';
 
-interface GameId {
-  gameId: string
-}
-
-interface State_user {
-  user: {
-    userData: {
-      isAuth: boolean;
-      _id: mongodb.ObjectID
-    }
-  }
-}
-
-function Comment({gameId}: GameId) {
-  const user = useSelector((state: State_user) => state.user);
-  const isAuth = useSelector((state: State_user) => {
+function Comment({gameId}) {
+  const user = useSelector((state) => state.user);
+  const isAuth = useSelector((state) => {
     if (state.user.userData){
       return state.user.userData.isAuth;
     } else {
@@ -30,29 +15,61 @@ function Comment({gameId}: GameId) {
     }
   });
   
-  const [update, setUpdate] = useState<boolean>(true);
-  const [commentContent, setCommentContent] = useState<string>("");
-  const [comments, setComments] = useState<string[]>([]);
+  const [update, setUpdate] = useState(true);
+  const [commentContent, setCommentContent] = useState("");
+  const [comments, setComments] = useState([]);
+
+  const FETCHNIG_CNT = 8;
+  const [fetching, setFetching] = useState(false);
+  const [totalComment, setTotalComment] = useState([]);
+  const [contentNumber, setContentNumber] = useState(FETCHNIG_CNT);
+
+  const fetchNextData = async () => {
+    setFetching(true);
+    
+    setComments(totalComment.slice(0,contentNumber+FETCHNIG_CNT));
+    setContentNumber((state) => state+FETCHNIG_CNT);
+
+    setFetching(false);
+  };
+
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    // console.log("scrollHeight", scrollHeight,"scrollTop" ,scrollTop,"clientHeight",clientHeight)
+    if (scrollTop + clientHeight*(3/2) >= scrollHeight && fetching === false) {
+      fetchNextData();
+    }
+   };
+
+   useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
  
   const updateToggle = () => {
-    setUpdate((state: boolean) => !state);
+    setUpdate((state) => !state);
   }
 
   useEffect(() => {
     axios.post('/api/comment/get-comment', {gameId: gameId}).then(response => {
       if (response.data.success) {
-        setComments(response.data.result);
+        setTotalComment(response.data.result);
+        setComments(response.data.result.slice(0,contentNumber));
       } else {
         message.error('댓글을 불러오는데 실패했습니다.')
       }
     })
   }, [update])
 
-  const onChange_comment = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const onChange_comment = (event) => {
     setCommentContent(event.currentTarget.value);
   }
 
-  const onSubmit_comment = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const onSubmit_comment = (event) => {
     event.preventDefault();
     if(commentContent === ""){
       return;
@@ -76,14 +93,7 @@ function Comment({gameId}: GameId) {
     })
   }
 
-  interface Comment {
-    content: string;
-    writer: mongodb.ObjectID;
-    gameId: string;
-    responseTo: mongodb.ObjectID;    
-  }
-
-  const mapComment = comments.map((comment: Comment, index: number) => {
+  const mapComment = comments.map((comment, index) => {
     return (
       <div key={index}>
         {comment &&
@@ -111,7 +121,7 @@ function Comment({gameId}: GameId) {
       </form>
       }
       <br />
-      <div>댓글 {comments.length}개</div>
+      <div>댓글 {totalComment.length}개</div>
       <hr/>
       {mapComment}
       <br />

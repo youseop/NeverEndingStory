@@ -41,7 +41,7 @@ function App() {
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
-          <Route exact path="/profile" component={Auth(Profile, true)} />
+          <Route exact path="/profile/:userId" component={Auth(Profile, true)} />
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
           <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />

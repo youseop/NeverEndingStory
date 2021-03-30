@@ -81,7 +81,11 @@ function RightMenu(props) {
                     {/* <a href="/game/upload">Game Upload</a> */}
                 </Menu.Item>
                 <Menu.Item key="profile">
-                    <a href="/profile">Profile</a>
+                    {user?.userData?._id ? 
+                        <a href={`/profile/${user.userData._id}`}>Profile</a>
+                        :
+                        "Profile"
+                    }
                 </Menu.Item>
                 <Menu.Item key="logout">
                     <a onClick={logoutHandler}>Logout</a>

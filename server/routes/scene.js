@@ -5,9 +5,11 @@ const { Scene, CharacterCut } = require("../models/Scene");
 const { Game } = require("../models/Game");
 const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
+const { View } = require('../models/View');
+const { ThumbsUp } = require('../models/ThumbsUp');
 
 
-const MS_PER_HR = 150000000000 //15000
+const MS_PER_HR = 150000000 //15000
 
 
 const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
@@ -132,6 +134,26 @@ router.post('/save', auth, async (req, res) => {
     }
   }
 
+  const view = new View({
+    objectId: req.body.sceneId,
+    userList: {
+      [userId.toString()]: (new Date()).getTime()
+    }
+  })
+  view.save((err) =>{
+    if(err) return res.json({success: false, err})
+  });
+
+  const thumbsUp = new ThumbsUp({
+      objectId: req.body.sceneId,
+      userList: {
+          [userId]: false
+      }
+  })
+  thumbsUp.save((err) =>{
+      if(err) return res.json({success: false, err});
+  });
+
   scene.save((err, scene) => {
     if (err) return res.json({ success: false, err })
     if (isTmp) return res.status(200).json({ success: true, scene })
@@ -140,11 +162,35 @@ router.post('/save', auth, async (req, res) => {
   if (!isTmp && scene.isFirst) {
     try {
       const game = await Game.findOne({ _id: scene.gameId });
-
+      const user = await User.findOne({ _id: userId });
       if (!game.first_scene) {
-        game.first_scene = scene._id;
+        user.contributedSceneList = [{
+          gameId: game._id,
+          title: game.title,
+          thumbnail: game.thumbnail,
+          description: game.description.substring(0,15),
+          sceneList: [{
+            sceneId: sceneId.toString(),
+            depth: 0
+          }]
+        }]
+        user.contributedGameList = [{
+          gameId: game._id,
+          title: game.title,
+          thumbnail: game.thumbnail,
+          description: game.description.substring(0,15),
+        }]
+        user.save((err) => {
+          if (err) return res.json({ success: false, err })
+        })
 
-        game.save((err, game) => {
+        game.first_scene = scene._id;
+        game.contributerList = [{
+          userId: userId,
+          userSceneCnt: 1,
+          sceneIdList: [sceneId.toString()]
+        }]
+        game.save((err) => {
           if (err) return res.json({ success: false, err })
           return res.status(200).json({ success: true, scene })
         });
@@ -158,6 +204,56 @@ router.post('/save', auth, async (req, res) => {
   else if (!isTmp) {
     try {
       const prev_scene = await Scene.findOne({ _id: scene.prevSceneId })
+      const game = await Game.findOne({ _id: scene.gameId });
+      const user = await User.findOne({ _id: userId });
+      let flag = true;
+      for (let i=0; i<game.contributerList.length; i++){
+        if (game.contributerList[i].userId.toString() === user._id.toString()){
+          flag = false;
+          game.contributerList[i].sceneIdList.push(scene._id.toString());
+          game.contributerList[i].userSceneCnt += 1;
+          break;
+        }
+      }
+      if(flag){
+        game.contributerList.push({
+          userId: user._id,
+          userSceneCnt: 1,
+          sceneIdList: [scene._id.toString()]
+        })
+      }
+      game.save((err) => {
+        if (err) return res.json({ success: false, err })
+      })
+
+      flag = true;
+      for (let i=0; i<user.contributedSceneList.length; i++){
+        if (user.contributedSceneList[i].gameId.toString() === game._id.toString()){
+          console.log("======== 1")
+          flag = false;
+          user.contributedSceneList[i].sceneList.push({
+            sceneId: scene._id.toString(),
+            depth: scene.depth
+          });
+          user.contributedSceneList[i].sceneCnt += 1;
+          break;
+        }
+      }
+      if(flag){
+          console.log("======== 2")
+          user.contributedSceneList.push({
+          gameId: game._id,
+          sceneCnt: 1,
+          sceneList: [{
+            sceneId: scene._id.toString(),
+            depth: scene.depth
+          }]
+        })
+      }
+      user.save((err) => {
+        if (err) return res.json({ success: false, err })
+      })
+      
       const insertScene = {
         sceneId: scene._id,
         script: scene.title,

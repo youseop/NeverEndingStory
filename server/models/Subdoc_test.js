@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const teacherSchema = mongoose.Schema({
-  name: String,
-  age: Number,
-  subject: String 
+  title: String,
+  likeCount: Number,
+  userList: {}
 });
 
 const Teacher = mongoose.model('teachers', teacherSchema);

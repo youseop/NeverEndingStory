@@ -35,8 +35,10 @@ app.use('/api/scene', require('./routes/scene'));
 app.use('/api/complaint', require('./routes/complaint'));
 app.use('/api/comment', require('./routes/comment'));
 app.use('/api/like', require('./routes/like'));
+app.use('/api/view', require('./routes/view'));
+app.use('/api/thumbsup', require('./routes/thumbsup'));
 
-app.use('/api/test', require('./routes/subdoc_route'));
+// app.use('/api/test', require('./routes/subdoc_route'));
 
 //use this to show the image you have in node js server to client (react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
@@ -167,7 +169,7 @@ io.on('connection', socket => {
     }
 
     // 이미 cert에 user가 있는 경우, 예외처리.
-    user_token = {
+    let user_token = {
       userId,
       exp: Date.now() + 30000,
       timer: null,
@@ -210,7 +212,7 @@ io.on('connection', socket => {
 
     // 캐시가 없으면?, DB에서 캐시 갖고온다.
     const sceneSelector = await Scene.findOne({ _id: mongoose.Types.ObjectId(scene_id) }).select("nextList sceneTmp");
-    const sceneTmp = sceneSelector.sceneTmp;
+    const sceneTmp = sceneSelector?.sceneTmp;
 
     // exp 안된 녀석만 push 해서 newCertList.
     let newCertList = [];

@@ -45,12 +45,14 @@ function useConstructor(callBack = () => { }) {
 //! playscreen
 const ProductScreen = (props) => {
   const location = useLocation();
+  
   const { gameId, sceneId } = location.state;
-
+  
   const userHistory = props.history;
-
+  
   const dispatch = useDispatch();
-
+  
+  const user = useSelector((state) => state.user);
   const isPause = useSelector((state) => state.gameplay.isPause);
 
   const ratio = 1080 / 1920;
@@ -63,6 +65,9 @@ const ProductScreen = (props) => {
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
   const [TreeMap, setTreeMap] = useState(false);
+  const [view, setView] = useState(0);
+  const [thumbsUp, setThumbsUp] = useState(0);
+  const [isClicked, setIsClicked] = useState(false);
 
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
@@ -72,10 +77,6 @@ const ProductScreen = (props) => {
 
   let isFullscreen, setIsFullscreen;
   let errorMessage;
-
-  useConstructor(() => {
-    console.log("")
-  });
 
   try {
     [isFullscreen, setIsFullscreen] = useFullscreenStatus(maximizableElement);
@@ -181,6 +182,45 @@ const ProductScreen = (props) => {
     }
   }
 
+  function onClick_thumbsUp () {
+    if(user && user.userData){
+        // setUpdate((state) => state+1);
+        const variable = {
+            userId: user.userData._id,
+            objectId: sceneId
+        }
+        Axios.post("/api/thumbsup/", variable).then((response) =>{
+            if (response.data.success){
+                setIsClicked(response.data.isClicked);
+                setThumbsUp(response.data.thumbsup);
+            }
+        })
+    }
+  }
+
+  useEffect(() => {
+    if(user && user.userData){
+      const variable_thumbsup = {
+        objectId: sceneId,
+        userId: user.userData._id,
+      }
+      Axios.post("/api/thumbsup/count", variable_thumbsup).then((response) =>{
+        if (response.data.success){
+            setIsClicked(response.data.isClicked);
+            setThumbsUp(response.data.thumbsup);
+        }
+      })
+      const variable_view = {
+          userId: user.userData._id,
+          objectId: sceneId
+      }
+      Axios.post("/api/view/", variable_view).then((response) =>{
+          if (response.data.success){
+              setView(response.data.view);
+          }
+      })
+    }
+  },[sceneId,user])
 
   useEffect(() => {
     socket.emit("leave room", { room: prevSceneId });
@@ -369,6 +409,21 @@ const ProductScreen = (props) => {
             />
           </div>
           <div>
+            {i === Scene.cutList.length - 1 &&
+            <>
+              <button
+                className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
+                onClick={onClick_thumbsUp}
+              >
+                좋아요: {thumbsUp}
+              </button>
+              <button
+                className="gamePlay__btn"
+              >
+                조회수: {view}
+              </button>
+            </>
+            }
             <button
               className="gamePlay__btn"
               onClick={() => setHistoryMap((state) => !state)}
