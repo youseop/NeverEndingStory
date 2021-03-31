@@ -98,7 +98,7 @@ export const TextBlockChoice = (props) => {
                 theme={theme}
             />
             { isLastMotion &&
-                <div class={`choice_box ${isEnding} ${theme}`}>
+                <div className={`choice_box ${isEnding} ${theme}`}>
                     {isEnding === true ?
                         <SceneEndingPage gameId={game_id} setScene={setScene} /> :
                         <>

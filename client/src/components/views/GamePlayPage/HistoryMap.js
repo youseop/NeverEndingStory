@@ -36,7 +36,6 @@ function GoToScene(props) {
       for (let i = close.length - 1; i >= 0; i--) {
         close[i].click();
       }
-      // console.log(setScene)
       setScene({});
 
       userhistory.replace({

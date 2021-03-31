@@ -184,8 +184,9 @@ router.post('/save', auth, async (req, res) => {
           gameId: game._id,
         }]
         user.save((err) => {
+          console.log(err);
           if (err) return res.json({ success: false, err })
-        })
+        }) 
 
         game.first_scene = scene._id;
         game.contributerList = [{

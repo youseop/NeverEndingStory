@@ -32,6 +32,13 @@ import moment from "moment";
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
+    window.addEventListener('beforeunload', (event) => {
+        // 표준에 따라 기본 동작 방지
+        event.preventDefault();
+        // Chrome에서는 returnValue 설정이 필요함
+        event.returnValue = '';
+    });
+
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();

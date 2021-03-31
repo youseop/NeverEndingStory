@@ -411,6 +411,7 @@ router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
     if (!req.user) {
         return res.status(400).json({ success: false, msg: "Not a user" });
     }
+    console.log("GETSCENEINFO ---- ", req.params)
     sceneId = mongoose.Types.ObjectId(sceneId);
     try {
         const scene = await Scene.findOne({ _id: sceneId });

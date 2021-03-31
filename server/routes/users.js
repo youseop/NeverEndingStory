@@ -75,7 +75,7 @@ router.get("/playing-list/clear", auth, async (req, res) => {
     try {
         //isMaking이었으면 만들던 씬 정리해야함...(똑같은 짓 하는거 찾아보고 합치기 가능하면 합치기)
         const user = await User.findOne({ _id: req.user._id })
-        const prevOfLastScene =isMaking && user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length-2];
+        const prevOfLastScene =user.gamePlaying.isMaking && user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length-2];
         user.gamePlaying = {
             ...user.gamePlaying,
             isMaking: false,
@@ -144,4 +144,16 @@ router.post("/email-check", (req, res) => {
         });
     });
 });
+
+router.post("/game-visit", (req, res) => {
+    User.findOne({ _id: req.body.userId },{gamePlaying: 1}, (err, gamePlaying) => {
+        if (err) return res.json({ success: false, err });
+        console.log(gamePlaying)
+        return res.status(200).send({
+            success: true,
+            gamePlaying: gamePlaying,
+        });
+    })  
+})
+
 module.exports = router;

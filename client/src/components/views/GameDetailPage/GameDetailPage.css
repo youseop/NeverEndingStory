@@ -11,11 +11,11 @@
 }
 
 .detailPage__gradation {
-  width: 1155px;
+  width: 1180px;
   height: 200px;
   position: relative;
-  bottom: 675px;
-  left: 4px;
+  bottom: 670px;
+  left:-2px;
   background: linear-gradient( to top, #222831 , #22283100);
   z-index: 1;
 }
@@ -101,7 +101,7 @@
   line-height: 22px;
   border-radius: 5px;
   padding: 2px;
-  color: rgb(230, 5, 5);
+  color: rgb(230, 5, 5) !important;
 }
 
 .detailPage__creater_nickname:hover {
@@ -112,7 +112,7 @@
   line-height: 22px;
   border-radius: 5px;
   padding: 2px;
-  color: rgb(230, 5, 5);
+  color: rgb(230, 5, 5) !important;
 }
 
 .detailPage__contributer_nickname {
@@ -225,6 +225,20 @@
   margin-bottom: 0px;
 }
 
+.detailPage__gamePlayFromStart_link {
+  cursor: pointer;
+  font-weight: 100;
+  margin-left: 20px;
+  font-size: 13px;
+  width: 130px;
+  height: 36px;
+  position: relative;
+  left: 1005px;
+  bottom: 795px;
+  z-index: 2;
+  color: rgb(180, 180, 180);
+}
+
 .detailPage__gamePlay_link{
   cursor: pointer;
   margin-left: 20px;
@@ -277,6 +291,7 @@
 }
 
 .detailPage__like{
+  cursor: pointer;
   height: 50px;
   margin-right: 20px;
 }
