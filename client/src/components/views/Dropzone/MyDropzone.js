@@ -15,25 +15,29 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL }) {
     >
 
         {({ getRootProps, getInputProps }) => (
-            <div className="dropzone" {...getRootProps()}>
-                <input {...getInputProps()} />
-                {blobURL ? (
-                    <div className="thumbnail__container">
-                        <img
-                            className="thumbnail__img"
-                            src={blobURL}
-                            alt="thumbnail"
-                        />
+            <div className="dropzone__container">
+                <div className="dropzone" {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    {blobURL ? (
+                        <div className="thumbnail__container">
+                            <img
+                                className="thumbnail__img"
+                                src={blobURL}
+                                alt="thumbnail"
+                            />
 
-                    </div>
-                )
-                    :
-                    <>
-                        <div><p className="thumbnail__msg"><b>파일 업로드</b></p>  </div>
-                        <FileAddOutlined className="dropzone-icon" />
-                    </>
-                }
+                        </div>
+                    )
+                        :
+                        <>
+                            <div><p className="thumbnail__msg"><b>파일 업로드</b></p>  </div>
+                            <FileAddOutlined className="dropzone-icon" />
+                            <div><p className="thumbnail__msg">16 : 9 비율을 권장합니다.</p></div>
+                        </>
+                    }
+                </div>
             </div>
+            
         )}
     </Dropzone>
 
