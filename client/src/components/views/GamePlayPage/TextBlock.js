@@ -36,7 +36,7 @@ export const TextBlock = (props) => {
                 :
                 <div className={`text_line ${theme}`} > {
                     isTyping ? < TextAnimation
-                        cut_script={cut_script}
+                        cut_script={" "}
                         setIsTyping={setIsTyping}
                     /> : cut_script
                 }
@@ -68,7 +68,6 @@ export const TextBlockChoice = (props) => {
     theme = 'atorney';
 
     const choices = scene_next_list.map((choice, index) => {
-        console.log("---------choices-------")
         return (
             <Link to={
                 {

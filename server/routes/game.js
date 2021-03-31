@@ -491,9 +491,9 @@ router.get("/simple-scene-info", auth, async (req, res) => {
             const scene = await Scene.findOne({ _id: sceneId });
             sceneinfo.push({
                 sceneId : sceneId,
-                background : scene.cutList[scene.cutList.length-1].background,
-                name : scene.cutList[scene.cutList.length-1].name,
-                script : scene.cutList[scene.cutList.length-1].script,
+                background : scene?.cutList[scene.cutList.length-1]?.background,
+                name : scene?.cutList[scene.cutList.length-1]?.name,
+                script : scene?.cutList[scene.cutList.length-1]?.script,
             });
         }
         return res.status(200).json({sceneinfo:sceneinfo})

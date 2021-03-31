@@ -7,9 +7,6 @@
   height: 100%;
 
   display: flex;
-  /* justify-content: center; */
-  /* align-items: center; */
-
   background-color: rgba(0, 0, 0, 0.616);
 }
 
@@ -28,7 +25,6 @@
 
   white-space: nowrap;
   transition-duration: 0.5s;
-  /* background-color: aqua; */
 }
 
 .HistoryMap_scene {
@@ -40,15 +36,11 @@
   border-radius: 0.5em;
   position: relative;
 
-  /* display: inline-block; */
   overflow: hidden;
   white-space: normal;
-  /* display:block; */
   display: inline;
 
-  /* text-align: center; */
   background-color: rgba(1, 1, 90, 0.883);
-  /* filter:brightness(20%); */
 
   border: 0.1em white solid;
   color: white;
@@ -110,7 +102,7 @@
   transform: scale(1.3);
 }
 
-.toleft_btn {
+.HistoryMap-toleft_btn {
   z-index: 100;
   position: absolute;
 
@@ -121,12 +113,12 @@
   rotate: -1;
   transform: rotate(180deg)
 }
-.toleft_btn:hover {
+.HistoryMap-toleft_btn:hover {
   transform: scale(-1.3);
   transition-duration: 0.7s;
 }
 
-.toright_btn {
+.HistoryMap-toright_btn {
   z-index: 100;
   height: 10%;
   width: 5%;
@@ -134,36 +126,7 @@
   top: 50%;
   right: 5%;
 }
-.toright_btn:hover {
+.HistoryMap-toright_btn:hover {
   transform: scale(1.3);
   transition-duration: 0.7s;
-}
-
-.warning_popup {
-  z-index: 100;
-  /* position: relative; */
-  position: absolute;
-  top: 35%;
-  left: 35%;
-  margin: auto;
-
-  width: 33%;
-  height: 33%;
-
-  background-color: aqua;
-  /* transform: translate(50%, 50%); */
-  /* transform-origin: center center; */
-}
-
-.warning_text {
-  position: absolute;
-  bottom: 40%;
-  left: 15%;
-}
-
-.ok_btn {
-  position: absolute;
-  bottom: 10%;
-  left: 45%;
-  border-radius: 0.3em;
 }

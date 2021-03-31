@@ -30,15 +30,6 @@ interface FormType {
   confirmPassword: string;
 }
 
-function checkEmail(email: string | null | undefined) {
-  Axios.post("api/users/email-check", { email: email }).then((response) => {
-    if (response.data.usedEmail) {
-      return false
-    }
-  })
-  return true
-}
-
 function RegisterPage(props: RegisterPageProps) {
   const dispatch: any = useDispatch();
   return (
@@ -55,7 +46,6 @@ function RegisterPage(props: RegisterPageProps) {
         email: Yup.string()
           .email('이메일 형식이 아닙니다.')
           .required('필수 정보입니다.'),
-          // .test("checkEmail", "이미 사용중인 이메일입니다.", value => checkEmail(value)),
         password: Yup.string()
           .min(6, '패스워드는 최소 6글자 이상이어야합니다.')
           .required('필수 정보입니다.'),
@@ -64,14 +54,15 @@ function RegisterPage(props: RegisterPageProps) {
           .required('패스워드를 다시 입력해주세요.')
       })}
       onSubmit={(values, { setSubmitting }) => {
-        setTimeout(async() => {
+        setTimeout(async () => {
           let flag
           await Axios.post("api/users/email-check", { email: values.email }).then((response) => {
             flag = response.data.usedEmail
           })
 
-          if(flag){
+          if (flag) {
             alert("이미 사용 중인 아이디 입니다.")
+            setSubmitting(false);
             return
           }
 

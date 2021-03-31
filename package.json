@@ -10,8 +10,9 @@
   "scripts": {
     "start": "node server/index.js",
     "deploy": "NODE_ENV=production PORT=5000 pm2 start server/index.js -i 0",
-    "backend": "nodemon server/index.js",
+    "backend": "ts-node-dev server/index.js",
     "frontend": "npm run start --prefix client",
+    "build": "tsc -p tsconfig.json",
     "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\""
   },
   "author": "John ahn",

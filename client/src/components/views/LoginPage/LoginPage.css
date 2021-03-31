@@ -47,9 +47,11 @@
   font-size: 20px;
   text-align: left;
   color: rgb(64, 153, 212);
+  background-color: rgba(76, 181, 251, 0.219);
 }
 .login-register:hover{
-  color: rgb(76, 181, 251);
+  border-bottom-style: solid;
+  border-width: 1px;
 }
 
 .login-error{

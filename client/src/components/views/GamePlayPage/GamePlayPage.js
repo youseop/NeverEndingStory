@@ -157,12 +157,12 @@ const ProductScreen = (props) => {
   function handleEnter(event) {
     //! 타이핑 끝 & 미니맵 X
     if (!isTyping && !isPause) {
-      if (i < Scene.cutList.length - 1) {
+      if (i < Scene?.cutList?.length - 1) {
         playMusic(i + 1);
         setI(i + 1);
         setIsTyping(true);
       }
-      else if (i == Scene.cutList.length - 1) {
+      else if (i == Scene?.cutList?.length - 1) {
         //! 엔딩자리
         setLastMotion(true)
         // setIsTyping(true)
