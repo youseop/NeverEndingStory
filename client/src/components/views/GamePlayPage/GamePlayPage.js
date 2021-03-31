@@ -268,7 +268,6 @@ const ProductScreen = (props) => {
 
   useEffect(() => {
     setLastMotion(false)
-    console.log(gameId, sceneId);
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
       (response) => {
         if (response.data.success) {

@@ -10,7 +10,7 @@ const { ThumbsUp } = require('../models/ThumbsUp');
 
 const {sanitize} = require("../lib/sanitize")
 
-const MS_PER_HR = 1000
+const MS_PER_HR = 3600000
 
 
 const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {

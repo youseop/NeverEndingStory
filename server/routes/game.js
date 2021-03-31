@@ -365,7 +365,6 @@ router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
                     sceneIdList: [...user.gamePlaying.sceneIdList, sceneId],
                 };
             }
-
             user.save();
 
             return res
