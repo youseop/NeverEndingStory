@@ -231,19 +231,18 @@ router.get("/gamestart/:id", auth, async (req, res) => {
     try {
         let user = await User.findOne({ _id: userId });
         let trashSceneId = mongoose.Types.ObjectId(0);
-        const idx = user.makingGameList.findIndex(item => objCmp(item.gameId.gameId, gameId))
+        const idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
         if (idx > -1) {
             if (user.makingGameList[idx].exp < Date.now()) {
                 trashSceneId = user.makingGameList[idx].sceneId;
                 user.makingGameList.splice(idx, 1)
             }
         }
-
         // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감. 
         if (user.gamePlaying.gameId && objCmp(user.gamePlaying.gameId, gameId)) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
-            if (objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
-                user.gamePlaying.sceneIdList.pop();
+        if (objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
+        user.gamePlaying.sceneIdList.pop();
                 user.gamePlaying.isMaking = false;
                 user.save((err) => {
                     if (err) {

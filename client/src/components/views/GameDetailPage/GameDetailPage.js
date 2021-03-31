@@ -31,9 +31,10 @@ function GameDetailPage(props) {
     const user = useSelector((state) => state.user);
 
     const playFirstScene = async (isFirst) => {
-        console.log(sceneId)
         try {
             const response = isFirst && await Axios.get("/api/users/playing-list/clear");
+            // Not Yet Tested
+            socket.emit("empty_num_increase", {userId: user.userData._id.toString(), sceneId: response.data.prevOfLastScene});
             props.history.replace({
                 pathname: (!isFirst && isMaking) ? `/scene/make` : `/gameplay`,
                 state: {

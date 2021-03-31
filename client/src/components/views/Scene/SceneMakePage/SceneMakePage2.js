@@ -107,8 +107,9 @@ const SceneMakePage = (props) => {
     useEffect(() => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
+            const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
             // console.log(res.data)
-            if (res.data.success) { scene = res.data.scene; }
+            if (res.data.success && validation.data.success) { scene = res.data.scene; }
             else {
                 // console.log("get scene ERROR");
                 props.history.replace("/");
