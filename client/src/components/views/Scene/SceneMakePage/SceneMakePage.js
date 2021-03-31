@@ -311,7 +311,9 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
-        if (window.confirm("게임 제작을 완료하시겠습니까?")) {
+        
+        console.log("------",isTmp)  
+        if (isTmp || window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,
                 sceneId: sceneId,
@@ -372,6 +374,7 @@ const SceneMakePage = (props) => {
         }
     };
     const onTmpSave = (event) => {
+        console.log("HERES!!!")
         onSubmit_saveScene(event, 1);
     }
     const showWarning = () => {
