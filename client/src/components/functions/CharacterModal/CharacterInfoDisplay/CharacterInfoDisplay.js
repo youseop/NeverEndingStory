@@ -65,7 +65,7 @@ function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
           alt=""
           // className={img.height > img.width ?
           //   "image_array_image_height" : "image_array_image_width"}
-          className="image_array_image_height"
+          className="image_array_image"
         />
       </div>
     )

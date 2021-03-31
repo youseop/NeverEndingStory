@@ -1,26 +1,47 @@
-.background-container{
-    margin-top: 2rem;
-    margin-left: 2rem;
+.backgroundTab_container{
+    all:unset;
+    position: absolute;
+    top:70px;
+    margin: 0px 50px 0px 50px;
+    width:90%;
+    height:90%;
     /* background-color: aqua; */
 }
-.largeBox1{
-    top: 0;
-    left: 0;
-    display: inline;
-    max-width: 20%;
-    height: 100%;
-    width:50%;
-  
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center; */
-  
-    /* background-color: rgba(0, 0, 0, 0.616); */
+
+.backgroundTab_dropzone{
+    height: 30%;
+}
+.backgroundTab_Box{
+    margin-top: 20px;
+    margin-left:8px;
+    width:906px;
+    height: 360px;
+    overflow:scroll;
+    /* background-color: peru; */
 }
 
-.smallBox12{
-    background-color:gainsboro;
-    width:20%;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
+.backgroundTab_Box::-webkit-scrollbar {
+    display: none;
+}
+
+.backgroundTab_image_box{
+    display: inline-block;
+    width:290px;
+    height:168px;    
+    margin:0px 3px 3px 0px;
+    /* background-color: #ffffff; */
+    /* border: 0.1px solid #ffffff; */
+  
+    /* background-color: red; */
+}
+
+.backgroundTab_image{
+    width:298px;
+    height:167px;
+    object-fit: cover;
+    border: 0.1px solid #ffffff;
+}
+.backgroundTab_image:hover{
+    border: 0.1px solid rgb(0,0,0,0.8);
+    /* opacity: 0.95; */
 }

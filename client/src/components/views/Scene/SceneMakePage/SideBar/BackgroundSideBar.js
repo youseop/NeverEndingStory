@@ -10,8 +10,7 @@ function BackgroundSideBar({ gameDetail, setBackgroundImg, setMakeModalState }) 
     return (
       <div
         className="backSidebar_box"
-        key={`${index}`}
-      >
+        key={`${index}`}>
         <BackgroundImg imgUrl={background.image} setBackgroundImg={setBackgroundImg} />
       </div>
     )

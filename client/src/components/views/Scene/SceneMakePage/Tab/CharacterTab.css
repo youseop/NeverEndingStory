@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
 .characterTab-container{
     position: absolute;
     top:70px;
     width:1000px;
     height:540px;
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
 }
 
 .characterTab_profile_image{
@@ -15,11 +17,45 @@
     top:30px;
     /* margin: 10px 16px 10px 50px; */
     background-color: #ffffff;
+    border: 0.1px solid #ffffff;
 }
+
+.characterTab_profile_image:hover{
+    border: 0.1px solid rgb(0,0,0,0.1);
+}
+
+.characterTab_cards_Box{
+    width:630px;
+    height:200px;    
+    position: absolute;
+    overflow: scroll;
+    left:320px;
+    top:310px;
+    /* background-color: pink; */
+}
+.characterTab_cards_Box::-webkit-scrollbar {
+    display: none;
+  }
+
+.characterTab_cards{
+    display: inline-block;
+    width:102px;
+    height:85px;    
+    overflow: hidden;
+    margin:0px 3px 3px 0px;
+    background-color: #ffffff;
+    border: 0.1px solid #ffffff;
+}
+
+.characterTab_cards:hover{
+    border: 0.1px solid rgb(0,0,0,0.1);
+}
+
 .characterTab_profile_name
 {
-    all:unset;
+    all:unset;    
     position: absolute;
+    font-family: Noto Sans KR;
     left: 320px;
     top: 85px;
     font-size: 18px;
@@ -30,9 +66,14 @@
     font-weight: bold;
     background-color: #ffffff;
 }
+.characterTab_profile_name:hover{
+    opacity: 0.8;
+}
+
 .characterTab_profile_text{
     all:unset;
     position: absolute;
+    font-family: Noto Sans KR;
     left: 320px;
     top: 120px;
     width:600px;
@@ -43,47 +84,81 @@
     font-size: 18px;    
     background-color: #ffffff;
 }
+.characterTab_profile_text:hover{
+    opacity: 0.8;
+}
+
 textarea::placeholder{
     font-size: 18px;    
 }
-
+.characterTab_image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    
+}
 .characterTab_image_width{
-    width:auto;
+    width:100%;
     height:100%;
+    object-fit: scale-down;
 }
 .characterTab_image_height{
-    width:100%;
+    width:100%;    
     height:auto;
+    object-fit: cover;
 }
 
-.characterTab_dropzone_area{   
-    position: absolute;
-    /* top: 300px; */
-    width:250px;
-    height:250px;
-    overflow: hidden;
-    background-color: blue;
+.characterTab_char_dropzone{   
+    position: absolute;    
+    top: 310px;
+    width:200px;
+    height:200px;
+    left:80px;    
 }
 
-.characterTab_left-arrow{
+
+.characterTab_empty_dropzone{
+    margin:120px 50px 0px 50px;
+    width:90%;
+    height: 60%;
+}
+
+.characterTab_leftarrow{
     all:unset;
     position: absolute;
+    left:-15px;
     top:260px;
     transform: scaleX(-1);  
+}
+.characterTab_leftarrow:hover{
     cursor: pointer;
-}
-.characterTab_left-arrow:hover{
-
+    opacity: 0.7;
 }
 
-.characterTab_right-arrow{
+.characterTab_rightarrow{
     all:unset;
     position: absolute;
-    right:0px;
+    right:-15px;
     top:260px;
-    cursor: pointer;
 }
 
-.characterTab_right-arrow:hover{
+.characterTab_rightarrow:hover{
+    cursor: pointer;
+    opacity: 0.7;
+}
 
+.characterTab_pagenum{
+    position: absolute;
+    top : 25px;
+    right:25px;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.characterTab_instruct{
+    position: absolute;
+    font-family: Noto Sans KR;
+    top : 25px;
+    right:25px;
+    font-size: 35px;
+    font-weight: bold;
 }

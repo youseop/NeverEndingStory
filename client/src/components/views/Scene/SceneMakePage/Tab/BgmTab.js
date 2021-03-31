@@ -25,25 +25,11 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
     useEffect(() => {
         if (game.bgm)
             setBgmCards(game.bgm.map((element, index) => {
-                return <div className="largeBox13" key={index}>
-                    {(index + 1) % 2 ?
-                        <div>
-                            <img className="smallBox13"
-                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
-                                alt="img"
-                            />
-                            {element.name}
-                        </div>
-                        :
-                        <div>
-                            <img className="smallBox23"
-                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
-                                alt="img"
-                            />
-                            {element.name}
-                        </div>
-                    }
-                </div>
+                return (
+                    <div className="bgmTab_text_box" key={index}>
+                        {element.name}
+                    </div>
+                )
             }))
     }, [game]);
 
@@ -51,40 +37,26 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
     useEffect(() => {
         if (bgmBlobList)
             setBlobCards(bgmBlobList.map((element, index) => {
-                return <div className="largeBox13" key={index}>
-                    {(index + 1) % 2 ?
-                        <div>
-                            <img className="smallBox13"
-                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
-                                alt="img"
-                            />
-                            {bgmBlobNames[index].name}
-                        </div>
-                        :
-                        <div>
-                            <img className="smallBox23"
-                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
-                                alt="img"
-                            />
-                            {bgmBlobNames[index].name}
-                        </div>
-                    }
-                </div>
+                return (
+                    <div className="bgmTab_text_box" key={index}>
+                        {bgmBlobNames[index].name}
+                    </div>
+                )
             }))
     }, [bgmBlobList]);
 
     return (
-        <div>
-            <MyDropzone
-                onDrop={onDrop}
-                multiple={true}
-                maxSize={10485761} // 10MB + 1
-                accept="audio/*"
-            >
-            </MyDropzone>
-            <div className="music-container">
+        <div className="bgmTab_container">
+            <div className="bgmTab_dropzone">
+                <MyDropzone
+                    onDrop={onDrop}
+                    multiple={true}
+                    maxSize={10485761} // 10MB + 1
+                    accept="audio/*"
+                >
+                </MyDropzone>
+            </div>
+            <div className="bgmTab_Box">
                 {bgmCards !== 0 && <div>{bgmCards}</div>}
                 {blobCards !== 0 && <div>{blobCards}</div>}
             </div>

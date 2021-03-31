@@ -10,15 +10,18 @@ function CharacterImg({ character, index }) {
     dispatch(selectCharacter({ ...character, index: index }));
   }
 
-  const img = new Image();
-  img.src = character.image_array[0];
+  // const img = new Image();
+  // img.src = character.image_array[0];
   return (
-    <div className="characterSidebar_box" onClick={onClick_selectCharacter}>
+    <div
+      className="characterSidebar_image_box"
+      onClick={onClick_selectCharacter}>
       <img
         src={character.image_array[0]}
         alt="img"
-        className={img.width > img.height ?
-          "characterSidebar_Image_width" : "characterSidebar_Image_height"}
+        // className={img.width > img.height ?
+        //   "characterSidebar_image_width" : "characterSidebar_image_height"}
+        className="characterSidebar_image"
       />
     </div>
   )

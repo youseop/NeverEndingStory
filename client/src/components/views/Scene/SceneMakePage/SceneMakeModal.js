@@ -222,7 +222,6 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
     <Modal className="scenemake_modal"
       visible={visible}
       okText="Upload"
-      cancelText="Save"
       onCancel={cancelUpload}
       onOk={upload}
       width={1500}
