@@ -130,7 +130,7 @@ router.post('/save', auth, async (req, res) => {
   for (let i = 0; i < req.body.cutList.length; i++) {
     //...req.body.cutList[i].characterList
     scene.cutList[i].characterList = [];
-    for (let j = 0; j < req.body.cutList[i].characterList.length; j++) {
+    for (let j = 0; j < req.body.cutList[i].characterList?.length; j++) {
       const characterCut = new CharacterCut(req.body.cutList[i].characterList[j]);
       scene.cutList[i].characterList.push(characterCut);
     }

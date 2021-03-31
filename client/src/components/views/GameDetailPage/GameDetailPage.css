@@ -11,11 +11,11 @@
 }
 
 .detailPage__gradation {
-  width: 1155px;
+  width: 1180px;
   height: 200px;
   position: relative;
-  bottom: 675px;
-  left: 4px;
+  bottom: 670px;
+  left:-2px;
   background: linear-gradient( to top, #222831 , #22283100);
   z-index: 1;
 }

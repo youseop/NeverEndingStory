@@ -1,11 +1,11 @@
-.modal_Character {
-    background-color: green;
+.modal {
+    background-color: #C4C4C4;
     color: #747474;
     display: flex;
     flex-direction: column;
     position: relative;
     height:570px;
-    border-radius: 5px;
+    border-radius: 10px;
   }
   
   .main_img {

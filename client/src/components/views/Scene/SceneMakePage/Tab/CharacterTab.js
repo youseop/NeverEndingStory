@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { message, Form, Input } from "antd";
+import { message, Form } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
-import { LeftCircleTwoTone, RightCircleTwoTone } from '@ant-design/icons';
 import "../SceneMakeModal.css";
 import "./CharacterTab.css";
+import { SVG } from "../../../../svg/icon";
 import useMouse from "../../../../functions/useMouse";
-
-const { TextArea } = Input;
 
 function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, setCharBlobList }) {
     const [characterCards, setCharacterCards] = useState([]);
@@ -65,34 +63,46 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
     useEffect(() => {
         if (blobGame.character && charPageNum.current < blobGame.character.length) {
             const cards = blobGame.character[charPageNum.current].image_array.map((image, index) => {
+                const img = new Image()
+                img.src = image;
                 return (
                     <div
                         id={charPageNum.current}
-                        className="largeBox" key={index}
+                        key={index}
                     >
-                        <img className="smallBox"
-                            src={image}
-                            alt="img"
-                        />
+                        <div className="characterTab_profile_image">
+                            <img
+                                className={img.width > img.height ?
+                                    "characterTab_image_width" : "characterTab_image_height"}
+                                src={image}
+                                alt="img"
+                            />
+                        </div>
 
                         {index === 0 &&
-                            <Form><label>이름</label>
-                                <Input onChange={onNameChange} value={blobGame.character[charPageNum.current].name} />
-
-                                <label>상세설정</label>
-                                <TextArea onChange={onDescriptionChange} value={blobGame.character[charPageNum.current].description} />
-
+                            <Form>
+                                <input
+                                    onChange={onNameChange}
+                                    value={blobGame.character[charPageNum.current].name}
+                                    className="characterTab_profile_name"
+                                    placeholder="이름을 입력해주세요." />
+                                <textarea
+                                    onChange={onDescriptionChange}
+                                    value={blobGame.character[charPageNum.current].description}
+                                    className="characterTab_profile_text"
+                                    placeholder="설명을 입력해주세요." />
                                 {/* <label>(혈액형/좋아하는 것 등 이모지넣을 수 있는 공간?)</label> */}
                             </Form>
                         }
-
-                        {(index === blobGame.character[charPageNum.current].image_array.length - 1) &&
-                            <MyDropzone
-                                onDrop={onDrop}
-                                multiple={true}
-                                maxSize={10485761} // 10MB + 1
-                                accept="image/*"
-                            />}
+                        <div className="characterTab_dropzone_area">
+                            {(index === blobGame.character[charPageNum.current].image_array.length - 1) &&
+                                <MyDropzone
+                                    onDrop={onDrop}
+                                    multiple={true}
+                                    maxSize={10485761} // 10MB + 1
+                                    accept="image/*"
+                                />}
+                        </div>
                     </div>
                 )
             })
@@ -114,10 +124,8 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
     }
 
     return (
-        <div>
-            <div className="character-container">
-                {characterCards !== 0 && <div>{characterCards}</div>}
-            </div>
+        <div className="characterTab-container">
+            {characterCards !== 0 && <div>{characterCards}</div>}
             {
                 blobGame.character && charPageNum.current === blobGame.character.length &&
                 <div id={-1}>
@@ -130,23 +138,26 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                 </div>
             }
             {
-                charPageNum.current !== 0 && <LeftCircleTwoTone
-                    style={{ fontSize: "3rem" }}
+                charPageNum.current !== 0 &&
+                <div
+                    className="characterTab_left-arrow"
                     onClick={() => {
                         charPageNum.current--
                         setIsUpdate(num => num + 1)
-                    }}
-                    twoToneColor="#52c41a" />
+                    }}>
+                    <SVG src="arrow_1" width="50" height="50" color="#F5F5F5" />
+                </div>
             }
             {
-                blobGame.character && charPageNum.current !== blobGame.character.length &&
-                <RightCircleTwoTone
-                    style={{ fontSize: "3rem" }}
+                blobGame?.character?.length !== charPageNum.current &&
+                <div
+                    className="characterTab_right-arrow"
                     onClick={() => {
                         charPageNum.current++
                         setIsUpdate(num => num + 1)
-                    }}
-                    twoToneColor="#52c41a" />
+                    }}>
+                    <SVG src="arrow_1" width="50" height="50" color="#F5F5F5" />
+                </div>
             }
             {blobGame.character && <div> {charPageNum.current}/{blobGame.character.length}</div>}
         </div>

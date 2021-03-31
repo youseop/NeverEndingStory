@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import React, { memo } from "react";
-import "./SoundSideBar.css";
+import "./BgmSideBar.css";
 
 import SoundFile from "./SoundFile";
 
@@ -8,7 +8,9 @@ function SoundSideBar({ gameDetail, sound_audio, setSoundFile, setMakeModalState
 
     const renderSound = gameDetail.sound.map((sound, index) => {
         return (
-            <div className="sound" key={`${index}`}>
+            <div
+                className="bgmSidebar_box"
+                key={`${index}`}>
                 <SoundFile
                     sound_audio={sound_audio}
                     sound={sound}
@@ -20,8 +22,10 @@ function SoundSideBar({ gameDetail, sound_audio, setSoundFile, setMakeModalState
     });
 
     return (
-        <div className="sidebar__container">
-            <div>{renderSound}</div>
+        <div className="modal">
+            <div className="bgmSidebar__container">
+                <div>{renderSound}</div>
+            </div>
         </div>
     );
 }

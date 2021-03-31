@@ -126,7 +126,7 @@ const SceneMakePage = (props) => {
                 // 임시저장된 녀석 불러오기
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
-                dispatch(setCharacterList(tmpFirstCut.characterList));
+                dispatch(setCharacterList({ CharacterList: tmpFirstCut.characterList }));
                 setBackgroundImg(tmpFirstCut.background)
                 setName(tmpFirstCut.name);
                 setScript(tmpFirstCut.script);
@@ -144,7 +144,7 @@ const SceneMakePage = (props) => {
                             //! 이전 씬의 마지막 컷 설정 유지
                             if (response.data.success) {
                                 const lastCut = response.data.lastCut;
-                                dispatch(setCharacterList(lastCut.characterList));
+                                dispatch(setCharacterList({ CharacterList: lastCut.characterList }));
                                 setBackgroundImg(lastCut.background);
                                 setName(lastCut.name);
                                 dispatch(gameLoadingPage(0));
@@ -279,20 +279,20 @@ const SceneMakePage = (props) => {
     };
 
     const displayCut = (index) => {
-        dispatch(setCharacterList(CutList[index].characterList));
-        setBackgroundImg(CutList[index].background);
-        setScript(CutList[index].script);
-        setName(CutList[index].name);
-        setBgmFile(CutList[index].bgm);
-        setSoundFile(CutList[index].sound);
-        if (CutList[index].bgm.music) {
-            bgm_audio.src = CutList[index].bgm.music;
+        dispatch(setCharacterList({ CharacterList: CutList[index]?.characterList }));
+        setBackgroundImg(CutList[index]?.background);
+        setScript(CutList[index]?.script);
+        setName(CutList[index]?.name);
+        setBgmFile(CutList[index]?.bgm);
+        setSoundFile(CutList[index]?.sound);
+        if (CutList[index]?.bgm.music) {
+            bgm_audio.src = CutList[index]?.bgm.music;
             bgm_audio.play();
         } else {
             bgm_audio.pause();
         }
-        if (CutList[index].sound.music) {
-            sound_audio.src = CutList[index].sound.music;
+        if (CutList[index]?.sound.music) {
+            sound_audio.src = CutList[index]?.sound.music;
             sound_audio.play();
         } else {
             sound_audio.pause();
@@ -328,10 +328,24 @@ const SceneMakePage = (props) => {
     };
 
     const onRemove_cut = () => {
-        if (CutNumber === 0) {
+        if (CutList.length <= 1) {
+            // setCutList([]);
+            // setEmptyCutList((oldArray) => [
+            //     0, ...oldArray
+            // ]);
+            // displayCut(0);
+            // setCutNumber(0);
             message.info('첫번째 컷 입니다.');
             return;
         } else if (CutList.length - 1 <= CutNumber) {
+            if (CutList[CutNumber]) {
+                setCutList((oldArray) => [
+                    ...oldArray.slice(0, CutNumber)
+                ]);
+                setEmptyCutList((oldArray) => [
+                    0, ...oldArray
+                ]);
+            }
             displayCut(CutNumber - 1);
             setCutNumber(CutNumber - 1);
             return;
@@ -352,7 +366,7 @@ const SceneMakePage = (props) => {
     }
 
     const onSubmit_saveScene = async (event, isTmp = 0) => {
-        if (CutList.length < 1) {
+        if (CutList.length < 1 ||  (CutList.length === 1 && CutList[CutNumber])) {
             message.error("최소 2개의 컷을 생성해주세요.");
             return;
         }
@@ -459,6 +473,7 @@ const SceneMakePage = (props) => {
 
 
     useEffect(() => {
+        console.log(123456, reload)
         if (gameDetail.character) {
             const reload_Sidebar = (< div className="sideBar">
                 <div ref={characterSidebarElement}>
@@ -533,10 +548,10 @@ const SceneMakePage = (props) => {
 
     return (
         <div className="wrapper">
-            <div className="box title">
+            <div className="title">
                 <span>[{gameDetail?.title}]</span>
                 {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
-                <div className="box title-btn">상세정보</div>
+                <div className="title-btn">상세정보</div>
             </div>
             <SceneBox
                 CutList={CutList}
@@ -580,7 +595,7 @@ const SceneMakePage = (props) => {
                         />
                     )}
                     <div className="scene__sound_container">
-                        {BgmFile.name ? (
+                        {BgmFile?.name ? (
                             <div
                                 onClick={onClick_bgm_player}
                             >
@@ -594,38 +609,38 @@ const SceneMakePage = (props) => {
                                     <PauseCircleOutlined
                                         style={{ fontSize: "20px" }} />
                                 }
-                                {BgmFile.name}
+                                <div className="scene__sound_name">{BgmFile.name}</div>
                             </div>
                         ) : (
                             <div>
                                 <StopOutlined
                                     style={{ fontSize: "20px" }}
                                 />
-                            BGM
+                                <div className="scene__sound_name">BGM</div>
                             </div>
                         )}
-                        {SoundFile.name ? (
+                        {SoundFile?.name ? (
                             <div
                                 onClick={onClick_sound_player}
                             >
                                 {
-                                    BgmFile.name && sound_audio.paused &&
+                                    SoundFile.name && sound_audio.paused &&
                                     <PlayCircleOutlined
                                         style={{ fontSize: "20px" }} />
                                 }
                                 {
-                                    BgmFile.name && !sound_audio.paused &&
+                                    SoundFile.name && !sound_audio.paused &&
                                     <PauseCircleOutlined
                                         style={{ fontSize: "20px" }} />
                                 }
-                                {SoundFile.name}
+                                <div className="scene__sound_name">{SoundFile.name}</div>
                             </div>
                         ) : (
                             <div>
                                 <StopOutlined
                                     style={{ fontSize: "20px" }}
                                 />
-                            Sound
+                                <div className="scene__sound_name">Sound</div>
                             </div>
                         )}
                     </div>
@@ -710,12 +725,12 @@ const SceneMakePage = (props) => {
                     onClick={onRemove_cut}>
                     컷 삭제
                 </div>
-                <div className="scene_btn"
+                {/* <div className="scene_btn"
                     onClick={onClick_script}
                 >On/Off</div>
                 <div className="scene_btn"
                     onClick={onClick_script}
-                >Preview</div>
+                >Preview</div> */}
                 <div className="scene_btn"
                     onClick={onClick_script}
                 >배경음 음소거</div>
@@ -724,7 +739,7 @@ const SceneMakePage = (props) => {
                 >효과음 음소거</div>
                 <div className="scene_btn"
                     onClick={onClick_script}
-                >테마 선택(개발자)</div>
+                >테마 선택</div>
             </div>
 
             <UploadModal

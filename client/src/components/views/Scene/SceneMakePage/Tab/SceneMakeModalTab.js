@@ -3,6 +3,7 @@ import "../SceneMakeModal.css";
 
 const SceneMakeModalTab = ({ setTag, tag }) => {
   return (
+    // <div className="sceenmake_modal_container2">
     <div className="tabs">
       <div
         className={`${tag === 1 ? "tab is-selected" : "tab"}`}
@@ -25,6 +26,7 @@ const SceneMakeModalTab = ({ setTag, tag }) => {
         Sound
           </div>
     </div>
+    // </div>
   )
 }
 export default SceneMakeModalTab;

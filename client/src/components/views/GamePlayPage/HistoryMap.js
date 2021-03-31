@@ -63,7 +63,7 @@ function HistoryMapPopup(props) {
   };
 
   const handleOk = () => {
-    GoToScene({ userhistory, gameId, sceneId, targetScene });
+    GoToScene({ userhistory, gameId, sceneId, targetScene, setScene });
     setIsModalVisible(false);
   };
 

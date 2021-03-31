@@ -9,8 +9,10 @@ function BgmFile({ bgm_audio, bgm, setBgmFile }) {
     };
 
     return (
-        <div onClick={onClick_music}>
-            <img src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`} alt="img" />
+        <div
+            className="bgmSidebar_box"
+            onClick={onClick_music}
+        >
             {bgm.name}
         </div>
     );

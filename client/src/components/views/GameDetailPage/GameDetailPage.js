@@ -118,7 +118,7 @@ function GameDetailPage(props) {
             })
         }
     }
-
+    console.log(isMaking,'ismaking')
     return (
         <div className="detailPage__container">
 

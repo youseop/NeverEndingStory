@@ -18,6 +18,11 @@
 }
 
 .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 50px;
+
     grid-row:1;
     grid-column:1 / span 4;    
     margin-top: 10px;   
@@ -42,7 +47,7 @@
     /* border: 1px solid rgba(70, 70, 70, 0.26); */
 }
 .title-btn:hover{    
-    background-color: #e74a4a;
+    background-color: #f16565;
 }
 .sceneBox {
     grid-row: 2;
@@ -73,6 +78,11 @@
     border-radius: 2px;
     background-color: #DDDDDD;
     position: absolute;
+}
+
+.scene__sound_name{
+    display: inline-block;
+    padding-left: 5px;
 }
 
 .left-arrow{
@@ -176,8 +186,8 @@
     width: 17px;
     height: 17px;
     border-radius: 8px;
-    background-color: #fff;
-    border: 1px solid rgba(70, 70, 70, 0.26);
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px solid rgba(70, 70, 70, 0);
 }
 
 
@@ -208,7 +218,7 @@
 }
 
 .scene_btn:hover{
-    background-color: #CCCCCC;
+    background-color: #EEEEEE;
 }
 .scene_btn_blue{
     font-weight: 500;
@@ -216,7 +226,7 @@
     color: #ffffff;
 } 
 .scene_btn_blue:hover{
-    background-color: #288bee;
+    background-color: #4aadff;
 }
 
 .btn_side {
@@ -240,6 +250,9 @@
     background-color: #DDDDDD;
     color: #30475e;
     cursor: pointer;
+}
+.scene_side_btn:hover{ 
+    background-color: #EEEEEE;
 }
 
 .textbox_name{
@@ -314,7 +327,7 @@
     cursor: pointer;
 }
 .enter:hover{
-    background-color: #CCCCCC;
+    background-color: #EEEEEE;
 }
 .options{
     grid-row: 5;
@@ -325,6 +338,14 @@
 .sideBar {
     grid-row: 4 / span 3;
     grid-column: 6;
-
-    background-color: blanchedalmond;
 }
+
+.backgroundImg {
+    z-index: 97;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    margin:0;
+    border-radius: 0;
+    position: relative;
+  }
