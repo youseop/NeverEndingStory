@@ -1,6 +1,6 @@
 import { Switch } from 'antd';
 import React, { memo } from 'react';
-import '../SceneMakePage2.css';
+import '../SceneMakePage.css';
 import './SceneBox.css';
 
 function SceneBox(props) {

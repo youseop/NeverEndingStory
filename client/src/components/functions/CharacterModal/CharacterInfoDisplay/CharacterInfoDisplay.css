@@ -72,6 +72,11 @@
 .image_array__box:hover{
     opacity: 0.9;
 }
+.image_array_image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
   
 .image_array_image_width {
     position: absolute;

@@ -12,6 +12,7 @@
   position: absolute;
   top:0px;
   width:100%;
+  height:50px;
   display: flex;
   text-align: center;
   color: #dddddd;
@@ -19,8 +20,12 @@
   border-bottom: 4px solid #222831;
 }
 .tab {
+  all:unset;
+  font-family: Noto Sans KR;  
+  font-size: 18px;
+  font-weight: bold;
   flex: 1 0 auto;
-  padding: 1rem 1.5rem calc(1rem - 4px);  
+  padding: 12px;  
   cursor: pointer;
 }
 

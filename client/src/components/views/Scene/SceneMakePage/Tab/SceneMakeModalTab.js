@@ -23,7 +23,7 @@ const SceneMakeModalTab = ({ setTag, tag }) => {
       <div
         className={`${tag === 4 ? "tab is-selected" : "tab"}`}
         onClick={() => setTag(4)}>
-        Sound
+        효과음
           </div>
     </div>
     // </div>

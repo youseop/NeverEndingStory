@@ -18,7 +18,7 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL }) {
             <div className="dropzone" {...getRootProps()}>
                 <input {...getInputProps()} />
                 {blobURL ? (
-                    <div className = "thumbnail__container">
+                    <div className="thumbnail__container">
                         <img
                             className="thumbnail__img"
                             src={blobURL}
@@ -26,12 +26,12 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL }) {
                         />
 
                     </div>
-                    )
-                :
-                <>
-                        <div><p className="thumbnail__msg"><b>Click or Drop</b></p>  </div>
-                    <FileAddOutlined className="dropzone-icon" />
-                </>
+                )
+                    :
+                    <>
+                        <div><p className="thumbnail__msg"><b>파일 업로드</b></p>  </div>
+                        <FileAddOutlined className="dropzone-icon" />
+                    </>
                 }
             </div>
         )}

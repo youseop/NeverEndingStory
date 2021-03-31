@@ -5,8 +5,8 @@ import "../SceneMakeModal.css";
 import "./BackgroundTab.css";
 
 function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, backBlobList }) {
-    const [backgroundCards, setBackgroundCards] = useState([]);
-    const [blobCards, setBlobCards] = useState([]);
+    const [backgroundCards, setBackgroundCards] = useState("");
+    const [blobCards, setBlobCards] = useState("");
 
     const onDrop = (files) => {
         for (var i = 0; i < files.length; i++) {
@@ -25,9 +25,8 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
     useEffect(() => {
         if (game.background)
             setBackgroundCards(game.background.map((element, index) => {
-                return <div className="largeBox1" key={index}>
-                    <img className="smallBox12"
-                        // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                return <div className="backgroundTab_image_box" key={index}>
+                    <img className="backgroundTab_image"
                         src={element.image}
                         alt="img"
                     />
@@ -38,9 +37,8 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
     useEffect(() => {
         if (backBlobList)
             setBlobCards(backBlobList.map((element, index) => {
-                return <div className="largeBox1" key={index}>
-                    <img className="smallBox12"
-                        // style={index == 0 ? { position: "flex" } : { position: "flex" }}
+                return <div className="backgroundTab_image_box" key={index}>
+                    <img className="backgroundTab_image"
                         src={element}
                         alt="img"
                     />
@@ -49,17 +47,18 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
     }, [backBlobList]);
 
     return (
-        <div>
-            <MyDropzone
-                onDrop={onDrop}
-                multiple={true}
-                maxSize={10485761} // 10MB + 1
-                accept="image/*"
-            >
-            </MyDropzone>
-            <div className="background-container">
-                {backgroundCards !== 0 && <div>{backgroundCards}</div>}
-                {blobCards !== 0 && <div>{blobCards}</div>}
+        <div className="backgroundTab_container">
+            <div className="backgroundTab_dropzone">
+                <MyDropzone
+                    onDrop={onDrop}
+                    multiple={true}
+                    maxSize={10485761} // 10MB + 1
+                    accept="image/*"
+                >
+                </MyDropzone>
+            </div>
+            <div className="backgroundTab_Box">
+                <div>{backgroundCards} {blobCards}</div>
             </div>
         </div>
     );
