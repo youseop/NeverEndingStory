@@ -26,7 +26,7 @@ function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
     dispatch(selectCharacter({ ...GameCharacterList[index], index: index }));
   }
 
-  const CharacterListImages = CharacterList.map((character, index) => {
+  const CharacterListImages = CharacterList?.map((character, index) => {
     // const img = new Image();
     // img.src = character.image;
     return (

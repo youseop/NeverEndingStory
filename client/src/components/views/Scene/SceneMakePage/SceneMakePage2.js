@@ -126,7 +126,7 @@ const SceneMakePage = (props) => {
                 // 임시저장된 녀석 불러오기
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
-                dispatch(setCharacterList(tmpFirstCut.characterList));
+                dispatch(setCharacterList({ CharacterList: tmpFirstCut.characterList }));
                 setBackgroundImg(tmpFirstCut.background)
                 setName(tmpFirstCut.name);
                 setScript(tmpFirstCut.script);
@@ -144,7 +144,7 @@ const SceneMakePage = (props) => {
                             //! 이전 씬의 마지막 컷 설정 유지
                             if (response.data.success) {
                                 const lastCut = response.data.lastCut;
-                                dispatch(setCharacterList(lastCut.characterList));
+                                dispatch(setCharacterList({ CharacterList: lastCut.characterList }));
                                 setBackgroundImg(lastCut.background);
                                 setName(lastCut.name);
                                 dispatch(gameLoadingPage(0));
@@ -279,7 +279,7 @@ const SceneMakePage = (props) => {
     };
 
     const displayCut = (index) => {
-        dispatch(setCharacterList(CutList[index].characterList));
+        dispatch(setCharacterList({ CharacterList: CutList[index].characterList }));
         setBackgroundImg(CutList[index].background);
         setScript(CutList[index].script);
         setName(CutList[index].name);
@@ -332,6 +332,14 @@ const SceneMakePage = (props) => {
             message.info('첫번째 컷 입니다.');
             return;
         } else if (CutList.length - 1 <= CutNumber) {
+            if (CutList[CutNumber]) {
+                setCutList((oldArray) => [
+                    ...oldArray.slice(0, CutNumber)
+                ]);
+                setEmptyCutList((oldArray) => [
+                    0, ...oldArray
+                ]);
+            }
             displayCut(CutNumber - 1);
             setCutNumber(CutNumber - 1);
             return;
