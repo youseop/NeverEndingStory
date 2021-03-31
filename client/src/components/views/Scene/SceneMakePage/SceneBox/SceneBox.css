@@ -1,0 +1,41 @@
+/* .sceneMake__sceneBox_container {
+  padding: 5px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sceneMake__sceneBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.sceneMake__EmptySceneBox {
+  margin-top: 10px;
+  width: 10px;
+  height: 20px;
+  background-color: white;
+  border: 1px solid rgba(70, 70, 70, 0.26);
+}
+
+.sceneMake__SceneBox_color {
+  margin-top: 10px;
+  width: 10px;
+  height: 20px;
+  background-color: rgb(12, 12, 12);
+  border: 1px solid rgba(151, 151, 151, 0.404);
+  cursor: pointer;
+}
+
+.sceneMake__CurrentSceneBox {
+  margin-top: 10px;
+  width: 10px;
+  height: 20px;
+  background-color: #f05454;
+  border: 1px solid rgba(70, 70, 70, 0.26);
+} */

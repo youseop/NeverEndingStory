@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require("mongoose");
 const { User } = require("../models/User");
 
+const { sanitize } = require("../lib/sanitize")
 const { auth } = require("../middleware/auth");
 
 //=================================
@@ -18,13 +20,14 @@ router.get("/auth", auth, (req, res) => {
         role: req.user.role,
         image: req.user.image,
         gameHistory: [],
+        makingGameList: req.user.makingGameList,
     });
 });
 
 router.post("/register", (req, res) => {
 
     const user = new User(req.body);
-
+    user.nickname = sanitize(user.nickname)
     user.save((err, doc) => {
         if (err) return res.json({ success: false, err });
         return res.status(200).json({
@@ -67,5 +70,85 @@ router.get("/logout", auth, (req, res) => {
         });
     });
 });
+
+router.get("/playing-list/clear", auth, async (req, res) => {
+    try {
+        //isMaking이었으면 만들던 씬 정리해야함...(똑같은 짓 하는거 찾아보고 합치기 가능하면 합치기)
+        const user = await User.findOne({ _id: req.user._id })
+        const prevOfLastScene =user.gamePlaying.isMaking && user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length-2];
+        user.gamePlaying = {
+            ...user.gamePlaying,
+            isMaking: false,
+            sceneIdList: user.gamePlaying.sceneIdList.splice(0, 1)
+        };
+
+        user.save()
+        return res.json({
+            success: true,
+            teleportSceneId: user.gamePlaying.sceneIdList[0],
+            prevOfLastScene
+        })
+    }
+    catch (err) {
+        return res.json({ success: false, err });
+    }
+})
+
+
+router.get("/playing-list/pop", auth, async (req, res) => {
+    try {
+        const user = await User.findOne({ _id: req.user._id })
+        user.gamePlaying.sceneIdList.pop()
+        user.save()
+        return res.json({
+            success: true,
+            teleportSceneId: user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1]
+        })
+
+    }
+    catch (err) {
+        return res.json({ success: false, err });
+    }
+})
+
+router.post("/profile", (req, res) => {
+    User.findOne({ _id: req.body.userId }, (err, user) => {
+        if (!user)
+            return res.json({
+                loginSuccess: false,
+                message: "Auth failed, email not found"
+            });
+        return res.status(200).send({
+            success: true,
+            user: user
+        });
+    });
+});
+
+
+router.post("/email-check", (req, res) => {
+    User.findOne({ email: req.body.email }, (err, user) => {
+        if (err) return res.json({ success: false, err });
+        if (!user)
+            return res.status(200).send({
+                success: true,
+                usedEmail: false
+            });
+        return res.status(200).send({
+            success: true,
+            usedEmail: true
+        });
+    });
+});
+
+router.post("/game-visit", (req, res) => {
+    User.findOne({ _id: req.body.userId },{gamePlaying: 1}, (err, gamePlaying) => {
+        if (err) return res.json({ success: false, err });
+        return res.status(200).send({
+            success: true,
+            gamePlaying: gamePlaying,
+        });
+    })  
+})
 
 module.exports = router;

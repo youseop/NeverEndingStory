@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+.dropzone{
+    all:unset;
+    font-family: Noto Sans KR;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-Content: center;
+    border: 0.1rem solid lightgray;
+}
+.dropzone:hover{
+    opacity: 0.95;
+    color:black;
+    border: 0.1rem solid lightgray;
+    cursor:pointer;
+} 
+
+.dropzone-icon{
+   font-size: 7rem;
+
+}
+
+.thumbnail__container{
+    display: flex;
+    align-items: center;
+    justify-Content: center;
+    width : inherit;
+    height : 100%;
+
+}
+.thumbnail__img{
+    min-height: 100%; 
+    object-fit : contain;
+    width : inherit;
+    height : inherit;
+    
+}
+.thumbnail__msg{
+   font-size: medium;
+}

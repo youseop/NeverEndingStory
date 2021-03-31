@@ -1,14 +1,19 @@
 import React from 'react'
 
-function BackgroundImg({imgUrl, setBackgroundImg}) {
+function BackgroundImg({ imgUrl, setBackgroundImg }) {
 
   const onClick_img = () => {
     setBackgroundImg(imgUrl);
   }
-
   return (
-    <div onClick={onClick_img}>
-      <img src={`${imgUrl}`} alt="img"/>
+    <div
+      className="backSidebar_image_container"
+      onClick={onClick_img}>
+      <img
+        src={imgUrl}
+        alt="img"
+        className="backSidebar_image"
+      />
     </div>
   )
 }

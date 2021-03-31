@@ -9,30 +9,62 @@
   },
   "scripts": {
     "start": "node server/index.js",
-    "backend": "nodemon server/index.js",
+    "deploy": "NODE_ENV=production PORT=5000 pm2 start server/index.js -i 0",
+    "backend": "ts-node-dev server/index.js",
     "frontend": "npm run start --prefix client",
+    "build": "tsc -p tsconfig.json",
     "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\""
   },
   "author": "John ahn",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "@types/jest": "^26.0.22",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "aws-sdk": "^2.874.0",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "helmet": "^4.4.1",
+    "hpp": "^0.2.3",
+    "http": "0.0.1-security",
     "http-proxy-middleware": "^1.0.6",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.12.0",
+    "morgan": "^1.10.0",
     "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "pm2": "^4.5.5",
     "react-redux": "^5.0.7",
+    "redis": "^3.0.2",
+    "sanitize-html": "^2.3.3",
     "saslprep": "^1.0.3",
-    "supports-color": "^7.1.0"
+    "socket.io": "^4.0.0",
+    "socket.io-redis": "^6.1.0",
+    "supports-color": "^7.1.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.1"
   },
   "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.36",
     "concurrently": "^4.1.0",
-    "nodemon": "^1.19.1"
-  }
+    "nodemon": "^1.19.1",
+    "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youseop/NeverEndingStory.git"
+  },
+  "bugs": {
+    "url": "https://github.com/youseop/NeverEndingStory/issues"
+  },
+  "homepage": "https://github.com/youseop/NeverEndingStory#readme"
 }

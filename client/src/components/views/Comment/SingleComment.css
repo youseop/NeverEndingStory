@@ -1,0 +1,142 @@
+.reply_container {
+  display: none;
+}
+
+.textarea {
+  color: black;
+}
+
+.comment_btn {
+  cursor: pointer;
+  all: unset;
+  width: 6vw;
+  max-width: 70px;
+  height: 40px;
+  color: black;
+  background-color: rgb(243, 243, 243);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.comment_btn:hover {
+  cursor: pointer;
+  all: unset;
+  width: 6vw;
+  max-width: 70px;
+  height: 40px;
+  color: black;
+  background-color: rgb(233, 233, 233);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+
+.comment_input {
+  all: unset;
+  padding: 10px;
+  background: #e7e2d7;
+  color: #222831;
+  width: 811px;
+  height: 45px;
+  border-radius: 5px;
+}
+
+.edit_container {
+  display: flex;
+  width: 100%;
+}
+
+.container_box {
+  width: 100%;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 10px;
+}
+
+.comment_container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.comment_contents {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.img {
+  border-radius: 50%;
+  width: 80px;
+  margin: 2px;
+  margin-left: 5px;
+}
+
+.nickname {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+}
+
+.content {
+  font-size: 17px;
+  font-weight: 400;
+  margin-bottom: 10px;
+
+}
+
+.comment_info {
+  display: flex;
+  
+}
+
+.comment_like {
+  margin: 3px;
+}
+.comment_dislike {
+  margin: 3px;
+}
+.comment_displayReplyToggle {
+  margin: 3px;
+}
+.comment_delete {
+  margin: 3px;
+}
+.comment_writeReplyToggle{
+  margin: 3px;
+}
+
+.form {
+  width: 100%;
+}
+
+.singleComment__textarea {
+  all: unset;
+  padding: 10px;
+  background: #e7e2d7;
+  color: #222831;
+  width: 840px;
+  height: 45px;
+  border-radius: 5px;
+}
+
+.singleComment_input{
+  all: unset;
+  padding: 10px;
+  background: #e7e2d7;
+  color: #222831;
+  width: 840px;
+  height: 45px;
+  border-radius: 5px;
+}

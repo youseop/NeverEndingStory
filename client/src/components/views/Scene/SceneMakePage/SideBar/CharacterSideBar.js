@@ -1,42 +1,29 @@
-import { message } from 'antd';
-import Axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import './CharacterSideBar'
-
+import { Button } from 'antd';
+import React, { memo, useEffect } from 'react'
 import CharacterImg from './CharacterImg'
+import './CharacterSideBar.css'
 
-function CharacterSideBar({gameId, setCharacterList, CharacterList}) {
-  
-  const [Character, setCharacter] = useState([]);
-  
-  const variable = { gameId: gameId }
-  useEffect(() => {
-    Axios.post('/api/game/getgamedetail',variable)
-    .then(response => {
-      if(response.data.success) {
-        if(response.data.gameDetail.character.length === 0){
-          message.error('배경사진이 없습니다.');
-        }
-        else{
-          setCharacter(response.data.gameDetail.character);
-        }
-      } else {
-        alert('게임 정보를 로딩하는데 실패했습니다.')
-      }
-    })
-  },[])
 
-  const renderCharacter = Character.map((character, index) => {
-    return <div className="character" key={`${index}`}>
-      <CharacterImg imgUrl={character.image} CharacterList={CharacterList} setCharacterList={setCharacterList}/>
+function CharacterSideBar({ gameDetail, setName }) {
+
+  const renderCharacter = gameDetail.character.map((character, index) => {
+    return <div className="characterSidebar_box" key={`${index}`}>
+      <CharacterImg
+        character={character}
+        index={index}
+        setName={setName} />
     </div>
   })
 
   return (
-    <div className="sidebar__container">
-      {Character && <div>{renderCharacter}</div>}
+    <div>
+      <div className="characterSidebar__container">
+        {renderCharacter}
+      </div>
+      <div className="characterSidebar_line">
+      </div>
     </div>
   )
 }
 
-export default CharacterSideBar
+export default memo(CharacterSideBar)

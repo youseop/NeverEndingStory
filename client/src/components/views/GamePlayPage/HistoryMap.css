@@ -1,5 +1,5 @@
 .HistoryMap_popup {
-  z-index: 99;
+  z-index: 101;
   position: fixed;
   top: 0;
   left: 0;
@@ -7,20 +7,126 @@
   height: 100%;
 
   display: flex;
-  justify-content: left;
-  align-items: center;
-
   background-color: rgba(0, 0, 0, 0.616);
 }
 
 .HistoryMap_inner {
-  position: relative;
-  background-color: gold;
+  z-index: 98;
+  position: absolute;
+  width: 50%;
+  height: 18%;
+  top: 45%;
+  right: 45%;
+
+  display: flex;
+  border: none;
+  flex-direction: row;
+  gap: 1px;
+
+  white-space: nowrap;
+  transition-duration: 0.5s;
 }
 
-.close_btn{
-    position: absolute;
-    top :5%;
-    right :5%;
+.HistoryMap_scene {
+  z-index: 97;
+  position: relative;
 
+  flex: 1;
+  margin-left: 0.5em;
+  border-radius: 0.5em;
+  position: relative;
+
+  overflow: hidden;
+  white-space: normal;
+  display: inline;
+
+  background-color: rgba(1, 1, 90, 0.883);
+
+  border: 0.1em white solid;
+  color: white;
+}
+.HistoryMap_scene:hover {
+  z-index: 101;
+  transform: scale(1.8);
+  transition-duration: 0.7s;
+}
+
+.HistoryMap_scene_num {
+  z-index: 100;
+  font-size: 1.5em;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+
+  filter: brightness(100%);
+}
+
+.HistoryMap_scene_img {
+  z-index: 97;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  filter: brightness(50%);
+  margin: 0;
+  border-radius: 0;
+}
+
+.HistoryMap_scene_name {
+  z-index: 100;
+  font-size: 1em;
+  position: absolute;
+  top: 30%;
+  left: 0%;
+}
+
+.HistoryMap_scene_text {
+  z-index: 100;
+  font-size: 0.5em;
+  position: absolute;
+  top: 50%;
+  left: 0;
+}
+
+.close_btn {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  width:4%;
+  height:5%;
+  font-family: Noto Sans KR;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+.close_btn:hover{
+  transform: scale(1.3);
+}
+
+.HistoryMap-toleft_btn {
+  z-index: 100;
+  position: absolute;
+
+  height: 10%;
+  width: 5%;
+  top: 50%;
+  left: 5%;
+  rotate: -1;
+  transform: rotate(180deg)
+}
+.HistoryMap-toleft_btn:hover {
+  transform: scale(-1.3);
+  transition-duration: 0.7s;
+}
+
+.HistoryMap-toright_btn {
+  z-index: 100;
+  height: 10%;
+  width: 5%;
+  position: absolute;
+  top: 50%;
+  right: 5%;
+}
+.HistoryMap-toright_btn:hover {
+  transform: scale(1.3);
+  transition-duration: 0.7s;
 }

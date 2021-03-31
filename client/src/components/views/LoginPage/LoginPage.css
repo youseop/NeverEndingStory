@@ -1,0 +1,80 @@
+.loginPage-container {
+  width: 1440px;
+  margin: auto;
+  box-sizing: border-box;
+  background: #222831;
+}
+
+.loginDiv-container {
+  position: relative;
+  margin: auto;
+
+  width: 700px;
+  margin-top: 80px;
+  padding: 45px;
+
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ffffff;
+  background-color: #30475e;
+}
+
+.input-feedback1{
+  /* color: rgb(255, 28, 28)!; */
+  color: yellow!;
+}
+
+.login-Title {
+  font-family: Noto Sans KR;
+  font-weight: bold;
+  font-size: 50px;
+  text-align: left;
+  color: #ffffff;
+  padding-bottom: 20px;
+}
+
+.login-newUser {
+  font-family: Noto Sans KR;
+  font-size: 20px;
+  text-align: left;
+  color: #ffffff;
+  padding-bottom: 20px;
+}
+
+.login-register {
+  font-family: Noto Sans KR;
+  font-size: 20px;
+  text-align: left;
+  color: rgb(64, 153, 212);
+  background-color: rgba(76, 181, 251, 0.219);
+}
+.login-register:hover{
+  border-bottom-style: solid;
+  border-width: 1px;
+}
+
+.login-error{
+  padding-left: 2px;
+  font-size : 18px;
+  color: rgb(255, 28, 28);
+}
+
+.login-button {
+  all: unset;
+
+  min-width: 100%;
+  height: 65px;
+  margin-top: 10px;
+
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+
+  border-radius: 5px;
+  background: rgb(64, 153, 212);
+}
+.login-button:hover{
+  background: rgb(76, 181, 251);
+}

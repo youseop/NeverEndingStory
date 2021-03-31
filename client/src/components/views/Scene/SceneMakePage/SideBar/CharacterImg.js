@@ -1,23 +1,28 @@
 import React from 'react'
-import './CharacterImg.css'
 import { message } from 'antd';
+import { useDispatch } from "react-redux";
+import { selectCharacter } from '../../../../../_actions/characterSelected_actions';
 
-function CharacterImg({imgUrl, setCharacterList, CharacterList}) {
+function CharacterImg({ character, index }) {
+  const dispatch = useDispatch();
 
-  const onClick_setCharacter = () => {
-    if(CharacterList.length < 3){
-      setCharacterList(oldArray => [...oldArray, imgUrl])
-    }
-    else{
-      message.error('인물은 최대 세명까지 가능합니다.');
-    }
+  const onClick_selectCharacter = () => {
+    dispatch(selectCharacter({ ...character, index: index }));
   }
 
+  // const img = new Image();
+  // img.src = character.image_array[0];
   return (
-    <div>
-    <div className="character__wrapper" onClick={onClick_setCharacter}>
-      <img className="character__main" src={`${imgUrl}`} alt="img"/>
-    </div>
+    <div
+      className="characterSidebar_image_box"
+      onClick={onClick_selectCharacter}>
+      <img
+        src={character.image_array[0]}
+        alt="img"
+        // className={img.width > img.height ?
+        //   "characterSidebar_image_width" : "characterSidebar_image_height"}
+        className="characterSidebar_image"
+      />
     </div>
   )
 }

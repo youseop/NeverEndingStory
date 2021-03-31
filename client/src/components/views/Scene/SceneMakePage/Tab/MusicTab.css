@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+.bgmTab_container{
+    all:unset;
+    position: absolute;
+    top:70px;
+    margin: 0px 50px 0px 50px;
+    width:90%;
+    height:90%;
+    /* background-color: aqua; */
+}
+
+.bgmTab_dropzone{
+    height: 30%;
+}
+.bgmTab_Box{
+    margin: 20px 50px 0px 50px;
+    width:90%;
+    height: 360px;
+    overflow:scroll;
+    /* background-color: peru; */
+}
+
+.bgmTab_Box::-webkit-scrollbar {
+    display: none;
+}
+
+.bgmTab_text_box{
+    padding: 0px 20px 10px 20px;
+    font-family: Noto Sans KR;
+    font-weight: bold;
+    font-size: 23px;
+    /* background-color: teal; */
+}
+.bgmTab_text_box:hover{
+    background-color: #ddd;
+    color:black;
+}
+
+.bgmTab_image{
+    object-fit: cover;
+    border: 0.1px solid #ffffff;
+}
+.bgmTab_image:hover{
+    border: 0.1px solid rgb(0,0,0,0.8);
+    /* opacity: 0.95; */
+}

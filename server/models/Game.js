@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 const { 
         characterSchema, backgroundSchema,
-        bgmSchema, soundSchema 
+        bgmSchema, soundSchema, contributerSchema 
       } = require('./Game_Components');
-const { userSchema } = require("./User");
 
 const Schema = mongoose.Schema;
-
 
 const gameSchema = mongoose.Schema({
   view : {
@@ -28,7 +26,10 @@ const gameSchema = mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Scene'
   },
-  writer: [userSchema],
+  // writer: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'User'
+  // }], //?- contributerList로 대체
   character: [characterSchema],
   background: [backgroundSchema],
   bgm: [bgmSchema],
@@ -42,12 +43,22 @@ const gameSchema = mongoose.Schema({
   privacy : {
     type: String
   },
+  ratio : {
+    type: String
+  },
   ready: {
     type: Number,
     default: 0
-  }
+  },
+  contributerList: [contributerSchema],
+  sceneCnt: {
+    type: Number,
+    default: 1
+  },
 }, {timestamps: true})
 
 const Game = mongoose.model('Game', gameSchema);
 
-module.exports = { Game }
+module.exports = { 
+  Game,
+ }

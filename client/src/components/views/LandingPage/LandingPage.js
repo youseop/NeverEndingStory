@@ -1,57 +1,57 @@
-import React, { useEffect, useState } from 'react'
-import { Row, Card, Icon, Avatar, Col, Typography } from 'antd';
-import Axios from 'axios';
-import moment from 'moment';
-import GameDetailPage from '../GameDetailPage/GameDetailPage';
+import React, { useEffect, useState} from "react";
+import { useDispatch } from "react-redux";
+import Axios from "axios";
+import "./LandingPage.css";
+import { Banner_main1 } from "./LandingPage_banners";
+import { NewGameButton } from "./LandingPage_buttons";
+import { GameList } from "./LandingPage_gameLists";
+import { navbarControl } from "../../../_actions/controlPage_actions"
 
-const { Title } = Typography;
-const { Meta } = Card;
+const ListContainer = {
+  recent_games: {
+    category: "최근 플레이한 게임",
+    id: "recent",
+    length: 0,
+    pos: 0,
+    limit: 0,
+  },
+  popular_games: {
+    category: "인기 게임",
+    id: "popular",
+    length: 0,
+    pos: 0,
+    limit: 0,
+  },
+};
 
-function LandingPage() {
+function LandingPage(props) {
+  const dispatch = useDispatch();
 
-    const [games, setGames] = useState([])
+  const [games, setGames] = useState([]);
 
-    useEffect(() => {
-        Axios.get('/api/game/getgames')
-        .then(response => {
-            if(response.data.success) {
-                setGames(response.data.games)
-            } else {
-                alert('game load에 실패했습니다.');
-            }
-        })
-    }, [])
+  useEffect(() => {
+    //* navigation bar control
+    dispatch(navbarControl(true));
+    
+    Axios.get("/api/game/getgames").then((response) => {
+      if (response.data.success) {
+        setGames(response.data.games);
+      } else {
+        alert("game load에 실패했습니다.");
+      }
+    });
+  }, []);
 
-    const renderCards = games.map((game, index) => {
-        return <Col key={index} lg={6} md={8} xs={24}>
-        <div style={{position: 'relative'}}>
-            <a href={`/game/${game._id}`}>
-                <img style={{width:'100%'}} src={`http://localhost:5000/${game.thumbnail}`} alt="thumbnail" />
-            </a>
-        </div>
-        <br />
-        <Meta
-            avatar={
-                <Avatar src={game.creator.image} />
-            }
-            title={game.title}
-            description=""
-        />
-        <span>{game.creator.name}</span><br/>
-        <span style={{marginLeft: '3rem'}}>{game.view}</span> - <span>{moment(game.createdAt).format("MMM Do YY")}</span>
-    </Col>
-    })
-
-    return (
-        <div style={{width: '85%', margin: '3rem auto'}}>
-            <Title level={2}>Recommended</Title>
-            <hr />
-            <Row gutter={[32, 16]}>
-                {renderCards}
-            </Row>
-
-        </div>
-    )
+  return (
+    <div className="mainPage_container">
+      <div className="box-container">
+        <Banner_main1 />
+        <NewGameButton replace={props.history.replace} />
+      </div>
+      <GameList data={ListContainer.recent_games} games={games} />
+      <GameList data={ListContainer.popular_games} games={games} />
+    </div>
+  );
 }
 
-export default LandingPage
+export default LandingPage;

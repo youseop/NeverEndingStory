@@ -1,0 +1,29 @@
+.CharacterBlocks {
+  position: relative;
+  top: -100%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+
+.CharacterBlock {
+  z-index: 98;
+  height: 100%;
+  width: 0%;
+  position: absolute;
+}
+
+.character__container{
+  position: relative;
+}
+
+.characterImg {
+  object-fit: cover;
+  height:100%;
+  width: auto;
+  cursor: pointer;
+  transition: 0.1s;
+  margin: 2px;
+}

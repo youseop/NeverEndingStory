@@ -1,0 +1,33 @@
+import { Button } from 'antd';
+import React, { memo } from "react";
+import "./BgmSideBar.css";
+
+import SoundFile from "./SoundFile";
+
+function SoundSideBar({ gameDetail, sound_audio, setSoundFile, setMakeModalState }) {
+
+    const renderSound = gameDetail.sound.map((sound, index) => {
+        return (
+            <div
+                className="bgmSidebar_box"
+                key={`${index}`}>
+                <SoundFile
+                    sound_audio={sound_audio}
+                    sound={sound}
+                    setSoundFile={setSoundFile}
+                />
+                {/* <img src={`${sound.image}`} alt="img"/> */}
+            </div>
+        );
+    });
+
+    return (
+        <div className="modal">
+            <div className="bgmSidebar__container">
+                <div>{renderSound}</div>
+            </div>
+        </div>
+    );
+}
+
+export default memo(SoundSideBar);

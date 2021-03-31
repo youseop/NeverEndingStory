@@ -1,0 +1,5 @@
+.app {
+  padding-top: 69px;
+  min-height: calc(100vh - 80px);
+  background: #222831;
+}

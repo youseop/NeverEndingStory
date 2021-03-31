@@ -1,0 +1,40 @@
+.sceenmake_modal_container{
+  
+  /* width:100%; */
+  height:600px;
+  position: relative;
+  /* position: absolute; */
+  /* background-color: blue; */
+}
+
+
+.tabs {  
+  position: absolute;
+  top:0px;
+  width:100%;
+  height:50px;
+  display: flex;
+  text-align: center;
+  color: #dddddd;
+  background-color: #30475e;
+  border-bottom: 4px solid #222831;
+}
+.tab {
+  all:unset;
+  font-family: Noto Sans KR;  
+  font-size: 18px;
+  font-weight: bold;
+  flex: 1 0 auto;
+  padding: 12px;  
+  cursor: pointer;
+}
+
+.tab:hover{
+  background-color: #41586f;
+}
+.is-selected {
+  background-color: #222831;
+}
+.is-selected:hover{
+  background-color: #222831;
+}

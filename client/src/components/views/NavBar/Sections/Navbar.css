@@ -1,26 +1,78 @@
-@import '~antd/dist/antd.css';
+@import 'antd.css';
+
+@keyframes hide {
+  0% {
+    opacity : 1;
+    transform: translate(0,-0);
+  }
+  100% {
+    opacity : 0;
+    transform: translate(0,-69px);
+  }
+}
+
+@keyframes show {
+  0% {
+    opacity : 0;
+    transform: translate(0,-69px);
+  }
+  100% {
+    opacity : 1;
+    transform: translate(0,0);
+  }
+}
+
+.ant-menu {
+  background: #222831;
+
+}
+.ant-menu-horizontal > .ant-menu-item:hover {
+  border-bottom: 2px solid #fff;
+}
+
+.ant-menu-horizontal > .ant-menu-item > a:hover {
+  color: #fff;
+}
 
 .menu {
   padding: 0 20px;
-  border-bottom: solid 1px #e8e8e8;
+  /* border-bottom: solid 1px #e8e8e8; */
   overflow: auto;
-  box-shadow: 0 0 30px #f3f1f1;
-  background-color: white;
+  color: white;
+  background-color: #222831;
+  transform: opacity(0);
+  transition-duration: 1.0s;
+}
+.menu::-webkit-scrollbar {
+  display: none;
+}
+
+.menu:hover{
+  /* opacity: 1; */
+  transform: opacity(1) !important;
+  transform: translateY(0px);
+  opacity: 1.0 !important;
+  /* animation: 0.8s ease-out 0s 1 show */
+  /* transform: opacity(1); */
+  transition-duration: 1.0s;
 }
 
 .menu__logo {
-  width: 150px;
+  width: 200px;
   float: left;
 }
 
 .menu__logo a {
   display: inline-block;
   font-size: 20px;
-  padding: 19px 20px;
+  font-weight: bold;
+  padding: 19px 5px;
+  color: white;
 }
 
 .menu__container .ant-menu-item {
   padding: 0px 5px;
+  background-color: #222831;
 }
 
 .menu__container .ant-menu-submenu-title {
@@ -30,10 +82,12 @@
 .menu__container .ant-menu-item a,
 .menu__container .ant-menu-submenu-title a {
   padding: 10px 15px;
+  color:#e8e8e8;
 }
 
 .menu__container .ant-menu-horizontal {
   border-bottom: none;
+  color: #222831;
 }
 
 .menu__container .menu_left {
@@ -50,7 +104,7 @@
   padding: 6px;
   margin-top: 8px;
   display: none !important; /* use of important to overwrite ant-btn */
-  background: #3e91f7;
+  background: black;
 }
 
 .menu_drawer .ant-drawer-body {

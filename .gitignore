@@ -1,5 +1,6 @@
 /node_modules
 /build
+/dist
 
 dev.js
 
@@ -15,3 +16,5 @@ yarn-error.log*
 
 #image
 /uploads
+
+.env

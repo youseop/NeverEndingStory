@@ -1,40 +1,123 @@
 import "./TextBlock.css";
-import React from 'react'
-import { Link } from "react-router-dom";
+import React, { useReducer } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { message } from "antd";
+import InputModal from "../Modal/InputModal";
+import TextAnimation from './TextAnimation'
+import SceneEndingPage from "../Scene/SceneEndingPage/SceneEndingPage";
+
+// 일단 4 나중에 어떻게 할지 다시 결정..
+const CHOICE_NUM = 4;
 
 export const TextBlock = (props) => {
-  const { cut_name, cut_script } = props;
-  return (
-    <div className="text_container">
-      <div className="name_block">{cut_name}</div>
-      <hr className="text_line"></hr>
-      <div className="text_block">{cut_script}</div>
-    </div>
-  );
+    let { cut_name, cut_script, setIsTyping, isTyping, theme } = props;
+
+    theme = 'atorney';
+
+    return <>
+        {
+            cut_script ?
+                <div className={`text_window ${theme}`} >
+                    <div className={`text_container ${theme}`} >
+                        <div className={`name_block ${theme}`} >
+                            {cut_name}
+                        </div>
+                        <div className={`text_block ${theme}`} >
+                            <div className={`text_line ${theme}`} > {
+                                isTyping ? < TextAnimation
+                                    cut_script={cut_script}
+                                    setIsTyping={setIsTyping}
+                                /> : cut_script
+                            }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                :
+                <div className={`text_line ${theme}`} > {
+                    isTyping ? < TextAnimation
+                        cut_script={" "}
+                        setIsTyping={setIsTyping}
+                    /> : cut_script
+                }
+                </div>
+        }
+    </>
 };
 
+// 선택지 display
 export const TextBlockChoice = (props) => {
-  const { gameId,cut_name, cut_script, scene_next_list } = props;
-  const choices = scene_next_list.map((choice) => {
-    return choice.text ? (
-      <Link to={`/gameplay/${gameId}/${choice.id}`} key={`${choice.id}`}>
-        {choice.text} <br />
-      </Link>
-    ) : (
-      <Link to={`/make/${choice.id}`} key={`${choice.id}`}>
-        선택의길... <br />
-      </Link>
-    );
-  });
 
-  return (
-    <div className="text_container">
-      <div className="name_block">{cut_name}</div>
-      <hr className="text_line"></hr>
-      <div className="text_block">
-        {cut_script}
-        <div>{choices}</div>
-      </div>
-    </div>
-  );
-};
+    // 뭔가 한다..
+
+    let {
+        game_id,
+        cut_name,
+        cut_script,
+        scene_next_list,
+        scene_id,
+        scene_depth,
+        setIsTyping,
+        isTyping,
+        isEnding,
+        isLastMotion,
+        theme,
+        setScene
+    } = props;
+
+    theme = 'atorney';
+
+    const choices = scene_next_list.map((choice, index) => {
+        return (
+            <Link to={
+                {
+                    pathname: `/gameplay`,
+                    key: index,
+                    state: {
+                        gameId: game_id,
+                        sceneId: choice.sceneId
+                    }
+                }
+            } key={index}
+                style={{ textDecoration: 'none' }}
+                className={`text_line_choice ${theme}`}
+                onClick={() => setScene({})}
+            >
+                { choice.script}
+            </Link>
+        );
+    });
+
+    return (
+        <div className={`text_window ${theme}`} >
+            <TextBlock
+                cut_name={cut_name}
+                cut_script={cut_script}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
+                theme={theme}
+            />
+            { isLastMotion &&
+                <div className={`choice_box ${isEnding} ${theme}`}>
+                    {isEnding === true ?
+                        <SceneEndingPage gameId={game_id} setScene={setScene} /> :
+                        <>
+                            {choices}
+                            {scene_next_list.length < CHOICE_NUM ?
+                                (
+                                    <InputModal scene_id={scene_id}
+                                        scene_depth={scene_depth}
+                                        game_id={game_id}
+                                        scene_next_list={scene_next_list}
+                                        theme={theme}
+                                    />
+                                ) :
+                                (<div > </div>)
+                            }
+                        </>
+                    }
+                </div>
+            }
+        </div>
+    );
+}

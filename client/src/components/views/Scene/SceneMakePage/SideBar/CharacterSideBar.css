@@ -1,0 +1,64 @@
+  .characterSidebar__container{
+      all:unset;
+      position: absolute;
+      top:254px;
+      width:370px;
+      height: 145px;      
+      /* background-color: darkgoldenrod; */
+      margin: 0px 15px 0px 15px;
+      overflow:scroll;
+  }
+
+  .characterSidebar__container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .characterSidebar_box {
+    display: inline-block;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    margin: 0px 2px 0px 2px;
+    border-radius: 50%;
+    border: 0.5px solid rgb(0,0,0,0.4);
+    background-color: #808080;
+    object-fit: cover;
+  }
+
+  .characterSidebar_box:hover{
+    opacity: 0.9;
+    border: 0.5px solid rgb(0,0,0,0.1);
+    background-color: #919191;
+  }
+  .characterSidebar_image_box {
+    width: 67px;
+    height: 67px;
+  }
+
+  .characterSidebar_image_width {
+    position: absolute;
+    left:-15%;
+    width:auto;
+    height: 100%;
+  }  
+
+  .characterSidebar_image_height {
+    position: absolute;
+    left:-5%;
+    width:100%;
+    height: auto;
+  }  
+  .characterSidebar_image {
+    width: 100%;
+    height:100%;
+    object-fit: cover;
+  }
+  .characterSidebar_line{
+    position: absolute;
+    top:410px;
+    width:370px;
+    margin-left: 15px;
+    height: 2px;
+    opacity: 0.7;
+    background-color: #808080;
+  }
