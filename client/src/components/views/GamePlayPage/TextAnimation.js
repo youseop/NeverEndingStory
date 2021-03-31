@@ -14,13 +14,6 @@ function TextAnimation({ cut_script, setIsTyping }) {
             onFinished: () => {
                 setFlag(true)
             },
-            // onChar: () => {
-            //     if (!(cut_script[i] === ' ' || cut_script[i] === '.')) {
-            //         voice.load()
-            //         voice.play()
-            //     }
-            //     i++;
-            // }
         }
     );
 
