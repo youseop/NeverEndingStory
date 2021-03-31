@@ -24,6 +24,7 @@ import { socket } from "../../../App";
 import { PlayCircleOutlined, PauseCircleOutlined, StopOutlined } from '@ant-design/icons';
 import { detachCharacter, popCharacter, setCharacterList } from "../../../../_actions/characterSelected_actions";
 import "./SceneMakePage.css";
+import { LOCAL_HOST } from "../../../Config";
 import { TextBlock } from "../../GamePlayPage/TextBlock";
 import { MS_PER_HR } from "../../../App"
 import moment from "moment";
@@ -50,7 +51,7 @@ const SceneMakePage = (props) => {
         window.history.back();
         // return <div></div>;
     }
-    message.config({maxCount:2})
+    message.config({ maxCount: 2 })
 
     const user = useSelector((state) => state.user);
     const CharacterList = useSelector((state) => state.character.CharacterList);
@@ -70,7 +71,7 @@ const SceneMakePage = (props) => {
 
     const [SidBar_script, setSidBar_script] = useState(true);
 
-    const [BackgroundImg, setBackgroundImg] = useState("http://localhost:5000/uploads/defaultBackground.png");
+    const [BackgroundImg, setBackgroundImg] = useState(`http://${LOCAL_HOST}:5000/uploads/defaultBackground.png`);
     const [Script, setScript] = useState("");
     const [Name, setName] = useState("");
     const [BgmFile, setBgmFile] = useState({
@@ -172,13 +173,13 @@ const SceneMakePage = (props) => {
     }, [])
 
     const onScriptChange = (event) => {
-        if (event.currentTarget.value.length === (TEXT_MAX_LENGTH+1)) {
+        if (event.currentTarget.value.length === (TEXT_MAX_LENGTH + 1)) {
             message.error({
                 content: '글자 수 제한을 초과하였습니다.',
             });
         }
-        else{
-            if (event.currentTarget.value[event.currentTarget.value.length-1] !== '\n') {
+        else {
+            if (event.currentTarget.value[event.currentTarget.value.length - 1] !== '\n') {
                 setScript(event.currentTarget.value);
             }
         }
@@ -381,7 +382,7 @@ const SceneMakePage = (props) => {
     }
 
     const onSubmit_saveScene = async (event, isTmp = 0) => {
-        if (CutList.length < 1 ||  (CutList.length === 1 && CutList[CutNumber])) {
+        if (CutList.length < 1 || (CutList.length === 1 && CutList[CutNumber])) {
             message.error("최소 2개의 컷을 생성해주세요.");
             return;
         }
@@ -400,7 +401,7 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
-        console.log("SSS",isTmp)
+        console.log("SSS", isTmp)
         if (isTmp || window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,
@@ -561,6 +562,14 @@ const SceneMakePage = (props) => {
         }
     }
 
+    useEffect(() => {
+
+        return () => {
+            bgm_audio.pause();
+            sound_audio.pause();
+        };
+    }, []);
+
     return (
         <div className="wrapper">
             <div className="title">
@@ -651,13 +660,13 @@ const SceneMakePage = (props) => {
                                 <div className="scene__sound_name">{SoundFile.name}</div>
                             </div>
                         ) : (
-                                <div>
-                                    <StopOutlined
-                                        style={{ fontSize: "20px" }}
-                                    />
-                                    <div className="scene__sound_name">Sound</div>
-                                </div>
-                            )}
+                            <div>
+                                <StopOutlined
+                                    style={{ fontSize: "20px" }}
+                                />
+                                <div className="scene__sound_name">Sound</div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -734,7 +743,7 @@ const SceneMakePage = (props) => {
                     value={Script}
                     placeholder="대사가 없으면 스크립트 창이 표시되지 않습니다."
                     className="textbox_script"
-                    maxlength={TEXT_MAX_LENGTH+1}
+                    maxlength={TEXT_MAX_LENGTH + 1}
                     ref={scriptElement}
                 />
             </div>
