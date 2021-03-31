@@ -31,7 +31,6 @@ function GameDetailPage(props) {
     const user = useSelector((state) => state.user);
 
     const playFirstScene = async (isFirst) => {
-        console.log(sceneId)
         try {
             const response = isFirst && await Axios.get("/api/users/playing-list/clear");
             props.history.replace({

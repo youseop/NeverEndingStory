@@ -26,6 +26,7 @@ function MapToRight() {
 
 function GoToScene(props) {
   const { userhistory, gameId, sceneId, GoScene,setScene } = props;
+  setScene({});
   const data = { data: { sceneIndex: GoScene - 1 } };
   Axios.post("/api/game/refreshHistory", data).then((response) => {
     if (!response.data.success) {
@@ -36,7 +37,6 @@ function GoToScene(props) {
         close[i].click();
       }
       // console.log(setScene)
-      setScene({});
       userhistory.replace({
         pathname: `/gameplay`,
         state: {
@@ -63,7 +63,7 @@ function HistoryMapPopup(props) {
   };
 
   const handleOk = () => {
-    GoToScene({ userhistory, gameId, sceneId, targetScene });
+    GoToScene({ userhistory, gameId, sceneId, targetScene, setScene });
     setIsModalVisible(false);
   };
 

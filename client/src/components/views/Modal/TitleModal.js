@@ -14,8 +14,6 @@ const TitleModal = () => {
             if (err) {
                 return;
             }
-
-            console.log("Received values of form: ", values);
             formRef.resetFields();
             setVisible(false);
         });

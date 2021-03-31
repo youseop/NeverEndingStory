@@ -308,7 +308,6 @@ router.delete('/', async (req, res) => {
   user.gamePlaying.sceneIdList.pop();
   user.gamePlaying.isMaking = false;
   user.save((err) => {
-    console.log("SAVE")
     if (err) {
       console.log(err)
       return res.status(400).json({ success: false, err })

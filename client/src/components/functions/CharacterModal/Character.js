@@ -60,6 +60,9 @@ function Character(props) {
   }
 
   useEffect(() => {
+    if(!background_element) {
+      return;
+    }
     addEvent(background_element, "mousemove", mouseMove, false);
     addEvent(background_element, "mouseup", onMouseUp, false);
     setImgWidth(document.getElementById(`${index}`).offsetWidth);

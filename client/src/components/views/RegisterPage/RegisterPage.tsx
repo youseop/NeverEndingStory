@@ -31,15 +31,11 @@ interface FormType {
 }
 
 function checkEmail(email: string | null | undefined) {
-  console.log(email)
   Axios.post("api/users/email-check", { email: email }).then((response) => {
-    console.log(response.data.usedEmail)
     if (response.data.usedEmail) {
-      console.log("hi")
       return false
     }
   })
-  console.log("hello")
   return true
 }
 

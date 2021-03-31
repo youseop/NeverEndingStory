@@ -231,7 +231,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
     try {
         let user = await User.findOne({ _id: userId });
         let trashSceneId = mongoose.Types.ObjectId(0);
-        const idx = user.makingGameList.findIndex(item => objCmp(item.gameId.gameId, gameId))
+        const idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
         if (idx > -1) {
             if (user.makingGameList[idx].exp < Date.now()) {
                 trashSceneId = user.makingGameList[idx].sceneId;
@@ -322,7 +322,6 @@ const validateScene = async (gamePlaying, sceneId, gameId, isMaking) => {
 
         const len = gamePlaying.sceneIdList.length - 1
         const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[len] });
-        console.log(gamePlaying.isMaking);
         if (gamePlaying.isMaking === isMaking && objCmp(gamePlaying.sceneIdList[len], sceneId)) {
             return true;
         }
@@ -338,7 +337,6 @@ const validateScene = async (gamePlaying, sceneId, gameId, isMaking) => {
 
 router.post("/scene/validate", auth, async (req, res) => {
     const { user, body: {sceneId, gameId, isMaking} } = req;
-    console.log(isMaking);
     const val = await validateScene(user.gamePlaying, sceneId, gameId, isMaking);
     if (!val) {
         return res.status(200).json({ success: false });

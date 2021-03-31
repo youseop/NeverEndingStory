@@ -50,7 +50,6 @@ interface State_user {
 
 function Profile(props: any) {
   const userId: string = props.match.params.userId;
-  console.log('id!!!',userId)
   const currUserData: UserData = useSelector((state: State_user) => state.user.userData);
   let isUser: boolean = false;
   const FETCHNIG_CNT: number = 5;

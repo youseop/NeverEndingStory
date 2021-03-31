@@ -91,7 +91,6 @@ function SingleReply({comment, updateToggle_comment, gameId}) {
     }
     axios.post('/api/like/setlike', like_variable).then(response => {
       if (response.data.success) {
-        console.log(response.data.result)
         updateToggle();
       } else {
         message.error('좋아요를 불러오는데 실패했습니다.')

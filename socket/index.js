@@ -77,7 +77,6 @@ const updateCache = async (sceneId, userId, plus, exp) => {
         io.sockets.to(userId.toString()).emit("timeout_making", { msg: "hi~" });
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
         if (idx > -1) {
-          console.log("yeah~~~~3");
           scene_cache[sceneId].certificationList.splice(idx, 1)
           Scene.deleteOne({
             prevSceneId: mongoose.Types.ObjectId(sceneId),
@@ -213,7 +212,6 @@ io.on('connection', socket => {
           if (certToken.isMakingScene) {
             io.sockets.to(certToken.userId.toString()).emit("timeout_making", { sceneId: scene_id });
   
-            console.log("yeah~~~~1");
             Scene.deleteOne({
               prevSceneId: mongoose.Types.ObjectId(scene_id),
               writer: mongoose.Types.ObjectId(certToken.userId)
@@ -232,7 +230,6 @@ io.on('connection', socket => {
               if (scene_cache[scene_id].certificationList[idx].isMakingScene) {
                 io.sockets.to(certToken.userId.toString()).emit("timeout_making", { sceneId: scene_id });
   
-                console.log("yeah~~~~2");
                 Scene.deleteOne({
                   prevSceneId: mongoose.Types.ObjectId(scene_id),
                   writer: mongoose.Types.ObjectId(certToken.userId)

@@ -29,7 +29,6 @@ export function NewGameButton({replace}:newGameButtonProps) {
 
     const uploadGameFrame = async (title : String, description:any) => {
         // tmp scene create
-        console.log("Asdfasdf")
         const gameResponse : responseTypes = await Axios.post("/api/game/uploadgameframe", {title, description});
 
         if (!gameResponse.data.success) {
