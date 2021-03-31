@@ -141,7 +141,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
             closable ={false}
         >
             <div className="scenemake_modal_form_container">
-                <label>게임 업로드</label>
+                <label><b>게임 업로드</b></label>
                 <Form onSubmit={upload}>
                     
                     <div className="scenemake_modal_form">
@@ -152,6 +152,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                                 maxSize={10485761} // 10MB + 1
                                 accept="image/*"
                                 blobURL = {blobURL}
+                                type = "thumbnail"
                             >
                             </MyDropzone>
 
@@ -162,12 +163,12 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                     <div className ="scenemake_modal_detail">
                         <div className="scenemake_modal_detail_title_container">
 
-                            <label>제목</label>
+                            <label><b>제목</b></label>
                             <Input maxLength={15} onChange={onTitleChange} value={GameTitle}/>
                         </div>
 
                         <div className="scenemake_modal_detail_description_container">
-                            <label>게임 설명</label>
+                            <label><b>게임 설명</b></label>
                             <TextArea className="scenemake_modal_detail_description" rows="4" onChange={onDescriptionChange} value={description} />
                         </div>
 

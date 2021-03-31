@@ -4,7 +4,15 @@ import Dropzone from "react-dropzone";
 import "./MyDropzone.css";
 
 
-function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL }) {
+function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL,type }) {
+
+    let mention;
+    if(type === "background" || type === "thumbnail"){
+        mention ="16 : 9 비율을 권장합니다."
+    }
+    else if(type === "character"){
+        mention= "배경이 없는 사진을 권장합니다."
+    }
     return <Dropzone
         onDrop={onDrop}
         multiple={multiple}
@@ -31,7 +39,7 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL }) {
                         <>
                             <div><p className="thumbnail__msg"><b>파일 업로드</b></p>  </div>
                             <FileAddOutlined className="dropzone-icon" />
-                            <div><p className="thumbnail__msg">16 : 9 비율을 권장합니다.</p></div>
+                        <div><p className="thumbnail__msg"><b>{mention}</b></p></div>
                         </>
                     }
                 </div>

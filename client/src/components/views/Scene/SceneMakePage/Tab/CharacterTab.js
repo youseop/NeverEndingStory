@@ -150,6 +150,7 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                             multiple={true}
                             maxSize={10485761} // 10MB + 1
                             accept="image/*"
+                            type="character"
                         />
                     </div>
                     {blobGame.character &&
@@ -170,6 +171,7 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                         multiple={true}
                         maxSize={10485761} // 10MB + 1
                         accept="image/*"
+                        type="character"
                     />
                     <div className="characterTab_instruct">
                         캐릭터를 추가해주세요
