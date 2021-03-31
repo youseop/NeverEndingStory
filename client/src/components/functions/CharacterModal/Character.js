@@ -70,6 +70,9 @@ function Character(props) {
   }, [])
 
   const onMouseDown = (e) => {
+    if(!background_element) {
+      return;
+    }
     addEvent(background_element, "mousemove", mouseMove, false);
     addEvent(background_element, "mouseup", onMouseUp, false);
     pivot = [e.pageX, e.pageY];

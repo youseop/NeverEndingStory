@@ -138,17 +138,17 @@ const ProductScreen = (props) => {
     if (Scene?.cutList[i]?.bgm.music) {
       //이전 곡과 같은 bgm이 아니라면
       if (
-        !(i > 0 && Scene.cutList[i - 1].bgm.music == Scene.cutList[i].bgm.music)
+        !(i > 0 && Scene.cutList[i - 1].bgm.music == Scene.cutList[i]?.bgm.music)
       ) {
         bgm_audio.pause();
-        bgm_audio.src = Scene.cutList[i].bgm.music;
+        bgm_audio.src = Scene.cutList[i]?.bgm.music;
         bgm_audio.play();
       }
     }
     if (Scene?.cutList[i]?.sound.music) {
       sound_audio.pause();
 
-      sound_audio.src = Scene.cutList[i].sound.music;
+      sound_audio.src = Scene.cutList[i]?.sound.music;
       sound_audio.play();
     }
   }
@@ -335,7 +335,7 @@ const ProductScreen = (props) => {
   }, []);
 
 
-  if (Scene?.cutList) {
+  if (Scene?.cutList !== undefined) {
     if (i == 0 && isFirstCut) playMusic(0);
     return (
       <div
@@ -360,25 +360,25 @@ const ProductScreen = (props) => {
             onClick={(event) => handleEnter(event)}
           >
             <LoadingPage />
-            {(Scene.cutList[i] && Scene.cutList[i].background) ?
+            {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
               <img
                 className="backgroundImg"
-                src={Scene.cutList[i].background}
+                src={Scene.cutList[i]?.background}
                 alt="Network Error"
               />
               : (
                 <div></div>
               )}
             <GameCharacterBlock
-              characterList={Scene.cutList[i].characterList}
+              characterList={Scene.cutList[i]?.characterList}
             />
 
 
             {i === Scene.cutList.length - 1 ? (
               <TextBlockChoice
                 game_id={gameId}
-                cut_name={Scene.cutList[i].name}
-                cut_script={Scene.cutList[i].script}
+                cut_name={Scene.cutList[i]?.name}
+                cut_script={Scene.cutList[i]?.script}
                 scene_depth={Scene.depth}
                 scene_id={Scene._id}
                 scene_next_list={Scene.nextList}
@@ -391,8 +391,8 @@ const ProductScreen = (props) => {
               />
             ) :
               <TextBlock
-                cut_name={Scene.cutList[i].name}
-                cut_script={Scene.cutList[i].script}
+                cut_name={Scene.cutList[i]?.name}
+                cut_script={Scene.cutList[i]?.script}
                 setIsTyping={setIsTyping}
                 isTyping={isTyping}
                 theme={Scene.theme}

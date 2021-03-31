@@ -3,7 +3,7 @@ import React from "react";
 const GameCharacterBlock = (props) => {
   const { characterList } = props;
   
-  const characterblocks = characterList.map((charSchema, index) => {
+  const characterblocks = characterList?.map((charSchema, index) => {
     return (
       <div key={index}>
         <div 
