@@ -38,31 +38,34 @@
 }
 
 .register-login {
+  all: unset;
   font-family: Noto Sans KR;
   font-size: 20px;
   text-align: left;
+
   color: rgb(64, 153, 212);
+  background-color: rgba(76, 181, 251, 0.219);
 }
 .register-login:hover {
-  color: rgb(76, 181, 251);
+  border-bottom-style: solid;
+  border-width: 1px;
 }
 
-.register-button{
-    all: unset;
+.register-button {
+  all: unset;
 
-    width: 610px;
-    height: 65px;
-    margin-top: 10px;
-  
-    font-size: 25px;
-    font-weight: bold;
-    text-align: center;
-    color: #ffffff;
-  
-    border-radius: 5px;
-    background: rgb(64, 153, 212);
+  width: 610px;
+  height: 65px;
+  margin-top: 10px;
+
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+
+  border-radius: 5px;
+  background: rgb(64, 153, 212);
 }
-.register-button:hover{
-    background: rgb(76, 181, 251);
-  }
-  
+.register-button:hover {
+  background: rgb(76, 181, 251);
+}

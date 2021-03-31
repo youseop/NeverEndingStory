@@ -25,7 +25,7 @@ function MapToRight() {
 }
 
 function GoToScene(props) {
-  const { userhistory, gameId, sceneId, GoScene,setScene } = props;
+  const { userhistory, gameId, sceneId, GoScene, setScene } = props;
   const data = { data: { sceneIndex: GoScene - 1 } };
   Axios.post("/api/game/refreshHistory", data).then((response) => {
     if (!response.data.success) {
@@ -63,7 +63,7 @@ function HistoryMapPopup(props) {
   };
 
   const handleOk = () => {
-    GoToScene({ userhistory, gameId, sceneId, targetScene });
+    GoToScene({ userhistory, gameId, sceneId, targetScene, setScene });
     setIsModalVisible(false);
   };
 
@@ -88,25 +88,37 @@ function HistoryMapPopup(props) {
   }
 
   const HistoryMap_scenes = SceneInfo.map((scene, index) => {
-    return (
-      <div
-        className="HistoryMap_scene"
-        key={index + 1}
-        onClick={() => showModal(index + 1)}
-      >
-        <div className="HistoryMap_scene_num"> #{index + 1}</div>
-        <img className="HistoryMap_scene_img" src={scene.background} />
-        <div className="HistoryMap_scene_name">{scene.name}:</div>
-        <div className="HistoryMap_scene_text">"{scene.script}"</div>
-      </div>
-    );
+    if (index === SceneInfo.length - 1) {
+      return (
+        <div
+          className="HistoryMap_scene"
+          key={index + 1}
+          style={{border:"0.2em orange solid"}}
+        >
+          <div className="HistoryMap_scene_num"> #{index + 1}</div>
+          <img className="HistoryMap_scene_img" src={scene.background} />
+          <div className="HistoryMap_scene_name">{scene.name}:</div>
+          <div className="HistoryMap_scene_text">"{scene.script}"</div>
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className="HistoryMap_scene"
+          key={index + 1}
+          onClick={() => showModal(index + 1)}
+        >
+          <div className="HistoryMap_scene_num"> #{index + 1}</div>
+          <img className="HistoryMap_scene_img" src={scene.background} />
+          <div className="HistoryMap_scene_name">{scene.name}:</div>
+          <div className="HistoryMap_scene_text">"{scene.script}"</div>
+        </div>
+      );
+    }
   });
 
   return props.trigger ? (
     <div className="HistoryMap_popup">
-      {/* <button className="close_btn" onClick={() => close_button()}>
-        닫기
-      </button> */}
       <div className="close_btn" onClick={() => close_button()}>
         <SVG
           className="close_btn"
