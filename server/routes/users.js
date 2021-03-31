@@ -75,6 +75,7 @@ router.get("/playing-list/clear", auth, async (req, res) => {
     try {
         //isMaking이었으면 만들던 씬 정리해야함...(똑같은 짓 하는거 찾아보고 합치기 가능하면 합치기)
         const user = await User.findOne({ _id: req.user._id })
+        const prevOfLastScene =isMaking && user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length-2];
         user.gamePlaying = {
             ...user.gamePlaying,
             isMaking: false,
@@ -84,7 +85,8 @@ router.get("/playing-list/clear", auth, async (req, res) => {
         user.save()
         return res.json({
             success: true,
-            teleportSceneId: user.gamePlaying.sceneIdList[0]
+            teleportSceneId: user.gamePlaying.sceneIdList[0],
+            prevOfLastScene
         })
     }
     catch (err) {

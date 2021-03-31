@@ -238,12 +238,11 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                 user.makingGameList.splice(idx, 1)
             }
         }
-
         // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감. 
         if (user.gamePlaying.gameId && objCmp(user.gamePlaying.gameId, gameId)) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
-            if (objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
-                user.gamePlaying.sceneIdList.pop();
+        if (objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
+        user.gamePlaying.sceneIdList.pop();
                 user.gamePlaying.isMaking = false;
                 user.save((err) => {
                     if (err) {

@@ -25,7 +25,7 @@ import './App.css';
 const config = require('../config/key');
 // export let socket = io(`http://${LOCAL_HOST}:5000`, {transports : ['websocket']});
 export let socket = io(config.SOCKET, { transports: ['websocket'] });
-export const MS_PER_HR = 3600000
+export const MS_PER_HR = 360000
 
 window.onpopstate = () => {
   window.location.reload();

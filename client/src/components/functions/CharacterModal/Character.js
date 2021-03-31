@@ -21,7 +21,7 @@ function Character(props) {
   const [imgWidth, setImgWidth] = useState(0);
 
   const background_element = document.getElementById("backgroundImg_container");
-  let pivot = [0,0];
+  let pivot = [0, 0];
   let drag = false;
 
   function mouseMove(e) {
@@ -60,7 +60,7 @@ function Character(props) {
   }
 
   useEffect(() => {
-    if(!background_element) {
+    if (!background_element) {
       return;
     }
     addEvent(background_element, "mousemove", mouseMove, false);
@@ -73,7 +73,7 @@ function Character(props) {
   }, [])
 
   const onMouseDown = (e) => {
-    if(!background_element) {
+    if (!background_element) {
       return;
     }
     addEvent(background_element, "mousemove", mouseMove, false);
@@ -86,7 +86,7 @@ function Character(props) {
     removeAllEvents(background_element, "mousemove");
     removeAllEvents(background_element, "mouseup");
     dispatch(updateCharacter({
-      oldArray:CharacterList, 
+      oldArray: CharacterList,
       data: {
         posX: Number(element_X.current.style.left.replace(/%/g, '')),
         posY: Number(element_Y.current.style.top.replace(/%/g, '').replace(/px/g, '')),
@@ -113,7 +113,7 @@ function Character(props) {
   }
 
   const onClick = () => {
-    dispatch(popCharacter({oldArray:CharacterList, index}));
+    dispatch(popCharacter({ oldArray: CharacterList, index }));
   }
 
   return (
@@ -131,26 +131,30 @@ function Character(props) {
           top: `${charSchema.posY}%`
         }}
       >
-        <FontAwesomeIcon
-          icon={faTimesCircle}
-          className="btn_character_delete"
-          style={{left: `${imgWidth-17}px` }}
-          onClick={onClick}
-        />
+        {imgWidth && 
+          <FontAwesomeIcon
+            icon={faTimesCircle}
+            className="btn_character_delete"
+            style={{ left: `${imgWidth - 17}px` }}
+            onClick={onClick}
+          />
+        }
         <img
           onMouseDown={onMouseDown}
-          className={`${clicked ? "characterImg_clicked" : "characterImg"}`}
+          className={"characterImg_clicked"}
           id={`${index}`}
           src={charSchema.image}
           alt="img"
         />
-        <div
-          className={`${sizing ? "btn_sizing_clicked" : "btn_sizing"}`}
-          onMouseOver={onMouseOver}
-          onMouseOut={onMouseOut}
-          onMouseDown={onMouseDown}
-          style={{ left: `${imgWidth - 3}px` }}
-        ></div>
+        {imgWidth && 
+          <div
+            className={`${sizing ? "btn_sizing_clicked" : "btn_sizing"}`}
+            onMouseOver={onMouseOver}
+            onMouseOut={onMouseOut}
+            onMouseDown={onMouseDown}
+            style={{ left: `${imgWidth - 3}px` }}
+          ></div>
+        }
       </div>
     </div>
   )

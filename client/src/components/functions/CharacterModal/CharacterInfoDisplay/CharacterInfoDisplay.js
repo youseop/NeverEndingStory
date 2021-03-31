@@ -18,7 +18,7 @@ function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
       size: 90,
     }
     dispatch(pushCharacter({ oldArray: CharacterList, characterSchema }))
-    setName(character.name)
+    setName(character?.name)
   }
 
   const onClick_selectCharacter = (index) => {
@@ -36,7 +36,7 @@ function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
           onClick={() => { onClick_selectCharacter(character.index) }}
         >
           <img
-            src={character.image}
+            src={character?.image}
             alt=""
             // className={img.height > img.width ?
             //   "characterList_image_height" : "characterList_image_width"}
@@ -46,12 +46,12 @@ function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
         x: {character.posX} y: {character.posY} size: {character.size}
       </div> */}
         </div>
-        <div>{character.name}이름 삭제</div>
+        <div>{character?.name}이름 삭제</div>
       </div>
     )
   })
 
-  const characterDetailImages = character.image_array.map((url, index) => {
+  const characterDetailImages = character?.image_array?.map((url, index) => {
     // const img = new Image();
     // img.src = url;
     return (
