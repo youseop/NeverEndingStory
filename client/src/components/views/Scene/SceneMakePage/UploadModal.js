@@ -163,7 +163,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                         <div className="scenemake_modal_detail_title_container">
 
                             <label>제목</label>
-                            <Input maxLength="15" onChange={onTitleChange} value={GameTitle}/>
+                            <Input maxLength={15} onChange={onTitleChange} value={GameTitle}/>
                         </div>
 
                         <div className="scenemake_modal_detail_description_container">
