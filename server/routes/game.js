@@ -1,7 +1,8 @@
+const dotenv = require('dotenv');
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-
+dotenv.config();
 const {
     Background,
     Character,
@@ -25,7 +26,6 @@ const { log } = require("winston");
 const { View } = require("../models/View");
 const { ThumbsUp } = require("../models/ThumbsUp");
 
-
 AWS.config.update({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
     secretAcessKey: process.env.S3_SECRET_ACCESS_KEY,
@@ -36,9 +36,9 @@ let storage;
 if (process.env.NODE_ENV === 'production') {
     storage = multerS3({
         s3: new AWS.S3(),
-        bucket: 'neverending',
+        bucket: 'iovar',
         key(req, file, cb) {
-            cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+            cb(null, `original/${Date.now()}${path.basename(file.originalname)}`)
         },
     })
 } else {
