@@ -108,7 +108,7 @@ function GameDetailPage(props) {
             })
             Axios.post("/api/users/game-visit", {userId: user.userData._id}).then((response) => {
                 if (response.data.success) {
-                    const sceneIdLength = response.data.gamePlaying.gamePlaying.sceneIdList.length;
+                    const sceneIdLength = response.data.gamePlaying?.gamePlaying.sceneIdList.length;
                     if(sceneIdLength > 1)
                         setIsPlayed(true);
                 }

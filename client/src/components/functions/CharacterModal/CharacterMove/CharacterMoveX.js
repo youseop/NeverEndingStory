@@ -22,6 +22,7 @@ function CharacterMoveX({ posX, index, element }) {
   }
 
   function mouseMove(e) {
+    console.log(CharacterList);
     if (drag) {
       if (pivotX != e.pageX) {
         const background_width = document.getElementById("backgroundImg_container").offsetWidth;

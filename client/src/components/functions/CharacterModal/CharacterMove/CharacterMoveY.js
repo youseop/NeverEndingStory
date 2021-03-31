@@ -21,6 +21,7 @@ function CharacterMoveY({ index, element }) {
   }
 
   function mouseMove(e) {
+    console.log(CharacterList);
     if (drag) {
       if (pivotY != e.pageY) {
         const background_height = document.getElementById("backgroundImg_container").offsetHeight;
@@ -31,7 +32,7 @@ function CharacterMoveY({ index, element }) {
           data: {
             posY: next_posY
           },
-          index,
+          index
         }))
         pivotY = e.pageY;
       }

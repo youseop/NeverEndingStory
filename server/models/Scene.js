@@ -17,7 +17,7 @@ const nextSceneSchema = mongoose.Schema({
 });
 
 const characterCutSchema = mongoose.Schema({
-    index: String,
+    index: Number,
     image: String,
     posX: Number,
     posY: Number,

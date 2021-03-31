@@ -12,7 +12,6 @@ const CharacterBlock = (props) => {
       <div key={index}>
         <Character
           GameCharacterList={GameCharacterList}
-          onRemove_character={onRemove_character}
           index={index}
           charSchema={charSchema}
         />

@@ -46,10 +46,9 @@ export function popCharacter(dataToSubmit) {
 export function pushCharacter(dataToSubmit) {
   const { oldArray, characterSchema } = dataToSubmit;
   let request;
-
+  console.log("working");
   for (let i = 0; i < oldArray?.length; i++) {
     if (oldArray[i].index === characterSchema.index) {
-      oldArray.splice(i, 1)
       request = [...oldArray]
       break;
     }
@@ -61,7 +60,7 @@ export function pushCharacter(dataToSubmit) {
   }
 
   request = request ? request : [...(oldArray ? oldArray : []), characterSchema]
-
+  console.log(request);
   return {
     type: PUSH_CHARACTER,
     payload: request,
@@ -70,6 +69,7 @@ export function pushCharacter(dataToSubmit) {
 
 export function updateCharacter(dataToSubmit) {
   const { oldArray, data, index } = dataToSubmit;
+  console.log("old", oldArray)
   const request = [
     ...oldArray.slice(0, index),
     {
@@ -78,6 +78,8 @@ export function updateCharacter(dataToSubmit) {
     },
     ...oldArray.slice(index + 1, 4)
   ]
+  // const request = [ ...oldArray ]
+  console.log(request);
 
   return {
     type: UPDATE_CHARACTER,
@@ -88,6 +90,7 @@ export function updateCharacter(dataToSubmit) {
 export function setCharacterList(dataToSubmit) {
   const { CharacterList } = dataToSubmit;
   const request = CharacterList
+  console.log("asdf", request);
 
   return {
     type: SET_CHARACTER_LIST,
