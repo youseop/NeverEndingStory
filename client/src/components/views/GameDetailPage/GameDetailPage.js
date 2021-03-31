@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
 import TopRatingContributer from "./TopRatingContributer";
+import TreeVisualization from "../TreeVisualization/TreeVisualization";
 
 const config = require('../../../config/key')
 
@@ -82,7 +83,7 @@ function GameDetailPage(props) {
 
     useEffect(() => {
         if (user && user.userData) {
-            const variable = {
+            let variable = {
                 userId: user.userData._id,
                 objectId: gameId
             }
@@ -91,12 +92,7 @@ function GameDetailPage(props) {
                     setView(response.data.view);
                 }
             })
-        }
-    }, [user])
-
-    useEffect(() => {
-        if (user && user.userData) {
-            const variable = {
+            variable = {
                 objectId: gameId,
                 userId: user.userData._id,
             }
@@ -118,7 +114,6 @@ function GameDetailPage(props) {
 
     function onClick_thumbsUp() {
         if (user && user.userData) {
-            // ((state) => state+1);
             const variable = {
                 userId: user.userData._id,
                 objectId: gameId
@@ -131,10 +126,9 @@ function GameDetailPage(props) {
             })
         }
     }
+
     return (
         <div className="detailPage__container">
-
-            {/* 이미지 불러오는게 늦음 디버깅 필요 */}
             <div className="detailPage__thumbnail_container">
                 <img
                     className="detailPage__thumbnail"
@@ -167,30 +161,6 @@ function GameDetailPage(props) {
                             </div>
                         </div>
                     </div>
-
-                    {/* <Link
-                        className="detailPage__gamePlay_link"
-                        style={{ color: "#f05454" }}
-                        to={
-                            {
-                                pathname: isMaking ? `/scene/make` : `/gameplay`,
-                                state: {
-                                    gameId: gameId,
-                                    sceneId: sceneId
-                                },
-                            }
-                        }>
-                        <div className="icon">
-                            <SVG
-                                src="playIcon_1"
-                                width="30"
-                                height="30"
-                                color="#FFF"
-                            />
-                        </div>
-                        <div className="text">시작하기</div>
-                    </Link> */}
-                    {/* 게임 시작하기 or 이어 만들기 */}
                     <div 
                         className="detailPage__gamePlay_link"
                         onClick={() => playFirstScene(false)}
@@ -254,6 +224,7 @@ function GameDetailPage(props) {
                 <div className="detailPage__description">
                     {gameDetail.description}
                 </div>
+                <TreeVisualization/>
 
                 <Comment gameId={gameId} />
             </div>

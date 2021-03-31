@@ -133,6 +133,7 @@ function Profile(props: any) {
             <ContributedGame 
               gameId={game.gameId}
               sceneCnt={-1}
+              userId={currUserData?._id}
             />
           </div>
         )

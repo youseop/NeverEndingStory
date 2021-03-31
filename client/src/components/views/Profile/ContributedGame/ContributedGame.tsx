@@ -34,6 +34,7 @@ interface ThumbsUp {
 function ContributedGame(props: any) {
   const gameId: string = props.gameId;
   const sceneCnt: number = props.sceneCnt;
+  const userId: string = props.userId;
 
   const [gameDetail, setGameDetail] = useState<GameDetail>({
     createdAt: "",
@@ -55,7 +56,10 @@ function ContributedGame(props: any) {
     Axios.post("/api/view/", {objectId: new ObjectId(gameId)}).then((response) => {
       setView(response.data.view)
     })
-    Axios.post("/api/thumbsup/count", {objectId: new ObjectId(gameId)}).then((response) => {
+    Axios.post("/api/thumbsup/count", {
+      objectId: new ObjectId(gameId),
+      userId: userId
+    }).then((response) => {
       setThumbsUp({
         isClick: response.data.isClicked,
         like: response.data.thumbsup
