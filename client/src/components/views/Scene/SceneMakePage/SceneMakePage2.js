@@ -279,20 +279,20 @@ const SceneMakePage = (props) => {
     };
 
     const displayCut = (index) => {
-        dispatch(setCharacterList({ CharacterList: CutList[index].characterList }));
-        setBackgroundImg(CutList[index].background);
-        setScript(CutList[index].script);
-        setName(CutList[index].name);
-        setBgmFile(CutList[index].bgm);
-        setSoundFile(CutList[index].sound);
-        if (CutList[index].bgm.music) {
-            bgm_audio.src = CutList[index].bgm.music;
+        dispatch(setCharacterList({ CharacterList: CutList[index]?.characterList }));
+        setBackgroundImg(CutList[index]?.background);
+        setScript(CutList[index]?.script);
+        setName(CutList[index]?.name);
+        setBgmFile(CutList[index]?.bgm);
+        setSoundFile(CutList[index]?.sound);
+        if (CutList[index]?.bgm.music) {
+            bgm_audio.src = CutList[index]?.bgm.music;
             bgm_audio.play();
         } else {
             bgm_audio.pause();
         }
-        if (CutList[index].sound.music) {
-            sound_audio.src = CutList[index].sound.music;
+        if (CutList[index]?.sound.music) {
+            sound_audio.src = CutList[index]?.sound.music;
             sound_audio.play();
         } else {
             sound_audio.pause();
@@ -328,7 +328,13 @@ const SceneMakePage = (props) => {
     };
 
     const onRemove_cut = () => {
-        if (CutNumber === 0) {
+        if (CutList.length <= 1) {
+            // setCutList([]);
+            // setEmptyCutList((oldArray) => [
+            //     0, ...oldArray
+            // ]);
+            // displayCut(0);
+            // setCutNumber(0);
             message.info('첫번째 컷 입니다.');
             return;
         } else if (CutList.length - 1 <= CutNumber) {
@@ -360,7 +366,7 @@ const SceneMakePage = (props) => {
     }
 
     const onSubmit_saveScene = async (event, isTmp = 0) => {
-        if (CutList.length < 1) {
+        if (CutList.length < 1 ||  (CutList.length === 1 && CutList[CutNumber])) {
             message.error("최소 2개의 컷을 생성해주세요.");
             return;
         }
@@ -589,7 +595,7 @@ const SceneMakePage = (props) => {
                         />
                     )}
                     <div className="scene__sound_container">
-                        {BgmFile.name ? (
+                        {BgmFile?.name ? (
                             <div
                                 onClick={onClick_bgm_player}
                             >
@@ -613,7 +619,7 @@ const SceneMakePage = (props) => {
                                 <div className="scene__sound_name">BGM</div>
                             </div>
                         )}
-                        {SoundFile.name ? (
+                        {SoundFile?.name ? (
                             <div
                                 onClick={onClick_sound_player}
                             >
