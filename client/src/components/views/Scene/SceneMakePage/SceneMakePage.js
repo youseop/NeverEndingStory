@@ -101,8 +101,8 @@ const SceneMakePage = (props) => {
 
     useEffect(() => {
         if (user.userData) {
-            socket.emit("leave room", { room: user.userData._id.toString() });
-            socket.emit("room", { room: user.userData._id.toString() });
+            socket.emit("leave room", { room: user.userData?._id?.toString() });
+            socket.emit("room", { room: user.userData?._id?.toString() });
         }
         socket.off("timeout_making")
         socket.on("timeout_making", data => {

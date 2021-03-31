@@ -280,11 +280,13 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                 user.gamePlaying = {
                     gameId: gameId,
                     sceneIdList: user.gameHistory[i].sceneIdList.slice(0, user.gameHistory[i].sceneIdList.length),
+                    isMaking: user.gameHistory[i].isMaking
                 };
 
                 user.save((err) => {
                     if (err) { console.log(err); return res.status(400).json({ success: false }) }
                 });
+                
                 return res
                     .status(200)
                     .json({

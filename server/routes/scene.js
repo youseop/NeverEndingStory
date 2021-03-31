@@ -15,10 +15,10 @@ const MS_PER_HR = 3600000
 
 const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
   const {
-    gamePlaying: { gameId, sceneIdList },
+    gamePlaying: { gameId, sceneIdList, isMaking },
     gameHistory,
-    isMaking,
   } = user;
+
 
   if (user.gamePlaying !== undefined) {
     let i;
@@ -29,6 +29,8 @@ const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
         break;
       }
     }
+    console.log("--------i : ", i)
+
 
     if (i === gameHistory.length) {
       user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList], isMaking });
@@ -40,6 +42,7 @@ const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
     sceneIdList: [targetSceneId],
     isMaking: true,
   };
+
   user.save((err) => {
     if (err) return res.json({ success: false, err })
   });

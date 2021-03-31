@@ -71,6 +71,7 @@ function GameDetailPage(props) {
         });
         Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
             if (response.data.success) {
+                console.log("GAME START -------",response.data)
                 setSceneId(response.data.sceneId);
                 setIsMaking(response.data.isMaking);
             } else {
