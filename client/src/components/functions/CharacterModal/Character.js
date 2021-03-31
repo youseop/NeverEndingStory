@@ -113,7 +113,7 @@ function Character(props) {
   }
 
   const onClick = () => {
-    dispatch(popCharacter({ oldArray: CharacterList, index }));
+    dispatch(popCharacter({ oldArray: CharacterList, charSchema.index }));
   }
 
   return (
