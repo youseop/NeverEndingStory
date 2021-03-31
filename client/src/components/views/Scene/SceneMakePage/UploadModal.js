@@ -140,43 +140,53 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
             centered = {true}
             closable ={false}
         >
-            <div>
-                <label>Upload Game</label>
+            <div className="scenemake_modal_form_container">
+                <label>게임 업로드</label>
                 <Form onSubmit={upload}>
-                    <div style={{ display: "flex" }}>
-                        <MyDropzone
-                            onDrop={onDrop}
-                            multiple={false}
-                            maxSize={10485761} // 10MB + 1
-                            accept="image/*"
-                            blobURL = {blobURL}
-                        >
-                        </MyDropzone>
+                    
+                    <div className="scenemake_modal_form">
+                        <div className="scenemake_dropzone_container" >
+                            <MyDropzone
+                                onDrop={onDrop}
+                                multiple={false}
+                                maxSize={10485761} // 10MB + 1
+                                accept="image/*"
+                                blobURL = {blobURL}
+                            >
+                            </MyDropzone>
 
+
+                        </div>
 
                     </div>
-                    <div className ="scenemake_modal_description">
-                        <label>Title(최대 50자)</label>
-                        <Input onChange={onTitleChange} value={GameTitle}/>
+                    <div className ="scenemake_modal_detail">
+                        <div className="scenemake_modal_detail_title_container">
 
-                        <label>게임 설명</label>
-                        <TextArea onChange={onDescriptionChange} value={description} />
+                            <label>제목</label>
+                            <Input maxLength="15" onChange={onTitleChange} value={GameTitle}/>
+                        </div>
 
-                        <select onChange={onPrivateChange}>
+                        <div className="scenemake_modal_detail_description_container">
+                            <label>게임 설명</label>
+                            <TextArea className="scenemake_modal_detail_description" rows="4" onChange={onDescriptionChange} value={description} />
+                        </div>
+
+                        {/* <select onChange={onPrivateChange}>
                             {PrivateOptions.map((item, index) => (
                                 <option key={index} value={item.value}>
                                     {item.label}
                                 </option>
                             ))}
-                        </select>
-
-                        <select onChange={onCartegoryChange}>
-                            {CategoryOptions.map((item, index) => (
-                                <option key={index} value={item.value}>
-                                    {item.label}
-                                </option>
-                            ))}
-                        </select>
+                        </select> */}
+                        <div className="scenemake_modal_detail_category_container">
+                            <select className= "scenemake_modal_category" onChange={onCartegoryChange}>
+                                {CategoryOptions.map((item, index) => (
+                                    <option key={index} value={item.value}>
+                                        {item.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
                     </div>
 

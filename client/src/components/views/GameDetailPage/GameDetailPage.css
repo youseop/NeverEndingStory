@@ -49,7 +49,7 @@
   /* height: 790px; */
   height: 580px;
   overflow: hidden;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .detailPage__contributer_title {

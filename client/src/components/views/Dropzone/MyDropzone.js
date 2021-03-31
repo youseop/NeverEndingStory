@@ -15,7 +15,6 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL }) {
     >
 
         {({ getRootProps, getInputProps }) => (
-            <div className="dropzone__container">
                 <div className="dropzone" {...getRootProps()}>
                     <input {...getInputProps()} />
                     {blobURL ? (
@@ -36,7 +35,6 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL }) {
                         </>
                     }
                 </div>
-            </div>
             
         )}
     </Dropzone>

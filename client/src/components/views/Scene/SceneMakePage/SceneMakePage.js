@@ -767,6 +767,7 @@ const SceneMakePage = (props) => {
                 onSubmit_saveScene={onSubmit_saveScene}
                 defaultTitle={gameDetail.title}
                 defaultDescription={gameDetail.description}
+                cassName="upload_modal"
             />
             {
                 makeModalState !== 0 && <SceneMakeModal

@@ -1,12 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
-
-.dropzone__container{
-    margin-top : 20px;
-    width: 320px;
-    height: 180px;
-
-}
 .dropzone{
     all:unset;
     font-family: Noto Sans KR;

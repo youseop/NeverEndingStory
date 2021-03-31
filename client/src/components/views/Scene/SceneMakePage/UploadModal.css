@@ -1,33 +1,54 @@
 .scenemake_modal{
     /* display : flex; */
+    /* width:60% !important; */
+    /* height:70% !important; */
+}
+.scenemake_modal_form_container{
+    
+}
+.scenemake_modal_form{
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
 }
+.scenemake_dropzone_container{
+    display:flex;
+    margin-top : 20px;
+    width: 320px;
+    height: 180px;
+    justify-content: center;
+    align-items: center;
 
+}
+.scenemake_modal_category{
+    width : 100px;
+}
 .scenemake_modal>.ant-modal-content{
     /* display : flex; */
     justify-content : center;
     margin-left : 15%;
     margin-right : 15%;
 }
-.scenemake_modal>.ant-modal-content>.ant-modal-body>div{
+
+.scenemake_modal_detail{
+    height:250px;
     display : flex;
     flex-direction: column;
-    justify-content : center;
+    /* justify-content : space-between */
 }
-
-.scenemake_modal_description{
-    display : flex;
-    flex-direction: column;
+.scenemake_modal_detail_title_container{
+    margin-top : 45px;
 }
+.scenemake_modal_detail_description_container{
+    margin-top : 25px;
 
-.scenemake_modal> div.ant-modal-content > div.ant-modal-body>div{
-    display : flex;
-    justify-content : center;
-    width : 500;
 }
+.scenemake_modal_detail_description{
+    all:unset;
+    height: 500px;
+}
+.scenemake_modal_detail_category_container{
+    margin-top : 3px;
 
-.scenemake_modal> div.ant-modal-content > div.ant-modal-body>div>form>div{
-    display : flex;
-    justify-content : center;
-    padding-bottom : 50px
 }
