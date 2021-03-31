@@ -96,7 +96,7 @@ function ContributedGame(props: any) {
         <div className="contribute__title">{gameDetail.title}</div>
         <div className="contribute__text">{description}</div>
         {sceneCnt >= 0 ?
-          <div className="contribute__text">
+          <div className="contribute__contributeCntText">
             기여한 스토리 개수: 
             <div className="contribute__cnt">
               {sceneCnt}

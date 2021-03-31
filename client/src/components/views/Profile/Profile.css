@@ -72,9 +72,20 @@
   gap: 20px;
   font-size: 20px;
   color: #E5E5E5;
+  margin-top: 40px;
+  padding-bottom: 20px;
+  padding-left: 30px;
+  border-bottom: 0.2px solid #f3f3f3;
+}
+
+.profile__btn:hover {
+  cursor: pointer;
+  background-color: #494949;
 }
 
 .profile__btn {
+  padding: 15px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
