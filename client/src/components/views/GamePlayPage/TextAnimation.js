@@ -33,7 +33,6 @@ function TextAnimation({ cut_script, setIsTyping }) {
 
     useEffect(() => {
         return () => {
-            console.log("SETISTYPING!!!")
             setIsTyping(false)
         }
     }, [flag])

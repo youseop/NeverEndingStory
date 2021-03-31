@@ -184,8 +184,9 @@ router.post('/save', auth, async (req, res) => {
           gameId: game._id,
         }]
         user.save((err) => {
+          console.log(err);
           if (err) return res.json({ success: false, err })
-        })
+        }) 
 
         game.first_scene = scene._id;
         game.contributerList = [{
@@ -308,7 +309,6 @@ router.delete('/', async (req, res) => {
   user.gamePlaying.sceneIdList.pop();
   user.gamePlaying.isMaking = false;
   user.save((err) => {
-    console.log("SAVE")
     if (err) {
       console.log(err)
       return res.status(400).json({ success: false, err })

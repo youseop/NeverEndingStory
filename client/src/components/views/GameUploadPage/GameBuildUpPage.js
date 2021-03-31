@@ -160,7 +160,6 @@ function GameBuildUpPage(props) {
             };
             formData.append("file", files[i]);
             let file_name = files[i].name;
-            console.log("asdfasdfasdfasfd")
             Axios.post("/api/game/uploadfile", formData, header).then(
                 (response) => {
                     if (response.data.success) {

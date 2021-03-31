@@ -321,7 +321,6 @@ const validateScene = async (gamePlaying, sceneId, gameId, isMaking) => {
 
         const len = gamePlaying.sceneIdList.length - 1
         const scene = await Scene.findOne({ _id: gamePlaying.sceneIdList[len] });
-        console.log(gamePlaying.isMaking);
         if (gamePlaying.isMaking === isMaking && objCmp(gamePlaying.sceneIdList[len], sceneId)) {
             return true;
         }
@@ -337,7 +336,6 @@ const validateScene = async (gamePlaying, sceneId, gameId, isMaking) => {
 
 router.post("/scene/validate", auth, async (req, res) => {
     const { user, body: {sceneId, gameId, isMaking} } = req;
-    console.log(isMaking);
     const val = await validateScene(user.gamePlaying, sceneId, gameId, isMaking);
     if (!val) {
         return res.status(200).json({ success: false });
@@ -412,6 +410,7 @@ router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
     if (!req.user) {
         return res.status(400).json({ success: false, msg: "Not a user" });
     }
+    console.log("GETSCENEINFO ---- ", req.params)
     sceneId = mongoose.Types.ObjectId(sceneId);
     try {
         const scene = await Scene.findOne({ _id: sceneId });
@@ -492,9 +491,9 @@ router.get("/simple-scene-info", auth, async (req, res) => {
             const scene = await Scene.findOne({ _id: sceneId });
             sceneinfo.push({
                 sceneId : sceneId,
-                background : scene.cutList[scene.cutList.length-1].background,
-                name : scene.cutList[scene.cutList.length-1].name,
-                script : scene.cutList[scene.cutList.length-1].script,
+                background : scene?.cutList[scene.cutList.length-1]?.background,
+                name : scene?.cutList[scene.cutList.length-1]?.name,
+                script : scene?.cutList[scene.cutList.length-1]?.script,
             });
         }
         return res.status(200).json({sceneinfo:sceneinfo})

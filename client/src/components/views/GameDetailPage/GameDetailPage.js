@@ -27,14 +27,19 @@ function GameDetailPage(props) {
     const [totalSceneCnt, setTotalSceneCnt] = useState(0);
     const [ContributerCnt, setContributerCnt] = useState(0);
     const [contributerList, setContributerList] = useState([]);
+    const [isPlayed, setIsPlayed] = useState(false);
 
     const user = useSelector((state) => state.user);
 
     const playFirstScene = async (isFirst) => {
         try {
-            const response = isFirst && await Axios.get("/api/users/playing-list/clear");
-            // Not Yet Tested
-            socket.emit("empty_num_increase", {userId: user.userData._id.toString(), sceneId: response.data.prevOfLastScene});
+            let response;
+            if(isFirst){
+                response = await Axios.get("/api/users/playing-list/clear");
+                // Not Yet Tested
+                console.log("****",response.data, "user!!!", user.userData)
+                socket.emit("empty_num_increase", {user_id: user.userData._id.toString(), scene_id: response.data.prevOfLastScene.toString()});
+            }
             props.history.replace({
                 pathname: (!isFirst && isMaking) ? `/scene/make` : `/gameplay`,
                 state: {
@@ -101,6 +106,13 @@ function GameDetailPage(props) {
                     setThumbsUpClicked(response.data.isClicked);
                 }
             })
+            Axios.post("/api/users/game-visit", {userId: user.userData._id}).then((response) => {
+                if (response.data.success) {
+                    const sceneIdLength = response.data.gamePlaying.gamePlaying.sceneIdList.length;
+                    if(sceneIdLength > 1)
+                        setIsPlayed(true);
+                }
+            })
         }
     }, [user])
 
@@ -119,7 +131,6 @@ function GameDetailPage(props) {
             })
         }
     }
-
     return (
         <div className="detailPage__container">
 
@@ -157,7 +168,7 @@ function GameDetailPage(props) {
                         </div>
                     </div>
 
-                    <Link
+                    {/* <Link
                         className="detailPage__gamePlay_link"
                         style={{ color: "#f05454" }}
                         to={
@@ -178,14 +189,22 @@ function GameDetailPage(props) {
                             />
                         </div>
                         <div className="text">시작하기</div>
-                    </Link>
+                    </Link> */}
                     {/* 게임 시작하기 or 이어 만들기 */}
-                    {/* <Button onClick={() => playFirstScene(true)}>
-                        처음부터 하기
-            </Button>
-                    <Button onClick={() => playFirstScene(false)}>
-                        게임 이어하기
-            </Button> */}
+                    <div 
+                        className="detailPage__gamePlay_link"
+                        onClick={() => playFirstScene(false)}
+                    >
+                        <div className="icon">
+                            <SVG
+                                src="playIcon_1"
+                                width="30"
+                                height="30"
+                                color="#FFF"
+                            />
+                        </div>
+                        {isPlayed ? "이어하기" : "시작하기"}
+                    </div>
                 </div>
                 <div className="detailPage__gradation"></div>
                 <div className="detailPage__UPTitle">
@@ -208,6 +227,14 @@ function GameDetailPage(props) {
                         <FontAwesomeIcon icon={faEye} style={{ marginLeft: "10px" }} />
                     </div>
                 </div>
+                {isPlayed &&
+                    <div 
+                        className="detailPage__gamePlayFromStart_link"
+                        onClick={() => playFirstScene(true)}
+                    >
+                        처음부터 하기
+                    </div>
+                }
             </div>
             <div className="detailPage__info_container">
                 <div className="detailPage__title">

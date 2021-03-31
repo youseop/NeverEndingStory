@@ -32,16 +32,25 @@ import moment from "moment";
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
+    window.addEventListener('beforeunload', (event) => {
+        // 표준에 따라 기본 동작 방지
+        event.preventDefault();
+        // Chrome에서는 returnValue 설정이 필요함
+        event.returnValue = '';
+    });
+
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
     const { gameId, sceneId } = location.state
+    const TEXT_MAX_LENGTH = 50;
     let exp;
     // const {gameId,sceneId} = location.state ;
     if (location.state === undefined) {
         window.history.back();
         // return <div></div>;
     }
+    message.config({maxCount:2})
 
     const user = useSelector((state) => state.user);
     const CharacterList = useSelector((state) => state.character.CharacterList);
@@ -163,8 +172,17 @@ const SceneMakePage = (props) => {
     }, [])
 
     const onScriptChange = (event) => {
-        setScript(event.currentTarget.value);
-    };
+        if (event.currentTarget.value.length === (TEXT_MAX_LENGTH+1)) {
+            message.error({
+                content: '글자 수 제한을 초과하였습니다.',
+            });
+        }
+        else{
+            if (event.currentTarget.value[event.currentTarget.value.length-1] !== '\n') {
+                setScript(event.currentTarget.value);
+            }
+        }
+    }
 
     const onNameChange = (event) => {
         setName(event.currentTarget.value);
@@ -258,10 +276,6 @@ const SceneMakePage = (props) => {
             bgm: BgmFile,
             sound: SoundFile,
         };
-        setBgmFile({
-            name: "",
-            music: "",
-        });
         setSoundFile({
             name: "",
             music: "",
@@ -371,6 +385,7 @@ const SceneMakePage = (props) => {
             message.error("최소 2개의 컷을 생성해주세요.");
             return;
         }
+        bgm_audio.pause();
         const submitCut = {
             characterList: CharacterList,
             background: BackgroundImg,
@@ -474,7 +489,6 @@ const SceneMakePage = (props) => {
 
 
     useEffect(() => {
-        console.log(123456, reload)
         if (gameDetail.character) {
             const reload_Sidebar = (< div className="sideBar">
                 <div ref={characterSidebarElement}>
@@ -637,13 +651,13 @@ const SceneMakePage = (props) => {
                                 <div className="scene__sound_name">{SoundFile.name}</div>
                             </div>
                         ) : (
-                            <div>
-                                <StopOutlined
-                                    style={{ fontSize: "20px" }}
-                                />
-                                <div className="scene__sound_name">Sound</div>
-                            </div>
-                        )}
+                                <div>
+                                    <StopOutlined
+                                        style={{ fontSize: "20px" }}
+                                    />
+                                    <div className="scene__sound_name">Sound</div>
+                                </div>
+                            )}
                     </div>
                 </div>
 
@@ -711,13 +725,16 @@ const SceneMakePage = (props) => {
                     onClick={onSubmit_nextCut}>
                     Enter
                     <br />
-                    {CutNumber + 1}/30
+                    {/* {CutNumber + 1}/30
+                    <br /> */}
+                    {Script.length}/{TEXT_MAX_LENGTH}
                 </div>
                 <textarea
                     onChange={onScriptChange}
                     value={Script}
                     placeholder="대사가 없으면 스크립트 창이 표시되지 않습니다."
                     className="textbox_script"
+                    maxlength={TEXT_MAX_LENGTH+1}
                     ref={scriptElement}
                 />
             </div>

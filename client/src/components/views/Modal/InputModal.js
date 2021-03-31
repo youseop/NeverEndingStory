@@ -75,17 +75,14 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
     let tick = 30;
     setRemainTime(tick);
     decTimer = setInterval(() => {
-      console.log("timer is not deleted~~~~~~~~~~~");
       tick--;
       if (tick === 0) {
-        console.log("tick이 0이라서 실행합니다.")
         clearInterval(decTimer);
         cancelHandler();
         return;
       }
       setRemainTime(tick);
     }, 970);
-    console.log("made -- ", decTimer)
     setDecreaseTimer(decTimer);
 
     socket.emit("empty_num_decrease", { scene_id, user_id });

@@ -50,7 +50,6 @@ const ProductScreen = (props) => {
   const location = useLocation();
 
   const { gameId, sceneId } = location.state;
-
   const userHistory = props.history;
 
   const dispatch = useDispatch();
@@ -102,7 +101,6 @@ const ProductScreen = (props) => {
     socket.off("accept_final_change");
     socket.on("accept_final_change", data => {
       const { sceneId, title } = data;
-
       let newNextList = Scene.nextList ? [...Scene.nextList] : [];
       newNextList.push({ sceneId, script: title });
       const newScene = { ...Scene, nextList: newNextList };
@@ -156,16 +154,15 @@ const ProductScreen = (props) => {
   const [isTyping, setIsTyping] = useState(true);
 
 
-  console.log("isTyping!!!", isTyping)
   function handleEnter(event) {
     //! 타이핑 끝 & 미니맵 X
     if (!isTyping && !isPause) {
-      if (i < Scene.cutList.length - 1) {
+      if (i < Scene?.cutList?.length - 1) {
         playMusic(i + 1);
         setI(i + 1);
         setIsTyping(true);
       }
-      else if (i == Scene.cutList.length - 1) {
+      else if (i == Scene?.cutList?.length - 1) {
         //! 엔딩자리
         setLastMotion(true)
         // setIsTyping(true)
