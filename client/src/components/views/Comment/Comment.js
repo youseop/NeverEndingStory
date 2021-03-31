@@ -22,7 +22,7 @@ function Comment({gameId}) {
   const FETCHNIG_CNT = 8;
   const [fetching, setFetching] = useState(false);
   const [totalComment, setTotalComment] = useState([]);
-  const [contentNumber, setContentNumber] = useState(FETCHNIG_CNT);
+  const [contentNumber, setContentNumber] = useState(0);
 
   const fetchNextData = async () => {
     setFetching(true);
