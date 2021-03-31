@@ -129,19 +129,17 @@ function HistoryMapPopup(props) {
         ></SVG>
       </div>
 
-      <div className="toleft_btn" onClick={MapToLeft}>
+      <div className="HistoryMap-toleft_btn" onClick={MapToLeft}>
         <SVG
-          className="toleft_btn"
           src="arrow_1"
-          width="45"
-          height="50"
+          width="100%"
+          height="100%"
           color="#F5F5F5"
         />
       </div>
 
-      <div className="toright_btn" onClick={MapToRight}>
+      <div className="HistoryMap-toright_btn" onClick={MapToRight}>
         <SVG
-          className="toright_btn"
           src="arrow_1"
           width="100%"
           height="100%"
