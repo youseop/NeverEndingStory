@@ -9,6 +9,7 @@ import BgmTab from "./Tab/BgmTab"
 import SoundTab from "./Tab/SoundTab"
 import { LOCAL_HOST } from "../../../Config";
 import _ from "lodash";
+import "./SceneMakeModal.css";
 
 const config = require('../../../../config/key');
 
@@ -128,7 +129,7 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
       if (fileNum) {
         for (var j = cnt; j < cnt + fileNum[i]; j++) {
           console.log(`${config.SERVER}/${files[j].path}`);
-          game.character[i].image_array.push( process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[j].path}` : files[j].location)
+          game.character[i].image_array.push(process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[j].path}` : files[j].location)
         }
         cnt += fileNum[i]
       }
@@ -185,19 +186,19 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
         case 1: //background
           DBForm.background.push({
             name: files[i].originalname,
-            image: ( process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location),
+            image: (process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location),
           })
           break;
         case 2:
           DBForm.bgm.push({
             name: files[i].originalname,
-            music: ( process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location),
+            music: (process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location),
           })
           break;
         case 3:
           DBForm.sound.push({
             name: files[i].originalname,
-            music: ( process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location),
+            music: (process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location),
           })
           break;
         default:
@@ -221,53 +222,57 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
     <Modal className="scenemake_modal"
       visible={visible}
       okText="Upload"
+      cancelText="Save"
       onCancel={cancelUpload}
       onOk={upload}
-      width={1000}
+      width={1500}
       style={{ top: 20 }}
     >
-      <SceneMakeModalTab setTag={setTag} tag={tag} />
-      {tag === 1 &&
-        <CharacterTab
-          blobGame={blobGame}
-          setBlobGame={setBlobGame}
-          charPageNum={charPageNum}
-          setCharFileQueue={setCharFileQueue}
-          setCharBlobList={setCharBlobList}
-        />
-      }
-      {tag === 2 &&
-        <BackgroundTab
-          game={game}
-          setFileQueue={setFileQueue}
-          setTypeQueue={setTypeQueue}
-          setBackBlobList={setBackBlobList}
-          backBlobList={backBlobList}
-        />
-      }
-      {tag === 3 &&
-        <BgmTab
-          game={game}
-          setFileQueue={setFileQueue}
-          setTypeQueue={setTypeQueue}
-          setBgmBlobList={setBgmBlobList}
-          bgmBlobList={bgmBlobList}
-          setBgmBlobNames={setBgmBlobNames}
-          bgmBlobNames={bgmBlobNames}
-        />
-      }
-      {tag === 4 &&
-        <SoundTab
-          game={game}
-          setFileQueue={setFileQueue}
-          setTypeQueue={setTypeQueue}
-          setSoundBlobList={setSoundBlobList}
-          soundBlobList={soundBlobList}
-          setSoundBlobNames={setSoundBlobNames}
-          soundBlobNames={soundBlobNames}
-        />
-      }
+      <div className="sceenmake_modal_container">
+        <SceneMakeModalTab setTag={setTag} tag={tag} />
+        {tag === 1 &&
+          <CharacterTab
+            blobGame={blobGame}
+            setBlobGame={setBlobGame}
+            charPageNum={charPageNum}
+            setCharFileQueue={setCharFileQueue}
+            setCharBlobList={setCharBlobList}
+          />
+        }
+        {tag === 2 &&
+          <BackgroundTab
+            game={game}
+            setFileQueue={setFileQueue}
+            setTypeQueue={setTypeQueue}
+            setBackBlobList={setBackBlobList}
+            backBlobList={backBlobList}
+          />
+        }
+        {tag === 3 &&
+          <BgmTab
+            game={game}
+            setFileQueue={setFileQueue}
+            setTypeQueue={setTypeQueue}
+            setBgmBlobList={setBgmBlobList}
+            bgmBlobList={bgmBlobList}
+            setBgmBlobNames={setBgmBlobNames}
+            bgmBlobNames={bgmBlobNames}
+          />
+        }
+        {tag === 4 &&
+          <SoundTab
+            game={game}
+            setFileQueue={setFileQueue}
+            setTypeQueue={setTypeQueue}
+            setSoundBlobList={setSoundBlobList}
+            soundBlobList={soundBlobList}
+            setSoundBlobNames={setSoundBlobNames}
+            soundBlobNames={soundBlobNames}
+          />
+        }
+      </div>
     </Modal>
+
   )
 }
 export default SceneMakeModal

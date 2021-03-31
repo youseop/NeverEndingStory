@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const { User } = require("../models/User");
 
-const {sanitize} = require("../lib/sanitize")
+const { sanitize } = require("../lib/sanitize")
 const { auth } = require("../middleware/auth");
 
 //=================================
@@ -71,7 +71,7 @@ router.get("/logout", auth, (req, res) => {
     });
 });
 
-router.get("/playing-list/clear", auth, async(req,res) =>{
+router.get("/playing-list/clear", auth, async (req, res) => {
     try {
         //isMaking이었으면 만들던 씬 정리해야함...(똑같은 짓 하는거 찾아보고 합치기 가능하면 합치기)
         const user = await User.findOne({ _id: req.user._id })
@@ -80,14 +80,14 @@ router.get("/playing-list/clear", auth, async(req,res) =>{
             isMaking: false,
             sceneIdList: user.gamePlaying.sceneIdList.splice(0, 1)
         };
-    
+
         user.save()
         return res.json({
-                success: true,
-                teleportSceneId: user.gamePlaying.sceneIdList[0]
-            })
+            success: true,
+            teleportSceneId: user.gamePlaying.sceneIdList[0]
+        })
     }
-    catch (err){
+    catch (err) {
         console.log("PLAYING LIST CLEAR FAIL")
         console.log(err)
         return res.json({ success: false, err });
@@ -95,7 +95,7 @@ router.get("/playing-list/clear", auth, async(req,res) =>{
 })
 
 
-router.get("/playing-list/pop", auth, async (req,res) =>{
+router.get("/playing-list/pop", auth, async (req, res) => {
     try {
         const user = await User.findOne({ _id: req.user._id })
         user.gamePlaying.sceneIdList.pop()
@@ -104,7 +104,7 @@ router.get("/playing-list/pop", auth, async (req,res) =>{
             success: true,
             teleportSceneId: user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1]
         })
-        
+
     }
     catch (err) {
         console.log("PLAYING LIST POP FAIL")

@@ -459,6 +459,7 @@ const SceneMakePage = (props) => {
 
 
     useEffect(() => {
+        console.log(123456, reload)
         if (gameDetail.character) {
             const reload_Sidebar = (< div className="sideBar">
                 <div ref={characterSidebarElement}>
@@ -533,10 +534,10 @@ const SceneMakePage = (props) => {
 
     return (
         <div className="wrapper">
-            <div className="box title">
+            <div className="title">
                 <span>[{gameDetail?.title}]</span>
                 {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
-                <div className="box title-btn">상세정보</div>
+                <div className="title-btn">상세정보</div>
             </div>
             <SceneBox
                 CutList={CutList}
@@ -594,14 +595,14 @@ const SceneMakePage = (props) => {
                                     <PauseCircleOutlined
                                         style={{ fontSize: "20px" }} />
                                 }
-                                {BgmFile.name}
+                                <div className="scene__sound_name">{BgmFile.name}</div>
                             </div>
                         ) : (
                             <div>
                                 <StopOutlined
                                     style={{ fontSize: "20px" }}
                                 />
-                            BGM
+                                <div className="scene__sound_name">BGM</div>
                             </div>
                         )}
                         {SoundFile.name ? (
@@ -609,23 +610,23 @@ const SceneMakePage = (props) => {
                                 onClick={onClick_sound_player}
                             >
                                 {
-                                    BgmFile.name && sound_audio.paused &&
+                                    SoundFile.name && sound_audio.paused &&
                                     <PlayCircleOutlined
                                         style={{ fontSize: "20px" }} />
                                 }
                                 {
-                                    BgmFile.name && !sound_audio.paused &&
+                                    SoundFile.name && !sound_audio.paused &&
                                     <PauseCircleOutlined
                                         style={{ fontSize: "20px" }} />
                                 }
-                                {SoundFile.name}
+                                <div className="scene__sound_name">{SoundFile.name}</div>
                             </div>
                         ) : (
                             <div>
                                 <StopOutlined
                                     style={{ fontSize: "20px" }}
                                 />
-                            Sound
+                                <div className="scene__sound_name">Sound</div>
                             </div>
                         )}
                     </div>
@@ -710,12 +711,12 @@ const SceneMakePage = (props) => {
                     onClick={onRemove_cut}>
                     컷 삭제
                 </div>
-                <div className="scene_btn"
+                {/* <div className="scene_btn"
                     onClick={onClick_script}
                 >On/Off</div>
                 <div className="scene_btn"
                     onClick={onClick_script}
-                >Preview</div>
+                >Preview</div> */}
                 <div className="scene_btn"
                     onClick={onClick_script}
                 >배경음 음소거</div>
@@ -724,7 +725,7 @@ const SceneMakePage = (props) => {
                 >효과음 음소거</div>
                 <div className="scene_btn"
                     onClick={onClick_script}
-                >테마 선택(개발자)</div>
+                >테마 선택</div>
             </div>
 
             <UploadModal

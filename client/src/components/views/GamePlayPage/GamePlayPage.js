@@ -48,13 +48,13 @@ function useConstructor(callBack = () => { }) {
 //! playscreen
 const ProductScreen = (props) => {
   const location = useLocation();
-  
+
   const { gameId, sceneId } = location.state;
-  
+
   const userHistory = props.history;
-  
+
   const dispatch = useDispatch();
-  
+
   const user = useSelector((state) => state.user);
   const isPause = useSelector((state) => state.gameplay.isPause);
 
@@ -196,45 +196,45 @@ const ProductScreen = (props) => {
     }
   }
 
-  function onClick_thumbsUp () {
-    if(user && user.userData){
-        // setUpdate((state) => state+1);
-        const variable = {
-            userId: user.userData._id,
-            objectId: sceneId
+  function onClick_thumbsUp() {
+    if (user && user.userData) {
+      // setUpdate((state) => state+1);
+      const variable = {
+        userId: user.userData._id,
+        objectId: sceneId
+      }
+      Axios.post("/api/thumbsup/", variable).then((response) => {
+        if (response.data.success) {
+          setIsClicked(response.data.isClicked);
+          setThumbsUp(response.data.thumbsup);
         }
-        Axios.post("/api/thumbsup/", variable).then((response) =>{
-            if (response.data.success){
-                setIsClicked(response.data.isClicked);
-                setThumbsUp(response.data.thumbsup);
-            }
-        })
+      })
     }
   }
 
   useEffect(() => {
-    if(user && user.userData){
+    if (user && user.userData) {
       const variable_thumbsup = {
         objectId: sceneId,
         userId: user.userData._id,
       }
-      Axios.post("/api/thumbsup/count", variable_thumbsup).then((response) =>{
-        if (response.data.success){
-            setIsClicked(response.data.isClicked);
-            setThumbsUp(response.data.thumbsup);
+      Axios.post("/api/thumbsup/count", variable_thumbsup).then((response) => {
+        if (response.data.success) {
+          setIsClicked(response.data.isClicked);
+          setThumbsUp(response.data.thumbsup);
         }
       })
       const variable_view = {
-          userId: user.userData._id,
-          objectId: sceneId
+        userId: user.userData._id,
+        objectId: sceneId
       }
-      Axios.post("/api/view/", variable_view).then((response) =>{
-          if (response.data.success){
-              setView(response.data.view);
-          }
+      Axios.post("/api/view/", variable_view).then((response) => {
+        if (response.data.success) {
+          setView(response.data.view);
+        }
       })
     }
-  },[sceneId,user])
+  }, [sceneId, user])
 
   useEffect(() => {
     socket.emit("leave room", { room: prevSceneId });
@@ -370,7 +370,7 @@ const ProductScreen = (props) => {
                 <div></div>
               )}
             <GameCharacterBlock
-              characterList={Scene.cutList[i]?.characterList}
+              characterList={Scene?.cutList[i]?.characterList}
             />
 
 
@@ -436,19 +436,19 @@ const ProductScreen = (props) => {
           </div>
           <div>
             {i === Scene.cutList.length - 1 &&
-            <>
-              <button
-                className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
-                onClick={onClick_thumbsUp}
-              >
-                좋아요: {thumbsUp}
-              </button>
-              <button
-                className="gamePlay__btn"
-              >
-                조회수: {view}
-              </button>
-            </>
+              <>
+                <button
+                  className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
+                  onClick={onClick_thumbsUp}
+                >
+                  좋아요: {thumbsUp}
+                </button>
+                <button
+                  className="gamePlay__btn"
+                >
+                  조회수: {view}
+                </button>
+              </>
             }
             <button
               className="gamePlay__btn"

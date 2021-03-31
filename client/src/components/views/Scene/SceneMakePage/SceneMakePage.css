@@ -1,11 +1,10 @@
-.box.title {
+/* .box.title {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding-right: 50px;
 }
 .scenemake__container {
-    /* height: 84vh; */
     width: 100vw;
     display: flex;
     background-color: rgb(255, 255, 255);
@@ -33,7 +32,6 @@
 .scenemake__main_img {
     width: 500px;
     height: 350px;
-    /* background-color: brown; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,15 +43,12 @@
     bottom: 2%;
     width: 600px;
     height: 300px;
-    /* background-color: black; */
     display: flex;
     justify-content: center;
     align-items: flex-end;
 }
 
 .scene__characterBox {
-    /* background-color: aquamarine;
-  height: 60%; */
     width: 28%;
     height: auto;
     margin: 5px;
@@ -143,11 +138,7 @@
     margin: 3px;
 }
 
-/* .sceneMake__btn {
-    border-color: #30475e;
-    background-color: #30475e;
-    font-size: 15px;
-} */
+
 
 .scenemake__sideBar_container {
     position: absolute;
@@ -186,7 +177,6 @@
     transform: translate(-50%, 10%);
     transform-origin: center center;
     overflow: hidden;
-    /* background-color: black; */
   }
 
   .backgroundImg {
@@ -197,4 +187,4 @@
     margin:0;
     border-radius: 0;
     position: relative;
-  }
+  } */

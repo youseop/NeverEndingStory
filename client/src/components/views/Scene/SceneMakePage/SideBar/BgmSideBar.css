@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+.bgmSidebar__container{
+    margin: 15px;
+    /* background-color: tomato; */
+    overflow: scroll;
+  }
+  
+  .bgmSidebar__container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .bgmSidebar_box{
+    /* display: inline-block; */
+    font-family: Noto Sans KR;
+    font-size: 20px;
+    padding: 5px;
+    height: 45px;
+    font-weight: bold;
+    color: #222831;
+    overflow: hidden;
+    position: relative;
+    /* border-radius: 8px; */
+    /* border: 0.5px solid rgb(0,0,0,0.2); */    
+    cursor: pointer;
+  }
+  
+  .bgmSidebar_box:hover{
+    background-color: #D5D5D5;
+    opacity: 0.9;
+  }

@@ -15,7 +15,6 @@ import GameDetailPage from './views/GameDetailPage/GameDetailPage.js';
 import GameUploadPage from "./views/GameUploadPage/GameUploadPage.js";
 import GameBuildUpPage from "./views/GameUploadPage/GameBuildUpPage.js";
 import GamePlayPage from "./views/GamePlayPage/GamePlayPage.js";
-import SceneMakePage from "./views/Scene/SceneMakePage/SceneMakePage";
 import SceneMakePage2 from "./views/Scene/SceneMakePage/SceneMakePage2";
 
 import NavBar from "./views/NavBar/NavBar.tsx";
@@ -25,7 +24,7 @@ import './App.css';
 
 const config = require('../config/key');
 // export let socket = io(`http://${LOCAL_HOST}:5000`, {transports : ['websocket']});
-export let socket = io(config.SOCKET, {transports : ['websocket']});
+export let socket = io(config.SOCKET, { transports: ['websocket'] });
 export const MS_PER_HR = 3600000
 
 window.onpopstate = () => {
@@ -44,7 +43,6 @@ function App() {
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
           <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />
-          <Route exact path="/scene/make2" component={Valid(Auth(SceneMakePage, true))} />
           <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage2, true))} />
         </Switch>
       </div>
