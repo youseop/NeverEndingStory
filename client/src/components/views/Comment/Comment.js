@@ -37,7 +37,6 @@ function Comment({gameId}) {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
-    // console.log("scrollHeight", scrollHeight,"scrollTop" ,scrollTop,"clientHeight",clientHeight)
     if (scrollTop + clientHeight*(3/2) >= scrollHeight && fetching === false) {
       fetchNextData();
     }

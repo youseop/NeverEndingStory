@@ -128,7 +128,6 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
 
       if (fileNum) {
         for (var j = cnt; j < cnt + fileNum[i]; j++) {
-          console.log(`${config.SERVER}/${files[j].path}`);
           game.character[i].image_array.push(process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[j].path}` : files[j].location)
         }
         cnt += fileNum[i]

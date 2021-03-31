@@ -473,7 +473,6 @@ const SceneMakePage = (props) => {
 
 
     useEffect(() => {
-        console.log(123456, reload)
         if (gameDetail.character) {
             const reload_Sidebar = (< div className="sideBar">
                 <div ref={characterSidebarElement}>

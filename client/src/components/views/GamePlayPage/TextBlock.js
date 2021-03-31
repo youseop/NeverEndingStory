@@ -68,7 +68,6 @@ export const TextBlockChoice = (props) => {
     theme = 'atorney';
 
     const choices = scene_next_list.map((choice, index) => {
-        console.log("---------choices-------")
         return (
             <Link to={
                 {

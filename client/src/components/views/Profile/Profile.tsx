@@ -238,7 +238,7 @@ function Profile(props: any) {
           style={{display:"block"}}
         >
           <div className="profile__title">
-            기여한 스토리 - {totalSceneContribute} 개
+            기여한 스토리 {totalSceneContribute} 개
           </div>
           {displayContributedScene(user)}
         </div>
@@ -247,7 +247,7 @@ function Profile(props: any) {
           style={{display:"none"}}
         >
           <div className="profile__title">
-            기여한 게임 - {totalGameContribute} 개
+            기여한 게임 {totalGameContribute} 개
           </div>
           {displayContributedGame(user)}
         </div>

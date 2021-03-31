@@ -156,7 +156,6 @@ const ProductScreen = (props) => {
   const [isTyping, setIsTyping] = useState(true);
 
 
-  console.log("isTyping!!!", isTyping)
   function handleEnter(event) {
     //! 타이핑 끝 & 미니맵 X
     if (!isTyping && !isPause) {
@@ -268,7 +267,6 @@ const ProductScreen = (props) => {
 
   useEffect(() => {
     setLastMotion(false)
-    console.log(gameId, sceneId);
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
       (response) => {
         if (response.data.success) {

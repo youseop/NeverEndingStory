@@ -225,6 +225,20 @@
   margin-bottom: 0px;
 }
 
+.detailPage__gamePlayFromStart_link {
+  cursor: pointer;
+  font-weight: 100;
+  margin-left: 20px;
+  font-size: 13px;
+  width: 130px;
+  height: 36px;
+  position: relative;
+  left: 1005px;
+  bottom: 795px;
+  z-index: 2;
+  color: rgb(180, 180, 180);
+}
+
 .detailPage__gamePlay_link{
   cursor: pointer;
   margin-left: 20px;
