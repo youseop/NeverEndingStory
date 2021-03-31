@@ -32,6 +32,7 @@ import moment from "moment";
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
+    console.log("now render!!!!!!!!!!!!!!")
     window.addEventListener('beforeunload', (event) => {
         // 표준에 따라 기본 동작 방지
         event.preventDefault();
@@ -50,7 +51,7 @@ const SceneMakePage = (props) => {
         window.history.back();
         // return <div></div>;
     }
-    message.config({maxCount:2})
+    message.config({ maxCount: 2 })
 
     const user = useSelector((state) => state.user);
     const CharacterList = useSelector((state) => state.character.CharacterList);
@@ -165,6 +166,7 @@ const SceneMakePage = (props) => {
                         })
                 }
                 else {
+                    dispatch(setCharacterList({ CharacterList: [] }));
                     setIsFirstScene(true)
                 }
             }
@@ -172,13 +174,13 @@ const SceneMakePage = (props) => {
     }, [])
 
     const onScriptChange = (event) => {
-        if (event.currentTarget.value.length === (TEXT_MAX_LENGTH+1)) {
+        if (event.currentTarget.value.length === (TEXT_MAX_LENGTH + 1)) {
             message.error({
                 content: '글자 수 제한을 초과하였습니다.',
             });
         }
-        else{
-            if (event.currentTarget.value[event.currentTarget.value.length-1] !== '\n') {
+        else {
+            if (event.currentTarget.value[event.currentTarget.value.length - 1] !== '\n') {
                 setScript(event.currentTarget.value);
             }
         }
@@ -374,7 +376,7 @@ const SceneMakePage = (props) => {
     }
 
     const onSubmit_saveScene = async (event, isTmp = 0) => {
-        if (CutList.length < 1 ||  (CutList.length === 1 && CutList[CutNumber])) {
+        if (CutList.length < 1 || (CutList.length === 1 && CutList[CutNumber])) {
             message.error("최소 2개의 컷을 생성해주세요.");
             return;
         }
@@ -393,7 +395,7 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
-        console.log("SSS",isTmp)
+        console.log("SSS", isTmp)
         if (isTmp || window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,
@@ -643,13 +645,13 @@ const SceneMakePage = (props) => {
                                 <div className="scene__sound_name">{SoundFile.name}</div>
                             </div>
                         ) : (
-                                <div>
-                                    <StopOutlined
-                                        style={{ fontSize: "20px" }}
-                                    />
-                                    <div className="scene__sound_name">Sound</div>
-                                </div>
-                            )}
+                            <div>
+                                <StopOutlined
+                                    style={{ fontSize: "20px" }}
+                                />
+                                <div className="scene__sound_name">Sound</div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -726,7 +728,7 @@ const SceneMakePage = (props) => {
                     value={Script}
                     placeholder="대사가 없으면 스크립트 창이 표시되지 않습니다."
                     className="textbox_script"
-                    maxLength={TEXT_MAX_LENGTH+1}
+                    maxLength={TEXT_MAX_LENGTH + 1}
                     ref={scriptElement}
                 />
             </div>

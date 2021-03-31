@@ -46,10 +46,16 @@ export function popCharacter(dataToSubmit) {
 export function pushCharacter(dataToSubmit) {
   const { oldArray, characterSchema } = dataToSubmit;
   let request;
-  console.log("working");
   for (let i = 0; i < oldArray?.length; i++) {
     if (oldArray[i].index === characterSchema.index) {
-      request = [...oldArray]
+      request = [
+        ...oldArray.slice(0, i),
+        {
+          ...oldArray[i],
+          image: characterSchema.image,
+        },
+        ...oldArray.slice(i + 1, 4)
+      ]
       break;
     }
   }
