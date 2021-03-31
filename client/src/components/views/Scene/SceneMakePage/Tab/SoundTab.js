@@ -26,65 +26,37 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
     useEffect(() => {
         if (game.sound)
             setSoundCards(game.sound.map((element, index) => {
-                return <div className="largeBox13" key={index}>
-                    {(index + 1) % 2 ?
-                        <div>
-                            <img className="smallBox13"
-                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
-                                alt="img"
-                            />
-                            {element.name}
-                        </div>
-                        :
-                        <div>
-                            <img className="smallBox23"
-                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
-                                alt="img"
-                            />
-                            {element.name}
-                        </div>
-                    }
-                </div>
+                return (
+                    <div className="bgmTab_text_box" key={index}>
+                        {element.name}
+                    </div>
+                )
             }))
     }, [game]);
 
     useEffect(() => {
         if (soundBlobList)
             setBlobCards(soundBlobList.map((element, index) => {
-                return <div className="largeBox13" key={index}>
-                    {(index + 1) % 2 ?
-                        <div>
-                            <img className="smallBox13"
-                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
-                                alt="img"
-                            />
-                            {soundBlobNames[index].name}
-                        </div>
-                        :
-                        <div>
-                            <img className="smallBox23"
-                                // style={index == 0 ? { position: "flex" } : { position: "flex" }}
-                                src={`http://${LOCAL_HOST}:5000/uploads/music_icon.jpg`}
-                                alt="img"
-                            />
-                            {soundBlobNames[index].name}
-                        </div>
-                    }
-                </div>
+                return (
+                    <div className="bgmTab_text_box" key={index}>
+                        {soundBlobNames[index].name}
+                    </div>
+                )
             }))
     }, [soundBlobList]);
 
     return (
-        <div>
-            <MyDropzone
-                onDrop={onDrop}
-                multiple={true}
-                maxSize={10485761} // 10MB + 1
-                accept="audio/*"
-            >
-            </MyDropzone>
-            <div className="music-container">
+        <div className="bgmTab_container">
+            <div className="bgmTab_dropzone">
+                <MyDropzone
+                    onDrop={onDrop}
+                    multiple={true}
+                    maxSize={10485761} // 10MB + 1
+                    accept="audio/*"
+                >
+                </MyDropzone>
+            </div>
+            <div className="bgmTab_Box">
                 {soundCards !== 0 && <div>{soundCards}</div>}
                 {blobCards !== 0 && <div>{blobCards}</div>}
             </div>
