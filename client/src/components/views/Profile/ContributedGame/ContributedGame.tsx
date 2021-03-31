@@ -68,7 +68,6 @@ function ContributedGame(props: any) {
   }
 
   const description = gameDetail.description.length > 300 ? gameDetail.description.slice(0,300)+'...' : gameDetail.description;
-
   return (
     <div className="contribute__container">
       <Link to={`/game/${gameId}`}>
