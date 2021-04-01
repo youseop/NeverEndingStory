@@ -70,3 +70,27 @@
     opacity: 0.7;
     background-color: #808080;
   }
+
+.sidebar_add_esset_btn{  
+  margin: 20px 0px 0px 130px;
+  border-radius: 8px;  
+  text-align: center;
+  font-size: 100px;
+  font-family: Noto Sans KR;
+  font-weight: 500;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.sidebar_add_esset_btn:hover{
+  opacity: 1;
+}
+
+.sidebar_line{
+  position: absolute;
+  top:171px;
+  width:370px;
+  height: 2px;
+  opacity: 0.7;
+  background-color: #808080;
+}

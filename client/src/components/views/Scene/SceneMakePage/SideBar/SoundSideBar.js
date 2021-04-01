@@ -1,10 +1,10 @@
-import { Button } from 'antd';
+import { FileAddOutlined } from '@ant-design/icons';
 import React, { memo } from "react";
 import "./BgmSideBar.css";
 
 import SoundFile from "./SoundFile";
 
-function SoundSideBar({ gameDetail, sound_audio, setSoundFile, setMakeModalState }) {
+function SoundSideBar({ gameDetail, sound_audio, setSoundFile, onSetModal }) {
 
     const renderSound = gameDetail.sound.map((sound, index) => {
         return (
@@ -24,6 +24,13 @@ function SoundSideBar({ gameDetail, sound_audio, setSoundFile, setMakeModalState
     return (
         <div className="modal">
             <div className="bgmSidebar__container">
+                {gameDetail?.sound?.length === 0 &&
+                    <div>
+                        <FileAddOutlined onClick={onSetModal}
+                            className="sidebar_add_esset_btn" />
+                        <div className="sidebar_line" />
+                    </div>
+                }
                 <div>{renderSound}</div>
             </div>
         </div>

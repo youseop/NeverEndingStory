@@ -222,7 +222,10 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
       onCancel={cancelUpload}
       onOk={upload}
       width={1500}
-      style={{ top: 20 }}
+      closable={false}
+      keyboard={false}
+      maskClosable={false}
+      style={{ top: 50 }}
     >
       <div className="sceenmake_modal_container">
         <SceneMakeModalTab setTag={setTag} tag={tag} />
