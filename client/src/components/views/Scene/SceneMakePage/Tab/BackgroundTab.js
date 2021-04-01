@@ -54,6 +54,7 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
                     multiple={true}
                     maxSize={10485761} // 10MB + 1
                     accept="image/*"
+                    type="background"
                 >
                 </MyDropzone>
             </div>

@@ -1,10 +1,10 @@
 /node_modules
 /build
 /dist
-
+/log
 dev.js
 
-
+log
 
 .DS_Store
 
@@ -18,3 +18,4 @@ yarn-error.log*
 /uploads
 
 .env
+.gitignore

@@ -115,8 +115,7 @@ function HistoryMapPopup(props) {
         </div>
       );
     }
-  }
-  );
+  });
 
   return props.trigger ? (
     <div className="HistoryMap_popup">
