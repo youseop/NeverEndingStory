@@ -5,7 +5,8 @@ import {
   PUSH_CHARACTER,
   POP_CHARACTER,
   UPDATE_CHARACTER,
-  SET_CHARACTER_LIST
+  SET_CHARACTER_LIST,
+  ORDER_CHARACTER
 } from "./types";
 
 
@@ -82,7 +83,7 @@ export function updateCharacter(dataToSubmit) {
     },
     ...oldArray.slice(index + 1, 4)
   ]
-  // const request = [ ...oldArray ]
+  console.log("updated");
 
   return {
     type: UPDATE_CHARACTER,
@@ -96,6 +97,26 @@ export function setCharacterList(dataToSubmit) {
 
   return {
     type: SET_CHARACTER_LIST,
+    payload: request,
+  };
+}
+
+export function orderCharacter(dataToSubmit) {
+  const { oldArray, index, num } = dataToSubmit;
+  const lastIndex = oldArray.length-1;
+  let request = [...oldArray]
+  for (let i = 1; i < lastIndex+1; i++) {
+    if (request[i].index === index) {
+      if(num === "double") {
+        [request[i], request[0]] = [request[0], request[i]]
+      } else {
+        [request[i], request[i-1]] = [request[i-1], request[i]]
+      }
+    }
+  }
+
+  return {
+    type: ORDER_CHARACTER,
     payload: request,
   };
 }

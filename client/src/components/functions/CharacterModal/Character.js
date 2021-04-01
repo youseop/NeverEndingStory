@@ -3,15 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import './Character.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { popCharacter, selectCharacter, updateCharacter } from '../../../_actions/characterSelected_actions';
+import { popCharacter, selectCharacter, updateCharacter, orderCharacter } from '../../../_actions/characterSelected_actions';
 import { addEvent, removeAllEvents } from '../handleEventListener';
-import { faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleDown, faAngleDown, faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 function Character(props) {
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
   const { charSchema, GameCharacterList, index } = props;
-
   const element_X = useRef();
   const element_Y = useRef();
 
@@ -63,8 +62,8 @@ function Character(props) {
     if (!background_element) {
       return;
     }
-    addEvent(background_element, "mousemove", mouseMove, false);
-    addEvent(background_element, "mouseup", onMouseUp, false);
+    // addEvent(background_element, "mousemove", mouseMove, false);
+    // addEvent(background_element, "mouseup", onMouseUp, false);
     setImgWidth(document.getElementById(`${index}`).offsetWidth);
     return () => {
       removeAllEvents(background_element, "mousemove");
@@ -88,7 +87,7 @@ function Character(props) {
     removeAllEvents(background_element, "mouseup");
     dispatch(updateCharacter({
       oldArray: CharacterList,
-      data:{
+      data: {
         posX: Number(element_X.current.style.left.replace(/%/g, '')),
         posY: Number(element_Y.current.style.top.replace(/%/g, '').replace(/px/g, '')),
         size: Number(element_Y.current.style.height.replace(/%/g, ''))
@@ -112,10 +111,14 @@ function Character(props) {
     setSizing(false);
   }
 
-  const onClick = () => {
+  const onClickDelete = () => {
     dispatch(popCharacter({ oldArray: CharacterList, index: charSchema.index }));
   }
 
+  const onClickOrder = (num) => {
+    dispatch(orderCharacter({ oldArray: CharacterList, index: charSchema.index, num }));
+  }
+  console.log(imgWidth);
   return (
     <div
       ref={element_X}
@@ -131,14 +134,6 @@ function Character(props) {
           top: `${charSchema.posY}%`
         }}
       >
-        {imgWidth && 
-          <FontAwesomeIcon
-            icon={faTimesCircle}
-            className="btn_character_delete"
-            style={{ left: `${imgWidth - 17}px` }}
-            onClick={onClick}
-          />
-        }
         <img
           onMouseDown={onMouseDown}
           className={"characterImg_clicked"}
@@ -146,14 +141,35 @@ function Character(props) {
           src={charSchema.image}
           alt="img"
         />
-        {imgWidth && 
-          <div
-            className={`${sizing ? "btn_sizing_clicked" : "btn_sizing"}`}
-            onMouseOver={onMouseOver}
-            onMouseOut={onMouseOut}
-            onMouseDown={onMouseDown}
-            style={{ left: `${imgWidth - 3}px` }}
-          ></div>
+        {imgWidth &&
+          <>
+            <FontAwesomeIcon
+              icon={faTimesCircle}
+              className="bttn btn_character_delete"
+              style={{ left: `${imgWidth - 17}px` }}
+              onClick={onClickDelete}
+            />
+            <FontAwesomeIcon
+              icon={faAngleDoubleDown}
+              className="bttn btn_character_Doubledown"
+              style={{ left: `${imgWidth - 34}px` }}
+              onClick={() => { onClickOrder("double") }}
+            />
+            <FontAwesomeIcon
+              icon={faAngleDown}
+              className="bttn btn_character_down"
+              style={{ left: `${imgWidth - 51}px` }}
+              onClick={() => onClickOrder("")}
+            />
+
+            <div
+              className={`${sizing ? "bttn btn_sizing_clicked" : "bttn btn_sizing"}`}
+              onMouseOver={onMouseOver}
+              onMouseOut={onMouseOut}
+              onMouseDown={onMouseDown}
+              style={{ left: `${imgWidth - 3}px` }}
+            ></div>
+          </>
         }
       </div>
     </div>
