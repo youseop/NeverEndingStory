@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 const morgan = require('morgan');
 const redis = require('redis')
 const session = require("express-session")
-export const RedisStore = require('connect-redis')(session)
+const RedisStore = require('connect-redis')(session)
 
 const config = require("./config/key");
 const { logger } = require("./config/logger");
@@ -26,7 +26,7 @@ const connect = mongoose.connect(config.mongoURI,
   .then(() => logger.info("mongoose connected...!"))
   .catch(err => console.log(err));
 
-export const redisClient = redis.createClient({
+const redisClient = redis.createClient({
     url : `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
     password :process.env.REDIS_PASSWORD,
   })
