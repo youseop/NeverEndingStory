@@ -7,12 +7,12 @@ import './CharacterSideBar.css'
 function CharacterSideBar({ gameDetail, setName }) {
 
   const renderCharacter = gameDetail.character.map((character, index) => {
-    return <div className="characterSidebar_box" key={`${index}`}>
+    return(
       <CharacterImg
         character={character}
         index={index}
         setName={setName} />
-    </div>
+    )
   })
 
   return (
