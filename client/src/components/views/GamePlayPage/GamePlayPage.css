@@ -97,7 +97,7 @@
   transition-duration: 0.05s;
 }
 
-.backgroundImg {
+.gamePlay_backgroundImg {
   z-index: 97;
   height: 100%;
   width: 100%;

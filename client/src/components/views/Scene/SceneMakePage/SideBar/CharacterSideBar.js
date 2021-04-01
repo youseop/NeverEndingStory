@@ -1,12 +1,13 @@
-import { Button } from 'antd';
+import { FileAddOutlined } from '@ant-design/icons';
 import React, { memo, useEffect } from 'react'
 import CharacterImg from './CharacterImg'
 import './CharacterSideBar.css'
 
 
-function CharacterSideBar({ gameDetail, setName }) {
+function CharacterSideBar({ gameDetail, setName, onSetModal }) {
 
   const renderCharacter = gameDetail.character.map((character, index) => {
+    console.log(gameDetail.character.length)
     return <div className="characterSidebar_box" key={`${index}`}>
       <CharacterImg
         character={character}
@@ -18,6 +19,10 @@ function CharacterSideBar({ gameDetail, setName }) {
   return (
     <div>
       <div className="characterSidebar__container">
+        {gameDetail?.character?.length === 0 &&
+          <FileAddOutlined onClick={onSetModal}
+            className="sidebar_add_esset_btn" />
+        }
         {renderCharacter}
       </div>
       <div className="characterSidebar_line">

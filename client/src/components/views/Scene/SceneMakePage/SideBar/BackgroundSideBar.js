@@ -1,10 +1,10 @@
-import { Button } from 'antd';
+import { FileAddOutlined } from '@ant-design/icons';
 import React, { memo } from 'react'
 import './BackgroundSideBar.css'
 import BackgroundImg from './BackgroundImg'
 import './BackgroundSideBar.css'
 
-function BackgroundSideBar({ gameDetail, setBackgroundImg, setMakeModalState }) {
+function BackgroundSideBar({ gameDetail, setBackgroundImg, onSetModal }) {
 
   const renderBackground = gameDetail.background.map((background, index) => {
     return (
@@ -19,6 +19,13 @@ function BackgroundSideBar({ gameDetail, setBackgroundImg, setMakeModalState }) 
   return (
     <div className="modal">
       <div className="backSidebar__container">
+        {gameDetail?.background?.length === 0 &&
+          <div>
+            <FileAddOutlined onClick={onSetModal}
+              className="sidebar_add_esset_btn" />
+            <div className="sidebar_line" />
+          </div>
+        }
         {renderBackground}
       </div>
     </div>

@@ -52,6 +52,7 @@ function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
   })
 
   const characterDetailImages = character?.image_array?.map((url, index) => {
+    console.log(character)
     // const img = new Image();
     // img.src = url;
     return (

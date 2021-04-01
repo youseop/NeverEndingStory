@@ -104,14 +104,14 @@ export const TextBlockChoice = (props) => {
                         <>
                             {choices}
                             {scene_next_list.length < CHOICE_NUM ?
-                                
-                                    <InputModal scene_id={scene_id}
-                                        scene_depth={scene_depth}
-                                        game_id={game_id}
-                                        scene_next_list={scene_next_list}
-                                        theme={theme}
-                                    />
-                                 :
+
+                                <InputModal scene_id={scene_id}
+                                    scene_depth={scene_depth}
+                                    game_id={game_id}
+                                    scene_next_list={scene_next_list}
+                                    theme={theme}
+                                />
+                                :
                                 (<div > </div>)
                             }
                         </>
