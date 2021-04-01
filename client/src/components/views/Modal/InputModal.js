@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactDOM from "react-dom";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import ModalForm from "./InputModalForm";
 import { useHistory } from "react-router";
 import { socket } from "../../App";
@@ -14,7 +14,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   let history = useHistory();
   const user = useSelector((state) => state.user);
   const emptyNum = useSelector((state) => state.sync.emptyNum);
-  const user_id = user.userData._id.toString();
   const [visible, setVisible] = useState(false);
   const [formRef, setFormRef] = useState(null);
   const [remainTime, setRemainTime] = useState(0);
@@ -26,6 +25,8 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   const tick = 30;
 
 
+  // const user_id = user.userData.isAuth ? user.userData._id.toString() : "";
+  let user_id;
   const handleCreate = () => {
     formRef.validateFields(async (err, values) => {
       clearTimeout(decreaseTimer);
@@ -44,7 +45,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
       const res = await axios.post("/api/scene/create", data);
       //! socket 보내서 서버에서 scene Cache x exp 업데이트
 
-      socket.emit("created_choice", { sceneId: scene_id, userId: user_id, exp: res.data.exp })
+      socket.emit("created_choice", { sceneId: scene_id, userId: user.us, exp: res.data.exp })
       // tmp scene create
 
       formRef.resetFields();
@@ -70,23 +71,28 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   let decTimer;
 
   const onClickHandler = () => {
-    dispatch(gamePause(true));
-    clearTimeout(decreaseTimer);
-    let tick = 30;
-    setRemainTime(tick);
-    decTimer = setInterval(() => {
-      tick--;
-      if (tick === 0) {
-        clearInterval(decTimer);
-        cancelHandler();
-        return;
-      }
+    if (user.userData.isAuth) {
+      dispatch(gamePause(true));
+      clearTimeout(decreaseTimer);
+      let tick = 30;
       setRemainTime(tick);
-    }, 970);
-    setDecreaseTimer(decTimer);
+      decTimer = setInterval(() => {
+        tick--;
+        if (tick === 0) {
+          clearInterval(decTimer);
+          cancelHandler();
+          return;
+        }
+        setRemainTime(tick);
+      }, 970);
+      setDecreaseTimer(decTimer);
 
-    socket.emit("empty_num_decrease", { scene_id, user_id });
-    setVisible(true);
+      socket.emit("empty_num_decrease", { scene_id, user_id });
+      setVisible(true);
+    }
+    else {
+      message.error("로그인이 필요합니다.")
+    }
   }
 
   const cancelHandler = () => {
@@ -123,7 +129,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
       clearTimeout(decreaseTimer);
     }
   }, [dino]);
-
   return (
     <>
       {
