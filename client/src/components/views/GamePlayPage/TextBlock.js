@@ -44,7 +44,7 @@ export const TextBlock = (props) => {
         }
     </>
 };
-
+ 
 // 선택지 display
 export const TextBlockChoice = (props) => {
 

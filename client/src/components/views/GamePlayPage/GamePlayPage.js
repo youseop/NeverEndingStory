@@ -71,7 +71,6 @@ const ProductScreen = (props) => {
   const [view, setView] = useState(0);
   const [thumbsUp, setThumbsUp] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
-
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
   const maximizableElement = useRef(null);
@@ -206,6 +205,9 @@ const ProductScreen = (props) => {
           setThumbsUp(response.data.thumbsup);
         }
       })
+    }
+    else{
+      message.error("로그인이 필요합니다.")
     }
   }
 
