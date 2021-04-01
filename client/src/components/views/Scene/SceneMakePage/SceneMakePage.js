@@ -209,19 +209,20 @@ const SceneMakePage = (props) => {
         bgmSidebarElement.current.style.display = 'none'
         soundSidebarElement.current.style.display = 'none'
     }
-
-    const [sideTab, setSideTab] = useState(1);
+    const sideTabIndex = useRef(1);
     const onClick_character = () => {
         if (characterSidebarElement.current.style.display === 'none') {
             makeVisible(characterSidebarElement);
-            setSideTab(1);
+            setReload(reload => reload + 1);
+            sideTabIndex.current = 1;
         }
     };
 
     const onClick_background = () => {
         if (backgroundSidebarElement.current.style.display === 'none') {
             makeVisible(backgroundSidebarElement);
-            setSideTab(2);
+            setReload(reload => reload + 1);
+            sideTabIndex.current = 2;
         }
     };
 
@@ -229,14 +230,16 @@ const SceneMakePage = (props) => {
     const onClick_bgm = () => {
         if (bgmSidebarElement.current.style.display === 'none') {
             makeVisible(bgmSidebarElement);
-            setSideTab(3);
+            setReload(reload => reload + 1);
+            sideTabIndex.current = 3;
         }
     };
 
     const onClick_sound = () => {
         if (soundSidebarElement.current.style.display === 'none') {
             makeVisible(soundSidebarElement);
-            setSideTab(4);
+            setReload(reload => reload + 1);
+            sideTabIndex.current = 4;
         }
     };
 
@@ -486,7 +489,7 @@ const SceneMakePage = (props) => {
     }
 
     const onSetModal = () => {
-        setMakeModalState(sideTab);
+        setMakeModalState(sideTabIndex.current);
     }
 
     const [gameDetail, setGameDetail] = useState([]);
@@ -718,21 +721,21 @@ const SceneMakePage = (props) => {
             </div>
             <div className="btn_side">
                 <div
-                    className={sideTab === 1 ? "scene_side_btn light" : "scene_side_btn"}
+                    className={sideTabIndex.current === 1 ? "scene_side_btn light" : "scene_side_btn"}
                     onClick={onClick_character}
                 >캐릭터</div>
                 <div
-                    className={sideTab === 2 ? "scene_side_btn light" : "scene_side_btn"}
+                    className={sideTabIndex.current === 2 ? "scene_side_btn light" : "scene_side_btn"}
                     onClick={onClick_background}
                 >배경</div>
 
                 <div
-                    className={sideTab === 3 ? "scene_side_btn light" : "scene_side_btn"}
+                    className={sideTabIndex.current === 3 ? "scene_side_btn light" : "scene_side_btn"}
                     onClick={onClick_bgm}>
                     배경음
                     </div>
                 <div
-                    className={sideTab === 4 ? "scene_side_btn light" : "scene_side_btn"}
+                    className={sideTabIndex.current === 4 ? "scene_side_btn light" : "scene_side_btn"}
                     onClick={onClick_sound}>
                     효과음
                     </div>

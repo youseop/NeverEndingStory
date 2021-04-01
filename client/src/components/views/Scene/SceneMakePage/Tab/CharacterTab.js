@@ -138,7 +138,8 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
 
     return (
         <div className="characterTab-container">
-            {blobGame.character?.length !== charPageNum.current &&
+            {blobGame.character?.length > 0 &&
+                blobGame.character?.length !== charPageNum.current &&
                 <div>
                     <div>{characterProfile}</div>
                     <div className="characterTab_cards_Box">{characterCards}</div>
@@ -188,7 +189,7 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                     <SVG src="arrow_1" width="50" height="50" color="#222831" />
                 </div>
             }
-            {
+            {blobGame.character?.length > 0 &&
                 blobGame?.character?.length !== charPageNum.current &&
                 <div
                     className="characterTab_rightarrow"
