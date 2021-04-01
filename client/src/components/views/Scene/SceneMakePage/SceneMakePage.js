@@ -102,11 +102,12 @@ const SceneMakePage = (props) => {
 
     useEffect(() => {
         if (user.userData) {
-            socket.emit("leave room", { room: user.userData._id.toString() });
-            socket.emit("room", { room: user.userData._id.toString() });
+            socket.emit("leave room", { room: user.userData?._id?.toString() });
+            socket.emit("room", { room: user.userData?._id?.toString() });
         }
         socket.off("timeout_making")
         socket.on("timeout_making", data => {
+            // console.log("GO HOME")
             props.history.replace("/")
         })
 
@@ -117,8 +118,10 @@ const SceneMakePage = (props) => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
+            // console.log(res.data)
             if (res.data.success && validation.data.success) { scene = res.data.scene; }
             else {
+                // console.log("get scene ERROR");
                 props.history.replace("/");
                 return;
             }
@@ -310,6 +313,13 @@ const SceneMakePage = (props) => {
         } else {
             sound_audio.pause();
         }
+    };
+
+    const onRemove_character = (index) => {
+        dispatch(popCharacter({
+            oldArray: CharacterList,
+            index
+        }))
     };
 
     const onSubmit_nextCut = (event) => {
@@ -596,6 +606,7 @@ const SceneMakePage = (props) => {
                     />
                     <CharacterBlock
                         GameCharacterList={gameDetail.character}
+                        onRemovech_aracter={onRemove_character}
                     />
                     {SidBar_script && Script && (
                         <TextBlock
@@ -764,6 +775,7 @@ const SceneMakePage = (props) => {
                 onSubmit_saveScene={onSubmit_saveScene}
                 defaultTitle={gameDetail.title}
                 defaultDescription={gameDetail.description}
+                cassName="upload_modal"
             />
             {
                 makeModalState !== 0 && <SceneMakeModal

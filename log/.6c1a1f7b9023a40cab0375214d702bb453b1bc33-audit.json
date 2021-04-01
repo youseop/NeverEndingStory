@@ -46,9 +46,15 @@
             "hash": "9d4251b0c8d96b94de7a65b1e4d1ee2b"
         },
         {
+<<<<<<< HEAD
             "date": 1617205421238,
             "name": "log\\2021-04-01-smart-push.log",
             "hash": "f7f0c30c64406b54aec3e9a05845db5c"
+=======
+            "date": 1617210870671,
+            "name": "log\\2021-04-01-smart-push.log",
+            "hash": "ba8d50e9a9758b12a45612efa6c09bc3"
+>>>>>>> dev
         }
     ]
 }

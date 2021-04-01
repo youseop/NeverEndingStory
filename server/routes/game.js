@@ -71,6 +71,7 @@ router.post("/uploadfile", (req, res) => {
     //서버에 저장
     upload(req, res, (err) => {
         if (err) {
+            console.log(err);
             return res.json({ success: false, err });
         }
         return res.json({
@@ -245,6 +246,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                 user.gamePlaying.isMaking = false;
                 user.save((err) => {
                     if (err) {
+                        console.log(err);
                         return res.status(400).json({ success: false })
                     }
                 });
@@ -278,11 +280,13 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                 user.gamePlaying = {
                     gameId: gameId,
                     sceneIdList: user.gameHistory[i].sceneIdList.slice(0, user.gameHistory[i].sceneIdList.length),
+                    isMaking: user.gameHistory[i].isMaking
                 };
 
                 user.save((err) => {
-                    if (err) { return res.status(400).json({ success: false }) }
+                    if (err) { console.log(err); return res.status(400).json({ success: false }) }
                 });
+                
                 return res
                     .status(200)
                     .json({
@@ -305,9 +309,11 @@ router.get("/gamestart/:id", auth, async (req, res) => {
             user.save();
             return res.status(200).json({ success: true, sceneId, isMaking: user.gamePlaying.isMaking, });
         } catch (err) {
+            console.log(err);
             return res.status(400).json({ success: false });
         }
     } catch (err) {
+        console.log(err);
         return res.status(400).json({ success: false });
     }
 });
@@ -369,9 +375,11 @@ router.get("/getnextscene/:gameId/:sceneId", auth, async (req, res) => {
                     sceneIdList: user.gamePlaying.sceneIdList,
                 });
         } catch (err) {
+            console.log(err);
             return res.status(400).json({ success: false });
         }
     } catch (err) {
+        console.log(err);
         return res.status(400).json({ success: false });
     }
 });
@@ -413,6 +421,7 @@ router.get("/getSceneInfo/:sceneId", auth, async (req, res) => {
         }
         return res.status(200).json({ success: true, scene });
     } catch (err) {
+        console.log(err);
         return res.status(400).json({ success: false });
     }
 });
@@ -465,6 +474,7 @@ router.post("/rank", async (req, res) => {
             totalSceneCnt: totalSceneCnt
         });
     } catch (err) {
+        console.log(err);
         return res.status(400).json({ success: false });
     }
 
@@ -489,6 +499,7 @@ router.get("/simple-scene-info", auth, async (req, res) => {
         }
         return res.status(200).json({sceneinfo:sceneinfo})
     } catch (err) {
+        console.log(err);
         return res.status(400).json({ success: false });
     }
 });
