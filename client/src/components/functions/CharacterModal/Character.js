@@ -70,7 +70,7 @@ function Character(props) {
       removeAllEvents(background_element, "mousemove");
       removeAllEvents(background_element, "mouseup");
     }
-  }, [])
+  }, [CharacterList])
 
   const onMouseDown = (e) => {
     if (!background_element) {
@@ -80,6 +80,7 @@ function Character(props) {
     addEvent(background_element, "mouseup", onMouseUp, false);
     pivot = [e.pageX, e.pageY];
     drag = true;
+    dispatch(selectCharacter({ ...GameCharacterList[charSchema.index], index: charSchema.index }));
   }
 
   const onMouseUp = (e) => {
@@ -87,7 +88,7 @@ function Character(props) {
     removeAllEvents(background_element, "mouseup");
     dispatch(updateCharacter({
       oldArray: CharacterList,
-      data: {
+      data:{
         posX: Number(element_X.current.style.left.replace(/%/g, '')),
         posY: Number(element_Y.current.style.top.replace(/%/g, '').replace(/px/g, '')),
         size: Number(element_Y.current.style.height.replace(/%/g, ''))
@@ -99,7 +100,6 @@ function Character(props) {
     drag = false;
     setSizing(false);
     setMoving(true);
-    dispatch(selectCharacter({ ...GameCharacterList[charSchema.index], index: charSchema.index }));
   }
 
   const onMouseOver = (e) => {
@@ -113,7 +113,7 @@ function Character(props) {
   }
 
   const onClick = () => {
-    dispatch(popCharacter({ oldArray: CharacterList, index }));
+    dispatch(popCharacter({ oldArray: CharacterList, index: charSchema.index }));
   }
 
   return (

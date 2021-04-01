@@ -71,7 +71,6 @@ export function NewGameButton({replace}:newGameButtonProps) {
                 return;
             }
 
-            // console.log("Received values of form: ", values.title);
             uploadGameFrame(values.title, values.description);
             formRef?.resetFields();
             setVisible(false);

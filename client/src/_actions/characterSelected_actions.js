@@ -46,10 +46,8 @@ export function popCharacter(dataToSubmit) {
 export function pushCharacter(dataToSubmit) {
   const { oldArray, characterSchema } = dataToSubmit;
   let request;
-
   for (let i = 0; i < oldArray?.length; i++) {
     if (oldArray[i].index === characterSchema.index) {
-      oldArray.splice(i, 1)
       request = [...oldArray]
       break;
     }
@@ -61,7 +59,6 @@ export function pushCharacter(dataToSubmit) {
   }
 
   request = request ? request : [...(oldArray ? oldArray : []), characterSchema]
-
   return {
     type: PUSH_CHARACTER,
     payload: request,
@@ -78,6 +75,7 @@ export function updateCharacter(dataToSubmit) {
     },
     ...oldArray.slice(index + 1, 4)
   ]
+  // const request = [ ...oldArray ]
 
   return {
     type: UPDATE_CHARACTER,

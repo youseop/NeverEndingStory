@@ -86,8 +86,6 @@ function TreeMapPopup(props) {
   
   useConstructor(() => {
     setPosition(position);
-    // console.log("constructor");
-    // console.log(userhistory);
   });
 
   useEffect(() => {
@@ -144,8 +142,6 @@ function TreeMapPopup(props) {
       cnt_limit = cnt_limit * 4;
     }
     cnt += 1;
-
-    // console.log(index, depth);
 
     return (
       <div

@@ -90,8 +90,6 @@ router.get("/playing-list/clear", auth, async (req, res) => {
         })
     }
     catch (err) {
-        console.log("PLAYING LIST CLEAR FAIL")
-        console.log(err)
         return res.json({ success: false, err });
     }
 })
@@ -109,8 +107,6 @@ router.get("/playing-list/pop", auth, async (req, res) => {
 
     }
     catch (err) {
-        console.log("PLAYING LIST POP FAIL")
-        console.log(err)
         return res.json({ success: false, err });
     }
 })
@@ -148,7 +144,6 @@ router.post("/email-check", (req, res) => {
 router.post("/game-visit", (req, res) => {
     User.findOne({ _id: req.body.userId },{gamePlaying: 1}, (err, gamePlaying) => {
         if (err) return res.json({ success: false, err });
-        console.log(gamePlaying)
         return res.status(200).send({
             success: true,
             gamePlaying: gamePlaying,

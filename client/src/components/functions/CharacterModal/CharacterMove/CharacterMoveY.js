@@ -31,7 +31,7 @@ function CharacterMoveY({ index, element }) {
           data: {
             posY: next_posY
           },
-          index,
+          index
         }))
         pivotY = e.pageY;
       }

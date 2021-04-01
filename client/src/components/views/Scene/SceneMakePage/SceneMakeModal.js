@@ -147,7 +147,6 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
           setReload(reload => reload + 1)
           setTag(0)
         }
-        // console.log("SceneMakeModal::CharDB 업데이트 성공")
       } else {
         message.error("DB 업데이트 실패");
       }

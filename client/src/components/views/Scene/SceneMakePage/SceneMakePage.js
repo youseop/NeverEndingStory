@@ -107,7 +107,6 @@ const SceneMakePage = (props) => {
         }
         socket.off("timeout_making")
         socket.on("timeout_making", data => {
-            // console.log("GO HOME")
             props.history.replace("/")
         })
 
@@ -118,10 +117,8 @@ const SceneMakePage = (props) => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
-            // console.log(res.data)
             if (res.data.success && validation.data.success) { scene = res.data.scene; }
             else {
-                // console.log("get scene ERROR");
                 props.history.replace("/");
                 return;
             }
@@ -315,13 +312,6 @@ const SceneMakePage = (props) => {
         }
     };
 
-    const onRemove_character = (index) => {
-        dispatch(popCharacter({
-            oldArray: CharacterList,
-            index
-        }))
-    };
-
     const onSubmit_nextCut = (event) => {
         event.preventDefault();
         if (CutNumber >= 29) {
@@ -401,7 +391,6 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
-        console.log("SSS", isTmp)
         if (isTmp || window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,
@@ -607,7 +596,6 @@ const SceneMakePage = (props) => {
                     />
                     <CharacterBlock
                         GameCharacterList={gameDetail.character}
-                        onRemovech_aracter={onRemove_character}
                     />
                     {SidBar_script && Script && (
                         <TextBlock
@@ -743,7 +731,7 @@ const SceneMakePage = (props) => {
                     value={Script}
                     placeholder="대사가 없으면 스크립트 창이 표시되지 않습니다."
                     className="textbox_script"
-                    maxlength={TEXT_MAX_LENGTH + 1}
+                    maxLength={TEXT_MAX_LENGTH + 1}
                     ref={scriptElement}
                 />
             </div>

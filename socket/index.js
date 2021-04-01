@@ -49,10 +49,8 @@ let scene_cache = {} // {empty: 2, cert: [{ userID: ??, }]}
 
 
 const updateCache = async (sceneId, userId, plus, exp) => {
-  // console.log("plus", plus);
   const idx = scene_cache[sceneId].certificationList.findIndex(item => item.userId === userId);
   if (idx < 0) {
-    console.log("!!!!!!!!!!!!!!!!!!error!!!!!!!!!!!!!!!!!!!!!!!!, plus: ", plus, "user Id", userId);
     return;
   }
 
@@ -60,7 +58,6 @@ const updateCache = async (sceneId, userId, plus, exp) => {
   io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum })
   const certTokenList = scene_cache[sceneId].certificationList;
   if (plus > 0) {
-    // console.log("wokring idx:", idx);
     clearTimeout(certTokenList[idx].timer);
     if (idx > -1) certTokenList.splice(idx, 1)
   }
@@ -92,9 +89,7 @@ const updateCache = async (sceneId, userId, plus, exp) => {
 
   else {
     scene_cache[sceneId].certificationList[idx].timer = setTimeout(() => {
-      // console.log("30 초 지남...")
       if (scene_cache[sceneId].certificationList.some(item => item.userId === userId)) {
-        // console.log("원상복구...")
         scene_cache[sceneId].emptyNum += 1;
 
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
@@ -114,10 +109,8 @@ const updateCache = async (sceneId, userId, plus, exp) => {
 }
 
 io.on('connection', socket => {
-  console.log('a user connected');
 
   socket.on('disconnect', reason => {
-    console.log(reason);
     // console.log('user disconnected');
   });
 
@@ -134,7 +127,6 @@ io.on('connection', socket => {
   socket.on('empty_num_decrease', async data => {
     const sceneId = data.scene_id;
     const userId = data.user_id;
-    console.log("decrease~~~", userId, Date.now());
     if (scene_cache[sceneId] === undefined) {
       const sceneTmp = await Scene.findOne({ _id: mongoose.Types.ObjectId(sceneId) }).select("sceneTmp");
       scene_cache[sceneId] = sceneTmp.sceneTmp;
@@ -142,7 +134,6 @@ io.on('connection', socket => {
     }
 
     if (scene_cache[sceneId].emptyNum === 0) {
-      console.log("faile..", userId, Date.now());
       socket.emit('decrease_failed');
       socket.emit('empty_num_changed', { emptyNum: 0 });
       // console.log(scene_cache[sceneId].emptyNum)
@@ -158,13 +149,11 @@ io.on('connection', socket => {
     }
     scene_cache[sceneId].certificationList.push(user_token);
     updateCache(sceneId, userId, -1, 0)
-    console.log("empty_num: ", scene_cache[sceneId].emptyNum)
   });
 
   socket.on('empty_num_increase', async data => {
     const sceneId = data.scene_id;
     const userId = data.user_id;
-    console.log("increasing~~~", userId, Date.now())
     if (scene_cache[sceneId] === undefined) {
       const sceneTmp = await Scene.findOne({ _id: mongoose.Types.ObjectId(sceneId) }).select("sceneTmp");
       scene_cache[sceneId] = sceneTmp.sceneTmp;
@@ -176,7 +165,6 @@ io.on('connection', socket => {
       return;
     }
     updateCache(sceneId, userId, 1, 0)
-    console.log("empty_num: ", scene_cache[sceneId].emptyNum)
   });
 
   socket.on('validate_empty_num', async data => {
@@ -245,7 +233,6 @@ io.on('connection', socket => {
         }
       }
   
-      console.log("empty_num_changed , emptyNum : ", sceneTmp.emptyNum)  // 클라 dispatch 시점
       io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: sceneTmp.emptyNum });
       scene_cache[scene_id] = {
         emptyNum: sceneTmp.emptyNum,

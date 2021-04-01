@@ -50,8 +50,6 @@ router.get('/user', async (req,res) => {
 
 router.get('/user1', (req,res) => {
   const user = 'user9';
-  console.log(new Date(Date.now() - 3* 1000), (new Date()).getTime()-new Date(Date.now() - 3* 1000))
-
     Teacher.findOne({ title: "new schema"}).exec((err, a) => {
       if(err) return res.status(400).send(err)
       if (a && a.userList){

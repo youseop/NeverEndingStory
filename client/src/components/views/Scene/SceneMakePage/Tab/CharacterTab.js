@@ -29,7 +29,6 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
     };
 
     const onDrop = (files) => {
-        console.log(indexNum.current)
         for (var i = 0; i < files.length; i++) {
             if (!files[i]) {
                 message.error("10MB 이하의 이미지 파일을 업로드해주세요.");

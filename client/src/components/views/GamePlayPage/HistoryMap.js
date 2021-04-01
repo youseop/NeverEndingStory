@@ -32,7 +32,6 @@ function GoToScene(props) {
       message.error("Scene 변경 요청 실패");
     } else {
       const close = document.getElementsByClassName("close_btn");
-      console.log(close.length)
       for (let i = close.length - 1; i >= 0; i--) {
         close[i].click();
       }
@@ -89,20 +88,20 @@ function HistoryMapPopup(props) {
   }
 
   const HistoryMap_scenes = SceneInfo.map((scene, index) => {
-    // if (index === SceneInfo.length - 1) {
-    //   return (
-    //     <div
-    //       className="HistoryMap_scene"
-    //       key={index + 1}
-    //       style={{border:"0.2em orange solid"}}
-    //     >
-    //       <div className="HistoryMap_scene_num"> #{index + 1}</div>
-    //       <img className="HistoryMap_scene_img" src={scene.background} />
-    //       <div className="HistoryMap_scene_name">{scene.name}:</div>
-    //       <div className="HistoryMap_scene_text">"{scene.script}"</div>
-    //     </div>
-    //   );
-    // } else {
+    if (index === SceneInfo.length - 1) {
+      return (
+        <div
+          className="HistoryMap_scene"
+          key={index + 1}
+          style={{border:"0.2em orange solid"}}
+        >
+          <div className="HistoryMap_scene_num"> #{index + 1}</div>
+          <img className="HistoryMap_scene_img" src={scene.background} />
+          <div className="HistoryMap_scene_name">{scene.name}:</div>
+          <div className="HistoryMap_scene_text">"{scene.script}"</div>
+        </div>
+      );
+    } else {
       return (
         <div
           className="HistoryMap_scene"
@@ -116,6 +115,7 @@ function HistoryMapPopup(props) {
         </div>
       );
     }
+  }
   );
 
   return props.trigger ? (

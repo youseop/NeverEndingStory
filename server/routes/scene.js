@@ -75,7 +75,6 @@ router.post('/create', auth, async (req, res) => {
 
     // update Playing For First에서 이미 save 있음
     user.save((err) => {
-      console.log(err);
       if (err) return res.status(400).json({ success: false, err })
     });
   }
@@ -184,7 +183,6 @@ router.post('/save', auth, async (req, res) => {
           gameId: game._id,
         }]
         user.save((err) => {
-          console.log(err);
           if (err) return res.json({ success: false, err })
         }) 
 
@@ -271,7 +269,6 @@ router.post('/save', auth, async (req, res) => {
       });
     }
     catch (err) {
-      console.log(err)
       return res.status(400).json({ success: false, err })
     }
   }
@@ -303,14 +300,10 @@ router.delete('/', async (req, res) => {
   if (idx > -1) {
     user.makingGameList.splice(idx, 1)
   }
-  else {
-    console.log("THERE IS NO MAKING GAME -- 이상하네")
-  }
   user.gamePlaying.sceneIdList.pop();
   user.gamePlaying.isMaking = false;
   user.save((err) => {
     if (err) {
-      console.log(err)
       return res.status(400).json({ success: false, err })
     }
     return res.status(200).json({
