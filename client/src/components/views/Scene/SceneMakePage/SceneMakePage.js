@@ -32,7 +32,6 @@ import moment from "moment";
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
-    console.log("now render!!!!!!!!!!!!!!")
     window.addEventListener('beforeunload', (event) => {
         // 표준에 따라 기본 동작 방지
         event.preventDefault();
@@ -92,6 +91,18 @@ const SceneMakePage = (props) => {
     const [EmptyCutList, setEmptyCutList] = useState(
         Array.from({ length: 30 }, () => 0)
     );
+
+    const useConstructor = (cb) => {
+        const [isInited, setInit] = useState(false);
+        if (isInited) return;
+        cb();
+        setInit(true);
+    }
+
+    useConstructor(() => {
+        console.log("workig~~~~~~~~~")
+        dispatch(setCharacterList({ CharacterList: [] }));
+    });
 
     let scene;
     useEffect(() => {
@@ -166,7 +177,6 @@ const SceneMakePage = (props) => {
                         })
                 }
                 else {
-                    dispatch(setCharacterList({ CharacterList: [] }));
                     setIsFirstScene(true)
                 }
             }
