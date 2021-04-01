@@ -237,7 +237,7 @@ export function GameList(props: ContainerProps) {
         return null;
     });
 
-    data.limit = Math.round(data.length / 4)
+    data.limit = Math.round((data.length/ 4)+0.49)
 
     //* bars
     const bars = [];
