@@ -36,7 +36,6 @@ function NavBar() {
       animation: "0.8s ease-out 0s 1 hide",
     };
   }
-  
   return (
     <nav className="menu" style={style}>
       <div className="menu__logo">
