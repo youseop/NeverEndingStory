@@ -1,8 +1,7 @@
 import { message } from 'antd';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { pushCharacter, selectCharacter, setCharacterList } from '../../../../_actions/characterSelected_actions';
-import { useConstructor } from '../../useConstructor';
+import { pushCharacter, selectCharacter } from '../../../../_actions/characterSelected_actions';
 import './CharacterInfoDisplay.css';
 
 function CharacterInfoDisplay({ setName, character, GameCharacterList }) {

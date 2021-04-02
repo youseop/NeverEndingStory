@@ -118,7 +118,6 @@ function Character(props) {
   const onClickOrder = (num) => {
     dispatch(orderCharacter({ oldArray: CharacterList, index: charSchema.index, num }));
   }
-  console.log(imgWidth);
   return (
     <div
       ref={element_X}

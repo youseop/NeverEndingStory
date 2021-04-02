@@ -77,6 +77,7 @@ const SceneMakePage = (props) => {
     const [BackgroundImg, setBackgroundImg] = useState(`http://${LOCAL_HOST}:5000/uploads/defaultBackground.png`);
     const [Script, setScript] = useState("");
     const [Name, setName] = useState("");
+    const [writer, setWriter] = useState(null);
     const [BgmFile, setBgmFile] = useState({
         name: "",
         music: "",
@@ -141,6 +142,7 @@ const SceneMakePage = (props) => {
             }
             // 임시저장한 녀석
 
+            setWriter(scene.writer);
 
             if (scene.cutList.length) {
 
@@ -606,9 +608,7 @@ const SceneMakePage = (props) => {
             setCutNumber(CutNumber - 1);
         }
     }
-
     useEffect(() => {
-
         return () => {
             bgm_audio.pause();
             sound_audio.pause();
@@ -728,7 +728,7 @@ const SceneMakePage = (props) => {
             </div>
 
             <div className="scene__btn_top">
-                {isFirstScene.current &&
+                {(isFirstScene.current || writer?.toString()===user.userData?._id.toString()) &&
                     <div className="scene_btn scene_btn_red"
                         onClick={onEssetModal}>
                         에셋 추가
