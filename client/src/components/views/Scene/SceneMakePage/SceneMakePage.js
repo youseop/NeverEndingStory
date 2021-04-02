@@ -31,6 +31,7 @@ import { MS_PER_HR } from "../../../App"
 import moment from "moment";
 import SceneEndingPage from "../SceneEndingPage/SceneEndingPage";
 
+const config = require("../../../../config/key")
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
@@ -74,7 +75,7 @@ const SceneMakePage = (props) => {
 
     const [SidBar_script, setSidBar_script] = useState(true);
 
-    const [BackgroundImg, setBackgroundImg] = useState(`http://${LOCAL_HOST}:5000/uploads/defaultBackground.png`);
+    const [BackgroundImg, setBackgroundImg] = useState(`${config.STORAGE}/defaultBackground.png`);
     const [Script, setScript] = useState("");
     const [Name, setName] = useState("");
     const [BgmFile, setBgmFile] = useState({
@@ -597,8 +598,6 @@ const SceneMakePage = (props) => {
         };
     }, []);
 
-    console.log(SidBar_script)
-    console.log(Script)
     return (
         <div className="wrapper">
             <div className="title">
