@@ -88,7 +88,6 @@ const ProductScreen = (props) => {
     setIsFullscreen = undefined;
   }
 
-  console.log("isEnding? : ",Scene.isEnding)
   useKey("Enter", handleEnter);
   useKey("Space", handleEnter);
   useKey("Digit1", handleChoice);
