@@ -22,11 +22,7 @@ function RightMenu(props) {
     });
   };
 
-  if (
-    !user.userData ||
-    (user.loginSuccess && !user.userData._id) ||
-    (!user.loginSuccess && user.userData._id)
-  ) {
+  if (!user.userData){
     return null;
   } else if (!user.userData.isAuth) {
     return (
