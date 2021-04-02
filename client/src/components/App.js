@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Route, Switch } from "react-router-dom";
 import io from 'socket.io-client';
 
@@ -21,6 +21,8 @@ import NavBar from "./views/NavBar/NavBar.tsx";
 import Footer from "./views/Footer/Footer.tsx"
 import { LOCAL_HOST } from './Config';
 import './App.css';
+import PortraitWarning from './views/Etc/PortraitWarning';
+import { useConstructor } from './functions/useConstructor';
 
 const config = require('../config/key');
 // export let socket = io(`http://${LOCAL_HOST}:5000`, {transports : ['websocket']});
@@ -30,7 +32,20 @@ export const MS_PER_HR = 360000
 window.onpopstate = () => {
   window.location.reload();
 };
+
 function App() {
+  const [isPortrait, setIsPortrait] = useState(window.matchMedia('(orientation: portrait)').matches);
+  const handleResize = () => {
+    const newState = window.matchMedia('(orientation: portrait)').matches;
+    if (newState !== isPortrait)
+      setIsPortrait(window.matchMedia('(orientation: portrait)').matches);
+  }
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);   
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+  }, [isPortrait])
   return (
     <Suspense fallback={(<div>Loading...</div>)}>
       <NavBar />
@@ -42,8 +57,8 @@ function App() {
           <Route exact path="/profile/:userId" component={Auth(Profile, true)} />
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
-          <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />
-          <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage, true))} />
+          <Route path="/gameplay" component={isPortrait? PortraitWarning: Valid(Auth(GamePlayPage, null))} />
+          <Route exact path="/scene/make" component={isPortrait? PortraitWarning: Valid(Auth(SceneMakePage, true))} />
         </Switch>
       </div>
       <Footer />

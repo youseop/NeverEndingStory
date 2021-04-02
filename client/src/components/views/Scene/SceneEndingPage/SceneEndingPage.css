@@ -11,6 +11,7 @@ button {
     justify-content: center;
     flex-direction: column;
     position: relative;
+    background-color: black;
 }
 
 .ending_button_container {
