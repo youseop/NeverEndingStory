@@ -3,8 +3,10 @@ import useKey from "../../functions/useKey";
 import { useWindupString } from "windups";
 import useMouse from "../../functions/useMouse";
 import { LOCAL_HOST } from "../../Config";
+const config = require("../../../config/key")
 
-const voice = new Audio(`http://${LOCAL_HOST}:5000/uploads/TYPING.mp3`);
+
+const voice = new Audio(`${config.STORAGE}/TYPING.mp3`);
 voice.volume = 0.8
 function TextAnimation({ cut_script, setIsTyping }) {
     const [flag, setFlag] = useState(false);

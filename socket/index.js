@@ -268,6 +268,7 @@ io.on('connection', socket => {
     const idx = scene_cache[prevSceneId].certificationList.findIndex(item => item.userId === userId);
     if (idx > -1) {
       clearTimeout(scene_cache[prevSceneId].certificationList[idx].timer);
+      scene_cache[prevSceneId].certificationList[idx].timer = null;
       scene_cache[prevSceneId].certificationList.splice(idx, 1)
     }
 

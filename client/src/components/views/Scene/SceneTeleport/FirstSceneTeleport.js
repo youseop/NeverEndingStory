@@ -71,7 +71,7 @@ const FirstSceneTeleport = ({ gameId, setScene }) => {
                     </React.Fragment>
                 }
                 getContainer='.gamePlay__container'
-                centered='true'
+                centered={true}
             >
 
                 <p>첫 화면으로 돌아갑니다.</p>

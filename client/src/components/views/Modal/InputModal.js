@@ -26,7 +26,6 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
 
 
   // const user_id = user.userData.isAuth ? user.userData._id.toString() : "";
-  let user_id;
   const handleCreate = async () => {
     clearTimeout(decreaseTimer);
     if (createFlag.current || !visible) {
@@ -44,7 +43,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
     const res = await axios.post("/api/scene/create", data);
     //! socket 보내서 서버에서 scene Cache x exp 업데이트
 
-    socket.emit("created_choice", { sceneId: scene_id, userId: user.us, exp: res.data.exp })
+    socket.emit("created_choice", { sceneId: scene_id, userId: user.userData._id, exp: res.data.exp })
     // tmp scene create
 
     setVisible(false);
@@ -79,7 +78,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
       }, 970);
       setDecreaseTimer(decTimer);
 
-      socket.emit("empty_num_decrease", { scene_id, user_id });
+      socket.emit("empty_num_decrease", { scene_id, user_id: user.userData._id});
       setVisible(true);
     }
     else {
@@ -88,7 +87,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   }
 
   const cancelHandler = () => {
-    socket.emit("empty_num_increase", { scene_id, user_id });
+    socket.emit("empty_num_increase", { scene_id, user_id : user.userData._id });
     clearTimeout(decreaseTimer);
     setVisible(false);
     dispatch(gamePause(false));
