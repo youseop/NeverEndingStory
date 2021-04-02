@@ -49,8 +49,8 @@ let scene_cache = {} // {empty: 2, cert: [{ userID: ??, }]}
 
 const trimCache = (sceneTmp) => {
   let formatCache = {...sceneTmp}
-  for(let i = 0 ; i < newSceneTmp.certificationList.length; i ++){
-    newSceneTmp.certificationList[i].timer = null;
+  for(let i = 0 ; i < formatCache.certificationList.length; i ++){
+    formatCache.certificationList[i].timer = null;
   }
   return formatCache;
 }
