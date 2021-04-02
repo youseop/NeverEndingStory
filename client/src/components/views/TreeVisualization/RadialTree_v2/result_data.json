@@ -1,0 +1,254 @@
+{
+  "personal": {
+    "locations": [
+      {
+        "value": "Yerevan"
+      }
+    ],
+    "names": [
+      {
+        "value": "Name LastName"
+      }
+    ],
+    "phones": [
+      {
+        "value": "+111111111111"
+      },
+      {
+        "value": "+2222222222222"
+      }
+    ],
+    "emails": [
+      {
+        "value": "khachbar@gmail.com"
+      }
+    ],
+    "age": 25
+  },
+  "skills": {
+    "extracted": [
+      {
+        "value": "MVC "
+      },
+      {
+        "value": "API "
+      },
+      {
+        "value": "WCF "
+      },
+      {
+        "value": "NancyFX "
+      },
+      {
+        "value": "PHP "
+      },
+      {
+        "value": "HTML "
+      },
+      {
+        "value": "CSS "
+      },
+      {
+        "value": "JavaScript "
+      },
+      {
+        "value": "MySQL "
+      },
+      {
+        "value": "ASP.NET "
+      },
+      {
+        "value": "ADO.NET "
+      },
+      {
+        "value": "Python "
+      },
+      {
+        "value": ".NET Framework"
+      },
+      {
+        "value": "C#"
+      },
+      {
+        "value": "Win Forms "
+      },
+      {
+        "value": "Web"
+      },
+      {
+        "value": "Microsoft SQL Server "
+      },
+      {
+        "value": "ReactJS"
+      },
+      {
+        "value": "NodeJS"
+      },
+      {
+        "value": "MongoDB"
+      },
+      {
+        "value": "GIT"
+      },
+      {
+        "value": "JIRA"
+      },
+      {
+        "value": "C++"
+      },
+      {
+        "value": "Entity Framework"
+      }
+    ]
+  },
+  "experience": {
+    "jobs": [
+      {
+        "date_range": {
+          "value": "September 2014 to January 2015",
+          "started": "2014.9",
+          "ended": "2015.1",
+          "duration": 0.416666666666667
+        },
+        "company": {
+          "value": "Direct Skill Systems LLC"
+        },
+        "title": {
+          "value": "Senior "
+        }
+      },
+      {
+        "date_range": {
+          "value": "October 2013 to January 2014",
+          "started": "2013.10",
+          "ended": "2014.1",
+          "duration": 0.333333333333333
+        },
+        "company": {
+          "value": "Seven Smarts LLC"
+        },
+        "skills": [
+          {
+            "value": "C#4 "
+          }
+        ]
+      },
+      {
+        "date_range": {
+          "value": "November 2012 to February 2013",
+          "started": "2012.11",
+          "ended": "2013.2",
+          "duration": 0.333333333333333
+        },
+        "company": {
+          "value": "Haypost CJSC"
+        },
+        "title": {
+          "value": "Software Developer"
+        },
+        "skills": [
+          {
+            "value": "C#2 "
+          },
+          {
+            "value": "WinForms "
+          }
+        ]
+      },
+      {
+        "date_range": {
+          "value": "April 2007 to February 2012",
+          "started": "2007.4",
+          "ended": "2012.2",
+          "duration": 4.91666666666667
+        },
+        "company": {
+          "value": "Digamma LLC"
+        },
+        "skills": [
+          {
+            "value": "C#3"
+          }
+        ]
+      },
+      {
+        "date_range": {
+          "value": "June 2005 to June 2007",
+          "started": "2005.6",
+          "ended": "2007.6",
+          "duration": 2.08333333333333
+        },
+        "company": {
+          "value": "UITE"
+        },
+        "skills": []
+      },
+      {
+        "date_range": {
+          "value": "February 2005 to May 2005",
+          "started": "2005.2",
+          "ended": "2005.5",
+          "duration": 0.333333333333333
+        },
+        "company": {
+          "value": "Opensourcearmenia"
+        },
+        "title": {
+          "value": "Web Developer"
+        },
+        "skills": []
+      },
+      {
+        "date_range": {
+          "value": "January 2002 - April 2002",
+          "started": "2002.1",
+          "ended": "2002.4",
+          "duration": 0.3333333333332333
+        },
+        "company": {
+          "value": "XXXXXXXXXXXXX"
+        },
+        "title": {},
+        "skills": []
+      }
+    ]
+  },
+  "education": {
+    "education_sections": {},
+    "institutions": [
+      {
+        "name": {
+          "value": "American University of Armenia"
+        },
+        "date_range": {
+          "value": "July 2000 - November 2000",
+          "started": "2000.7",
+          "ended": "2000.11",
+          "duration": 0.416666666666667
+        }
+      },
+      {
+        "name": {
+          "value": "State Engineering University of Armenia SEUA , Master"
+        },
+        "date_range": {
+          "value": "September 1985 - July 1992",
+          "started": "1985.9",
+          "ended": "1992.7",
+          "duration": 6.91666666666667
+        }
+      },
+      {
+        "name": {
+          "value": "M. Saryan #86 School"
+        },
+        "date_range": {
+          "value": "September 1975 - July 1985",
+          "started": "1975.9",
+          "ended": "1985.7",
+          "duration": 9.91666666666667
+        }
+      }
+    ]
+  }
+}

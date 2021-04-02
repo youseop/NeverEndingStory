@@ -46,6 +46,7 @@ app.use('/api/test', require('./routes/subdoc_route'));
 app.use('/api/like', require('./routes/like'));
 app.use('/api/view', require('./routes/view'));
 app.use('/api/thumbsup', require('./routes/thumbsup'));
+app.use('/api/treedata', require('./routes/treedata')); 
 
 // app.use('/api/test', require('./routes/subdoc_route'));
 

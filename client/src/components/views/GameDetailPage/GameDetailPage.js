@@ -13,6 +13,11 @@ import { faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
 import TopRatingContributer from "./TopRatingContributer";
 import TreeVisualization from "../TreeVisualization/TreeVisualization";
 
+import { render } from 'react-dom';
+import RadialTree from '../TreeVisualization/RadialTree';
+import data from '../TreeVisualization/data';
+
+
 const config = require('../../../config/key')
 
 function GameDetailPage(props) {
@@ -28,17 +33,21 @@ function GameDetailPage(props) {
     const [totalSceneCnt, setTotalSceneCnt] = useState(0);
     const [ContributerCnt, setContributerCnt] = useState(0);
     const [contributerList, setContributerList] = useState([]);
+    const [treeData, setTreeData] = useState({
+        name: "", 
+        userId: "",
+        complaint: 0,
+        children: []
+    });
     const [isPlayed, setIsPlayed] = useState(false);
 
     const user = useSelector((state) => state.user);
-
     const playFirstScene = async (isFirst) => {
         try {
             let response;
             if(isFirst){
                 response = await Axios.get("/api/users/playing-list/clear");
                 // Not Yet Tested
-                console.log("****",response.data, "user!!!", user.userData)
                 socket.emit("empty_num_increase", {user_id: user.userData._id.toString(), scene_id: response.data.prevOfLastScene.toString()});
             }
             props.history.replace({
@@ -78,7 +87,13 @@ function GameDetailPage(props) {
                 message.error("로그인 해주세요.");
             }
         });
-
+        Axios.post('/api/treedata/', variable). then((response) => {
+            if (response.data.success) {
+                console.log('tree:', response.data.treeData);
+                console.log('data:', data);
+                setTreeData(response.data.treeData);
+            }
+        })
     }, []);
 
     useEffect(() => {
@@ -125,6 +140,17 @@ function GameDetailPage(props) {
                 }
             })
         }
+    }
+
+    const [isDelete, setIsDelete] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    
+    const onClick_deleteToggle = () => {
+        setIsDelete((state) => !state)
+    }
+    
+    const onClick_adminToggle = () => {
+        setIsAdmin((state) => !state)
     }
 
     return (
@@ -224,8 +250,49 @@ function GameDetailPage(props) {
                 <div className="detailPage__description">
                     {gameDetail.description}
                 </div>
-                <TreeVisualization/>
-
+                {/* <TreeVisualization/> */}
+                <div 
+                    style={isDelete ? 
+                        {color:"#d6d6d6", backgroundColor:"red"} 
+                        : 
+                        {color:"#d6d6d6", backgroundColor:"black"} 
+                    }
+                    onClick={onClick_deleteToggle}
+                >
+                    삭제모드
+                </div>
+                <div 
+                    style={isAdmin ? 
+                        {color:"#d6d6d6", backgroundColor:"red"} 
+                        : 
+                        {color:"#d6d6d6", backgroundColor:"black"} 
+                    }
+                    onClick={onClick_adminToggle}
+                >
+                    관리자모드
+                </div>
+                {(treeData.userId !== "" && user?.userData) &&
+                <>
+                    <RadialTree 
+                        data={treeData} 
+                        width={800} 
+                        height={800} 
+                        isDelete={isDelete}
+                        userId={user.userData._id}
+                        isAdmin={isAdmin}
+                    />
+                    {/* <RadialTree 
+                        data={data} 
+                        width={800} 
+                        height={800} 
+                        isDelete={isDelete}
+                        // userId={user.userData._id}
+                        userId={"234801948019482039480"}
+                        isAdmin={isAdmin}
+                    /> */}
+                </>
+                }
+                {/* <RadialTreeMain/> */}
                 <Comment gameId={gameId} />
             </div>
         </div>

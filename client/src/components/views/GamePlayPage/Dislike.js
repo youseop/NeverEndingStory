@@ -29,7 +29,7 @@ function DislikePopup(props) {
       sceneId : sceneId,
       gameId : gameId,
     }
-    Axios.post("/api/complaint/save", variable).then((response) => {
+    Axios.post("/api/complaint/", variable).then((response) => {
       if(!response.data.success) {
         message.error("신고하는데 문제가 발생했습니다.")
       } else {

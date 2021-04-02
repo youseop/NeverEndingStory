@@ -1,0 +1,253 @@
+import React from "react";
+import { Group } from "@vx/group";
+import { Tree } from "@vx/hierarchy";
+import { LinearGradient } from "@vx/gradient";
+import { LinkRadial } from "@vx/shape";
+import { hierarchy } from "d3-hierarchy";
+import { pointRadial } from "d3-shape";
+import NodeGroup from "react-move/NodeGroup";
+import { message } from "antd";
+
+function findCollapsedParent(node) {
+  if (!node.data.isExpanded) {
+    return node;
+  } else if (node.parent) {
+    return findCollapsedParent(node.parent);
+  } else {
+    return null;
+  }
+}
+
+function radialPoint(angle, radius) {
+  const [x, y] = pointRadial(angle, radius);
+  return { x, y };
+}
+
+function onClick_node (node, isDelete) {
+  const confirmComment= `${node.data.name} 과 ${node.data.name} 에서 이어지는 스토리들을 모두 삭제하시겠습니까?`;
+  if(isDelete){
+    if(window.confirm(confirmComment)){
+      message.success("삭제되었습니다.")
+    } else {
+      message.info("취소되었습니다.")
+    }
+    return;
+  }
+  if (!node.data.isExpanded) {
+    node.data.x0 = node.x;
+    node.data.y0 = node.y;
+  }
+  node.data.isExpanded = !node.data.isExpanded;
+}
+
+export default class extends React.Component {
+  render() {
+    const {
+      data,
+      width,
+      height,
+      events = false,
+      margin = {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0
+      },
+      isDelete,
+      userId,
+      isAdmin
+    } = this.props;
+
+    if (width < 10) return null;
+
+    return (
+      <svg width={width} height={height}>
+        <LinearGradient id="lg" from="#000" to="#000" />
+        <rect width={width} height={height} rx={14} fill="#222831" />
+        <Tree
+          top={margin.top}
+          left={margin.left}
+          root={hierarchy(data, (d) => (d.isExpanded ? d.children : null))}
+          size={[Math.PI, 350]}
+          separation={(a, b) => (a.parent === b.parent ? 1 : 2) / a.depth}
+        >
+          {({ links, descendants }) => (
+            <Group top={width / 2} left={height / 2}>
+              <NodeGroup
+                data={links}
+                // 여기서 unique한 키를 만들어준다.
+                keyAccessor={(d, i) =>
+                  `${d.source.data.sceneId}_${d.target.data.sceneId}`
+                }
+                start={({ source, target }) => {
+                  return {
+                    source: {
+                      x: source.data.x0,
+                      y: source.data.y0
+                    },
+                    target: {
+                      x: source.data.x0,
+                      y: source.data.y0
+                    }
+                  };
+                }}
+                enter={({ source, target }) => {
+                  return {
+                    source: {
+                      x: [source.x],
+                      y: [source.y]
+                    },
+                    target: {
+                      x: [target.x],
+                      y: [target.y]
+                    }
+                  };
+                }}
+                update={({ source, target }) => {
+                  return {
+                    source: {
+                      x: [source.x],
+                      y: [source.y]
+                    },
+                    target: {
+                      x: [target.x],
+                      y: [target.y]
+                    }
+                  };
+                }}
+                leave={({ source, target }) => {
+                  const collapsedParent = findCollapsedParent(source);
+                  return {
+                    source: {
+                      x: [collapsedParent.data.x0],
+                      y: [collapsedParent.data.y0]
+                    },
+                    target: {
+                      x: [collapsedParent.data.x0],
+                      y: [collapsedParent.data.y0]
+                    }
+                  };
+                }}
+              >
+                {(nodes) => (
+                  <Group>
+                    {nodes.map(({ key, data, state }) => {
+                      return (
+                        <LinkRadial
+                          data={state}
+                          stroke="#374469"
+                          strokeWidth="2"
+                          fill="none"
+                          key={key}
+                        />
+                      );
+                    })}
+                  </Group>
+                )}
+              </NodeGroup>
+
+              <NodeGroup
+                data={descendants}
+                keyAccessor={(d) => d.data.sceneId}
+                start={({ parent }) => {
+                  const radialParent = radialPoint(
+                    parent ? parent.x : 0,
+                    parent ? parent.y : 0
+                  );
+                  return {
+                    x: radialParent.x,
+                    y: radialParent.y,
+                    opacity: 0
+                  };
+                }}
+                enter={({ x, y }) => {
+                  const point = radialPoint(x, y);
+                  return {
+                    x: [point.x],
+                    y: [point.y],
+                    opacity: [1]
+                  };
+                }}
+                update={({ x, y }) => {
+                  const point = radialPoint(x, y);
+                  return {
+                    x: [point.x],
+                    y: [point.y],
+                    opacity: [1]
+                  };
+                }}
+                leave={({ parent }) => {
+                  const collapsedParent = findCollapsedParent(parent);
+                  const radialParent = radialPoint(
+                    collapsedParent.data.x0,
+                    collapsedParent.data.y0
+                  );
+                  return {
+                    x: [radialParent.x],
+                    y: [radialParent.y],
+                    opacity: [0]
+                  };
+                }}
+              >
+                {(nodes) => (
+                  <Group>
+                    {nodes.map(({ key, data: node, state }) => {
+                      const width = 40;
+                      const height = 20;
+                      return (
+                        <Group
+                          top={state.y}
+                          left={state.x}
+                          key={key}
+                          opacity={state.opacity}
+                        >
+                          <circle
+                            r={12}
+                            fill={
+                              isAdmin && node.data.complaintCnt > 19
+                                ? "#ff0000"
+                                : isAdmin &&node.data.complaintCnt > 9
+                                ? "#dd521b"
+                                : !isAdmin && node.data.userId === userId ?
+                                "#ae00ff"
+                                : 
+                                "#f68031"
+                            }
+                            onClick={() => {
+                              onClick_node(node, isDelete);
+                              this.forceUpdate();
+                            }}
+                          />
+                          <text
+                            dy={".33em"}
+                            fontSize={9}
+                            fontFamily="Arial"
+                            textAnchor={"middle"}
+                            style={{ pointerEvents: "none" }}
+                            fill={
+                               (node.data?.children && node.data.children.length > 0)
+                                ? "bisque"
+                                : "#000"
+                            }
+                          >
+                            {isAdmin ?
+                            `${node.data.complaintCnt}`
+                            : node.data?.children ? 
+                            "O"
+                            :
+                            " "
+                            }
+                          </text>
+                        </Group>
+                      );
+                    })}
+                  </Group>
+                )}
+              </NodeGroup>
+            </Group>
+          )}
+        </Tree>
+      </svg>
+    );
+  }
+}

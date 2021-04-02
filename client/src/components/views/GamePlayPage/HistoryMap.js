@@ -76,6 +76,7 @@ function HistoryMapPopup(props) {
     if (props.trigger) {
       Axios.get("api/game/simple-scene-info").then((response) => {
         sceneInfo = response.data.sceneinfo;
+        console.log(sceneInfo)
         setSceneInfo(sceneInfo);
       });
       return () => {

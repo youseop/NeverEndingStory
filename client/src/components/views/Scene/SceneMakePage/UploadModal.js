@@ -71,22 +71,9 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
             URL.revokeObjectURL(blobURL)
         setUploadModalState(false)
     }
-
-    const upload = async (event) => {
-        event.preventDefault();
-        if (GameTitle === "" || description === "" || blobURL === "") {
-            message.error("모든 정보를 입력해주세요.");
-            return;
-        }
-
-        uploadThumb();
-        setUploadModalState(false);
-        onSubmit_saveScene()
-    }
-
+    
     const uploadThumb = async () => {
         //revoke blobURL
-        URL.revokeObjectURL(blobURL)
 
         let formData = new FormData();
         const config = {
@@ -106,6 +93,17 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                 }
             }
         );
+    }
+
+    const upload = async (event) => {
+        event.preventDefault();
+        if (GameTitle === "" || description === "" || blobURL === "") {
+            message.error("모든 정보를 입력해주세요.");
+            return;
+        }
+        uploadThumb();
+        setUploadModalState(false);
+        onSubmit_saveScene();
     }
 
     const uploadGame = async (filePath) => {

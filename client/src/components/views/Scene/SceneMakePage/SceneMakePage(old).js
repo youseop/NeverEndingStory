@@ -290,9 +290,11 @@ const SceneMakePage = (props) => {
         ]);
         displayCut(CutNumber + 1);
     }
+
     const onSubmit_first = () => {
         setUploadModalState(true)
     }
+
     const onSubmit_saveScene = async (event, isTmp = 0) => {
         if (CutList.length < 1) {
             message.error("최소 2개의 컷을 생성해주세요.");
@@ -312,7 +314,6 @@ const SceneMakePage = (props) => {
             ...CutList.slice(CutNumber + 1, 31),
         ];
         
-        console.log("------",isTmp)  
         if (isTmp || window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,
@@ -333,8 +334,8 @@ const SceneMakePage = (props) => {
                         else {
                             message.success("업로드 성공.")
                         }
-                    }
-                    ).then(() => {
+                        })
+                    .then(() => {
                         if (!isTmp && isFirstScene) {
                             history.replace(
                                 `/game/${gameId}`
@@ -374,7 +375,6 @@ const SceneMakePage = (props) => {
         }
     };
     const onTmpSave = (event) => {
-        console.log("HERES!!!")
         onSubmit_saveScene(event, 1);
     }
     const showWarning = () => {

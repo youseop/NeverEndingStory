@@ -32,12 +32,14 @@ import moment from "moment";
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
-    window.addEventListener('beforeunload', (event) => {
+    function beforeUnload(event) {
         // 표준에 따라 기본 동작 방지
         event.preventDefault();
         // Chrome에서는 returnValue 설정이 필요함
         event.returnValue = '';
-    });
+    }
+
+    window.addEventListener('beforeunload', beforeUnload);
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -95,9 +97,10 @@ const SceneMakePage = (props) => {
     let scene;
     useEffect(() => {
         dispatch(navbarControl(false));
-
+        return () => {
+            window.removeEventListener('beforeunload', beforeUnload);
+        }
     }, [])
-
 
     useEffect(() => {
         if (user.userData) {
@@ -376,6 +379,12 @@ const SceneMakePage = (props) => {
         displayCut(CutNumber + 1);
     }
 
+    const setTree = () => {
+        Axios.get("/api/treedata/").then((response) => {
+          console.log('1')
+        });
+    }
+
     const onSubmit_first = () => {
         setUploadModalState(true)
     }
@@ -400,7 +409,6 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
-        console.log("SSS",isTmp)
         if (isTmp || window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,
@@ -412,6 +420,7 @@ const SceneMakePage = (props) => {
             const response = await Axios.post(`/api/scene/save`, variable)
 
             if (response.data.success) {
+                setTree();
                 dispatch(detachCharacter());
                 message
                     .loading("게임 업로드 중..", 1.0)
@@ -734,7 +743,7 @@ const SceneMakePage = (props) => {
                     value={Script}
                     placeholder="대사가 없으면 스크립트 창이 표시되지 않습니다."
                     className="textbox_script"
-                    maxlength={TEXT_MAX_LENGTH+1}
+                    maxLength={TEXT_MAX_LENGTH+1}
                     ref={scriptElement}
                 />
             </div>

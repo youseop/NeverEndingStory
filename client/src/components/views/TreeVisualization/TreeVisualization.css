@@ -1,5 +1,21 @@
 .treevisualization {
-  background-color: honeydew;
+  background-color: rgb(236, 236, 236);
   width: 100%;
   height: 1000px;
+}
+
+.node__root > circle {
+  fill: rgb(59, 59, 59);
+  r: 14;
+}
+
+.node__branch > circle {
+  fill: rgb(59, 59, 59);
+  r: 14;
+}
+
+.node__leaf > circle {
+  fill: rgb(189, 189, 189);
+  /* Let's also make the radius of leaf nodes larger */
+  r: 14;
 }

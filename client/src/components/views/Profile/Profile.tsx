@@ -221,13 +221,13 @@ function Profile(props: any) {
             className="profile__btn"
             onClick={() => onClick_tab("contributedScene")}
           >
-            내가 만든 스토리 
+            만든 스토리 
           </div>
           <div 
             className="profile__btn"
             onClick={() => onClick_tab("contributedGame")}
           >
-            내가 만든 게임 
+            만든 게임 
           </div>
           
           {/* {isUser &&
