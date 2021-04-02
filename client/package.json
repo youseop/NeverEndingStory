@@ -19,7 +19,9 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "formik": "^1.5.8",
+    "immer": "^1.10.0",
     "lodash": "^4.17.21",
+    "node-fetch": "^1.7.3",
     "npm": "^7.7.1",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.6",
@@ -66,7 +68,8 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/yup": "^0.29.11",
     "http-proxy-middleware": "^1.0.3",
-    "ts-node-dev": "^1.1.6"
+    "ts-node-dev": "^1.1.6",
+    "webpack": "^5.30.0"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
