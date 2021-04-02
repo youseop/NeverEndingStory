@@ -10,6 +10,7 @@ function CharacterSideBar({ gameDetail, setName, onEssetModal, isFirstScene }) {
     return(
       <CharacterImg
         character={character}
+        key={index}
         index={index}
         setName={setName} />
     )
