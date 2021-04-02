@@ -153,7 +153,7 @@ function Character(props) {
               className="bttn btn_character_Doubledown"
               style={{ left: `${imgWidth - 34}px` }}
               onClick={() => { onClickOrder("double") }}
-            />
+            /> 
             <FontAwesomeIcon
               icon={faAngleDown}
               className="bttn btn_character_down"
