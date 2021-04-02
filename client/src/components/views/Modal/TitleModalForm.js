@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Modal, Form, message, Input } from "antd";
 import "./TitleModalForm.css"
 
-const ModalFormComponent = ({ visible, onCancel, onCreate, form }) => {
-    const { getFieldDecorator } = form;
-    const [GameTitle, setGameTitle] = useState("");
-
+const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGameDescription }) => {
     const onTitleChange = (event) => {
         setGameTitle(event.currentTarget.value.substr(0, 30));
     };
+    const onDescriptionChange = (event) =>{
+        setGameDescription(event.currentTarget.value);
+    }
 
     return (
         <Modal
@@ -27,25 +27,21 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form }) => {
             }}
         >
             <Form layout="vertical">
-                <Form.Item label="제목">
-                    {getFieldDecorator("title", {
-                        rules: [
-                            { required: true, message: "제목을 입력해주세요!" },
-                            { max: 30, message: '제목은 30자 이내여야 합니다.' },
-                        ]
-                    })(<textarea
+                <Form.Item label="제목" name="title" rules={[
+                    { required: true, message: "제목을 입력해주세요!" },
+                    { max: 30, message: '제목은 30자 이내여야 합니다.' },
+                ]}>
+                    <textarea
                         className="title_modalform_title"
                         maxLength={31}
-                        onChange={setGameTitle}
-                        value={GameTitle} />)}
+                        onChange={onTitleChange}
+                         />
                 </Form.Item>
-                <Form.Item label="게임 설명">
-                    {getFieldDecorator("description", {
-                        rules: [
-                            { required: true, message: "게임 설명을 입력해주세요!" },
-                            { max: 1000, message: '설명은 1000자 이내여야 합니다.' },
-                        ]
-                    })(<textarea maxLength={1001} className="title_modalform_description" />)}
+                <Form.Item label="게임 설명" name="description" rules={[
+                    { required: true, message: "게임 설명을 입력해주세요!" },
+                    { max: 1000, message: '설명은 1000자 이내여야 합니다.' },
+                ]}>
+                    <textarea maxLength={1001} onChange={onDescriptionChange}  className="title_modalform_description" />
                 </Form.Item>
             </Form>
         </Modal>

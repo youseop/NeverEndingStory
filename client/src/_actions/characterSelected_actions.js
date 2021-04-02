@@ -83,7 +83,6 @@ export function updateCharacter(dataToSubmit) {
     },
     ...oldArray.slice(index + 1, 4)
   ]
-  console.log("updated");
 
   return {
     type: UPDATE_CHARACTER,

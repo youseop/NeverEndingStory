@@ -23,7 +23,9 @@ interface responseTypes{
 export function NewGameButton({replace}:newGameButtonProps) {
 
     const [visible, setVisible] = useState<any>(false);
-    const [formRef, setFormRef] = useState<any>(null);
+    const [gameTitle, setGameTitle] = useState<String>("");
+    const [gameDescription, setGameDescription] = useState<String>("");
+
     // const [formRef, setFormRef] = useState<null | {validateFileds:any}></null>;
     const user = useSelector<any, any>((state) => state.user);
 
@@ -77,24 +79,10 @@ export function NewGameButton({replace}:newGameButtonProps) {
     }
 
     const handleCreate = () => {
-        formRef?.validateFields((err: Error, values: {title : String, description : any}) => {
-            if (err) {
-                return;
-            }
 
-            uploadGameFrame(values.title, values.description);
-            formRef?.resetFields();
-            // setVisible(false);
-        });
+        uploadGameFrame(gameTitle, gameDescription);
 
     }
-
-    const saveFormRef = useCallback(node => {
-        if (node !== null) {
-            setFormRef(node);
-        }
-    }, []);
-
 
     return (
         <>
@@ -106,10 +94,11 @@ export function NewGameButton({replace}:newGameButtonProps) {
             </button>
         
             <TitleModalForm 
-                ref={saveFormRef}
                 visible={visible}
                 onCancel={() => setVisible(false)}
                 onCreate={() => handleCreate()}
+                setGameTitle={setGameTitle}
+                setGameDescription={setGameDescription}
             />
         </>
     )
