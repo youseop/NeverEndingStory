@@ -54,6 +54,7 @@ function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlo
                     maxSize={10485761} // 10MB + 1
                     accept="audio/*"
                     type="bgm"
+                    icon="audio"
                 >
                 </MyDropzone>
             </div>

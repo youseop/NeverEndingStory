@@ -40,3 +40,12 @@
     opacity: 1.0;
     border: 1px solid black;
 }
+
+.ending_modal_warning_sign{
+    padding: 7px 10px 0px 5px;
+}
+
+.ending_modal_warning_textarea{
+    font-family: Noto Sans KR;
+    font-weight: bold;
+}

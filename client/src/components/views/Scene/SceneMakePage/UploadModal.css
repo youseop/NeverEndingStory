@@ -22,7 +22,13 @@
 
 }
 .scenemake_modal_category{
+    position: absolute;
+    margin-top: 5px;
+    right:30px;
     width : 100px;
+    background-color: #DDDDDD;
+    cursor: pointer;
+    border:0.1px solid rgb(0,0,0,0.1);
 }
 .scenemake_modal>.ant-modal-content{
     /* display : flex; */
@@ -45,10 +51,23 @@
 
 }
 .scenemake_modal_detail_description{
-    all:unset;
-    height: 500px;
+    all:unset;    
+    padding:15px 15px 10px 15px;
+    width:95%;
+    height: 90px;
+    font-size:17px;
+    font-family: Noto Sans KR;
+    background-color: #DDDDDD;
 }
 .scenemake_modal_detail_category_container{
-    margin-top : 3px;
+}
 
+.scenemake_modal_detail_title{
+    all:unset;
+    padding:0px 15px 0px 15px;
+    font-size: 17px;
+    width:95%;
+    border-radius: 4px;
+    background-color: #DDDDDD;
+    font-family: Noto Sans KR;
 }

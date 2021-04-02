@@ -604,12 +604,18 @@ const SceneMakePage = (props) => {
         };
     }, []);
 
+    const gameInfoIndex = useRef({ tab: 1, page: 0 })
+
     return (
         <div className="wrapper">
             <div className="title">
                 <span>[{gameDetail?.title}]</span>
                 {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
-                <div className="title-btn">상세정보</div>
+                <div
+                    className="title-btn"
+                    onClick={() => setEssetModalState(5)}>
+                    상세정보
+                </div>
             </div>
             <SceneBox
                 CutList={CutList}
@@ -824,6 +830,7 @@ const SceneMakePage = (props) => {
                     tag={essetModalState}
                     setTag={setEssetModalState}
                     setReload={setReload}
+                    gameInfoIndex={gameInfoIndex}
                 />
             }
         </div>

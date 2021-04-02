@@ -14,7 +14,6 @@ import "./EssetModal.css";
 const config = require('../../../../config/key');
 
 const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => {
-  // const [game, setGame] = useState([]);
   const [fileQueue, setFileQueue] = useState([]);
   const [typeQueue, setTypeQueue] = useState([]);
 
@@ -33,19 +32,6 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => 
     if (gameDetail)
       setBlobGame(_.cloneDeep(gameDetail));
   }, [gameDetail])
-
-  // const variable = { gameId: gameId }
-  // useEffect(() => {
-  //   Axios.post('/api/game/getgamedetail', variable)
-  //     .then(response => {
-  //       if (response.data.success) {
-  //         setGame(response.data.gameDetail);
-  //         setBlobGame(_.cloneDeep(response.data.gameDetail));
-  //       } else {
-  //         alert('게임 정보를 로딩하는데 실패했습니다.')
-  //       }
-  //     })
-  // }, [])
 
   const revokeBlobList = () => {
     charBlobList.forEach(function (value) {

@@ -140,9 +140,10 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
             centered={true}
             closable={false}
             style={{ top: 10 }}
+            bodyStyle={{ height: "590px" }}
         >
             <div className="scenemake_modal_form_container">
-                <label><b>게임 업로드</b></label>
+                <h4><b>게임 업로드</b></h4>
                 <Form onSubmit={upload}>
 
                     <div className="scenemake_modal_form">
@@ -154,6 +155,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                                 accept="image/*"
                                 blobURL={blobURL}
                                 type="thumbnail"
+                                icon="image"
                             >
                             </MyDropzone>
 
@@ -164,13 +166,13 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                     <div className="scenemake_modal_detail">
                         <div className="scenemake_modal_detail_title_container">
 
-                            <label><b>제목</b></label>
-                            <Input maxLength={15} onChange={onTitleChange} value={GameTitle} />
+                            <h4><b>제목</b></h4>
+                            <textarea maxLength={30} className="scenemake_modal_detail_title" onChange={onTitleChange} value={GameTitle} />
                         </div>
 
                         <div className="scenemake_modal_detail_description_container">
-                            <label><b>게임 설명</b></label>
-                            <TextArea className="scenemake_modal_detail_description" rows="4" onChange={onDescriptionChange} value={description} />
+                            <h4><b>게임 설명</b></h4>
+                            <textarea maxLength={1000} className="scenemake_modal_detail_description" rows="4" onChange={onDescriptionChange} value={description} />
                         </div>
 
                         {/* <select onChange={onPrivateChange}>

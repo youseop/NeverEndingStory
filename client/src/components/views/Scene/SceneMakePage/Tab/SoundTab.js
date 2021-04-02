@@ -53,6 +53,7 @@ function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, so
                     maxSize={10485761} // 10MB + 1
                     accept="audio/*"
                     type="sound"
+                    icon="audio"
                 >
                 </MyDropzone>
             </div>
