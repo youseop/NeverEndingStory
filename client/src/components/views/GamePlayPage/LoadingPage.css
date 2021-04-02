@@ -91,6 +91,9 @@
   width: 100%;
   height: 100%;
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* animation: 1s ease-out 0s 1 slideLeft; */
 
   /* animation-duration: 1s; */
@@ -100,10 +103,8 @@
 }
 
 .loading_icon{
+  font-size: 200px;
   z-index: 301;
-  position: absolute;
-  top: 50%;
-  right: 50%;
   color:white;
   opacity: 1;
   animation: 2s ease-out 0s infinite rotateIcon;
