@@ -7,8 +7,9 @@ import { useSelector } from "react-redux";
 import { message } from "antd";
 import Axios from "axios";
 import { useLocation } from "react-router";
-import SceneMakeModal from './SceneMakeModal';
+import EssetModal from './EssetModal';
 import UploadModal from './UploadModal';
+import EndingModal from './EndingModal';
 import useKey from "../../../functions/useKey";
 import CharacterBlock from "../../GamePlayPage/CharacterBlock";
 import { useDispatch } from "react-redux";
@@ -24,20 +25,22 @@ import { socket } from "../../../App";
 import { PlayCircleOutlined, PauseCircleOutlined, StopOutlined } from '@ant-design/icons';
 import { detachCharacter, popCharacter, setCharacterList } from "../../../../_actions/characterSelected_actions";
 import "./SceneMakePage.css";
+import { LOCAL_HOST } from "../../../Config";
 import { TextBlock } from "../../GamePlayPage/TextBlock";
 import { MS_PER_HR } from "../../../App"
 import moment from "moment";
+import SceneEndingPage from "../SceneEndingPage/SceneEndingPage";
 
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
-    window.addEventListener('beforeunload', (event) => {
-        // 표준에 따라 기본 동작 방지
-        event.preventDefault();
-        // Chrome에서는 returnValue 설정이 필요함
-        event.returnValue = '';
-    });
+    // window.addEventListener('beforeunload', (event) => {
+    //     // 표준에 따라 기본 동작 방지
+    //     event.preventDefault();
+    //     // Chrome에서는 returnValue 설정이 필요함
+    //     event.returnValue = '';
+    // });
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -50,7 +53,7 @@ const SceneMakePage = (props) => {
         window.history.back();
         // return <div></div>;
     }
-    message.config({maxCount:2})
+    message.config({ maxCount: 2 })
 
     const user = useSelector((state) => state.user);
     const CharacterList = useSelector((state) => state.character.CharacterList);
@@ -64,15 +67,17 @@ const SceneMakePage = (props) => {
     const [newScreenSize, setNewScreenSize] = useState({});
 
     //modal
-    const [makeModalState, setMakeModalState] = useState(0);
-    const [reload, setReload] = useState(1);
+    const [essetModalState, setEssetModalState] = useState(0);
     const [uploadModalState, setUploadModalState] = useState(false);
+    const [endingModalState, setEndingModalState] = useState(false);
+    const [reload, setReload] = useState(0);
 
     const [SidBar_script, setSidBar_script] = useState(true);
 
-    const [BackgroundImg, setBackgroundImg] = useState("http://localhost:5000/uploads/defaultBackground.png");
+    const [BackgroundImg, setBackgroundImg] = useState(`http://${LOCAL_HOST}:5000/uploads/defaultBackground.png`);
     const [Script, setScript] = useState("");
     const [Name, setName] = useState("");
+    const [writer, setWriter] = useState(null);
     const [BgmFile, setBgmFile] = useState({
         name: "",
         music: "",
@@ -82,7 +87,7 @@ const SceneMakePage = (props) => {
         music: "",
     });
 
-    const [isFirstScene, setIsFirstScene] = useState(false)
+    const isFirstScene = useRef(false);
 
     const [CutNumber, setCutNumber] = useState(0);
     const [Hover, setHover] = useState(false);
@@ -91,6 +96,17 @@ const SceneMakePage = (props) => {
     const [EmptyCutList, setEmptyCutList] = useState(
         Array.from({ length: 30 }, () => 0)
     );
+
+    const useConstructor = (cb) => {
+        const [isInited, setInit] = useState(false);
+        if (isInited) return;
+        cb();
+        setInit(true);
+    }
+
+    useConstructor(() => {
+        dispatch(setCharacterList({ CharacterList: [] }));
+    });
 
     let scene;
     useEffect(() => {
@@ -101,11 +117,12 @@ const SceneMakePage = (props) => {
 
     useEffect(() => {
         if (user.userData) {
-            socket.emit("leave room", { room: user.userData._id.toString() });
-            socket.emit("room", { room: user.userData._id.toString() });
+            socket.emit("leave room", { room: user.userData?._id?.toString() });
+            socket.emit("room", { room: user.userData?._id?.toString() });
         }
         socket.off("timeout_making")
         socket.on("timeout_making", data => {
+            // console.log("GO HOME")
             props.history.replace("/")
         })
 
@@ -116,18 +133,21 @@ const SceneMakePage = (props) => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
+            // console.log(res.data)
             if (res.data.success && validation.data.success) { scene = res.data.scene; }
             else {
+                // console.log("get scene ERROR");
                 props.history.replace("/");
                 return;
             }
             // 임시저장한 녀석
 
+            setWriter(scene.writer);
 
             if (scene.cutList.length) {
 
                 if (scene.isFirst) {
-                    setIsFirstScene(true)
+                    isFirstScene.current = true;
                 }
 
                 // 임시저장된 녀석 불러오기
@@ -162,20 +182,21 @@ const SceneMakePage = (props) => {
                         })
                 }
                 else {
-                    setIsFirstScene(true)
+                    isFirstScene.current = true;
                 }
             }
+            setReload(reload => reload + 1)
         })();
     }, [])
 
     const onScriptChange = (event) => {
-        if (event.currentTarget.value.length === (TEXT_MAX_LENGTH+1)) {
+        if (event.currentTarget.value.length === (TEXT_MAX_LENGTH + 1)) {
             message.error({
                 content: '글자 수 제한을 초과하였습니다.',
             });
         }
-        else{
-            if (event.currentTarget.value[event.currentTarget.value.length-1] !== '\n') {
+        else {
+            if (event.currentTarget.value[event.currentTarget.value.length - 1] !== '\n') {
                 setScript(event.currentTarget.value);
             }
         }
@@ -202,16 +223,20 @@ const SceneMakePage = (props) => {
         bgmSidebarElement.current.style.display = 'none'
         soundSidebarElement.current.style.display = 'none'
     }
-
+    const sideTabIndex = useRef(1);
     const onClick_character = () => {
         if (characterSidebarElement.current.style.display === 'none') {
             makeVisible(characterSidebarElement);
+            setReload(reload => reload + 1);
+            sideTabIndex.current = 1;
         }
     };
 
     const onClick_background = () => {
         if (backgroundSidebarElement.current.style.display === 'none') {
             makeVisible(backgroundSidebarElement);
+            setReload(reload => reload + 1);
+            sideTabIndex.current = 2;
         }
     };
 
@@ -219,12 +244,16 @@ const SceneMakePage = (props) => {
     const onClick_bgm = () => {
         if (bgmSidebarElement.current.style.display === 'none') {
             makeVisible(bgmSidebarElement);
+            setReload(reload => reload + 1);
+            sideTabIndex.current = 3;
         }
     };
 
     const onClick_sound = () => {
         if (soundSidebarElement.current.style.display === 'none') {
             makeVisible(soundSidebarElement);
+            setReload(reload => reload + 1);
+            sideTabIndex.current = 4;
         }
     };
 
@@ -311,6 +340,13 @@ const SceneMakePage = (props) => {
         }
     };
 
+    const onRemove_character = (index) => {
+        dispatch(popCharacter({
+            oldArray: CharacterList,
+            index
+        }))
+    };
+
     const onSubmit_nextCut = (event) => {
         event.preventDefault();
         if (CutNumber >= 29) {
@@ -370,11 +406,17 @@ const SceneMakePage = (props) => {
         setUploadModalState(true)
     }
 
+    const isEnding = useRef(false);
+    const onSubmit = () => {
+        setEndingModalState(true)
+    }
+
     const onSubmit_saveScene = async (event, isTmp = 0) => {
-        if (CutList.length < 1 ||  (CutList.length === 1 && CutList[CutNumber])) {
+        if (CutList.length < 1 || (CutList.length === 1 && CutList[CutNumber])) {
             message.error("최소 2개의 컷을 생성해주세요.");
             return;
         }
+
         bgm_audio.pause();
         const submitCut = {
             characterList: CharacterList,
@@ -390,12 +432,13 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
+        if (isTmp || isEnding || window.confirm("게임 제작을 완료하시겠습니까?")) {
 
-        if (isTmp || window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
-                gameId: gameId,
-                sceneId: sceneId,
                 cutList: submitCutList,
+                isEnding: isEnding.current,
+                gameId,
+                sceneId,
                 isTmp,
             };
 
@@ -414,7 +457,7 @@ const SceneMakePage = (props) => {
                         }
                     }
                     ).then(() => {
-                        if (!isTmp && isFirstScene) {
+                        if (!isTmp && isFirstScene.current) {
                             history.replace(
                                 `/game/${gameId}`
                             );
@@ -459,9 +502,19 @@ const SceneMakePage = (props) => {
         onSubmit_saveScene(event, 1);
     }
 
-    const onSetModal = () => {
-        setMakeModalState(1);
+    const onEssetModal = () => {
+        setEssetModalState(sideTabIndex.current);
     }
+
+    const onCompleteModal = () => {
+        if (!reload) //동시성 반창고
+            return;
+        if (isFirstScene.current)
+            setUploadModalState(true)
+        else
+            setEndingModalState(true)
+    }
+
 
     const [gameDetail, setGameDetail] = useState([]);
     const [sideBar, setSideBar] = useState([]);
@@ -483,20 +536,23 @@ const SceneMakePage = (props) => {
             const reload_Sidebar = (< div className="sideBar">
                 <div ref={characterSidebarElement}>
                     <CharacterModal
+                        reload={reload} //update용
                         setName={setName}
                         GameCharacterList={gameDetail.character}
                     />
                     <CharacterSideBar
                         gameDetail={gameDetail}
-                        setMakeModalState={setMakeModalState}
                         setName={setName}
+                        onEssetModal={onEssetModal}
+                        isFirstScene={isFirstScene}
                     />
                 </div>
                 <div ref={backgroundSidebarElement} style={{ display: 'none' }}>
                     <BackgroundSideBar
                         gameDetail={gameDetail}
                         setBackgroundImg={setBackgroundImg}
-                        setMakeModalState={setMakeModalState}
+                        onEssetModal={onEssetModal}
+                        isFirstScene={isFirstScene}
                     />
                 </div>
                 <div ref={bgmSidebarElement} style={{ display: 'none' }}>
@@ -504,7 +560,8 @@ const SceneMakePage = (props) => {
                         gameDetail={gameDetail}
                         bgm_audio={bgm_audio}
                         setBgmFile={setBgmFile}
-                        setMakeModalState={setMakeModalState}
+                        onEssetModal={onEssetModal}
+                        isFirstScene={isFirstScene}
                     />
                 </div>
                 <div ref={soundSidebarElement} style={{ display: 'none' }}>
@@ -512,7 +569,8 @@ const SceneMakePage = (props) => {
                         gameDetail={gameDetail}
                         sound_audio={sound_audio}
                         setSoundFile={setSoundFile}
-                        setMakeModalState={setMakeModalState}
+                        onEssetModal={onEssetModal}
+                        isFirstScene={isFirstScene}
                     />
                 </div>
             </div>)
@@ -550,13 +608,25 @@ const SceneMakePage = (props) => {
             setCutNumber(CutNumber - 1);
         }
     }
+    useEffect(() => {
+        return () => {
+            bgm_audio.pause();
+            sound_audio.pause();
+        };
+    }, []);
+
+    const gameInfoIndex = useRef({ tab: 1, page: 0 })
 
     return (
         <div className="wrapper">
             <div className="title">
                 <span>[{gameDetail?.title}]</span>
                 {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
-                <div className="title-btn">상세정보</div>
+                <div
+                    className="title-btn"
+                    onClick={() => setEssetModalState(5)}>
+                    상세정보
+                </div>
             </div>
             <SceneBox
                 CutList={CutList}
@@ -588,6 +658,7 @@ const SceneMakePage = (props) => {
                     />
                     <CharacterBlock
                         GameCharacterList={gameDetail.character}
+                        onRemovech_aracter={onRemove_character}
                     />
                     {SidBar_script && Script && (
                         <TextBlock
@@ -640,13 +711,13 @@ const SceneMakePage = (props) => {
                                 <div className="scene__sound_name">{SoundFile.name}</div>
                             </div>
                         ) : (
-                                <div>
-                                    <StopOutlined
-                                        style={{ fontSize: "20px" }}
-                                    />
-                                    <div className="scene__sound_name">Sound</div>
-                                </div>
-                            )}
+                            <div>
+                                <StopOutlined
+                                    style={{ fontSize: "20px" }}
+                                />
+                                <div className="scene__sound_name">Sound</div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -657,41 +728,40 @@ const SceneMakePage = (props) => {
             </div>
 
             <div className="scene__btn_top">
-
-                <div className="scene_btn"
-                    onClick={onSetModal}>
-                    에셋 추가
-                </div>
+                {(isFirstScene.current || writer?.toString()===user.userData?._id.toString()) &&
+                    <div className="scene_btn scene_btn_red"
+                        onClick={onEssetModal}>
+                        에셋 추가
+                    </div>
+                }
                 <div className="scene_btn"
                     onClick={onTmpSave}>
                     임시 저장
                 </div>
-                {isFirstScene ?
-                    <div className="scene_btn scene_btn_blue"
-                        onClick={onSubmit_first}>
-                        완료
-                        </div>
-                    : <div className="scene_btn scene_btn_blue"
-                        onClick={onSubmit_saveScene}>
-                        완료
-                        </div>
-                }
+                <div className="scene_btn scene_btn_blue"
+                    onClick={onCompleteModal}>
+                    완료
+                </div>
 
             </div>
-            <div className=" btn_side">
+            <div className="btn_side">
                 <div
-                    className="scene_side_btn"
+                    className={sideTabIndex.current === 1 ? "scene_side_btn light" : "scene_side_btn"}
                     onClick={onClick_character}
                 >캐릭터</div>
                 <div
-                    className="scene_side_btn"
+                    className={sideTabIndex.current === 2 ? "scene_side_btn light" : "scene_side_btn"}
                     onClick={onClick_background}
                 >배경</div>
 
-                <div className="scene_side_btn" onClick={onClick_bgm}>
+                <div
+                    className={sideTabIndex.current === 3 ? "scene_side_btn light" : "scene_side_btn"}
+                    onClick={onClick_bgm}>
                     배경음
                     </div>
-                <div className="scene_side_btn" onClick={onClick_sound}>
+                <div
+                    className={sideTabIndex.current === 4 ? "scene_side_btn light" : "scene_side_btn"}
+                    onClick={onClick_sound}>
                     효과음
                     </div>
             </div>
@@ -723,7 +793,7 @@ const SceneMakePage = (props) => {
                     value={Script}
                     placeholder="대사가 없으면 스크립트 창이 표시되지 않습니다."
                     className="textbox_script"
-                    maxLength={TEXT_MAX_LENGTH+1}
+                    maxLength={TEXT_MAX_LENGTH + 1}
                     ref={scriptElement}
                 />
             </div>
@@ -757,16 +827,24 @@ const SceneMakePage = (props) => {
                 defaultTitle={gameDetail.title}
                 defaultDescription={gameDetail.description}
             />
+            <EndingModal
+                isEnding={isEnding}
+                visible={endingModalState}
+                setEndingModalState={setEndingModalState}
+                onSubmit_saveScene={onSubmit_saveScene}
+            />
             {
-                makeModalState !== 0 && <SceneMakeModal
+                essetModalState !== 0 && <EssetModal
+                    gameDetail={gameDetail}
                     gameId={gameId}
-                    visible={Boolean(makeModalState)}
-                    setTag={setMakeModalState}
-                    tag={makeModalState}
+                    visible={Boolean(essetModalState)}
+                    tag={essetModalState}
+                    setTag={setEssetModalState}
                     setReload={setReload}
+                    gameInfoIndex={gameInfoIndex}
                 />
             }
-        </div >
+        </div>
     )
 }
 

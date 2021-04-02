@@ -10,7 +10,7 @@ const SceneEndingPage = ({ gameId, setScene }) => {
     return (
         <div className="ending_box">
             <div>
-                    The End
+                The End
             </div>
             <div className="ending_button_container">
                 {/* <p>n개의 엔딩 중 1개를 발견하셨습니다. </p> */}
@@ -19,12 +19,12 @@ const SceneEndingPage = ({ gameId, setScene }) => {
                 {/* <p>걸어왔던 길</p> -- 히스토리 맵 그 이상의.. 대사가 곁들여지고 멋진..*/}
                 <React.Fragment>
 
-                    <FirstSceneTeleport 
+                    <FirstSceneTeleport
                         key={0}
                         gameId={gameId}
-                        setScene = {setScene}
+                        setScene={setScene}
                     />
-                    <PrevSceneTeleport 
+                    <PrevSceneTeleport
                         key={1}
                         gameId={gameId}
                         setScene={setScene}

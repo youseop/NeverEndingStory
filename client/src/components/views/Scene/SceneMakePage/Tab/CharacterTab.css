@@ -26,7 +26,7 @@
 
 .characterTab_cards_Box{
     width:630px;
-    height:200px;    
+    height:210px;    
     position: absolute;
     overflow: scroll;
     left:320px;
@@ -110,9 +110,9 @@ textarea::placeholder{
 .characterTab_char_dropzone{   
     position: absolute;    
     top: 310px;
-    width:200px;
-    height:200px;
-    left:80px;    
+    width:210px;
+    height:210px;
+    left:70px;    
 }
 
 

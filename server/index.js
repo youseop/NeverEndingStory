@@ -3,19 +3,20 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
-const morgan = require('morgan');
 const helmet = require('helmet');
 const hpp = require('hpp');
-
+const mongoose = require("mongoose");
+const morgan = require('morgan');
+const redis = require('redis')
+const session = require("express-session")
+const RedisStore = require('connect-redis')(session)
 dotenv.config();
 
 const config = require("./config/key");
 const { logger } = require("./config/logger");
-
+const sessionOption =require("./config/session")
 
 const app = express();
-
 const connect = mongoose.connect(config.mongoURI,
   {
     useNewUrlParser: true, useUnifiedTopology: true,
@@ -23,6 +24,12 @@ const connect = mongoose.connect(config.mongoURI,
   })
   .then(() => logger.info("mongoose connected...!"))
   .catch(err => console.log(err));
+
+const redisClient = redis.createClient({
+    url : `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+    password :process.env.REDIS_PASSWORD,
+  })
+
 
 if (process.env.NODE_ENV === 'production') {
   app.use(morgan('combined'));
@@ -32,11 +39,18 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev'));
 }
 
+
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
+if(process.env.NODE_ENV === "production"){
+  sessionOption.store = new RedisStore({client : redisClient})
+}
+//  sessionOption.store = new RedisStore({client : redisClient})
+
+app.use(session(sessionOption))
 app.use('/api/users', require('./routes/users'));
 app.use('/api/game', require('./routes/game'));
 app.use('/api/scene', require('./routes/scene'));

@@ -238,11 +238,9 @@ io.on('connection', socket => {
         emptyNum: sceneTmp.emptyNum,
         certificationList: [...newCertList],
       };
-      // console.log("??:", scene_cache[scene_id]);
       Scene.updateOne({ _id: scene_id }, { $set: { "sceneTmp": { ...scene_cache[scene_id] } } }).exec();
       io.sockets.to(scene_id).emit("validated", { sceneId: scene_id, emptyNum: scene_cache[scene_id].emptyNum });
     } catch {
-      console.log("err")
       return;
     }
   });
@@ -268,7 +266,6 @@ io.on('connection', socket => {
 
 
     const idx = scene_cache[prevSceneId].certificationList.findIndex(item => item.userId === userId);
-    // console.log("idx:", idx)
     if (idx > -1) {
       clearTimeout(scene_cache[prevSceneId].certificationList[idx].timer);
       scene_cache[prevSceneId].certificationList.splice(idx, 1)

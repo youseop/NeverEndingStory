@@ -50,19 +50,28 @@ a:visited:hover {
 }
 
 .text_block {
-    width: 64%;
-    height: 7vmin;
+    width: 90%;
+    height: 6vmin;
+    padding-top: 0.3vmin;
     font-weight: 600;
     font-size: 2.5vmin;
     top: 26%;
-    left: 18%;
     position: absolute;
     overflow: scroll;
     -ms-overflow-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .text_block::-webkit-scrollbar {
     display: none;
+}
+
+.text_line {
+    width: 80vmin;
+    word-wrap: break-word;
+
 }
 
 .text_line_choice {
@@ -87,6 +96,7 @@ a:visited:hover {
 }
 
 .choice_box {
+    /* max-width: 100px; */
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.363);
@@ -136,18 +146,6 @@ a:visited:hover {
     top: -1.2vmin;
     left: 10%;
     position: absolute;
-}
-
-.text_block.atorney {
-    width: 64%;
-    height: 7vmin;
-    font-weight: 600;
-    font-size: 2.5vmin;
-    top: 26%;
-    left: 18%;
-    position: absolute;
-    overflow: scroll;
-    -ms-overflow-style: none;
 }
 
 .text_line_choice.atorney {

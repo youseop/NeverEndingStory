@@ -2,25 +2,29 @@ import React, { useEffect, useState } from "react";
 import useKey from "../../functions/useKey";
 import { useWindupString } from "windups";
 import useMouse from "../../functions/useMouse";
+import { LOCAL_HOST } from "../../Config";
 
-// voice.volume = 0.8
+const voice = new Audio(`http://${LOCAL_HOST}:5000/uploads/TYPING.mp3`);
+voice.volume = 0.8
 function TextAnimation({ cut_script, setIsTyping }) {
     const [flag, setFlag] = useState(false);
     let i = 0;
     const [text, { skip }] = useWindupString(
         cut_script,
         {
-            pace: () => 150,
+            pace: () => 40,
             onFinished: () => {
+                voice.pause()
                 setFlag(true)
             },
-            // onChar: () => {
-            //     if (!(cut_script[i] === ' ' || cut_script[i] === '.')) {
-            //         voice.load()
-            //         voice.play()
-            //     }
-            //     i++;
-            // }
+            onChar: () => {
+                if ((i == 0 || cut_script[i] === ' ' || cut_script[i] === '.')) {
+                    voice.pause()
+                } else {
+                    voice.play()
+                }
+                i++;
+            }
         }
     );
 

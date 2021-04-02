@@ -2,11 +2,12 @@ import { message } from 'antd';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { detachCharacter, selectCharacter } from '../../../_actions/characterSelected_actions';
+import { useConstructor } from '../useConstructor';
 import Character from './Character';
 import CharacterInfoDisplay from './CharacterInfoDisplay/CharacterInfoDisplay';
 import './CharacterModal.css';
 
-function CharacterModal({GameCharacterList, setName }) {
+function CharacterModal({ GameCharacterList, setName }) {
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
   // const onClick_detachCharacter = () => {
@@ -14,10 +15,10 @@ function CharacterModal({GameCharacterList, setName }) {
   // }
 
   const currentCharacter = useSelector((state) => state.character);
-
+  useConstructor(()=>{dispatch(detachCharacter())})
   const onClick_removeCharacter = () => {
     let index = currentCharacter.characterSelected.index;
-    dispatch({oldArray:CharacterList, index})
+    dispatch({ oldArray: CharacterList, index })
     setName("")
   }
 

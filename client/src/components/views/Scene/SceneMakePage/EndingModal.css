@@ -1,0 +1,51 @@
+.ending_modal_cancel_btn{
+    position: absolute;
+    right:15px;
+    top:10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.ending_modal_ending_btn{
+    width:270px;
+    height:270px;
+    margin-right: 15px;
+    opacity: 0.85;
+    cursor: pointer;
+    text-align: center;
+    font-size: 25px;
+    font-family: Noto Sans KR;
+    font-weight: bold;
+    background-color: white;
+    border: 1px solid white;
+}
+.ending_modal_ending_btn:hover{
+    opacity: 1.0;
+    border: 1px solid black;
+}
+
+.ending_modal_choice_btn{
+    width:270px;
+    height:270px;
+    opacity: 0.8;
+    cursor: pointer;
+    text-align: center;
+    font-size: 25px;
+    font-family: Noto Sans KR;
+    font-weight: bold;
+    background-color: white;
+    border: 1px solid white;
+}
+.ending_modal_choice_btn:hover{
+    opacity: 1.0;
+    border: 1px solid black;
+}
+
+.ending_modal_warning_sign{
+    padding: 7px 10px 0px 5px;
+}
+
+.ending_modal_warning_textarea{
+    font-family: Noto Sans KR;
+    font-weight: bold;
+}

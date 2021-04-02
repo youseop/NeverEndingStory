@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Col, message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
-import "../SceneMakeModal.css";
+import "../EssetModal.css";
 import "./BackgroundTab.css";
 
-function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, backBlobList }) {
+function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList, isInfo }) {
     const [backgroundCards, setBackgroundCards] = useState("");
     const [blobCards, setBlobCards] = useState("");
-
     const onDrop = (files) => {
         for (var i = 0; i < files.length; i++) {
             if (!files[i]) {
@@ -23,8 +22,8 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
 
     // 왜 인자로 넘어온 game이 처음에 존재하지 않는지 모르겠음
     useEffect(() => {
-        if (game.background)
-            setBackgroundCards(game.background.map((element, index) => {
+        if (gameDetail.background)
+            setBackgroundCards(gameDetail.background.map((element, index) => {
                 return <div className="backgroundTab_image_box" key={index}>
                     <img className="backgroundTab_image"
                         src={element.image}
@@ -32,7 +31,7 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
                     />
                 </div>
             }))
-    }, [game]);
+    }, [gameDetail]);
 
     useEffect(() => {
         if (backBlobList)
@@ -46,22 +45,33 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
             }))
     }, [backBlobList]);
 
-    return (
-        <div className="backgroundTab_container">
-            <div className="backgroundTab_dropzone">
-                <MyDropzone
-                    onDrop={onDrop}
-                    multiple={true}
-                    maxSize={10485761} // 10MB + 1
-                    accept="image/*"
-                >
-                </MyDropzone>
+    if (isInfo)
+        return (
+            <div className="backgroundTab_container_info">
+                <div className="backgroundTab_Box_info">
+                    <div>{backgroundCards} {blobCards}</div>
+                </div>
             </div>
-            <div className="backgroundTab_Box">
-                <div>{backgroundCards} {blobCards}</div>
+        );
+    else
+        return (
+            <div className="backgroundTab_container">
+                <div className="backgroundTab_dropzone">
+                    <MyDropzone
+                        onDrop={onDrop}
+                        multiple={true}
+                        maxSize={10485761} // 10MB + 1
+                        accept="image/*"
+                        type="background"
+                        icon="image"
+                    >
+                    </MyDropzone>
+                </div>
+                <div className="backgroundTab_Box">
+                    <div>{backgroundCards} {blobCards}</div>
+                </div>
             </div>
-        </div>
-    );
+        );
 }
 
 export default BackgroundTab;

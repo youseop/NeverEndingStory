@@ -28,7 +28,7 @@
 }
 
 .HistoryMap_scene {
-  z-index: 97;
+  z-index: 95;
   position: relative;
 
   flex: 1;
@@ -62,7 +62,7 @@
 }
 
 .HistoryMap_scene_img {
-  z-index: 97;
+  z-index: 95;
   position: absolute;
   width: 100%;
   height: 100%;
