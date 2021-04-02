@@ -56,7 +56,7 @@ function RegisterPage(props: RegisterPageProps) {
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(async () => {
           let flag
-          await Axios.post("api/users/email-check", { email: values.email }).then((response) => {
+          await Axios.post("/api/users/email-check", { email: values.email }).then((response) => {
             flag = response.data.usedEmail
           })
 

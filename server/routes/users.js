@@ -151,4 +151,35 @@ router.post("/game-visit", (req, res) => {
     })  
 })
 
+router.post("/send-feedback", async (req, res) => {
+    const nodemailer = require('nodemailer');
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_ID,
+          pass: process.env.EMAIL_PASSWORD
+        },
+      });
+
+    let info = await transporter.sendMail({
+    from: "이어봐 정글 프로젝트",
+    to: "chotjd329@hotmail.com",
+    subject: `[이어봐] 고객 문의 메일 - (${req.body.Type})`,
+    text: `${req.body.Content}\n\n연락처1: ${req.body.Email}\n연락처2: ${req.body.PhoneNumber}`
+    });
+
+    if(info.rejected.length){
+        return res.status(200).send({
+            success: false,
+        });
+    }
+    return res.status(200).send({
+        success: true,
+    });
+});
+
 module.exports = router;
