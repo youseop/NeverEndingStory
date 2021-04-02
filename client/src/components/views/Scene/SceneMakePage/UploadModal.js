@@ -22,8 +22,8 @@ const CategoryOptions = [
 
 const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene, defaultTitle, defaultDescription }) => {
     const user = useSelector((state) => state.user);
-    const [GameTitle, setGameTitle] = useState({defaultTitle});
-    const [description, setDescription] = useState({defaultDescription});
+    const [GameTitle, setGameTitle] = useState({ defaultTitle });
+    const [description, setDescription] = useState({ defaultDescription });
     const [isPrivate, setIsPrivate] = useState(0);
     const [category, setCategory] = useState(CategoryOptions[0].label);
 
@@ -39,7 +39,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
 
     const onTitleChange = (event) => {
         //최대 50자 제한
-        setGameTitle(event.currentTarget.value.substr(0,50));
+        setGameTitle(event.currentTarget.value.substr(0, 50));
     };
 
     const onDescriptionChange = (event) => {
@@ -80,7 +80,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
         }
 
         uploadThumb();
-        setUploadModalState(false);
+        // setUploadModalState(false);
         onSubmit_saveScene()
     }
 
@@ -100,7 +100,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
         await Axios.post("/api/game/uploadfile", formData, config).then(
             (response) => {
                 if (response.data.success) {
-                    uploadGame( process.env.NODE_ENV === 'development' ? response.data.files[0].path : response.data.files[0].location );
+                    uploadGame(process.env.NODE_ENV === 'development' ? response.data.files[0].path : response.data.files[0].location);
                 } else {
                     message.error("업로드 실패");
                 }
@@ -133,17 +133,19 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
         <Modal className="scenemake_modal"
             visible={visible}
             okText="업로드"
-            cancelText = "취소"
+            cancelText="취소"
             onCancel={cancel}
             onOk={upload}
             width={1000}
-            centered = {true}
-            closable ={false}
+            centered={true}
+            closable={false}
+            style={{ top: 10 }}
+            bodyStyle={{ height: "590px" }}
         >
             <div className="scenemake_modal_form_container">
-                <label><b>게임 업로드</b></label>
+                <h4><b>게임 업로드</b></h4>
                 <Form onSubmit={upload}>
-                    
+
                     <div className="scenemake_modal_form">
                         <div className="scenemake_dropzone_container" >
                             <MyDropzone
@@ -151,8 +153,9 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                                 multiple={false}
                                 maxSize={10485761} // 10MB + 1
                                 accept="image/*"
-                                blobURL = {blobURL}
-                                type = "thumbnail"
+                                blobURL={blobURL}
+                                type="thumbnail"
+                                icon="image"
                             >
                             </MyDropzone>
 
@@ -160,16 +163,16 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                         </div>
 
                     </div>
-                    <div className ="scenemake_modal_detail">
+                    <div className="scenemake_modal_detail">
                         <div className="scenemake_modal_detail_title_container">
 
-                            <label><b>제목</b></label>
-                            <Input maxLength={15} onChange={onTitleChange} value={GameTitle}/>
+                            <h4><b>제목</b></h4>
+                            <textarea maxLength={30} className="scenemake_modal_detail_title" onChange={onTitleChange} value={GameTitle} />
                         </div>
 
                         <div className="scenemake_modal_detail_description_container">
-                            <label><b>게임 설명</b></label>
-                            <TextArea className="scenemake_modal_detail_description" rows="4" onChange={onDescriptionChange} value={description} />
+                            <h4><b>게임 설명</b></h4>
+                            <textarea maxLength={1000} className="scenemake_modal_detail_description" rows="4" onChange={onDescriptionChange} value={description} />
                         </div>
 
                         {/* <select onChange={onPrivateChange}>
@@ -180,7 +183,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                             ))}
                         </select> */}
                         <div className="scenemake_modal_detail_category_container">
-                            <select className= "scenemake_modal_category" onChange={onCartegoryChange}>
+                            <select className="scenemake_modal_category" onChange={onCartegoryChange}>
                                 {CategoryOptions.map((item, index) => (
                                     <option key={index} value={item.value}>
                                         {item.label}

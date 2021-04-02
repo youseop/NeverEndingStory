@@ -96,6 +96,7 @@ a:visited:hover {
 }
 
 .choice_box {
+    /* max-width: 100px; */
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.363);

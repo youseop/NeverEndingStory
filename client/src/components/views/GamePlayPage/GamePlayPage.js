@@ -362,7 +362,7 @@ const ProductScreen = (props) => {
             <LoadingPage />
             {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
               <img
-                className="backgroundImg"
+                className="gamePlay_backgroundImg"
                 src={Scene.cutList[i]?.background}
                 alt="Network Error"
               />

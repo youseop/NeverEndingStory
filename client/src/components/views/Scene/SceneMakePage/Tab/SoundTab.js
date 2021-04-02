@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Col, message } from "antd";
+import { message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
-import "../SceneMakeModal.css";
+import "../EssetModal.css";
 import "./MusicTab.css";
-import { LOCAL_HOST } from "../../../../Config";
 
-function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlobList, setSoundBlobNames, soundBlobNames }) {
+function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, soundBlobList, setSoundBlobNames, soundBlobNames }) {
     const [soundCards, setSoundCards] = useState([]);
     const [blobCards, setBlobCards] = useState([]);
 
@@ -24,15 +23,15 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
 
     // 왜 인자로 넘어온 game이 처음에 존재하지 않는지 모르겠음
     useEffect(() => {
-        if (game.sound)
-            setSoundCards(game.sound.map((element, index) => {
+        if (gameDetail.sound)
+            setSoundCards(gameDetail.sound.map((element, index) => {
                 return (
                     <div className="bgmTab_text_box" key={index}>
                         {element.name}
                     </div>
                 )
             }))
-    }, [game]);
+    }, [gameDetail]);
 
     useEffect(() => {
         if (soundBlobList)
@@ -54,6 +53,7 @@ function SoundTab({ game, setFileQueue, setTypeQueue, setSoundBlobList, soundBlo
                     maxSize={10485761} // 10MB + 1
                     accept="audio/*"
                     type="sound"
+                    icon="audio"
                 >
                 </MyDropzone>
             </div>

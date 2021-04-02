@@ -6,7 +6,7 @@ import Character from './Character';
 import CharacterInfoDisplay from './CharacterInfoDisplay/CharacterInfoDisplay';
 import './CharacterModal.css';
 
-function CharacterModal({GameCharacterList, setName }) {
+function CharacterModal({ GameCharacterList, setName }) {
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
   // const onClick_detachCharacter = () => {
@@ -17,7 +17,7 @@ function CharacterModal({GameCharacterList, setName }) {
 
   const onClick_removeCharacter = () => {
     let index = currentCharacter.characterSelected.index;
-    dispatch({oldArray:CharacterList, index})
+    dispatch({ oldArray: CharacterList, index })
     setName("")
   }
 

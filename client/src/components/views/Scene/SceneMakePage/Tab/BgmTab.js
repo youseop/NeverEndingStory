@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Col, message } from "antd";
+import { message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
-import "../SceneMakeModal.css";
+import "../EssetModal.css";
 import "./MusicTab.css";
-import { LOCAL_HOST } from "../../../../Config";
-function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList, setBgmBlobNames, bgmBlobNames }) {
+
+function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList, setBgmBlobNames, bgmBlobNames }) {
     const [bgmCards, setBgmCards] = useState([]);
     const [blobCards, setBlobCards] = useState([]);
 
@@ -23,15 +23,15 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
 
     // 왜 인자로 넘어온 game이 처음에 존재하지 않는지 모르겠음
     useEffect(() => {
-        if (game.bgm)
-            setBgmCards(game.bgm.map((element, index) => {
+        if (gameDetail.bgm)
+            setBgmCards(gameDetail.bgm.map((element, index) => {
                 return (
                     <div className="bgmTab_text_box" key={index}>
                         {element.name}
                     </div>
                 )
             }))
-    }, [game]);
+    }, [gameDetail]);
 
 
     useEffect(() => {
@@ -54,6 +54,7 @@ function BgmTab({ game, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList,
                     maxSize={10485761} // 10MB + 1
                     accept="audio/*"
                     type="bgm"
+                    icon="audio"
                 >
                 </MyDropzone>
             </div>
