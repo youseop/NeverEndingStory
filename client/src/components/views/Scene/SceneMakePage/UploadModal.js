@@ -80,7 +80,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
         }
 
         uploadThumb();
-        setUploadModalState(false);
+        // setUploadModalState(false);
         onSubmit_saveScene()
     }
 

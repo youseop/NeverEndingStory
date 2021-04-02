@@ -73,7 +73,7 @@ export function NewGameButton({replace}:newGameButtonProps) {
 
             uploadGameFrame(values.title, values.description);
             formRef?.resetFields();
-            setVisible(false);
+            // setVisible(false);
         });
 
     }

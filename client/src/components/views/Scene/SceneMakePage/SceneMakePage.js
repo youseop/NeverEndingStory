@@ -68,7 +68,7 @@ const SceneMakePage = (props) => {
 
     //modal
     const [makeModalState, setMakeModalState] = useState(0);
-    const [reload, setReload] = useState(1);
+    const [reload, setReload] = useState(0);
     const [uploadModalState, setUploadModalState] = useState(false);
     const [endingModalState, setEndingModalState] = useState(false);
 
@@ -86,7 +86,7 @@ const SceneMakePage = (props) => {
         music: "",
     });
 
-    const [isFirstScene, setIsFirstScene] = useState(false)
+    const isFirstScene = useRef(false);
 
     const [CutNumber, setCutNumber] = useState(0);
     const [Hover, setHover] = useState(false);
@@ -134,7 +134,7 @@ const SceneMakePage = (props) => {
             if (scene.cutList.length) {
 
                 if (scene.isFirst) {
-                    setIsFirstScene(true)
+                    isFirstScene.current = true;
                 }
 
                 // 임시저장된 녀석 불러오기
@@ -169,9 +169,10 @@ const SceneMakePage = (props) => {
                         })
                 }
                 else {
-                    setIsFirstScene(true)
+                    isFirstScene.current = true;
                 }
             }
+            setReload(reload => reload + 1)
         })();
     }, [])
 
@@ -443,7 +444,7 @@ const SceneMakePage = (props) => {
                         }
                     }
                     ).then(() => {
-                        if (!isTmp && isFirstScene) {
+                        if (!isTmp && isFirstScene.current) {
                             history.replace(
                                 `/game/${gameId}`
                             );
@@ -492,6 +493,16 @@ const SceneMakePage = (props) => {
         setMakeModalState(sideTabIndex.current);
     }
 
+    const onCompleteModal = () => {
+        if (!reload) //동시성 반창고
+            return;
+        if (isFirstScene.current)
+            setUploadModalState(true)
+        else
+            setEndingModalState(true)
+    }
+
+
     const [gameDetail, setGameDetail] = useState([]);
     const [sideBar, setSideBar] = useState([]);
 
@@ -520,6 +531,7 @@ const SceneMakePage = (props) => {
                         gameDetail={gameDetail}
                         setName={setName}
                         onSetModal={onSetModal}
+                        isFirstScene={isFirstScene}
                     />
                 </div>
                 <div ref={backgroundSidebarElement} style={{ display: 'none' }}>
@@ -527,6 +539,7 @@ const SceneMakePage = (props) => {
                         gameDetail={gameDetail}
                         setBackgroundImg={setBackgroundImg}
                         onSetModal={onSetModal}
+                        isFirstScene={isFirstScene}
                     />
                 </div>
                 <div ref={bgmSidebarElement} style={{ display: 'none' }}>
@@ -535,6 +548,7 @@ const SceneMakePage = (props) => {
                         bgm_audio={bgm_audio}
                         setBgmFile={setBgmFile}
                         onSetModal={onSetModal}
+                        isFirstScene={isFirstScene}
                     />
                 </div>
                 <div ref={soundSidebarElement} style={{ display: 'none' }}>
@@ -543,6 +557,7 @@ const SceneMakePage = (props) => {
                         sound_audio={sound_audio}
                         setSoundFile={setSoundFile}
                         onSetModal={onSetModal}
+                        isFirstScene={isFirstScene}
                     />
                 </div>
             </div>)
@@ -696,8 +711,7 @@ const SceneMakePage = (props) => {
             </div>
 
             <div className="scene__btn_top">
-
-                {isFirstScene &&
+                {isFirstScene.current &&
                     <div className="scene_btn scene_btn_red"
                         onClick={onSetModal}>
                         에셋 추가
@@ -707,16 +721,10 @@ const SceneMakePage = (props) => {
                     onClick={onTmpSave}>
                     임시 저장
                 </div>
-                {isFirstScene ?
-                    <div className="scene_btn scene_btn_blue"
-                        onClick={onSubmit_first}>
-                        완료
-                        </div>
-                    : <div className="scene_btn scene_btn_blue"
-                        onClick={onSubmit}>
-                        완료
-                        </div>
-                }
+                <div className="scene_btn scene_btn_blue"
+                    onClick={onCompleteModal}>
+                    완료
+                </div>
 
             </div>
             <div className="btn_side">
