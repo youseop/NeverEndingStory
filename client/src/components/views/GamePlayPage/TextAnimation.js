@@ -12,7 +12,7 @@ function TextAnimation({ cut_script, setIsTyping }) {
     const [text, { skip }] = useWindupString(
         cut_script,
         {
-            pace: () => 50,
+            pace: () => 40,
             onFinished: () => {
                 voice.pause()
                 setFlag(true)
