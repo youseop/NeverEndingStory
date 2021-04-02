@@ -530,7 +530,7 @@ const SceneMakePage = (props) => {
             })
     }, [reload, gameId])
 
-
+    let isWriter = writer?.toString()===user.userData?._id.toString();
     useEffect(() => {
         if (gameDetail.character) {
             const reload_Sidebar = (< div className="sideBar">
@@ -545,6 +545,7 @@ const SceneMakePage = (props) => {
                         setName={setName}
                         onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
+                        isWriter = {isWriter}
                     />
                 </div>
                 <div ref={backgroundSidebarElement} style={{ display: 'none' }}>
@@ -553,6 +554,7 @@ const SceneMakePage = (props) => {
                         setBackgroundImg={setBackgroundImg}
                         onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
+                        isWriter = {isWriter}
                     />
                 </div>
                 <div ref={bgmSidebarElement} style={{ display: 'none' }}>
@@ -562,6 +564,7 @@ const SceneMakePage = (props) => {
                         setBgmFile={setBgmFile}
                         onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
+                        isWriter = {isWriter}
                     />
                 </div>
                 <div ref={soundSidebarElement} style={{ display: 'none' }}>
@@ -571,6 +574,7 @@ const SceneMakePage = (props) => {
                         setSoundFile={setSoundFile}
                         onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
+                        isWriter = {isWriter}
                     />
                 </div>
             </div>)
@@ -728,7 +732,7 @@ const SceneMakePage = (props) => {
             </div>
 
             <div className="scene__btn_top">
-                {(isFirstScene.current || writer?.toString()===user.userData?._id.toString()) &&
+                {(isFirstScene.current || isWriter) &&
                     <div className="scene_btn scene_btn_red"
                         onClick={onEssetModal}>
                         에셋 추가
