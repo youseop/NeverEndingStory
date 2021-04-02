@@ -103,7 +103,7 @@
   border-radius: 5px;
 
   background: #dddddd;
-  object-fit: contain;
+  object-fit: cover;
   filter: brightness(95%);
 }
 .game-image:hover  {

@@ -2,8 +2,7 @@ import React, { useEffect, useState} from "react";
 import { useDispatch } from "react-redux";
 import Axios from "axios";
 import "./LandingPage.css";
-import { Banner_main1 } from "./LandingPage_banners";
-import { NewGameButton } from "./LandingPage_buttons";
+import { Banner_main } from "./LandingPage_banners";
 import { GameList } from "./LandingPage_gameLists";
 import { navbarControl } from "../../../_actions/controlPage_actions"
 
@@ -45,8 +44,7 @@ function LandingPage(props) {
   return (
     <div className="mainPage_container">
       <div className="box-container">
-        <Banner_main1 />
-        <NewGameButton replace={props.history.replace} />
+        <Banner_main replace={props.history.replace} />
       </div>
       <GameList data={ListContainer.recent_games} games={games} />
       <GameList data={ListContainer.popular_games} games={games} />
