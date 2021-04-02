@@ -2,18 +2,18 @@ import React, { useState, useRef, useEffect } from "react";
 import { Modal, message } from "antd";
 import Axios from "axios";
 
-import SceneMakeModalTab from "./Tab/SceneMakeModalTab";
+import EssetModalTab from "./Tab/EssetModalTab";
 import CharacterTab from "./Tab/CharacterTab"
 import BackgroundTab from "./Tab/BackgroundTab"
 import BgmTab from "./Tab/BgmTab"
 import SoundTab from "./Tab/SoundTab"
 import { LOCAL_HOST } from "../../../Config";
 import _ from "lodash";
-import "./SceneMakeModal.css";
+import "./EssetModal.css";
 
 const config = require('../../../../config/key');
 
-const SceneMakeModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => {
+const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => {
   // const [game, setGame] = useState([]);
   const [fileQueue, setFileQueue] = useState([]);
   const [typeQueue, setTypeQueue] = useState([]);
@@ -232,7 +232,7 @@ const SceneMakeModal = ({ gameDetail, gameId, visible, setTag, tag, setReload })
       style={{ top: 50 }}
     >
       <div className="sceenmake_modal_container">
-        <SceneMakeModalTab setTag={setTag} tag={tag} />
+        <EssetModalTab setTag={setTag} tag={tag} />
         {tag === 1 &&
           <CharacterTab
             blobGame={blobGame}
@@ -278,4 +278,4 @@ const SceneMakeModal = ({ gameDetail, gameId, visible, setTag, tag, setReload })
 
   )
 }
-export default SceneMakeModal
+export default EssetModal

@@ -4,7 +4,7 @@ import CharacterImg from './CharacterImg'
 import './CharacterSideBar.css'
 
 
-function CharacterSideBar({ gameDetail, setName, onSetModal, isFirstScene }) {
+function CharacterSideBar({ gameDetail, setName, onEssetModal, isFirstScene }) {
 
   const renderCharacter = gameDetail.character.map((character, index) => {
     return <div className="characterSidebar_box" key={`${index}`}>
@@ -18,7 +18,7 @@ function CharacterSideBar({ gameDetail, setName, onSetModal, isFirstScene }) {
   return (
     <div>
       {isFirstScene.current &&
-        <FileAddOutlined onClick={onSetModal}
+        <FileAddOutlined onClick={onEssetModal}
           className={gameDetail?.character?.length === 0 ? "charSidebar_add_esset_btn" : "sidebar_add_esset_btn_side"} />
       }
       <div className="characterSidebar__container">

@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { message } from "antd";
 import Axios from "axios";
 import { useLocation } from "react-router";
-import SceneMakeModal from './SceneMakeModal';
+import EssetModal from './EssetModal';
 import UploadModal from './UploadModal';
 import EndingModal from './EndingModal';
 import useKey from "../../../functions/useKey";
@@ -67,10 +67,10 @@ const SceneMakePage = (props) => {
     const [newScreenSize, setNewScreenSize] = useState({});
 
     //modal
-    const [makeModalState, setMakeModalState] = useState(0);
-    const [reload, setReload] = useState(0);
+    const [essetModalState, setEssetModalState] = useState(0);
     const [uploadModalState, setUploadModalState] = useState(false);
     const [endingModalState, setEndingModalState] = useState(false);
+    const [reload, setReload] = useState(0);
 
     const [SidBar_script, setSidBar_script] = useState(true);
 
@@ -489,8 +489,8 @@ const SceneMakePage = (props) => {
         onSubmit_saveScene(event, 1);
     }
 
-    const onSetModal = () => {
-        setMakeModalState(sideTabIndex.current);
+    const onEssetModal = () => {
+        setEssetModalState(sideTabIndex.current);
     }
 
     const onCompleteModal = () => {
@@ -530,7 +530,7 @@ const SceneMakePage = (props) => {
                     <CharacterSideBar
                         gameDetail={gameDetail}
                         setName={setName}
-                        onSetModal={onSetModal}
+                        onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
                     />
                 </div>
@@ -538,7 +538,7 @@ const SceneMakePage = (props) => {
                     <BackgroundSideBar
                         gameDetail={gameDetail}
                         setBackgroundImg={setBackgroundImg}
-                        onSetModal={onSetModal}
+                        onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
                     />
                 </div>
@@ -547,7 +547,7 @@ const SceneMakePage = (props) => {
                         gameDetail={gameDetail}
                         bgm_audio={bgm_audio}
                         setBgmFile={setBgmFile}
-                        onSetModal={onSetModal}
+                        onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
                     />
                 </div>
@@ -556,7 +556,7 @@ const SceneMakePage = (props) => {
                         gameDetail={gameDetail}
                         sound_audio={sound_audio}
                         setSoundFile={setSoundFile}
-                        onSetModal={onSetModal}
+                        onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
                     />
                 </div>
@@ -713,7 +713,7 @@ const SceneMakePage = (props) => {
             <div className="scene__btn_top">
                 {isFirstScene.current &&
                     <div className="scene_btn scene_btn_red"
-                        onClick={onSetModal}>
+                        onClick={onEssetModal}>
                         에셋 추가
                     </div>
                 }
@@ -817,12 +817,12 @@ const SceneMakePage = (props) => {
                 onSubmit_saveScene={onSubmit_saveScene}
             />
             {
-                makeModalState !== 0 && <SceneMakeModal
+                essetModalState !== 0 && <EssetModal
                     gameDetail={gameDetail}
                     gameId={gameId}
-                    visible={Boolean(makeModalState)}
-                    setTag={setMakeModalState}
-                    tag={makeModalState}
+                    visible={Boolean(essetModalState)}
+                    tag={essetModalState}
+                    setTag={setEssetModalState}
                     setReload={setReload}
                 />
             }

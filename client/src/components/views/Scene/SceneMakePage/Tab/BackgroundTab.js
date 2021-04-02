@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Col, message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
-import "../SceneMakeModal.css";
+import "../EssetModal.css";
 import "./BackgroundTab.css";
 
 function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList }) {

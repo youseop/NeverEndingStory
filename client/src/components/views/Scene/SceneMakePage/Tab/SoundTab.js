@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
-import "../SceneMakeModal.css";
+import "../EssetModal.css";
 import "./MusicTab.css";
 
 function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, soundBlobList, setSoundBlobNames, soundBlobNames }) {

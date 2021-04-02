@@ -64,7 +64,7 @@ background-color: #808080;
 }
 
 .sidebar_add_esset_btn{  
-  margin: 20px 0px 0px 130px;
+  margin: 20px 0px 0px 135px;
   border-radius: 8px;  
   text-align: center;
   font-size: 100px;
@@ -85,6 +85,9 @@ height:100px;
 font-size: 100px;
 opacity: 0.8;
 cursor: pointer;
+}
+.charSidebar_add_esset_btn:hover{
+  opacity: 1;
 }
 
 .sidebar_add_esset_btn:hover{

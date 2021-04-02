@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { message, Form } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
-import "../SceneMakeModal.css";
+import "../EssetModal.css";
 import "./CharacterTab.css";
 import { SVG } from "../../../../svg/icon";
 import useMouse from "../../../../functions/useMouse";
