@@ -818,6 +818,7 @@ const SceneMakePage = (props) => {
             />
             {
                 makeModalState !== 0 && <SceneMakeModal
+                    gameDetail={gameDetail}
                     gameId={gameId}
                     visible={Boolean(makeModalState)}
                     setTag={setMakeModalState}
@@ -825,7 +826,7 @@ const SceneMakePage = (props) => {
                     setReload={setReload}
                 />
             }
-        </div >
+        </div>
     )
 }
 

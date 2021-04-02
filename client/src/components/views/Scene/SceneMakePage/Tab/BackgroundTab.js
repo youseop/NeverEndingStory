@@ -4,7 +4,7 @@ import MyDropzone from "../../../Dropzone/MyDropzone";
 import "../SceneMakeModal.css";
 import "./BackgroundTab.css";
 
-function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, backBlobList }) {
+function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList }) {
     const [backgroundCards, setBackgroundCards] = useState("");
     const [blobCards, setBlobCards] = useState("");
 
@@ -23,8 +23,8 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
 
     // 왜 인자로 넘어온 game이 처음에 존재하지 않는지 모르겠음
     useEffect(() => {
-        if (game.background)
-            setBackgroundCards(game.background.map((element, index) => {
+        if (gameDetail.background)
+            setBackgroundCards(gameDetail.background.map((element, index) => {
                 return <div className="backgroundTab_image_box" key={index}>
                     <img className="backgroundTab_image"
                         src={element.image}
@@ -32,7 +32,7 @@ function BackgroundTab({ game, setFileQueue, setTypeQueue, setBackBlobList, back
                     />
                 </div>
             }))
-    }, [game]);
+    }, [gameDetail]);
 
     useEffect(() => {
         if (backBlobList)
