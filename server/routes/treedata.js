@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const { check } = require("../middleware/check");
 const { auth } = require("../middleware/auth");
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -72,7 +74,7 @@ router.get('/', auth, async (req,res) => {
       await treeData.save();
     }
     return res.status(200).json({success: true})
-
+ 
   } catch (err) {
     console.log(err);
     return res.status(400).json({ success: false });

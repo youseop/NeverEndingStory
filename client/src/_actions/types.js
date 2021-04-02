@@ -17,6 +17,7 @@ export const POP_CHARACTER = "pop_character";
 export const PUSH_CHARACTER = "push_character";
 export const UPDATE_CHARACTER = "update_character";
 export const SET_CHARACTER_LIST = "set_character_list";
+export const ORDER_CHARACTER = "order_character";
 
 
 export const SELECT_MOVINGTARGET = "select_movingtarget";

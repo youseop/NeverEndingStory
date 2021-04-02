@@ -1,33 +1,73 @@
 .scenemake_modal{
     /* display : flex; */
+    /* width:60% !important; */
+    /* height:70% !important; */
+}
+.scenemake_modal_form_container{
+    
+}
+.scenemake_modal_form{
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
 }
+.scenemake_dropzone_container{
+    display:flex;
+    margin-top : 20px;
+    width: 320px;
+    height: 180px;
+    justify-content: center;
+    align-items: center;
 
+}
+.scenemake_modal_category{
+    position: absolute;
+    margin-top: 5px;
+    right:30px;
+    width : 100px;
+    background-color: #DDDDDD;
+    cursor: pointer;
+    border:0.1px solid rgb(0,0,0,0.1);
+}
 .scenemake_modal>.ant-modal-content{
     /* display : flex; */
     justify-content : center;
     margin-left : 15%;
     margin-right : 15%;
 }
-.scenemake_modal>.ant-modal-content>.ant-modal-body>div{
+
+.scenemake_modal_detail{
+    height:250px;
     display : flex;
     flex-direction: column;
-    justify-content : center;
+    /* justify-content : space-between */
+}
+.scenemake_modal_detail_title_container{
+    margin-top : 45px;
+}
+.scenemake_modal_detail_description_container{
+    margin-top : 25px;
+
+}
+.scenemake_modal_detail_description{
+    all:unset;    
+    padding:15px 15px 10px 15px;
+    width:95%;
+    height: 90px;
+    font-size:17px;
+    font-family: Noto Sans KR;
+    background-color: #DDDDDD;
+}
+.scenemake_modal_detail_category_container{
 }
 
-.scenemake_modal_description{
-    display : flex;
-    flex-direction: column;
-}
-
-.scenemake_modal> div.ant-modal-content > div.ant-modal-body>div{
-    display : flex;
-    justify-content : center;
-    width : 500;
-}
-
-.scenemake_modal> div.ant-modal-content > div.ant-modal-body>div>form>div{
-    display : flex;
-    justify-content : center;
-    padding-bottom : 50px
+.scenemake_modal_detail_title{
+    all:unset;
+    padding:0px 15px 0px 15px;
+    font-size: 17px;
+    width:95%;
+    border-radius: 4px;
+    background-color: #DDDDDD;
+    font-family: Noto Sans KR;
 }

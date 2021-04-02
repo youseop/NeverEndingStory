@@ -79,7 +79,6 @@ const SceneMakePage = (props) => {
         }
         socket.off("timeout_making")
         socket.on("timeout_making", data => {
-            // console.log("GO HOME")
             props.history.replace("/")
         })
     }, [user])
@@ -88,10 +87,8 @@ const SceneMakePage = (props) => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
-            // console.log(res.data)
             if (res.data.success && validation.data.success) { scene = res.data.scene; }
             else {
-                // console.log("get scene ERROR");
                 props.history.replace("/");
                 return;
             }
@@ -313,7 +310,6 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
-        
         if (isTmp || window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,

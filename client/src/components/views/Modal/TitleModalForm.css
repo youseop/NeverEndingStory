@@ -1,3 +1,23 @@
+.title_modalform_title{
+    all:unset;
+    width:93%;
+    height: 60px;
+    background-color: #DDDDDD;
+    overflow: hidden;
+    font-family: Noto Sans KR;
+    font-size: 18px;
+    font-weight: bold;
+    padding:3px 15px 0px 15px;
+    border-radius: 4px;
+}
 .title_modalform_description{
-    height: 300px;
+    all:unset;
+    width:93%;
+    height: 200px;
+    background-color: #DDDDDD;
+    font-family: Noto Sans KR;
+    font-size: 18px;
+    font-weight: bold;
+    padding:15px;
+    border-radius: 4px;
 }

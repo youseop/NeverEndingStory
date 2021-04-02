@@ -16,9 +16,12 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, remainTime }) =
       <Modal
         visible={true}
         title={`선택지 내용을 입력하세요 (${remainTime})`}
-        okText="Submit"
+        okText="제작 시작"
+        cancelText="취소"
         onCancel={onCancel}
         onOk={onCreate}
+        getContainer='.gamePlay__container'
+        centered='true'
       >
         <Form layout="vertical">
           <Form.Item label="Title">

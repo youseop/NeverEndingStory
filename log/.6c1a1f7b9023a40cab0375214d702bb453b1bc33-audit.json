@@ -3,57 +3,12 @@
         "days": true,
         "amount": 14
     },
-    "auditLog": "log/.6c1a1f7b9023a40cab0375214d702bb453b1bc33-audit.json",
+    "auditLog": "log\\.6c1a1f7b9023a40cab0375214d702bb453b1bc33-audit.json",
     "files": [
         {
-            "date": 1616684896287,
-            "name": "log/2021-03-25-smart-push.log",
-            "hash": "1721ace03e7213c4a493ad0d573da565"
-        },
-        {
-            "date": 1616918753735,
-            "name": "log/2021-03-28-smart-push.log",
-            "hash": "c1cc5ea67d77de770048516583c67a0d"
-        },
-        {
-            "date": 1616990735144,
-            "name": "log/2021-03-29-smart-push.log",
-            "hash": "5df3e4b4e6d0acb2bcf48031fb2db4f5"
-        },
-        {
-            "date": 1617001910613,
-            "name": "log\\2021-03-29-smart-push.log",
-            "hash": "8f2d814760ed781ed49e102abbd13c03"
-        },
-        {
-            "date": 1617030151822,
-            "name": "log\\2021-03-30-smart-push.log",
-            "hash": "6597bf7ab2c19b54733cd94eb638a0a2"
-        },
-        {
-            "date": 1617075195600,
-            "name": "log/2021-03-30-smart-push.log",
-            "hash": "f36a520d4238cdcd98ae94bbc9c54fd4"
-        },
-        {
-            "date": 1617118760565,
-            "name": "log\\2021-03-31-smart-push.log",
-            "hash": "ec341e7f554652dac986876b1841490b"
-        },
-        {
-            "date": 1617166751645,
-            "name": "log/2021-03-31-smart-push.log",
-            "hash": "9d4251b0c8d96b94de7a65b1e4d1ee2b"
-        },
-        {
-            "date": 1617202829333,
-            "name": "log\\2021-04-01-smart-push.log",
-            "hash": "7acc8e7303bc7041b58b6cfa54403c63"
-        },
-        {
-            "date": 1617289487016,
+            "date": 1617350816188,
             "name": "log\\2021-04-02-smart-push.log",
-            "hash": "5c5ba48d33acae7dfc64adb37fb7c781"
+            "hash": "ae535582b42bc6b62759b96dae3160d4"
         }
     ]
 }

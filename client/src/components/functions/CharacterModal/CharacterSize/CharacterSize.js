@@ -20,6 +20,7 @@ function CharacterSize({index, element}) {
   }
 
   function mouseMove(e) {
+
     if (drag) {
       if (pivotX != e.pageX) {
         const img_height = element.current.offsetHeight;
@@ -30,7 +31,7 @@ function CharacterSize({index, element}) {
           data: {
             size: next_size
           },
-          index,
+          index
         }))
         pivotX = e.pageX;
       }

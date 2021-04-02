@@ -1,13 +1,16 @@
 import { message } from 'antd';
 import React, { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { pushCharacter, selectCharacter } from '../../../../_actions/characterSelected_actions';
+import { pushCharacter, selectCharacter, setCharacterList } from '../../../../_actions/characterSelected_actions';
+import { useConstructor } from '../../useConstructor';
 import './CharacterInfoDisplay.css';
 
 function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
-
+  useConstructor(() => {
+    dispatch(setCharacterList({ CharacterList: [] }));
+  });
   const onClick_putCharacter = (index, url) => {
     const characterSchema = {
       index: character.index,

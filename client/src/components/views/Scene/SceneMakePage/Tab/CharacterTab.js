@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { message, Form } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
-import "../SceneMakeModal.css";
+import "../EssetModal.css";
 import "./CharacterTab.css";
 import { SVG } from "../../../../svg/icon";
 import useMouse from "../../../../functions/useMouse";
@@ -29,7 +29,6 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
     };
 
     const onDrop = (files) => {
-        console.log(indexNum.current)
         for (var i = 0; i < files.length; i++) {
             if (!files[i]) {
                 message.error("10MB 이하의 이미지 파일을 업로드해주세요.");
@@ -139,7 +138,8 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
 
     return (
         <div className="characterTab-container">
-            {blobGame.character?.length !== charPageNum.current &&
+            {blobGame.character?.length > 0 &&
+                blobGame.character?.length !== charPageNum.current &&
                 <div>
                     <div>{characterProfile}</div>
                     <div className="characterTab_cards_Box">{characterCards}</div>
@@ -150,6 +150,8 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                             multiple={true}
                             maxSize={10485761} // 10MB + 1
                             accept="image/*"
+                            type="character"
+                            icon="image"
                         />
                     </div>
                     {blobGame.character &&
@@ -170,6 +172,8 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                         multiple={true}
                         maxSize={10485761} // 10MB + 1
                         accept="image/*"
+                        type="character"
+                        icon="image"
                     />
                     <div className="characterTab_instruct">
                         캐릭터를 추가해주세요
@@ -187,7 +191,7 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                     <SVG src="arrow_1" width="50" height="50" color="#222831" />
                 </div>
             }
-            {
+            {blobGame.character?.length > 0 &&
                 blobGame?.character?.length !== charPageNum.current &&
                 <div
                     className="characterTab_rightarrow"

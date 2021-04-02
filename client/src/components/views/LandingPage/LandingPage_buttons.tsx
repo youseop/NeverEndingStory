@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { useSelector } from 'react-redux';
 import "./LandingPage_buttons.css"
 import "antd/dist/antd.css";
 import Axios from "axios"
@@ -24,6 +25,7 @@ export function NewGameButton({replace}:newGameButtonProps) {
     const [visible, setVisible] = useState<any>(false);
     const [formRef, setFormRef] = useState<any>(null);
     // const [formRef, setFormRef] = useState<null | {validateFileds:any}></null>;
+    const user = useSelector<any, any>((state) => state.user);
 
 
 
@@ -65,16 +67,24 @@ export function NewGameButton({replace}:newGameButtonProps) {
         }, 1000);
     };
     
+    const handleClick = () =>{
+        if(user.userData?.isAuth){
+            setVisible(true)
+        }
+        else{
+            message.error("로그인이 필요합니다.")
+        }
+    }
+
     const handleCreate = () => {
         formRef?.validateFields((err: Error, values: {title : String, description : any}) => {
             if (err) {
                 return;
             }
 
-            // console.log("Received values of form: ", values.title);
             uploadGameFrame(values.title, values.description);
             formRef?.resetFields();
-            setVisible(false);
+            // setVisible(false);
         });
 
     }
@@ -91,7 +101,7 @@ export function NewGameButton({replace}:newGameButtonProps) {
             {/* <button className="button-newgame" onClick ={uploadGameFrame}>
                 NEW 게임 만들기
             </button> */}
-            <button className="button-newgame" onClick={() => setVisible(true)}>
+            <button className="button-newgame" onClick={handleClick}>
                 NEW 게임 만들기
             </button>
         

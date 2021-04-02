@@ -94,7 +94,7 @@
 
 .game-image {
   position: absolute;
-
+  
   width: 320px;
   height: 180px;
   left: 2px;
@@ -103,7 +103,7 @@
   border-radius: 5px;
 
   background: #dddddd;
-  object-fit: cover;
+  object-fit: contain;
   filter: brightness(95%);
 }
 .game-image:hover  {
