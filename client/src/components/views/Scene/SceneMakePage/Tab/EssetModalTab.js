@@ -1,7 +1,7 @@
 import React from "react";
-import "../SceneMakeModal.css";
+import "../EssetModal.css";
 
-const SceneMakeModalTab = ({ setTag, tag }) => {
+const EssetModalTab = ({ setTag, tag }) => {
   return (
     // <div className="sceenmake_modal_container2">
     <div className="tabs">
@@ -29,4 +29,4 @@ const SceneMakeModalTab = ({ setTag, tag }) => {
     // </div>
   )
 }
-export default SceneMakeModalTab;
+export default EssetModalTab;

@@ -7,6 +7,7 @@
 
 .backSidebar__container{
   margin: 15px 10px 15px 15px;
+  color: rgba(0, 0, 0, 0.65);
   /* background-color: tomato; */
   overflow: scroll;
 }

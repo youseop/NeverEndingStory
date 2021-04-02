@@ -2,19 +2,18 @@ import React, { useState, useRef, useEffect } from "react";
 import { Modal, message } from "antd";
 import Axios from "axios";
 
-import SceneMakeModalTab from "./Tab/SceneMakeModalTab";
+import EssetModalTab from "./Tab/EssetModalTab";
 import CharacterTab from "./Tab/CharacterTab"
 import BackgroundTab from "./Tab/BackgroundTab"
 import BgmTab from "./Tab/BgmTab"
 import SoundTab from "./Tab/SoundTab"
 import { LOCAL_HOST } from "../../../Config";
 import _ from "lodash";
-import "./SceneMakeModal.css";
+import "./EssetModal.css";
 
 const config = require('../../../../config/key');
 
-const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
-  const [game, setGame] = useState([]);
+const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => {
   const [fileQueue, setFileQueue] = useState([]);
   const [typeQueue, setTypeQueue] = useState([]);
 
@@ -29,19 +28,10 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
   const [charFileQueue, setCharFileQueue] = useState([]);
   const [charBlobList, setCharBlobList] = useState([]);
 
-
-  const variable = { gameId: gameId }
   useEffect(() => {
-    Axios.post('/api/game/getgamedetail', variable)
-      .then(response => {
-        if (response.data.success) {
-          setGame(response.data.gameDetail);
-          setBlobGame(_.cloneDeep(response.data.gameDetail));
-        } else {
-          alert('게임 정보를 로딩하는데 실패했습니다.')
-        }
-      })
-  }, [])
+    if (gameDetail)
+      setBlobGame(_.cloneDeep(gameDetail));
+  }, [gameDetail])
 
   const revokeBlobList = () => {
     charBlobList.forEach(function (value) {
@@ -117,25 +107,25 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
   const uploadCharDB = (fileNum, files) => {
     let cnt = 0
     for (var i = 0; i < blobGame.character.length; i++) {
-      if (!game.character[i])
-        game.character.push({
+      if (!gameDetail.character[i])
+        gameDetail.character.push({
           name: "",
           description: "",
           image_array: [],
         })
-      game.character[i].name = blobGame.character[i].name;
-      game.character[i].description = blobGame.character[i].description;
+      gameDetail.character[i].name = blobGame.character[i].name;
+      gameDetail.character[i].description = blobGame.character[i].description;
 
       if (fileNum) {
         for (var j = cnt; j < cnt + fileNum[i]; j++) {
-          game.character[i].image_array.push(process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[j].path}` : files[j].location)
+          gameDetail.character[i].image_array.push(process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[j].path}` : files[j].location)
         }
         cnt += fileNum[i]
       }
     }
     const DBForm = {
       gameId: gameId,
-      character: game.character
+      character: gameDetail.character
     };
     Axios.post(
       "/api/game/putCharDB",
@@ -222,10 +212,13 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
       onCancel={cancelUpload}
       onOk={upload}
       width={1500}
-      style={{ top: 20 }}
+      closable={false}
+      keyboard={false}
+      maskClosable={false}
+      style={{ top: 50 }}
     >
       <div className="sceenmake_modal_container">
-        <SceneMakeModalTab setTag={setTag} tag={tag} />
+        <EssetModalTab setTag={setTag} tag={tag} />
         {tag === 1 &&
           <CharacterTab
             blobGame={blobGame}
@@ -237,7 +230,7 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
         }
         {tag === 2 &&
           <BackgroundTab
-            game={game}
+            gameDetail={gameDetail}
             setFileQueue={setFileQueue}
             setTypeQueue={setTypeQueue}
             setBackBlobList={setBackBlobList}
@@ -246,7 +239,7 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
         }
         {tag === 3 &&
           <BgmTab
-            game={game}
+            gameDetail={gameDetail}
             setFileQueue={setFileQueue}
             setTypeQueue={setTypeQueue}
             setBgmBlobList={setBgmBlobList}
@@ -257,7 +250,7 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
         }
         {tag === 4 &&
           <SoundTab
-            game={game}
+            gameDetail={gameDetail}
             setFileQueue={setFileQueue}
             setTypeQueue={setTypeQueue}
             setSoundBlobList={setSoundBlobList}
@@ -271,4 +264,4 @@ const SceneMakeModal = ({ gameId, visible, setTag, tag, setReload }) => {
 
   )
 }
-export default SceneMakeModal
+export default EssetModal

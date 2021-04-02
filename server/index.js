@@ -17,7 +17,6 @@ const { logger } = require("./config/logger");
 const sessionOption =require("./config/session")
 
 const app = express();
-
 const connect = mongoose.connect(config.mongoURI,
   {
     useNewUrlParser: true, useUnifiedTopology: true,

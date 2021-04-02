@@ -1,18 +1,21 @@
 import React from "react";
-import { FileAddOutlined } from '@ant-design/icons';
+import { FileAddOutlined, InstagramOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import Dropzone from "react-dropzone";
 import "./MyDropzone.css";
 
 
-function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL,type }) {
+function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL, type, icon }) {
 
     let mention;
-    if(type === "background" || type === "thumbnail"){
-        mention ="16 : 9 비율을 권장합니다."
+    if (type === "background" || type === "thumbnail") {
+        mention = "16 : 9 비율을 권장합니다."
     }
-    else if(type === "character"){
-        mention= "배경이 없는 사진을 권장합니다."
+    else if (type === "character") {
+        mention = "배경이 없는 사진을 권장합니다."
+    } else if (type === "bgm" || type === "sound") {
+        mention = "음원을 업로드 해주세요."
     }
+
     return <Dropzone
         onDrop={onDrop}
         multiple={multiple}
@@ -23,27 +26,35 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL,type }) {
     >
 
         {({ getRootProps, getInputProps }) => (
-                <div className="dropzone" {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    {blobURL ? (
-                        <div className="thumbnail__container">
-                            <img
-                                className="thumbnail__img"
-                                src={blobURL}
-                                alt="thumbnail"
-                            />
+            <div className="dropzone" {...getRootProps()}>
+                <input {...getInputProps()} />
+                {blobURL ? (
+                    <div className="thumbnail__container">
+                        <img
+                            className="thumbnail__img"
+                            src={blobURL}
+                            alt="thumbnail"
+                        />
 
-                        </div>
-                    )
-                        :
-                        <>
-                            <div><p className="thumbnail__msg"><b>파일 업로드</b></p>  </div>
+                    </div>
+                )
+                    :
+                    <>
+                        <div><p className="thumbnail__msg"><b>파일 업로드</b></p>  </div>
+                        {icon === "image" &&
+                            <InstagramOutlined className="dropzone-icon" />
+                        }
+                        {icon === "audio" &&
+                            <PlayCircleOutlined className="dropzone-icon" />
+                        }
+                        {icon === "file" &&
                             <FileAddOutlined className="dropzone-icon" />
+                        }
                         <div><p className="thumbnail__msg"><b>{mention}</b></p></div>
-                        </>
-                    }
-                </div>
-            
+                    </>
+                }
+            </div>
+
         )}
     </Dropzone>
 

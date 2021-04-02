@@ -66,7 +66,7 @@ const ProductScreen = (props) => {
   const [Dislike, setDislike] = useState(false);
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
-  const [TreeMap, setTreeMap] = useState(false);
+  // const [TreeMap, setTreeMap] = useState(false);
   const [lastMotion, setLastMotion] = useState(false)
   const [view, setView] = useState(0);
   const [thumbsUp, setThumbsUp] = useState(0);
@@ -258,12 +258,14 @@ const ProductScreen = (props) => {
 
   //* game pause control
   useEffect(() => {
-    if (HistoryMap || Dislike || TreeMap) {
+    // if (HistoryMap || Dislike || TreeMap) {
+    if (HistoryMap || Dislike) {
       dispatch(gamePause(true));
     } else {
       dispatch(gamePause(false));
     }
-  }, [HistoryMap, Dislike, TreeMap]);
+  }, [HistoryMap, Dislike]);
+// }, [HistoryMap, Dislike, TreeMap]);
 
   useEffect(() => {
     setLastMotion(false)
@@ -338,7 +340,7 @@ const ProductScreen = (props) => {
     return (
       <div
         className={`${isFullscreen
-          ? "gamePlay__container_fullscreen"
+          ? "gamePlay__container gamePlay__container_fullscreen"
           : "gamePlay__container"
           }`}
         ref={maximizableElement}
@@ -360,7 +362,7 @@ const ProductScreen = (props) => {
             <LoadingPage />
             {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
               <img
-                className="backgroundImg"
+                className="gamePlay_backgroundImg"
                 src={Scene.cutList[i]?.background}
                 alt="Network Error"
               />
@@ -404,12 +406,12 @@ const ProductScreen = (props) => {
               setTrigger={setHistoryMap}
               setScene={setScene}
             />
-            <TreeMapPopup
+            {/* <TreeMapPopup
               userhistory={userHistory}
               history={History}
               trigger={TreeMap}
               setTrigger={setTreeMap}
-            />
+            /> */}
           </div>
         </div>
         <div className="gamePlay__btn_container">
@@ -454,14 +456,14 @@ const ProductScreen = (props) => {
             >
               미니맵
             </button>
-            <button
+            {/* <button
               className="gamePlay__btn"
               onClick={() => {
                 setTreeMap((state) => !state);
               }}
             >
               트리맵
-            </button>
+            </button> */}
             <button
               className="gamePlay__btn"
               onClick={() => setDislike((state) => !state)}
