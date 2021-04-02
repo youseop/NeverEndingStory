@@ -6,7 +6,7 @@ import { LOCAL_HOST } from "../../Config";
 const config = require("../../../config/key")
 
 
-const voice = new Audio(`${config.STORAGE}/TYPING.mp3`);
+const voice = new Audio(`${config.STORAGE}/uploads/TYPING.mp3`);
 voice.volume = 0.8
 function TextAnimation({ cut_script, setIsTyping }) {
     const [flag, setFlag] = useState(false);
@@ -14,16 +14,19 @@ function TextAnimation({ cut_script, setIsTyping }) {
     const [text, { skip }] = useWindupString(
         cut_script,
         {
-            pace: () => 40,
+            pace: () => 200,
             onFinished: () => {
-                voice.pause()
+                if(voice)
+                    voice.pause()
                 setFlag(true)
             },
             onChar: () => {
                 if ((i == 0 || cut_script[i] === ' ' || cut_script[i] === '.')) {
-                    voice.pause()
+                    if(voice)
+                        voice.pause()
                 } else {
-                    voice.play()
+                    if(voice)
+                        voice.play()
                 }
                 i++;
             }
