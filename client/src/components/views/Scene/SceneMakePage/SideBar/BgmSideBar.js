@@ -4,7 +4,7 @@ import "./BgmSideBar.css";
 
 import BgmFile from "./BgmFile";
 
-function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, onEssetModal, isFirstScene }) {
+function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, onEssetModal, isFirstScene, isWriter }) {
 
     const renderBgm = gameDetail.bgm.map((bgm, index) => {
         return (
@@ -25,7 +25,7 @@ function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, onEssetModal, isFirstSc
             <div className="bgmSidebar__container">
                 {gameDetail?.bgm?.length === 0 &&
                     <div>
-                        {isFirstScene.current &&
+                        {(isFirstScene.current || isWriter) &&
                             <FileAddOutlined onClick={onEssetModal}
                                 className="sidebar_add_esset_btn" />
                         }
