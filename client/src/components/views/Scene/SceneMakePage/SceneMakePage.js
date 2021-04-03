@@ -15,7 +15,7 @@ import CharacterBlock from "../../GamePlayPage/CharacterBlock";
 import { useDispatch } from "react-redux";
 import LoadingPage from "../../GamePlayPage/LoadingPage";
 import { gameLoadingPage } from "../../../../_actions/gamePlay_actions";
-import { navbarControl } from "../../../../_actions/controlPage_actions";
+import { navbarControl,footerControl } from "../../../../_actions/controlPage_actions";
 import CharacterModal from "../../../functions/CharacterModal/CharacterModal";
 import SceneBox from "./SceneBox/SceneBox";
 import axios from "axios";
@@ -111,7 +111,7 @@ const SceneMakePage = (props) => {
     let scene;
     useEffect(() => {
         dispatch(navbarControl(false));
-
+        dispatch(footerControl(false));
     }, [])
 
 

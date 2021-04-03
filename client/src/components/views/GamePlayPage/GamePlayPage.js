@@ -14,7 +14,7 @@ import { socket } from "../../App"
 import { loadEmptyNum, savePrevScene } from "../../../_actions/sync_actions"
 import useKey from "../../functions/useKey";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
-import { navbarControl } from "../../../_actions/controlPage_actions";
+import { navbarControl,footerControl } from "../../../_actions/controlPage_actions";
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
 import { useLocation } from "react-router";
 import TreeMapPopup from "./TreeMap";
@@ -251,9 +251,10 @@ const ProductScreen = (props) => {
 
   }, [sceneId])
 
-  //* navigation bar control
+  //* navigation bar and footer control
   useEffect(() => {
     dispatch(navbarControl(false));
+    dispatch(footerControl(false));
   }, []);
 
   //* game pause control
