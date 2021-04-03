@@ -39,7 +39,6 @@ function PassportRegisterPage(props: RegisterPageProps) {
     const dispatch: any = useDispatch();
     const location = useLocation<LocationState>();
     const { snsId, snsProvider} = location.state;
-    console.log("Passport Register!",snsId, snsProvider)
     return (
         <Formik
             initialValues={{
