@@ -9,6 +9,7 @@ import LandingPage from "./views/LandingPage/LandingPage.js";
 
 import LoginPage from "./views/LoginPage/LoginPage.tsx";
 import RegisterPage from "./views/RegisterPage/RegisterPage.tsx";
+import PassportRegisterPage from "./views/RegisterPage/PassportRegisterPage.tsx";
 import Profile from './views/Profile/Profile.tsx';
 
 import GameDetailPage from './views/GameDetailPage/GameDetailPage.js';
@@ -67,6 +68,7 @@ function App() {
             <Route exact path="/" component={Auth(LandingPage, null)} />
             <Route exact path="/login" component={Auth(LoginPage, false)} />
             <Route exact path="/register" component={Auth(RegisterPage, false)} />
+            <Route exact path="/passport/register" component={Auth(PassportRegisterPage, false)} />
             <Route exact path="/profile/:userId" component={Auth(Profile, true)} />
             <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
             <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
