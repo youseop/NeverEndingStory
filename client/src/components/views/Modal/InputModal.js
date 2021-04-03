@@ -115,11 +115,11 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
     socket.emit("validate_empty_num", { scene_id })
   }, [scene_id])
 
-  useEffect(() => {
-    if (dino) {
-      clearTimeout(decreaseTimer);
-    }
-  }, [dino]);
+  // useEffect(() => {
+  //   if (dino) {
+  //     clearTimeout(decreaseTimer);
+  //   }
+  // }, [dino]);
 
   return (
     <>
