@@ -76,7 +76,7 @@ function RegisterPage(props: RegisterPageProps) {
 
           await dispatch(registerUser(dataToSubmit)).then((response: RegisterUser) => {
             if (response.payload.success) {
-              props.history.push("/login");
+              props.history.push("/");
             } else {
               alert(response.payload.err.errmsg)
             }
