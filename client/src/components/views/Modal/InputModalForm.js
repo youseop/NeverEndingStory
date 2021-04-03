@@ -21,7 +21,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, remainTime }) =
         onCancel={onCancel}
         onOk={onCreate}
         getContainer='.gamePlay__container'
-        centered='true'
+        centered={true}
       >
         <Form layout="vertical">
           <Form.Item label="Title">

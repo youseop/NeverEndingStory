@@ -21,7 +21,7 @@ function GoToScene(props) {
 
 function GetSceneInfo(props) {
   const { index, scene, setSceneInfo } = props;
-  Axios.get(`/api/game/getSceneInfo/${scene}`).then((response) => {
+  Axios.get(`/api/scene/${scene}`).then((response) => {
     if (!response.data.success) {
       alert("Scene 정보 없음...");
     } else {

@@ -56,13 +56,12 @@ app.use('/api/game', require('./routes/game'));
 app.use('/api/scene', require('./routes/scene'));
 app.use('/api/complaint', require('./routes/complaint'));
 app.use('/api/comment', require('./routes/comment'));
-app.use('/api/test', require('./routes/subdoc_route'));
 app.use('/api/like', require('./routes/like'));
 app.use('/api/view', require('./routes/view'));
 app.use('/api/thumbsup', require('./routes/thumbsup'));
 app.use('/api/treedata', require('./routes/treedata')); 
 
-// app.use('/api/test', require('./routes/subdoc_route'));
+app.use('/api/test', require('./routes/subdoc_route'));
 
 //use this to show the image you have in node js server to client (react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client

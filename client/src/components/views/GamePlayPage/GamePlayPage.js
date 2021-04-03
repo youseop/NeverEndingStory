@@ -66,11 +66,12 @@ const ProductScreen = (props) => {
   const [Dislike, setDislike] = useState(false);
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
-  // const [TreeMap, setTreeMap] = useState(false);
+  const [TreeMap, setTreeMap] = useState(false);
   const [lastMotion, setLastMotion] = useState(false)
   const [view, setView] = useState(0);
   const [thumbsUp, setThumbsUp] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
+
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
   const maximizableElement = useRef(null);
@@ -206,9 +207,6 @@ const ProductScreen = (props) => {
         }
       })
     }
-    else{
-      message.error("로그인이 필요합니다.")
-    }
   }
 
   useEffect(() => {
@@ -258,14 +256,12 @@ const ProductScreen = (props) => {
 
   //* game pause control
   useEffect(() => {
-    // if (HistoryMap || Dislike || TreeMap) {
-    if (HistoryMap || Dislike) {
+    if (HistoryMap || Dislike || TreeMap) {
       dispatch(gamePause(true));
     } else {
       dispatch(gamePause(false));
     }
-  }, [HistoryMap, Dislike]);
-// }, [HistoryMap, Dislike, TreeMap]);
+  }, [HistoryMap, Dislike, TreeMap]);
 
   useEffect(() => {
     setLastMotion(false)
@@ -340,7 +336,7 @@ const ProductScreen = (props) => {
     return (
       <div
         className={`${isFullscreen
-          ? "gamePlay__container gamePlay__container_fullscreen"
+          ? "gamePlay__container_fullscreen"
           : "gamePlay__container"
           }`}
         ref={maximizableElement}
@@ -362,7 +358,7 @@ const ProductScreen = (props) => {
             <LoadingPage />
             {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
               <img
-                className="gamePlay_backgroundImg"
+                className="backgroundImg"
                 src={Scene.cutList[i]?.background}
                 alt="Network Error"
               />
@@ -406,12 +402,12 @@ const ProductScreen = (props) => {
               setTrigger={setHistoryMap}
               setScene={setScene}
             />
-            {/* <TreeMapPopup
+            <TreeMapPopup
               userhistory={userHistory}
               history={History}
               trigger={TreeMap}
               setTrigger={setTreeMap}
-            /> */}
+            />
           </div>
         </div>
         <div className="gamePlay__btn_container">
@@ -456,14 +452,14 @@ const ProductScreen = (props) => {
             >
               미니맵
             </button>
-            {/* <button
+            <button
               className="gamePlay__btn"
               onClick={() => {
                 setTreeMap((state) => !state);
               }}
             >
               트리맵
-            </button> */}
+            </button>
             <button
               className="gamePlay__btn"
               onClick={() => setDislike((state) => !state)}

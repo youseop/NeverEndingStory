@@ -328,5 +328,21 @@ router.delete('/', async (req, res) => {
   //! 이후, 작성중인 사람, 공헌자 목럭에서 삭제하는 로직도 필요하다.
 })
 
+router.get("/:sceneId", async (req, res) => {
+    let { sceneId } = req.params;
+    sceneId = mongoose.Types.ObjectId(sceneId);
+    try {
+        const scene = await Scene.findOne({ _id: sceneId });
+        if (scene === null) {
+            // console.log("??????")
+            return res.status(200).json({ success: false });
+        }
+        return res.status(200).json({ success: true, scene });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ success: false });
+    }
+});
+
 
 module.exports = router;

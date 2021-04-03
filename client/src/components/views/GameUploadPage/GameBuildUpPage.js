@@ -29,7 +29,7 @@ function GameBuildUpPage(props) {
     };
 
     useEffect(() => {
-        Axios.post("/api/game/getgamedetail", game_form).then((response) => {
+        Axios.post("/api/game/detail", game_form).then((response) => {
             if (response.data.success) {
                 setGame(response.data.gameDetail);
             } else {

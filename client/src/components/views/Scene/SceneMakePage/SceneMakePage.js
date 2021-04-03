@@ -131,7 +131,7 @@ const SceneMakePage = (props) => {
     //! scene save할 때 필요한 정보 갖고오기
     useEffect(() => {
         (async () => {
-            const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
+            const res = await axios.get(`/api/scene/${sceneId}`)
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
             // console.log(res.data)
             if (res.data.success && validation.data.success) { scene = res.data.scene; }
@@ -403,7 +403,7 @@ const SceneMakePage = (props) => {
 
     const setTree = () => {
         Axios.get("/api/treedata/").then((response) => {
-          console.log('1')
+          console.log('treedata successfully added');
         });
     }
 
@@ -526,7 +526,7 @@ const SceneMakePage = (props) => {
     const [sideBar, setSideBar] = useState([]);
 
     useEffect(() => {
-        Axios.post('/api/game/getgamedetail', { gameId: gameId })
+        Axios.post('/api/game/detail', { gameId: gameId })
             .then(response => {
                 if (response.data.success) {
                     setGameDetail(response.data.gameDetail)

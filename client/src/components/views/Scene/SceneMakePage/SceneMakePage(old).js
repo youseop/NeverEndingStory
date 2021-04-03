@@ -85,7 +85,7 @@ const SceneMakePage = (props) => {
     //! scene save할 때 필요한 정보 갖고오기
     useEffect(() => {
         (async () => {
-            const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
+            const res = await axios.get(`/api/scene/${sceneId}`)
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
             if (res.data.success && validation.data.success) { scene = res.data.scene; }
             else {
@@ -393,7 +393,7 @@ const SceneMakePage = (props) => {
     const [gameDetail, setGameDetail] = useState([]);
     const [sideBar, setSideBar] = useState([]);
     useEffect(() => {
-        Axios.post('/api/game/getgamedetail', { gameId: gameId })
+        Axios.post('/api/game/detail', { gameId: gameId })
             .then(response => {
                 if (response.data.success) {
                     setGameDetail(response.data.gameDetail)

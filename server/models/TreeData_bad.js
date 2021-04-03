@@ -13,12 +13,9 @@ const treeDataSchema = Schema({
     type: Number,
     default: 0
   },
-  children: [String],
-  isEnding: Boolean,
-  parentSceneId: String,
-});
+},{ strict: false });
 
-treeDataSchema.index({ gameId: 1, sceneId: 1});
+treeDataSchema.add({ children: [treeDataSchema] });
 
 const TreeData = mongoose.model('TreeData', treeDataSchema);
 

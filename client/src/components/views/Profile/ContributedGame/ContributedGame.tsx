@@ -43,18 +43,16 @@ function ContributedGame(props: any) {
     thumbnail: "",
     title: "",
   });
-  const [view, setView] = useState<number>(0);
   const [thumbsUp, setThumbsUp] = useState<ThumbsUp>({
     like: 0,
     isClick: false,
   });
+  const [view, setView] = useState<number>(0);
   
   useEffect(() => {
-    Axios.post("/api/game/getgamedetail", {gameId: new ObjectId(gameId)}).then((response) => {
-      setGameDetail(response.data.gameDetail)
-    })
-    Axios.post("/api/view/", {objectId: new ObjectId(gameId)}).then((response) => {
-      setView(response.data.view)
+    Axios.post("/api/game/detail", {gameId: new ObjectId(gameId)}).then((response) => {
+      setGameDetail(response.data.gameDetail);
+      setView(response.data.gameDetail.view);
     })
     Axios.post("/api/thumbsup/count", {
       objectId: new ObjectId(gameId),

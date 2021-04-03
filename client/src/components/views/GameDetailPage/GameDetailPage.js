@@ -17,6 +17,7 @@ import RadialTree from '../TreeVisualization/RadialTree';
 import data from '../TreeVisualization/data';
 
 import "./GameDetailPage.css";
+import RadialTreeMain from "../TreeVisualization/RadialTree_v2/RadialTreeMain";
 
 const config = require('../../../config/key')
 
@@ -65,7 +66,7 @@ function GameDetailPage(props) {
     }
 
     useEffect(() => {
-        Axios.post("/api/game/getgamedetail", variable).then((response) => {
+        Axios.post("/api/game/detail", variable).then((response) => {
             if (response.data.success) {
                 setGameDetail(response.data.gameDetail);
             } else {
@@ -92,7 +93,6 @@ function GameDetailPage(props) {
         Axios.post('/api/treedata/', variable). then((response) => {
             if (response.data.success) {
                 console.log('tree:', response.data.treeData);
-                console.log('data:', data);
                 setTreeData(response.data.treeData);
             }
         })
@@ -279,47 +279,38 @@ function GameDetailPage(props) {
                     <div className="detailPage__description">
                         {gameDetail.description}
                     </div>
-                <div 
-                    style={isDelete ? 
-                        {color:"#d6d6d6", backgroundColor:"red"} 
-                        : 
-                        {color:"#d6d6d6", backgroundColor:"black"} 
+                    <div 
+                        style={isDelete ? 
+                            {color:"#d6d6d6", backgroundColor:"red"} 
+                            : 
+                            {color:"#d6d6d6", backgroundColor:"black"} 
+                        }
+                        onClick={onClick_deleteToggle}
+                    >
+                        삭제모드
+                    </div>
+                    <div 
+                        style={isAdmin ? 
+                            {color:"#d6d6d6", backgroundColor:"red"} 
+                            : 
+                            {color:"#d6d6d6", backgroundColor:"black"} 
+                        }
+                        onClick={onClick_adminToggle}
+                    >
+                        관리자모드
+                    </div>
+                    {(treeData.userId !== "" && user?.userData) &&
+                    <>
+                        <RadialTree 
+                            data={treeData} 
+                            width={800} 
+                            height={800} 
+                            isDelete={isDelete}
+                            userId={user.userData._id}
+                            isAdmin={isAdmin}
+                        />
+                    </>
                     }
-                    onClick={onClick_deleteToggle}
-                >
-                    삭제모드
-                </div>
-                <div 
-                    style={isAdmin ? 
-                        {color:"#d6d6d6", backgroundColor:"red"} 
-                        : 
-                        {color:"#d6d6d6", backgroundColor:"black"} 
-                    }
-                    onClick={onClick_adminToggle}
-                >
-                    관리자모드
-                </div>
-                {(treeData.userId !== "" && user?.userData) &&
-                <>
-                    <RadialTree 
-                        data={treeData} 
-                        width={800} 
-                        height={800} 
-                        isDelete={isDelete}
-                        userId={user.userData._id}
-                        isAdmin={isAdmin}
-                    />
-                    {/* <RadialTree 
-                        data={data} 
-                        width={800} 
-                        height={800} 
-                        isDelete={isDelete}
-                        // userId={user.userData._id}
-                        userId={"234801948019482039480"}
-                        isAdmin={isAdmin}
-                    /> */}
-                </>
-                }
                 {/* <RadialTreeMain/> */}
     
                     <Comment gameId={gameId} />

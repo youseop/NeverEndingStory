@@ -290,7 +290,7 @@ router.get("/gamestart/:id", check, async (req, res) => {
                     user.gameHistory[i].isMaking = false;
 
                 }
-
+ 
                 user.gamePlaying = {
                     gameId: gameId,
                     sceneIdList: user.gameHistory[i].sceneIdList.slice(0, user.gameHistory[i].sceneIdList.length),
@@ -435,22 +435,6 @@ router.post("/refreshHistory", check, async (req, res) => {
 });
 
 
-router.get("/getSceneInfo/:sceneId", async (req, res) => {
-    let { sceneId } = req.params;
-    sceneId = mongoose.Types.ObjectId(sceneId);
-    try {
-        const scene = await Scene.findOne({ _id: sceneId });
-        if (scene === null) {
-            // console.log("??????")
-            return res.status(200).json({ success: false });
-        }
-        return res.status(200).json({ success: true, scene });
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({ success: false });
-    }
-});
-
 router.post("/updatescenestatus", check, async (req, res) => {
     if (!req.user) {
         return res.status(400).json({ success: false, msg: "Not a user" });
@@ -458,7 +442,7 @@ router.post("/updatescenestatus", check, async (req, res) => {
     return;
 });
 
-router.post("/getgamedetail", (req, res) => {
+router.post("/detail", (req, res) => {
     Game.findOne({ _id: req.body.gameId })
         .populate("creator")
         .exec((err, gameDetail) => {
