@@ -11,26 +11,28 @@ const TOTAL_SLIDES = 3;
 
 export function Banner_main({ replace }: Props_type) {
   const [CurrentSlide, setCurrentSlide] = useState(0);
-  const [TimerID, setTimerID] = useState<NodeJS.Timeout | undefined>(undefined);
+  // const [TimerID, setTimerID] = useState<NodeJS.Timeout | undefined>(undefined);
   const [IsModalVisible, setIsModalVisible] = useState(false);
 
   const slideRef = React.createRef<HTMLDivElement>();
-
+  const TimerID = useRef<any>(undefined)
   const stopBanner = () => {
-    if (TimerID) {
-      clearTimeout(TimerID);
+    if (TimerID.current !== undefined) {
+      clearTimeout(TimerID.current);
     }
   }
 
   const startBanner = () => {
     const timer = setTimeout(() => {
-      if (CurrentSlide >= TOTAL_SLIDES - 1) {
-        setCurrentSlide(0)
-      } else {
-        setCurrentSlide(CurrentSlide + 1)
+      if(TimerID.current === timer){
+        if (CurrentSlide >= TOTAL_SLIDES - 1) {
+          setCurrentSlide(0)
+        } else {
+          setCurrentSlide(CurrentSlide + 1)
+        }
       }
-    }, CurrentSlide == 0 ? 0 : 3000);
-    setTimerID(timer)
+    }, 3000);
+    TimerID.current = timer
   }
 
   useEffect(() => {
@@ -47,9 +49,10 @@ export function Banner_main({ replace }: Props_type) {
       stopBanner()
     }
   }, [CurrentSlide])
+  
 
   return (<div className="banner-container" ref={slideRef}
-    onMouseEnter={() => stopBanner()} onMouseLeave={() => startBanner()}>
+  onMouseEnter={() => stopBanner()} onMouseLeave={() => startBanner()}>
     <Banner_main1 replace={replace} />
     <Banner_main2 isModalVisible={IsModalVisible} setIsModalVisible={setIsModalVisible} />
     <Banner_main1 replace={replace} />
