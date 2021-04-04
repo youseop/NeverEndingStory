@@ -12,14 +12,13 @@ import { faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { of, forkJoin, Observable } from "rxjs";
 import { map, tap, flatMap } from "rxjs/operators";
 import TopRatingContributer from "./TopRatingContributer";
-import TreeVisualization from "../TreeVisualization/TreeVisualization";
+import Tree from "../TreeVisualization/Tree/Tree.tsx";
+import RadialTree from '../TreeVisualization/RadialTree';
 
 import { render } from 'react-dom';
-import RadialTree from '../TreeVisualization/RadialTree';
 import data from '../TreeVisualization/data';
 
 import "./GameDetailPage.css";
-import RadialTreeMain from "../TreeVisualization/RadialTree_v2/RadialTreeMain";
 
 const config = require('../../../config/key')
 
@@ -35,7 +34,7 @@ const getRecursive = (managedData, id) => {
           complaintCnt: data.complaintCnt, 
           characterName: data.characterName,
           firstScript: data.firstScript,
-          children: []
+          children: [],
         },
         childIds: data.children
       })),
@@ -331,9 +330,9 @@ export default function GameDetailPage(props) {
                             isAdmin={isAdmin}
                             updateTree={updateTree}
                         />
+                        {/* <Tree /> */}
                     </>
                     }
-                {/* <RadialTreeMain/> */}
                     <Comment gameId={gameId} />
                 </div>
             </div>

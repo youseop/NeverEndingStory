@@ -10,7 +10,7 @@ import { message } from "antd";
 import Axios from "axios";
 
 function findCollapsedParent(node) {
-  if (!node.data.isExpanded) {
+  if (node.data.isExpanded) {
     return node;
   } else if (node.parent) {
     return findCollapsedParent(node.parent);
@@ -46,8 +46,8 @@ export default class extends React.Component {
     if (width < 10) return null;
 
     async function onClick_node (node) {
-      const confirmComment= `${node.data.name} 과 ${node.data.name} 에서 이어지는 스토리들을 모두 삭제하시겠습니까?`;
       if(isDelete){
+        const confirmComment= `${node.data.name} 과 ${node.data.name} 에서 이어지는 스토리들을 모두 삭제하시겠습니까?`;
         if(window.confirm(confirmComment)){
           const {sceneId, gameId} = node.data;
           message
@@ -74,11 +74,13 @@ export default class extends React.Component {
           }
           await Axios.post('/api/scene/makedummy', resource);
           // updateTree();
-          message.info("더미 생성(새로고침하면 반영됩니다. 아직)");
+          message.info("더미 생성(새로고침하면 반영됩니다. 빡세네요 고치기...)");
         }
         return;
       }
+      console.log(node,"1!!")
       if (!node.data.isExpanded) {
+        console.log("here?!")
         node.data.x0 = node.x;
         node.data.y0 = node.y;
       }
@@ -87,16 +89,21 @@ export default class extends React.Component {
 
     return (
       <svg width={width} height={height}>
-        <LinearGradient id="lg" from="#000" to="#000" />
+        {/* 그라데이션 효과 */}
+        {/* <LinearGradient id="lg" from="#000" to="#000" /> */} 
         <rect width={width} height={height} rx={14} fill="#222831" />
         <Tree
           top={margin.top}
           left={margin.left}
-          root={hierarchy(data, (d) => (d.isExpanded ? d.children : null))}
+          // root={hierarchy(data, (d) => (d.isExpanded ? d.children : null ))}
+          root={hierarchy(data, (d) => (d.isExpanded ? null : d.children ))}
+          // 각도 조절 Math.PI*2
           size={[Math.PI, 350]}
           separation={(a, b) => (a.parent === b.parent ? 1 : 1) / a.depth}
         >
-          {({ links, descendants }) => (
+          {({ links, descendants }) => {
+            console.log(links)
+            return (
             <Group top={width / 2} left={height / 2}>
               <NodeGroup
                 data={links}
@@ -154,9 +161,13 @@ export default class extends React.Component {
                   };
                 }}
               >
-                {(nodes) => (
-                  <Group>
+                {(nodes) => {
+                  return(<Group>
                     {nodes.map(({ key, data, state }) => {
+                      state.source.x = data.source.x;
+                      state.source.y = data.source.y;
+                      state.target.x = data.target.x;
+                      state.target.y = data.target.y;
                       return (
                         <LinkRadial
                           data={state}
@@ -168,7 +179,8 @@ export default class extends React.Component {
                       );
                     })}
                   </Group>
-                )}
+                  )
+                }}
               </NodeGroup>
 
               <NodeGroup
@@ -227,7 +239,7 @@ export default class extends React.Component {
                           opacity={state.opacity}
                         >
                           <circle
-                            r={12}
+                            r={10}
                             fill={
                               isAdmin && node.data.complaintCnt > 19
                                 ? "#ff0000"
@@ -256,7 +268,7 @@ export default class extends React.Component {
                             }
                           >
                             {isAdmin ?
-                            `${node.data.complaintCnt}`
+                            `신고: ${node.data.complaintCnt}회`
                             : node.data?.children ? 
                             "O"
                             :
@@ -270,7 +282,7 @@ export default class extends React.Component {
                 )}
               </NodeGroup>
             </Group>
-          )}
+          )}}
         </Tree>
       </svg>
     );
