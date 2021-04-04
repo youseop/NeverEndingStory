@@ -9,6 +9,8 @@ import { SVG } from "../../svg/icon";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { of, forkJoin, Observable } from "rxjs";
+import { map, tap, flatMap } from "rxjs/operators";
 import TopRatingContributer from "./TopRatingContributer";
 import TreeVisualization from "../TreeVisualization/TreeVisualization";
 
@@ -21,7 +23,41 @@ import RadialTreeMain from "../TreeVisualization/RadialTree_v2/RadialTreeMain";
 
 const config = require('../../../config/key')
 
-function GameDetailPage(props) {
+const getRecursive = (managedData, id) => {
+    return getFromServer(managedData, id).pipe(
+      map(data => ({
+        parent: { 
+          name: data.name, 
+          sceneId: data.sceneId, 
+          gameId: data.gameId,
+          userId: data.userId, 
+          id: data.id, 
+          complaintCnt: data.complaintCnt, 
+          characterName: data.characterName,
+          firstScript: data.firstScript,
+          children: []
+        },
+        childIds: data.children
+      })),
+      flatMap(parentWithChildIds =>
+        forkJoin([
+          of(parentWithChildIds.parent),
+          ...parentWithChildIds.childIds.map(childId => getRecursive(managedData, childId))
+        ])
+      ),
+      tap(
+        ([parent, ...children]) => (parent.children = children)
+      ),
+      map(([parent]) => parent)
+    );
+};
+
+// mocked back-end response 
+const getFromServer = (managedData, id) => {
+    return of(managedData[id]);
+};
+
+export default function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
 
@@ -43,6 +79,7 @@ function GameDetailPage(props) {
     const [isPlayed, setIsPlayed] = useState(false);
 
     const user = useSelector((state) => state.user);
+
     const playFirstScene = async (isFirst) => {
         try {
             let response;
@@ -63,6 +100,21 @@ function GameDetailPage(props) {
         } catch (err) {
             console.log(err);
         }
+    }
+    
+    function updateTree() {
+        Axios.get(`/api/treedata/${gameId}`, variable). then((response) => {
+            if (response.data.success) {
+                const { rawData, firstNodeId } = response.data;
+                let data = {};
+                for (let i=0; i<rawData.length; i++){
+                data = { ...data, [rawData[i]._id]: rawData[i]}
+                } 
+                getRecursive(data, firstNodeId).subscribe(d=> {
+                    setTreeData(d); 
+                });
+            }
+        })
     }
 
     useEffect(() => {
@@ -90,12 +142,7 @@ function GameDetailPage(props) {
                 message.error("로그인 해주세요.");
             }
         });
-        Axios.post('/api/treedata/', variable). then((response) => {
-            if (response.data.success) {
-                console.log('tree:', response.data.treeData);
-                setTreeData(response.data.treeData);
-            }
-        })
+        updateTree();
     }, []);
 
     useEffect(() => {
@@ -192,30 +239,6 @@ function GameDetailPage(props) {
                                 </div>
                             </div>
                         </div>
-    
-                        {/* <Link
-                            className="detailPage__gamePlay_link"
-                            style={{ color: "#f05454" }}
-                            to={
-                                {
-                                    pathname: isMaking ? `/scene/make` : `/gameplay`,
-                                    state: {
-                                        gameId: gameId,
-                                        sceneId: sceneId
-                                    },
-                                }
-                            }>
-                            <div className="icon">
-                                <SVG
-                                    src="playIcon_1"
-                                    width="30"
-                                    height="30"
-                                    color="#FFF"
-                                />
-                            </div>
-                            <div className="text">시작하기</div>
-                        </Link> */}
-                        {/* 게임 시작하기 or 이어 만들기 */}
                         <div 
                             className="detailPage__gamePlay_link"
                             onClick={() => playFirstScene(false)}
@@ -263,8 +286,6 @@ function GameDetailPage(props) {
                 </div>
                 <div className="detailPage__info_container">
                     <div className="detailPage__title">
-                        {/* {gameDetail.title} */}
-    
                     </div>
                     <div className="detailPage__genre">
                         장르:
@@ -308,11 +329,11 @@ function GameDetailPage(props) {
                             isDelete={isDelete}
                             userId={user.userData._id}
                             isAdmin={isAdmin}
+                            updateTree={updateTree}
                         />
                     </>
                     }
                 {/* <RadialTreeMain/> */}
-    
                     <Comment gameId={gameId} />
                 </div>
             </div>
@@ -326,5 +347,3 @@ function GameDetailPage(props) {
             )
     }
 }
-
-export default GameDetailPage;

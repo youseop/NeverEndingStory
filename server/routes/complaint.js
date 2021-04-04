@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
     await TreeData.updateOne(
       {gameId: gameId, sceneId: sceneId},
       {$inc: {complaintCnt: 1}}
-      );
+    );
     
     return res.status(200).json({success: true});
   } catch (err) {

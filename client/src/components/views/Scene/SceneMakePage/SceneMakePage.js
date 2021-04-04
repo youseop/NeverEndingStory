@@ -402,7 +402,7 @@ const SceneMakePage = (props) => {
     }
 
     const setTree = () => {
-        Axios.get("/api/treedata/").then((response) => {
+        Axios.post("/api/treedata/").then((response) => {
           console.log('treedata successfully added');
         });
     }

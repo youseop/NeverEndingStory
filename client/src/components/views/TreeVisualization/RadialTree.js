@@ -7,6 +7,7 @@ import { hierarchy } from "d3-hierarchy";
 import { pointRadial } from "d3-shape";
 import NodeGroup from "react-move/NodeGroup";
 import { message } from "antd";
+import Axios from "axios";
 
 function findCollapsedParent(node) {
   if (!node.data.isExpanded) {
@@ -21,23 +22,6 @@ function findCollapsedParent(node) {
 function radialPoint(angle, radius) {
   const [x, y] = pointRadial(angle, radius);
   return { x, y };
-}
-
-function onClick_node (node, isDelete) {
-  const confirmComment= `${node.data.name} 과 ${node.data.name} 에서 이어지는 스토리들을 모두 삭제하시겠습니까?`;
-  if(isDelete){
-    if(window.confirm(confirmComment)){
-      message.success("삭제되었습니다.")
-    } else {
-      message.info("취소되었습니다.")
-    }
-    return;
-  }
-  if (!node.data.isExpanded) {
-    node.data.x0 = node.x;
-    node.data.y0 = node.y;
-  }
-  node.data.isExpanded = !node.data.isExpanded;
 }
 
 export default class extends React.Component {
@@ -55,10 +39,51 @@ export default class extends React.Component {
       },
       isDelete,
       userId,
-      isAdmin
+      isAdmin,
+      updateTree
     } = this.props;
 
     if (width < 10) return null;
+
+    async function onClick_node (node) {
+      const confirmComment= `${node.data.name} 과 ${node.data.name} 에서 이어지는 스토리들을 모두 삭제하시겠습니까?`;
+      if(isDelete){
+        if(window.confirm(confirmComment)){
+          const {sceneId, gameId} = node.data;
+          message
+            .loading("삭제 중 입니다...", 1.5)
+            .then(async () => {
+              const response = await Axios.delete(`/api/treedata/${sceneId}/${gameId}`);
+              if(response.data.success){
+                message.success(`${response.data.messege}`,1.5);
+              } else{
+                message.info("삭제 실패 했습니다.");
+              }
+            })
+        } else {
+          message.info("취소되었습니다.")
+        }
+        return;
+      } else if(isAdmin) {
+        const confirmComment='더미 Scene 생성 by 유섭_ 씬만들고 지우기 너무 힘들어서 만들었습니다...(배포시 이 버튼과 scene.js /makedummy router삭제부탁드려요)'
+        if(window.confirm(confirmComment)){
+          const resource = {
+            prevSceneId: node.data.sceneId,
+            userId: node.data.userId,
+            gameId: node.data.gameId,
+          }
+          await Axios.post('/api/scene/makedummy', resource);
+          // updateTree();
+          message.info("더미 생성(새로고침하면 반영됩니다. 아직)");
+        }
+        return;
+      }
+      if (!node.data.isExpanded) {
+        node.data.x0 = node.x;
+        node.data.y0 = node.y;
+      }
+      node.data.isExpanded = !node.data.isExpanded;
+    }
 
     return (
       <svg width={width} height={height}>
@@ -69,7 +94,7 @@ export default class extends React.Component {
           left={margin.left}
           root={hierarchy(data, (d) => (d.isExpanded ? d.children : null))}
           size={[Math.PI, 350]}
-          separation={(a, b) => (a.parent === b.parent ? 1 : 2) / a.depth}
+          separation={(a, b) => (a.parent === b.parent ? 1 : 1) / a.depth}
         >
           {({ links, descendants }) => (
             <Group top={width / 2} left={height / 2}>
@@ -214,7 +239,7 @@ export default class extends React.Component {
                                 "#f68031"
                             }
                             onClick={() => {
-                              onClick_node(node, isDelete);
+                              onClick_node(node, isDelete, isAdmin);
                               this.forceUpdate();
                             }}
                           />

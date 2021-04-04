@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-import { of, forkJoin, Observable } from "rxjs";
-import { map, tap, flatMap } from "rxjs/operators";
+import { User } from "../models/User";
 const { check } = require("../middleware/check");
 
 const mongoose = require('mongoose');
@@ -11,7 +10,7 @@ const { Scene } = require('../models/Scene');
 const { Game } = require('../models/Game');
 
 
-function setTreeDate (gameId, userId, sceneId, sceneData, parentSceneId ) {
+function setTreeData (gameId, userId, sceneId, sceneData, parentSceneId ) {
   return ({
     gameId: gameId, 
     userId: userId,  
@@ -25,50 +24,56 @@ function setTreeDate (gameId, userId, sceneId, sceneData, parentSceneId ) {
   })
 }
 
-const getRecursive = (managedData, id) => {
-  return getFromServer(managedData, id).pipe(
-    map(data => ({
-      parent: { 
-        name: data.name, 
-        sceneId: data.sceneId, 
-        userId: data.userId, 
-        id: data.id, 
-        complaintCnt: data.complaintCnt, 
-        characterName: data.characterName,
-        firstScript: data.firstScript,
-        children: []
-      },
-      childIds: data.children
-    })),
-    flatMap(parentWithChildIds =>
-      forkJoin([
-        of(parentWithChildIds.parent),
-        ...parentWithChildIds.childIds.map(childId => getRecursive(managedData, childId))
-      ])
-    ),
-    tap(
-      ([parent, ...children]) => (parent.children = children)
-    ),
-    map(([parent]) => parent)
-  );
-};
-
-const deleteCand = async (managedData, id) => {
+const deleteData = async (managedData, id) => {
   const data = managedData[id];
+  const gameId = mongoose.Types.ObjectId(data.gameId);
+  const sceneId = data.sceneId;
+  const userId = mongoose.Types.ObjectId(data.userId);
   await TreeData.deleteOne({_id: mongoose.Types.ObjectId(data._id)});
-  console.log(data.sceneId);
+  await Scene.deleteOne({_id: mongoose.Types.ObjectId(sceneId)});
+  await User.updateOne(
+    { 
+      _id:  userId, 
+      "contributedSceneList.sceneList.sceneId": sceneId 
+    },
+    { $pull: { 'contributedSceneList.$.sceneList': { "sceneId": sceneId } } }
+  ) //quary reference: https://stackoverflow.com/questions/30167722/how-do-i-remove-an-array-inside-an-array-in-mongodb/30169123
+  await User.updateOne(
+    { 
+      _id:  userId,  
+      "contributedSceneList.gameId": gameId 
+    },
+    { $inc: { 'contributedSceneList.$.sceneCnt': -1} }
+  )
+  await Game.updateOne(
+    { 
+      _id:  gameId, 
+      "contributerList.userId": userId 
+    },
+    { $pull: { 'contributerList.$.sceneIdList': sceneId } }
+  ) 
+  await Game.updateOne(
+    { 
+      _id:  gameId,  
+      "contributerList.userId": userId 
+    },
+    { $inc: { 'contributerList.$.userSceneCnt': -1} }
+  )
   data.children.map((childId) => {
-    deleteCand(managedData, childId);
+    deleteData(managedData, childId);
   }) 
 };
 
-// mocked back-end response 
-const getFromServer = (managedData, id) => {
-  return of(managedData[id]);
-};
+const deleteCnt = (managedData, id) => {
+  let cnt = -1;
+  const data = managedData[id];
+  data.children.map((childId) => {
+    cnt += deleteCnt(managedData, childId);
+  }) 
+  return cnt;
+}
 
-
-router.get('/', check, async (req,res) => {
+router.post('/', check, async (req,res) => {
   let gamePlaying = req.isMember ? req.user.gamePlaying : req.session.gamePlaying;
   if (!req.user) {
     return res.status(400).json({ success: false, msg: "Can't find user" });
@@ -78,17 +83,21 @@ router.get('/', check, async (req,res) => {
     const sceneList = gamePlaying.sceneIdList;
     const sceneId = sceneList[sceneList.length-1];
 
-    const sceneData = await Scene.findOne({ _id: mongoose.Types.ObjectId(sceneId)});
+    const sceneData = await Scene.findOne(
+      { _id: mongoose.Types.ObjectId(sceneId)},
+      {cutList:1, isEnding:1, prevSceneId:1, _id:0}
+    );
+
     if (sceneList.length > 1){
       const prevSceneId = sceneList[sceneList.length-2];
-      const newTreeData = new TreeData(setTreeDate (gameId, req.user._id, sceneId, sceneData, sceneList[sceneList.length-2]));
+      const newTreeData = new TreeData(setTreeData (gameId, req.user._id, sceneId, sceneData, sceneList[sceneList.length-2]));
       await TreeData.updateOne(
         {gameId: gameId, sceneId: prevSceneId},
         {$push: {children: newTreeData._id.toString()}}
         );
       await newTreeData.save();
     } else {
-      const newTreeData = new TreeData(setTreeDate (gameId, req.user._id, sceneId, sceneData, "rootNode"));
+      const newTreeData = new TreeData(setTreeData (gameId, req.user._id, sceneId, sceneData, "rootNode"));
       await Game.updateOne(
         {_id: gameId},
         {first_node: newTreeData._id.toString()}
@@ -103,24 +112,19 @@ router.get('/', check, async (req,res) => {
 })
 
 
-router.post('/', async (req,res) => {
+router.get('/:gameId', async (req,res) => {
   try{
-    const gameId = req.body.gameId;
+    const {gameId} = req.params;
     const rawData = await TreeData.find({gameId: gameId});
     const game = await Game.findOne( {_id: gameId}, {_id: 0, first_node:1} );
     const firstNodeId = game.first_node;
-    const data = {};
-    for (let i=0; i<rawData.length; i++){
-      data = { ...data, [rawData[i]._id]: rawData[i]}
-    } 
-    let treeData; 
-    getRecursive(data, firstNodeId).subscribe(d=> { treeData=d; })
-    return res.status(200).json({success: true, treeData: treeData});
+    return res.status(200).json({success: true, rawData, firstNodeId});
   } catch (err) {
     console.log(err)
     return res.json({ success: false, err })
   }
 })
+
 
 router.delete("/:sceneId/:gameId", async (req,res) => {
   try{
@@ -132,24 +136,38 @@ router.delete("/:sceneId/:gameId", async (req,res) => {
     const targetNodeId = targetNode._id.toString();
     const parentSceneId = targetNode.parentSceneId;
 
-    await TreeData.updateOne(
-      { gameId: gameId, sceneId: parentSceneId},
-      {$pull : {children: targetNodeId}}
-    )
-
     if(firstNodeId === targetNodeId){
       return res.status(200).json({success: true, messege: "첫 씬은 삭제할 수 없습니다."});
     }
+
+    const {prevSceneId} = await Scene.findOne( 
+      {_id: mongoose.Types.ObjectId(sceneId)}, 
+      {_id: 0, prevSceneId: 1}
+    ); 
+
     const data = {};
     for (let i=0; i<rawData.length; i++){
       data = { ...data, [rawData[i]._id]: rawData[i]}
     } 
-    console.log(data, targetNodeId) 
-    deleteCand(data, targetNodeId);
+    const cnt = deleteCnt(data, targetNodeId);
+    deleteData(data, targetNodeId);
+
+    await Game.updateOne( 
+      {_id: gameId},
+      {$inc: {sceneCnt: cnt}}
+    ); 
+    await Scene.updateOne(
+      {_id: prevSceneId},
+      {$pull: {nextList: {sceneId: mongoose.Types.ObjectId(sceneId)}}}
+    );
+    await TreeData.updateOne(
+      { gameId: gameId, sceneId: parentSceneId},
+      {$pull : {children: targetNodeId}}
+    );
     return res.status(200).json({success: true, messege: "성공적으로 삭제되었습니다."});
   } catch (err) {
     console.log(err);
-    return res.json({ success: false, err });
+    return res.status(400).json({ success: false, err });
   }
 })
 

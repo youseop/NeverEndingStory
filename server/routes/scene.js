@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const { Scene, CharacterCut } = require("../models/Scene");
+const {TreeData} = require("../models/TreeData");
 const { Game } = require("../models/Game");
 const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
@@ -344,5 +345,163 @@ router.get("/:sceneId", async (req, res) => {
     }
 });
 
+function setTreeData (gameId, userId, sceneId, cutList, parentSceneId ) {
+  return ({
+    gameId: gameId, 
+    userId: userId,  
+    sceneId: sceneId, 
+    name: "node",
+    characterName: cutList[0].name, 
+    firstScript: cutList[0].script, 
+    isEnding: false,
+    parentSceneId: parentSceneId,
+    children: []
+  })
+}
+
+async function setTree (gameId, sceneId, cutList, prevSceneId ,userId) {
+  try{
+    const newTreeData = new TreeData(setTreeData (gameId, userId, sceneId, cutList, prevSceneId));
+    await TreeData.updateOne(
+      {gameId: gameId, sceneId: prevSceneId},
+      {$push: {children: newTreeData._id.toString()}}
+    );
+    await newTreeData.save();
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ success: false });
+  }
+}
+
+router.post('/makedummy', async (req, res) => {
+  try {
+    const {prevSceneId, userId, gameId} = req.body;
+    const isFirst = 0;
+    const status = 1;
+    const isEnding = false;
+    const depth = 2; //? default
+    const cutList = [];
+    for (let i = 0; i < 3; i++) {
+      cutList.push({
+        cutEffect: 0,
+        characterList: [],
+        background: "https://i.imgur.com/UwPKBqQ.jpg",
+        script: `dummyscript_youseop _${i}`,
+        name: `dummyname_youseop _${i}`,
+        bgm:{
+          name: "",
+          music: ""
+        },
+        sound:{
+          name: "",
+          music: ""
+        }
+      })
+    } 
+
+    const dumyScene = new Scene({
+      gameId: mongoose.Types.ObjectId(gameId),
+      writer: mongoose.Types.ObjectId(userId),
+      depth: depth,
+      sceneTmp: {
+        emptyNum: 4,
+        certificationList: []
+      },
+      prevSceneId: mongoose.Types.ObjectId(prevSceneId),
+      nextList: [],
+      cutList: cutList,
+      status: status,
+      isFirst: isFirst,
+      isEnding: isEnding,
+    })
+    const sceneId = dumyScene._id.toString()
+
+    setTree (gameId, sceneId, cutList, prevSceneId, userId);
+
+    const view = new View({
+      objectId: dumyScene._id,
+      userList: {
+        [userId]: (new Date()).getTime()
+      } 
+    })
+    view.save((err) =>{
+      if(err) return res.json({success: false, err})
+    });
+
+    const thumbsUp = new ThumbsUp({
+        objectId: dumyScene._id,
+        userList: {
+            [userId]: false
+        }
+    })
+    await thumbsUp.save();
+    await dumyScene.save();
+
+    const prev_scene = await Scene.findOne({ _id: prevSceneId })
+    const game = await Game.findOne({ _id: gameId });
+    const user = await User.findOne({ _id: userId });
+    let flag = true;
+    for (let i=0; i<game.contributerList.length; i++){
+      if (game.contributerList[i].userId.toString() === userId){
+        flag = false;
+        game.contributerList[i].sceneIdList.push(sceneId);
+        game.contributerList[i].userSceneCnt += 1;
+        break;
+      }
+    }
+
+    if(flag){
+      game.contributerList.push({
+        userId: user._id,
+        userSceneCnt: 1,
+        sceneIdList: [sceneId]
+      })
+    }
+    game.sceneCnt += 1;
+    game.save((err) => {
+      if (err) return res.json({ success: false, err })
+    })
+
+    flag = true;
+    for (let i=0; i<user.contributedSceneList.length; i++){
+      if (user.contributedSceneList[i].gameId.toString() === gameId){
+        flag = false;
+        user.contributedSceneList[i].sceneList.push({
+          sceneId: sceneId,
+          depth: 2
+        });
+        user.contributedSceneList[i].sceneCnt += 1;
+        break;
+      }
+    }
+
+    if(flag){
+        user.contributedSceneList.push({
+        gameId: game._id,
+        title: game.title,
+        thumbnail: game.thumbnail,
+        description: game.description.substring(0,15),
+        sceneCnt: 1,
+        sceneList: [{
+          sceneId: sceneId,
+          depth: 2
+        }]
+      })
+    }
+    await user.save();
+    const insertScene = {
+      sceneId: sceneId,
+      script: "",
+    }
+
+    prev_scene.nextList.push(insertScene)
+    await prev_scene.save();
+    return res.status(200).json({ success: true })
+  }
+  catch (err) {
+    console.log(err)
+    return res.status(400).json({ success: false, err })
+  }
+})
 
 module.exports = router;

@@ -453,12 +453,11 @@ router.post("/detail", (req, res) => {
 
 router.post("/rank", async (req, res) => {
     try {
-        const gameDetail = await Game.findOne({ _id: req.body.gameId })
+        const gameDetail = await Game.findOne(
+            { _id: req.body.gameId },
+            {_id: 0, sceneCnt: 1, contributerList: 1}
+        )
         const contributerList = gameDetail.contributerList;
-        let totalSceneCnt = 0;
-        for (let i = 0; i < contributerList.length; i++) {
-            totalSceneCnt += contributerList[i].userSceneCnt;
-        }
         const contributerCnt = contributerList.length;
         contributerList.sort(function (a, b) {
             return a.userSceneCnt < b.userSceneCnt ? 1 : a.userSceneCnt > b.userSceneCnt ? -1 : 0;
@@ -480,7 +479,7 @@ router.post("/rank", async (req, res) => {
             success: true,
             topRank: topRank,
             contributerCnt: contributerCnt,
-            totalSceneCnt: totalSceneCnt
+            totalSceneCnt: gameDetail.sceneCnt
         });
     } catch (err) {
         console.log(err);

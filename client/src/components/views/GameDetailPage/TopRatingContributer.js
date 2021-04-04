@@ -10,6 +10,9 @@ function TopRatingContributer(props) {
   const topRateContributer_SceneCnt = contributerList[0]?.userSceneCnt;
 
   const topContributer = contributerList.map((contributer, index) => {
+      if(contributer.userSceneCnt === 0){
+          return;
+      }
       const contributeRatio = Math.round(contributer.userSceneCnt/totalSceneCnt*100);
       const fakeRatio = Math.round(contributer.userSceneCnt/topRateContributer_SceneCnt*100);
       return (
