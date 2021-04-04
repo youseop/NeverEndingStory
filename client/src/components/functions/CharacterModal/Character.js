@@ -120,10 +120,12 @@ function Character(props) {
   }
 
   const onClickDelete = () => {
+    // event.stopPropagation();
     dispatch(popCharacter({ oldArray: CharacterList, index: charSchema.index }));
   }
 
   const onClickOrder = (num) => {
+    // event.stopPropagation();
     dispatch(orderCharacter({ oldArray: CharacterList, index: charSchema.index, num }));
   }
   return (

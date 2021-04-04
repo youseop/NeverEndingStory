@@ -27,7 +27,6 @@
 .ending_modal_choice_btn{
     width:270px;
     height:270px;
-    opacity: 0.8;
     cursor: pointer;
     text-align: center;
     font-size: 25px;
@@ -36,9 +35,9 @@
     background-color: white;
     border: 1px solid white;
 }
-.ending_modal_choice_btn:hover{
-    opacity: 1.0;
-    border: 1px solid black;
+.ending_modal_choice_container:hover .ending_modal_description{
+    opacity: 1;
+    transition: all 0.3s ease-in-out ;
 }
 
 .ending_modal_warning_sign{
@@ -48,4 +47,39 @@
 .ending_modal_warning_textarea{
     font-family: Noto Sans KR;
     font-weight: bold;
+}
+
+.ending_modal_choice_container{
+    position:relative;
+}
+
+.ending_modal_description{
+    position: absolute;
+    top: 0px;
+    height: 270px;
+    width: 270px;
+    padding: 40px;
+    background-color: black;
+    color: white;
+    opacity: 0;
+    transition: all 0.3s ease-in-out ;
+}
+
+.short_cut_box {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 14%;
+    width: 20%;
+    background-color: rgb(196, 196, 196);
+}
+.short_cut_box_start {
+    height: 24%;
+    width: 5%;
+    border-top: rgba(0, 0, 0, 0) 100px;
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+    background-color: rgb(196, 196, 196);
+    
 }

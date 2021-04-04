@@ -48,13 +48,31 @@ const EndingModal = ({ isEnding, visible, setEndingModalState, onSubmit_saveScen
             <div
                 className="ending_modal_choice_btn"
                 onClick={choice}>
-                <Relay_Icon />
+                <div className="ending_modal_choice_container">
+                    <Relay_Icon />
+                    <div className="ending_modal_description">
+                        다른 사람이 해당
+                        컷에서 계속 이야
+                        기를 진행해 나갈
+                        수 있게 선택지가
+                        네 개 제공됩니다
+                    </div>
+                </div>
                 선택의 길
             </div>
             <div
-                className="ending_modal_ending_btn"
+                className="ending_modal_choice_btn"
                 onClick={() => setWarning(true)}>
-                <Ending_Icon />
+                <div className="ending_modal_choice_container">
+                    <Ending_Icon />
+                    <div className="ending_modal_description">
+                        해당 컷이 이야기
+                        의 마지막이 되며
+                        다른 사용자는 더
+                        이상 이야기를 덧
+                        붙일 수 없습니다
+                    </div>
+                </div>
                 엔딩
             </div>
             <Modal
@@ -77,7 +95,7 @@ const EndingModal = ({ isEnding, visible, setEndingModalState, onSubmit_saveScen
                     <h3>따라서 이 씬에 연결되는 씬을 더이상 생성할 수 없습니다.</h3>
                 </div>
             </Modal>
-        </Modal>
+        </Modal >
     )
 }
 

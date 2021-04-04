@@ -31,6 +31,15 @@ export const TextBlock = (props) => {
                             }
                             </div>
                         </div>
+                        {!isTyping &&
+                            <>
+                                <div className="short_cut_box_start">
+                                </div>
+                                <div className="short_cut_box">
+                                    Enter
+                                </div>
+                            </>
+                        }
                     </div>
                 </div>
                 :
@@ -44,7 +53,7 @@ export const TextBlock = (props) => {
         }
     </>
 };
- 
+
 // 선택지 display
 export const TextBlockChoice = (props) => {
 
