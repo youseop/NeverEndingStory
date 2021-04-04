@@ -1,10 +1,10 @@
-import { Button } from 'antd';
+import { FileAddOutlined } from '@ant-design/icons';
 import React, { memo } from "react";
 import "./BgmSideBar.css";
 
 import BgmFile from "./BgmFile";
 
-function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, setMakeModalState }) {
+function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, onEssetModal, isFirstScene, isWriter }) {
 
     const renderBgm = gameDetail.bgm.map((bgm, index) => {
         return (
@@ -23,6 +23,15 @@ function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, setMakeModalState }) {
     return (
         <div className="modal">
             <div className="bgmSidebar__container">
+                {gameDetail?.bgm?.length === 0 &&
+                    <div>
+                        {(isFirstScene.current || isWriter) &&
+                            <FileAddOutlined onClick={onEssetModal}
+                                className="sidebar_add_esset_btn" />
+                        }
+                        <div className="sidebar_line" />
+                    </div>
+                }
                 <div>{renderBgm}</div>
             </div>
         </div>

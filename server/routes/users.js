@@ -5,6 +5,7 @@ const { User } = require("../models/User");
 
 const { sanitize } = require("../lib/sanitize")
 const { auth } = require("../middleware/auth");
+const { check } = require("../middleware/check");
 
 //=================================
 //             User
@@ -28,6 +29,12 @@ router.post("/register", (req, res) => {
 
     const user = new User(req.body);
     user.nickname = sanitize(user.nickname)
+    if (req.session.gamePlaying) {
+        user.gamePlaying = req.session.gamePlaying
+    }
+    if (req.session.gameHistory) {
+        user.gameHistory = req.session.gameHistory
+    }
     user.save((err, doc) => {
         if (err) return res.json({ success: false, err });
         return res.status(200).json({
@@ -71,18 +78,25 @@ router.get("/logout", auth, (req, res) => {
     });
 });
 
-router.get("/playing-list/clear", auth, async (req, res) => {
+router.get("/playing-list/clear", check, async (req, res) => {
     try {
+        let user;
+        if (req.isMember) {
+            user = await User.findOne({ _id: req.user._id })
+        }
+        else {
+            user = req.session
+        }
         //isMaking이었으면 만들던 씬 정리해야함...(똑같은 짓 하는거 찾아보고 합치기 가능하면 합치기)
-        const user = await User.findOne({ _id: req.user._id })
-        const prevOfLastScene =user.gamePlaying.isMaking && user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length-2];
+        const prevOfLastScene = user.gamePlaying.isMaking && user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 2];
         user.gamePlaying = {
             ...user.gamePlaying,
             isMaking: false,
             sceneIdList: user.gamePlaying.sceneIdList.splice(0, 1)
         };
-
-        user.save()
+        if (req.isMember) {
+            user.save()
+        }
         return res.json({
             success: true,
             teleportSceneId: user.gamePlaying.sceneIdList[0],
@@ -95,11 +109,19 @@ router.get("/playing-list/clear", auth, async (req, res) => {
 })
 
 
-router.get("/playing-list/pop", auth, async (req, res) => {
+router.get("/playing-list/pop", check, async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.user._id })
+        let user;
+        if (req.isMember) {
+            user = await User.findOne({ _id: req.user._id })
+        }
+        else {
+            user = req.session
+        }
         user.gamePlaying.sceneIdList.pop()
-        user.save()
+        if (req.isMember) {
+            user.save()
+        }
         return res.json({
             success: true,
             teleportSceneId: user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1]
@@ -141,14 +163,12 @@ router.post("/email-check", (req, res) => {
     });
 });
 
-router.post("/game-visit", (req, res) => {
-    User.findOne({ _id: req.body.userId },{gamePlaying: 1}, (err, gamePlaying) => {
-        if (err) return res.json({ success: false, err });
-        return res.status(200).send({
-            success: true,
-            gamePlaying: gamePlaying,
-        });
-    })  
+router.post("/game-visit", check, (req, res) => {
+    let gamePlaying = req.isMember ? req.user.gamePlaying : req.session.gamePlaying;
+    return res.status(200).send({
+        success: true,
+        gamePlaying,
+    })
 })
-
+ 
 module.exports = router;

@@ -44,6 +44,26 @@
             "date": 1617166751645,
             "name": "log/2021-03-31-smart-push.log",
             "hash": "9d4251b0c8d96b94de7a65b1e4d1ee2b"
+        },
+        {
+            "date": 1617205421238,
+            "name": "log\\2021-04-01-smart-push.log",
+            "hash": "f7f0c30c64406b54aec3e9a05845db5c"
+        },
+        {
+            "date": 1617308507330,
+            "name": "log\\2021-04-02-smart-push.log",
+            "hash": "46e89f5eebd6ccb2455f6b6b7c02c93e"
+        },
+        {
+            "date": 1617345140721,
+            "name": "log/2021-04-02-smart-push.log",
+            "hash": "26b6abf893810b2e9fa2f1957ee85254"
+        },
+        {
+            "date": 1617525612396,
+            "name": "log/2021-04-04-smart-push.log",
+            "hash": "e16acfa9a204a3b2512792bb95fff3aa"
         }
     ]
 }

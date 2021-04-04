@@ -4,12 +4,12 @@ import Character from "../../functions/CharacterModal/Character";
 
 import "./CharacterBlock.css";
 const CharacterBlock = (props) => {
-  const { onRemove_character, GameCharacterList } = props;
+  const { GameCharacterList } = props;
 
   const CharacterList = useSelector(state => state.character.CharacterList)
   const characterblocks = CharacterList?.map((charSchema, index) => {
     return (
-      <div key={index}>
+      <div key={charSchema.index}>
         <Character
           GameCharacterList={GameCharacterList}
           index={index}
