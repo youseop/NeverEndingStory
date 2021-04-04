@@ -20,7 +20,7 @@ const multer = require("multer");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 const { objCmp } = require("../lib/object");
-const {sanitize} = require("../lib/sanitize")
+const { sanitize } = require("../lib/sanitize")
 
 const { log } = require("winston");
 const { View } = require("../models/View");
@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, "uploads/");
+            cb(null, "uploads\\");
         },
         filename: (req, file, cb) => {
             cb(null, `${Date.now()}_${file.originalname}`);
@@ -98,7 +98,7 @@ router.post("/uploadgameInfo", (req, res) => {
 
             gameDetail.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
-            const userId = req.body.creator;
+                const userId = req.body.creator;
                 const view = new View({
                     objectId: req.body.gameId,
                     userList: {
@@ -111,12 +111,12 @@ router.post("/uploadgameInfo", (req, res) => {
                         [userId]: false
                     }
                 })
-                thumbsUp.save((err) =>{
-                    if(err) return res.json({success: false, err});
-        });
+                thumbsUp.save((err) => {
+                    if (err) return res.json({ success: false, err });
+                });
                 view.save((err, doc) => {
-                    if(err) return res.json({success: false, err})
-            return  res.status(200).json({success: true, gameDetail})
+                    if (err) return res.json({ success: false, err })
+                    return res.status(200).json({ success: true, gameDetail })
                 })
             });
         });
@@ -125,7 +125,7 @@ router.post("/uploadgameInfo", (req, res) => {
 router.post("/uploadgameframe", (req, res) => {
     const game = new Game();
     game.title = sanitize(req.body.title);
-    if(req.body.description)
+    if (req.body.description)
         game.description = sanitize(req.body.description);
     game.save((err, game) => {
         if (err) return res.json({ success: false, err });
@@ -187,7 +187,7 @@ router.post("/putCharDB", (req, res) => {
             if (err) return res.status(400).send(err);
 
             gameDetail.character = req.body.character;
-            for(let i = 0 ; i <gameDetail.character.length;i++){
+            for (let i = 0; i < gameDetail.character.length; i++) {
                 gameDetail.character[i].name = sanitize(gameDetail.character[i].name)
                 gameDetail.character[i].description = sanitize(gameDetail.character[i].description)
             }
@@ -241,8 +241,8 @@ router.get("/gamestart/:id", auth, async (req, res) => {
         // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감. 
         if (user.gamePlaying.gameId && objCmp(user.gamePlaying.gameId, gameId)) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
-        if (objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
-        user.gamePlaying.sceneIdList.pop();
+            if (objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
+                user.gamePlaying.sceneIdList.pop();
                 user.gamePlaying.isMaking = false;
                 user.save((err) => {
                     if (err) {
@@ -286,7 +286,7 @@ router.get("/gamestart/:id", auth, async (req, res) => {
                 user.save((err) => {
                     if (err) { console.log(err); return res.status(400).json({ success: false }) }
                 });
-                
+
                 return res
                     .status(200)
                     .json({
@@ -337,7 +337,7 @@ const validateScene = async (gamePlaying, sceneId, gameId, isMaking) => {
 };
 
 router.post("/scene/validate", auth, async (req, res) => {
-    const { user, body: {sceneId, gameId, isMaking} } = req;
+    const { user, body: { sceneId, gameId, isMaking } } = req;
     const val = await validateScene(user.gamePlaying, sceneId, gameId, isMaking);
     if (!val) {
         return res.status(200).json({ success: false });
@@ -443,21 +443,21 @@ router.post("/getgamedetail", (req, res) => {
 });
 
 router.post("/rank", async (req, res) => {
-    try{
+    try {
         const gameDetail = await Game.findOne({ _id: req.body.gameId })
         const contributerList = gameDetail.contributerList;
         let totalSceneCnt = 0;
-        for (let i=0; i<contributerList.length; i++){
+        for (let i = 0; i < contributerList.length; i++) {
             totalSceneCnt += contributerList[i].userSceneCnt;
         }
         const contributerCnt = contributerList.length;
-        contributerList.sort(function (a,b) {
-            return a.userSceneCnt < b.userSceneCnt ? 1 : a.userSceneCnt > b.userSceneCnt ? -1: 0;
+        contributerList.sort(function (a, b) {
+            return a.userSceneCnt < b.userSceneCnt ? 1 : a.userSceneCnt > b.userSceneCnt ? -1 : 0;
         });
-        const topRank = contributerList.slice(0,5);
+        const topRank = contributerList.slice(0, 5);
 
-        for(let i=0; i<topRank.length; i++){
-            const user = await User.findOne({_id: mongoose.Types.ObjectId(topRank[i].userId)})
+        for (let i = 0; i < topRank.length; i++) {
+            const user = await User.findOne({ _id: mongoose.Types.ObjectId(topRank[i].userId) })
             topRank[i] = {
                 nickname: user.nickname,
                 email: user.email,
@@ -467,8 +467,8 @@ router.post("/rank", async (req, res) => {
                 sceneIdList: topRank[i].sceneIdList
             }
         }
-        return res.status(200).json({ 
-            success: true, 
+        return res.status(200).json({
+            success: true,
             topRank: topRank,
             contributerCnt: contributerCnt,
             totalSceneCnt: totalSceneCnt
@@ -486,18 +486,18 @@ router.get("/simple-scene-info", auth, async (req, res) => {
     }
     try {
         const sceneList = req.user.gamePlaying.sceneIdList
-        let sceneinfo=[]
-        for(let i=0; i <sceneList.length; i++){
+        let sceneinfo = []
+        for (let i = 0; i < sceneList.length; i++) {
             const sceneId = mongoose.Types.ObjectId(sceneList[i]);
             const scene = await Scene.findOne({ _id: sceneId });
             sceneinfo.push({
-                sceneId : sceneId,
-                background : scene?.cutList[scene.cutList.length-1]?.background,
-                name : scene?.cutList[scene.cutList.length-1]?.name,
-                script : scene?.cutList[scene.cutList.length-1]?.script,
+                sceneId: sceneId,
+                background: scene?.cutList[scene.cutList.length - 1]?.background,
+                name: scene?.cutList[scene.cutList.length - 1]?.name,
+                script: scene?.cutList[scene.cutList.length - 1]?.script,
             });
         }
-        return res.status(200).json({sceneinfo:sceneinfo})
+        return res.status(200).json({ sceneinfo: sceneinfo })
     } catch (err) {
         console.log(err);
         return res.status(400).json({ success: false });

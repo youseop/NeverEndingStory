@@ -4,7 +4,7 @@ import { Modal } from "antd";
 import "./EndingModal.css";
 
 const EndingModal = ({ isEnding, visible, setEndingModalState, onSubmit_saveScene }) => {
-    const [warning, setWarning] = useState(0);
+    const [warning, setWarning] = useState(false);
 
     const ending = (event) => {
         event.preventDefault();

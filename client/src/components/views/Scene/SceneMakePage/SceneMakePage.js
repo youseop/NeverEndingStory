@@ -33,6 +33,7 @@ import SceneEndingPage from "../SceneEndingPage/SceneEndingPage";
 
 
 let bgm_audio = new Audio();
+bgm_audio.loop = true;
 let sound_audio = new Audio();
 const SceneMakePage = (props) => {
     // window.addEventListener('beforeunload', (event) => {
@@ -41,7 +42,6 @@ const SceneMakePage = (props) => {
     //     // Chrome에서는 returnValue 설정이 필요함
     //     event.returnValue = '';
     // });
-
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
@@ -252,16 +252,27 @@ const SceneMakePage = (props) => {
         }
     };
 
-    const onClick_bgm_player = () => {
-        if (bgm_audio.paused) bgm_audio.play();
+    const onClick_bgm_box = () => {
+        if (bgm_audio.src && bgm_audio.paused) bgm_audio.play();
         else bgm_audio.pause();
         setReload(reload => reload + 1)
+        onClick_bgm();
     };
 
-    const onClick_sound_player = () => {
-        if (sound_audio.paused) sound_audio.play();
+    useEffect(() => {
+        bgm_audio.addEventListener('ended', () => setReload(reload => reload + 1));
+        sound_audio.addEventListener('ended', () => setReload(reload => reload + 1));
+        return () => {
+            bgm_audio.addEventListener('ended', () => setReload(reload => reload + 1));
+            sound_audio.removeEventListener('ended', () => setReload(reload => reload + 1));
+        };
+    }, []);
+
+    const onClick_sound_box = () => {
+        if (sound_audio.src && sound_audio.paused) sound_audio.play();
         else sound_audio.pause();
         setReload(reload => reload + 1)
+        onClick_sound();
     };
 
     function handleEnter(event) {
@@ -269,6 +280,8 @@ const SceneMakePage = (props) => {
             scriptElement.current.focus();
         else if (scriptElement.current === document.activeElement)
             onSubmit_nextCut(event);
+        else
+            scriptElement.current.focus();
     }
 
     function handleTab(event) {
@@ -314,8 +327,11 @@ const SceneMakePage = (props) => {
         setBgmFile(CutList[index]?.bgm);
         setSoundFile(CutList[index]?.sound);
         if (CutList[index]?.bgm.music) {
-            bgm_audio.src = CutList[index]?.bgm.music;
-            bgm_audio.play();
+            let cutIdx = bgm_audio.src.lastIndexOf("/") + 1;
+            if (bgm_audio.src.substr(cutIdx) !== CutList[index].bgm.music.substr(cutIdx)) {
+                bgm_audio.src = CutList[index]?.bgm.music;
+                bgm_audio.play();
+            }
         } else {
             bgm_audio.pause();
         }
@@ -333,6 +349,23 @@ const SceneMakePage = (props) => {
             index
         }))
     };
+
+    const onClick_plusBtn = (event) => {
+        event.preventDefault();
+        if (CutList.length + 1 === 24) {
+            message.warning("생성 가능한 Cut이 5개 남았습니다.");
+        }
+
+        saveCut();
+
+        setScript("");
+        if (CutNumber === CutList.length)
+            setCutNumber(CutList.length + 1);
+        else
+            setCutNumber(CutList.length);
+        scriptElement.current.focus()
+    };
+
 
     const onSubmit_nextCut = (event) => {
         event.preventDefault();
@@ -352,7 +385,6 @@ const SceneMakePage = (props) => {
         }
         setCutNumber((oldNumber) => oldNumber + 1);
         scriptElement.current.focus()
-
     };
 
     const onRemove_cut = () => {
@@ -549,6 +581,7 @@ const SceneMakePage = (props) => {
                         setBgmFile={setBgmFile}
                         onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
+                        setReload={setReload}
                     />
                 </div>
                 <div ref={soundSidebarElement} style={{ display: 'none' }}>
@@ -558,6 +591,7 @@ const SceneMakePage = (props) => {
                         setSoundFile={setSoundFile}
                         onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
+                        setReload={setReload}
                     />
                 </div>
             </div>)
@@ -597,7 +631,6 @@ const SceneMakePage = (props) => {
     }
 
     useEffect(() => {
-
         return () => {
             bgm_audio.pause();
             sound_audio.pause();
@@ -626,6 +659,7 @@ const SceneMakePage = (props) => {
                 setHover={setHover}
                 EmptyCutList={EmptyCutList}
                 saveCut={saveCut}
+                onClick_plusBtn={onClick_plusBtn}
             />
 
             <div className="scene">
@@ -661,50 +695,54 @@ const SceneMakePage = (props) => {
                     <div className="scene__sound_container">
                         {BgmFile?.name ? (
                             <div
-                                onClick={onClick_bgm_player}
+                                className="scene__sound_box"
+                                onClick={onClick_bgm_box}
                             >
                                 {
                                     BgmFile.name && bgm_audio.paused &&
                                     <PlayCircleOutlined
-                                        style={{ fontSize: "20px" }} />
+                                        className="scene__sound_icon" />
                                 }
                                 {
                                     BgmFile.name && !bgm_audio.paused &&
                                     <PauseCircleOutlined
-                                        style={{ fontSize: "20px" }} />
+                                        className="scene__sound_icon" />
                                 }
-                                <div className="scene__sound_name">{BgmFile.name}</div>
+                                <div className="scene__sound_bgm_name">{BgmFile.name}</div>
                             </div>
                         ) : (
-                            <div>
+                            <div
+                                onClick={onClick_bgm_box}
+                            >
                                 <StopOutlined
-                                    style={{ fontSize: "20px" }}
-                                />
-                                <div className="scene__sound_name">BGM</div>
+                                    className="scene__sound_icon" />
+                                <div className="scene__sound_bgm_name">BGM</div>
                             </div>
                         )}
                         {SoundFile?.name ? (
                             <div
-                                onClick={onClick_sound_player}
+                                className="scene__sound_box"
+                                onClick={onClick_sound_box}
                             >
                                 {
                                     SoundFile.name && sound_audio.paused &&
                                     <PlayCircleOutlined
-                                        style={{ fontSize: "20px" }} />
+                                        className="scene__sound_icon" />
                                 }
                                 {
                                     SoundFile.name && !sound_audio.paused &&
                                     <PauseCircleOutlined
-                                        style={{ fontSize: "20px" }} />
+                                        className="scene__sound_icon" />
                                 }
-                                <div className="scene__sound_name">{SoundFile.name}</div>
+                                <div className="scene__sound_sound_name">{SoundFile.name}</div>
                             </div>
                         ) : (
-                            <div>
+                            <div
+                                onClick={onClick_sound_box}
+                            >
                                 <StopOutlined
-                                    style={{ fontSize: "20px" }}
-                                />
-                                <div className="scene__sound_name">Sound</div>
+                                    className="scene__sound_icon" />
+                                <div className="scene__sound_sound_name">Sound</div>
                             </div>
                         )}
                     </div>
@@ -803,9 +841,6 @@ const SceneMakePage = (props) => {
                 <div className="scene_btn"
                     onClick={onClick_script}
                 >효과음 음소거</div>
-                <div className="scene_btn"
-                    onClick={onClick_script}
-                >테마 선택</div>
             </div>
 
             <UploadModal

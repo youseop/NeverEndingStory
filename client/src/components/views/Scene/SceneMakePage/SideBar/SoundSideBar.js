@@ -4,7 +4,7 @@ import "./BgmSideBar.css";
 
 import SoundFile from "./SoundFile";
 
-function SoundSideBar({ gameDetail, sound_audio, setSoundFile, onEssetModal, isFirstScene }) {
+function SoundSideBar({ gameDetail, sound_audio, setSoundFile, onEssetModal, isFirstScene, setReload }) {
 
     const renderSound = gameDetail.sound.map((sound, index) => {
         return (
@@ -15,6 +15,7 @@ function SoundSideBar({ gameDetail, sound_audio, setSoundFile, onEssetModal, isF
                     sound_audio={sound_audio}
                     sound={sound}
                     setSoundFile={setSoundFile}
+                    setReload={setReload}
                 />
                 {/* <img src={`${sound.image}`} alt="img"/> */}
             </div>
