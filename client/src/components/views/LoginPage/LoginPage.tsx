@@ -58,6 +58,11 @@ function LoginPage(props: LoginPageProps) {
       })
 
   }
+  const fail = () =>{
+    props.history.replace({
+      pathname:`/login`
+    })
+  }
 
   return (
     <Formik
@@ -202,7 +207,7 @@ function LoginPage(props: LoginPageProps) {
                       <KakaoLogin
                         token={config.KAKAO_KEY}
                         onSuccess={(login) => { handleSubmit(); return kakaoLogin(login) }}
-                        // onFailure={}
+                        onFail={()=>{fail()}}
                         className="login-button login-kakao">
                         카카오 로그인
 
