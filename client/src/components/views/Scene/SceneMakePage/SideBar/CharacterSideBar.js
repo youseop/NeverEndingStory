@@ -9,8 +9,8 @@ function CharacterSideBar({ gameDetail, setName, onEssetModal, isFirstScene, isW
   const renderCharacter = gameDetail.character.map((character, index) => {
     return(
       <CharacterImg
-        character={character}
         key={index}
+        character={character}
         index={index}
         setName={setName} />
     )

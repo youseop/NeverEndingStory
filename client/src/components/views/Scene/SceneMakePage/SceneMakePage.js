@@ -664,6 +664,7 @@ const SceneMakePage = (props) => {
                     <CharacterBlock
                         GameCharacterList={gameDetail.character}
                         onRemovech_aracter={onRemove_character}
+                        setName={setName}
                     />
                     {SidBar_script && Script && (
                         <TextBlock

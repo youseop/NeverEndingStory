@@ -10,7 +10,7 @@ import { faAngleDoubleDown, faAngleDown, faTimes, faTimesCircle } from '@fortawe
 function Character(props) {
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
-  const { charSchema, GameCharacterList, index } = props;
+  const { charSchema, GameCharacterList, index, setName } = props;
   const element_X = useRef();
   const element_Y = useRef();
   const [clicked, setClicked] = useState(true);
@@ -80,6 +80,7 @@ function Character(props) {
     drag = true;
     dispatch(selectCharacter({ ...GameCharacterList[charSchema.index], index: charSchema.index }));
     setZIndex(97);
+    setName(GameCharacterList[charSchema.index]?.name);
   }
 
   const onMouseUp = (e) => {
