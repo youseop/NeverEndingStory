@@ -104,11 +104,16 @@ export function orderCharacter(dataToSubmit) {
   const { oldArray, index, num } = dataToSubmit;
   const lastIndex = oldArray.length-1;
   let request = [...oldArray]
-  for (let i = 1; i < lastIndex+1; i++) {
+  for (let i = 0; i < lastIndex; i++) {
     if (request[i].index === index) {
       if(num === "double") {
         [request[i], request[0]] = [request[0], request[i]]
-      } else {
+      } else if(num==="pull") {
+        const tmp = request[i];
+        request.splice(i, 1);
+        request.push(tmp)
+      }
+       else {
         [request[i], request[i-1]] = [request[i-1], request[i]]
       }
     }

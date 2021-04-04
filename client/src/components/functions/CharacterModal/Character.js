@@ -1,4 +1,4 @@
-import React, { useRef, memo, useState, useEffect } from 'react';
+import React, { useRef, memo, useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import './Character.css';
@@ -11,26 +11,18 @@ import { useConstructor } from '../useConstructor';
 function Character(props) {
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
-  const { charSchema, GameCharacterList, index } = props;
+  const { charSchema, GameCharacterList, index, setName } = props;
   const element_X = useRef();
   const element_Y = useRef();
-
   const [clicked, setClicked] = useState(true);
   const [moving, setMoving] = useState(true);
   const [sizing, setSizing] = useState(false);
   const [imgWidth, setImgWidth] = useState(0);
+  const [zIndex,setZIndex] = useState(96);
 
   const background_element = document.getElementById("backgroundImg_container");
   let pivot = [0, 0];
   let drag = false;
-
-  useConstructor(() => setImgWidth(document.getElementById(`${index}`)?.offsetWidth));
-  useEffect(() => {
-    
-    return () => {
-      setImgWidth(document.getElementById(`${index}`)?.offsetWidth)
-    }
-  }, [CharacterList])
   function mouseMove(e) {
     const page = [e.pageX, e.pageY];
     if (drag && clicked && moving) {
@@ -88,12 +80,14 @@ function Character(props) {
     pivot = [e.pageX, e.pageY];
     drag = true;
     dispatch(selectCharacter({ ...GameCharacterList[charSchema.index], index: charSchema.index }));
+    setZIndex(97);
+    setName(GameCharacterList[charSchema.index]?.name);
   }
 
   const onMouseUp = (e) => {
     removeAllEvents(background_element, "mousemove");
     removeAllEvents(background_element, "mouseup");
-    dispatch(updateCharacter({
+    const dataToSubmit = {
       oldArray: CharacterList,
       data: {
         posX: Number(element_X.current.style.left.replace(/%/g, '')),
@@ -101,12 +95,18 @@ function Character(props) {
         size: Number(element_Y.current.style.height.replace(/%/g, ''))
       },
       index
-    }))
-
+    };
+    dispatch(updateCharacter(dataToSubmit))
     pivot = [e.pageX, e.pageY];
     drag = false;
     setSizing(false);
     setMoving(true);
+    setZIndex(96)
+    dispatch(orderCharacter({ 
+      oldArray: CharacterList ? updateCharacter(dataToSubmit).payload : null, 
+      index: charSchema.index, 
+      num: "pull" 
+    }))
   }
 
   const onMouseOver = (e) => {
@@ -131,7 +131,7 @@ function Character(props) {
       ref={element_X}
       key={index}
       className="CharacterBlock"
-      style={{ left: `${charSchema.posX}%` }}
+      style={{ left: `${charSchema.posX}%`, zIndex: `${zIndex}` }}
     >
       <div
         ref={element_Y}

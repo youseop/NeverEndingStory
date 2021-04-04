@@ -100,4 +100,5 @@
 }
 .banner-main2-button:hover {
   background: #db4747;
+  cursor: pointer;
 }

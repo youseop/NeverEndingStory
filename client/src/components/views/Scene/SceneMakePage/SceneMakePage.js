@@ -143,7 +143,7 @@ const SceneMakePage = (props) => {
                 // console.log("get scene ERROR");
                 props.history.replace("/");
                 return;
-            } 
+            }
             // 임시저장한 녀석
 
             setWriter(scene.writer);
@@ -503,7 +503,7 @@ const SceneMakePage = (props) => {
         }
     };
     const onDeleteScene = () => {
-        if(window.confirm("게임 제작을 취소하시겠습니까?")){
+        if (window.confirm("게임 제작을 취소하시겠습니까?")) {
             Axios.delete('/api/scene', {
                 data: {
                     gameId: gameId,
@@ -656,7 +656,7 @@ const SceneMakePage = (props) => {
 
     const gameInfoIndex = useRef({ tab: 1, page: 0 })
 
-    if(gameDetail?.title){
+    if (gameDetail?.title) {
         return (
             <div className="wrapper">
                 <div className="title">
@@ -681,7 +681,7 @@ const SceneMakePage = (props) => {
                     EmptyCutList={EmptyCutList}
                     saveCut={saveCut}
                 />
-    
+
                 <div className="scene">
                     <div className="scene left-arrow"
                         onClick={onLeft}>
@@ -692,7 +692,7 @@ const SceneMakePage = (props) => {
                         id="backgroundImg_container"
                         style={{ overflow: "hidden" }}
                     >
-    
+
                         <img
                             className="backgroundImg"
                             // id="backgroundImg_container"
@@ -702,6 +702,7 @@ const SceneMakePage = (props) => {
                         <CharacterBlock
                             GameCharacterList={gameDetail.character}
                             onRemovech_aracter={onRemove_character}
+                            setName={setName}
                         />
                         {SidBar_script && Script && (
                             <TextBlock
@@ -730,13 +731,13 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_name">{BgmFile.name}</div>
                                 </div>
                             ) : (
-                                    <div>
-                                        <StopOutlined
-                                            style={{ fontSize: "20px" }}
-                                        />
-                                        <div className="scene__sound_name">BGM</div>
-                                    </div>
-                                )}
+                                <div>
+                                    <StopOutlined
+                                        style={{ fontSize: "20px" }}
+                                    />
+                                    <div className="scene__sound_name">BGM</div>
+                                </div>
+                            )}
                             {SoundFile?.name ? (
                                 <div
                                     onClick={onClick_sound_player}
@@ -754,22 +755,22 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_name">{SoundFile.name}</div>
                                 </div>
                             ) : (
-                                    <div>
-                                        <StopOutlined
-                                            style={{ fontSize: "20px" }}
-                                        />
-                                        <div className="scene__sound_name">Sound</div>
-                                    </div>
-                                )}
+                                <div>
+                                    <StopOutlined
+                                        style={{ fontSize: "20px" }}
+                                    />
+                                    <div className="scene__sound_name">Sound</div>
+                                </div>
+                            )}
                         </div>
                     </div>
-    
+
                     <div className="scene right-arrow"
                         onClick={CutNumber < 29 && onSubmit_nextCut}>
                         <SVG src="arrow_1" width="50" height="50" color={CutNumber < 29 ? "#F5F5F5" : "black"} />
                     </div>
                 </div>
-    
+
                 <div className="scene__btn_top">
                     {(isFirstScene.current || isWriter) &&
                         <div className="scene_btn scene_btn_red"
@@ -778,8 +779,8 @@ const SceneMakePage = (props) => {
                         </div>
                     }
                     <div className="scene_btn"
-                        onClick ={onDeleteScene}>
-                            제작 취소
+                        onClick={onDeleteScene}>
+                        제작 취소
                     </div>
                     <div className="scene_btn"
                         onClick={onTmpSave}>
@@ -789,7 +790,7 @@ const SceneMakePage = (props) => {
                         onClick={onCompleteModal}>
                         완료
                     </div>
-    
+
                 </div>
                 <div className="btn_side">
                     <div
@@ -800,7 +801,7 @@ const SceneMakePage = (props) => {
                         className={sideTabIndex.current === 2 ? "scene_side_btn light" : "scene_side_btn"}
                         onClick={onClick_background}
                     >배경</div>
-    
+
                     <div
                         className={sideTabIndex.current === 3 ? "scene_side_btn light" : "scene_side_btn"}
                         onClick={onClick_bgm}>
@@ -865,7 +866,7 @@ const SceneMakePage = (props) => {
                         onClick={onClick_script}
                     >테마 선택</div>
                 </div>
-    
+
                 <UploadModal
                     gameId={gameId}
                     visible={uploadModalState}
@@ -894,8 +895,8 @@ const SceneMakePage = (props) => {
             </div>
         )
     }
-    else{
-        return(
+    else {
+        return (
             <LoadingPage />
         )
     }
