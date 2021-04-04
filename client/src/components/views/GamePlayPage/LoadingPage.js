@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./LoadingPage.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
+import { faSpinner, faTruckLoading } from "@fortawesome/free-solid-svg-icons";
 const LOADING_TYPE = {
   NONE: 0,
   BASIC: 1,
@@ -22,7 +24,10 @@ const LoadingPage = () => {
           style={{ animation: "1.5s ease-out 0s 1 basic" }}
           className="loading_page"
         >
-          <div className="loading_icon">loading.....</div>
+          <FontAwesomeIcon
+              icon={faSpinner}
+              className="loading_icon"
+            />
         </div>
       );
     case LOADING_TYPE.SLIDELEFT:

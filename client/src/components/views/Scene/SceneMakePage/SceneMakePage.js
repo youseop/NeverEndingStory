@@ -34,6 +34,7 @@ import SceneEndingPage from "../SceneEndingPage/SceneEndingPage";
 
 let bgm_audio = new Audio();
 let sound_audio = new Audio();
+const config = require('../../../../config/key')
 const SceneMakePage = (props) => {
     // window.addEventListener('beforeunload', (event) => {
     //     // 표준에 따라 기본 동작 방지
@@ -74,7 +75,7 @@ const SceneMakePage = (props) => {
 
     const [SidBar_script, setSidBar_script] = useState(true);
 
-    const [BackgroundImg, setBackgroundImg] = useState(`http://${LOCAL_HOST}:5000/uploads/defaultBackground.png`);
+    const [BackgroundImg, setBackgroundImg] = useState(`${config.STORAGE}/uploads/defaultBackground.png`);
     const [Script, setScript] = useState("");
     const [Name, setName] = useState("");
     const [writer, setWriter] = useState(null);

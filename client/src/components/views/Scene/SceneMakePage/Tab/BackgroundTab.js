@@ -7,7 +7,6 @@ import "./BackgroundTab.css";
 function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList, isInfo }) {
     const [backgroundCards, setBackgroundCards] = useState("");
     const [blobCards, setBlobCards] = useState("");
-    console.log(123213, isInfo)
     const onDrop = (files) => {
         for (var i = 0; i < files.length; i++) {
             if (!files[i]) {

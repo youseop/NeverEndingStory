@@ -15,7 +15,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   const user = useSelector((state) => state.user);
   const emptyNum = useSelector((state) => state.sync.emptyNum);
   const [visible, setVisible] = useState(false);
-  const [formRef, setFormRef] = useState(null);
+  const [sceneTitle, setSceneTitle] = useState("");
   const [remainTime, setRemainTime] = useState(0);
   const [decreaseTimer, setDecreaseTimer] = useState(null);
   const [validated, setValidated] = useState(1)
@@ -26,48 +26,39 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
 
 
   // const user_id = user.userData.isAuth ? user.userData._id.toString() : "";
-  let user_id;
-  const handleCreate = () => {
-    formRef.validateFields(async (err, values) => {
-      clearTimeout(decreaseTimer);
-      if (createFlag.current || err || !visible) {
-        return;
-      }
+  const handleCreate = async () => {
+    clearTimeout(decreaseTimer);
+    if (createFlag.current || !visible) {
+      return;
+    }
 
-      createFlag.current = true;
-      const data = {
+    createFlag.current = true;
+    const data = {
+      gameId: game_id,
+      prevSceneId: scene_id,
+      isFirst: 0,
+      sceneDepth: scene_depth + 1,
+      title: sceneTitle,
+    };
+    const res = await axios.post("/api/scene/create", data);
+    //! socket 보내서 서버에서 scene Cache x exp 업데이트
+
+    socket.emit("created_choice", { sceneId: scene_id, userId: user.userData._id, exp: res.data.exp })
+    // tmp scene create
+
+    setVisible(false);
+
+    //! 껍데기 넣을 때, 서버에서 exp 같이 넣기 (별개로 or 같이 해도됨 시간 동기화가 되는 좋은 방법이 있다면)
+    history.replace({
+      pathname: `/scene/make`,
+      state: {
         gameId: game_id,
-        prevSceneId: scene_id,
-        isFirst: 0,
-        sceneDepth: scene_depth + 1,
-        title: values.title,
-      };
-      const res = await axios.post("/api/scene/create", data);
-      //! socket 보내서 서버에서 scene Cache x exp 업데이트
-
-      socket.emit("created_choice", { sceneId: scene_id, userId: user.us, exp: res.data.exp })
-      // tmp scene create
-
-      formRef.resetFields();
-      setVisible(false);
-
-      //! 껍데기 넣을 때, 서버에서 exp 같이 넣기 (별개로 or 같이 해도됨 시간 동기화가 되는 좋은 방법이 있다면)
-      history.replace({
-        pathname: `/scene/make`,
-        state: {
-          gameId: game_id,
-          sceneId: res.data.sceneId
-        }
-      });
-
+        sceneId: res.data.sceneId
+      }
     });
+
   };
 
-  const saveFormRef = useCallback((node) => {
-    if (node !== null) {
-      setFormRef(node);
-    }
-  }, []);
   let decTimer;
 
   const onClickHandler = () => {
@@ -87,7 +78,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
       }, 970);
       setDecreaseTimer(decTimer);
 
-      socket.emit("empty_num_decrease", { scene_id, user_id });
+      socket.emit("empty_num_decrease", { scene_id, user_id: user.userData._id});
       setVisible(true);
     }
     else {
@@ -96,7 +87,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   }
 
   const cancelHandler = () => {
-    socket.emit("empty_num_increase", { scene_id, user_id });
+    socket.emit("empty_num_increase", { scene_id, user_id : user.userData._id });
     clearTimeout(decreaseTimer);
     setVisible(false);
     dispatch(gamePause(false));
@@ -129,6 +120,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
       clearTimeout(decreaseTimer);
     }
   }, [dino]);
+
   return (
     <>
       {
@@ -143,11 +135,11 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
         </>
       }
       <ModalForm
-        ref={saveFormRef}
         visible={visible}
         onCancel={cancelHandler}
         onCreate={createHandler}
         remainTime={remainTime}
+        setSceneTitle={setSceneTitle}
       />
     </>
   );

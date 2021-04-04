@@ -117,8 +117,8 @@ a:visited:hover {
         opacity: 0%;
     }
     to {
-        background-color: black;
-        opacity: 100%;
+        background-color: black !important;
+        opacity: 100% !important;
     }
 }
 

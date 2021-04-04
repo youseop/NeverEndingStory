@@ -1,6 +1,6 @@
 import { LOADINGPAGE_GAMEPLAY, PAUSE_GAMEPLAY } from "../_actions/types";
 
-const initialState = { loadingType: 0, isPause: false };
+const initialState = { loadingType: 1, isPause: false };
 
 export default function (state = initialState, action) {
   switch (action.type) {
