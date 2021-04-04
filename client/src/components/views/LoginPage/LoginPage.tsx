@@ -206,7 +206,7 @@ function LoginPage(props: LoginPageProps) {
                     </button>
                       <KakaoLogin
                         token={config.KAKAO_KEY}
-                        onSuccess={(login) => { handleSubmit(); return kakaoLogin(login) }}
+                        onSuccess={(login) => kakaoLogin(login) }
                         onFail={()=>{fail()}}
                         className="login-button login-kakao">
                         카카오 로그인

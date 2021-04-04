@@ -662,13 +662,15 @@ const SceneMakePage = (props) => {
                 <div className="title">
                     <div>
                         <span>[{gameDetail?.title}]</span>
-                        <Clock format={`HH:mm:ss`} date={expTime} timezone={`Asia/Seoul`}></Clock>
+                        {!isFirstScene &&
+                            <Clock format={`HH:mm:ss`} date={expTime} timezone={`Asia/Seoul`}></Clock>
+                        }
                     </div>
                     {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
                     <div
                         className="title-btn"
                         onClick={() => setEssetModalState(5)}>
-                        상세정보
+                        상세정보 
                     </div>
                 </div>
                 <SceneBox
