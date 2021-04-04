@@ -55,13 +55,23 @@ function RegisterPage(props: RegisterPageProps) {
       })}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(async () => {
-          let flag
+          let emailFlag
           await Axios.post("/api/users/email-check", { email: values.email }).then((response) => {
-            flag = response.data.usedEmail
+            emailFlag = response.data.usedEmail
           })
 
-          if (flag) {
-            alert("이미 사용 중인 아이디 입니다.")
+          if (emailFlag) {
+            alert("이미 사용 중인 이메일 입니다.")
+            setSubmitting(false);
+            return
+          }
+          let nicknameFlag
+          await Axios.post("/api/users/nickname-check", { nickname: values.nickname }).then((response) => {
+            nicknameFlag = response.data.usedNickname
+          })
+
+          if (nicknameFlag) {
+            alert("이미 사용 중인 닉네임 입니다.")
             setSubmitting(false);
             return
           }
@@ -76,7 +86,7 @@ function RegisterPage(props: RegisterPageProps) {
 
           await dispatch(registerUser(dataToSubmit)).then((response: RegisterUser) => {
             if (response.payload.success) {
-              props.history.push("/login");
+              props.history.push("/");
             } else {
               alert(response.payload.err.errmsg)
             }

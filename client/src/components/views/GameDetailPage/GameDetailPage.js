@@ -119,7 +119,7 @@ function GameDetailPage(props) {
     }, [user])
 
     function onClick_thumbsUp() {
-        if (user && user.userData) {
+        if (user.userData?.isAuth) {
             // ((state) => state+1);
             const variable = {
                 userId: user.userData._id,
@@ -131,6 +131,9 @@ function GameDetailPage(props) {
                     setThumbsUpClicked(response.data.isClicked);
                 }
             })
+        }
+        else{
+            message.error("로그인이 필요합니다.")
         }
     }
     if(totalSceneCnt){

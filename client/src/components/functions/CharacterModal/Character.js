@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { popCharacter, selectCharacter, updateCharacter, orderCharacter } from '../../../_actions/characterSelected_actions';
 import { addEvent, removeAllEvents } from '../handleEventListener';
 import { faAngleDoubleDown, faAngleDown, faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { useConstructor } from '../useConstructor';
 
 function Character(props) {
   const dispatch = useDispatch();
@@ -160,7 +161,7 @@ function Character(props) {
               className="bttn btn_character_Doubledown"
               style={{ left: `${imgWidth - 34}px` }}
               onClick={() => { onClickOrder("double") }}
-            />
+            /> 
             <FontAwesomeIcon
               icon={faAngleDown}
               className="bttn btn_character_down"

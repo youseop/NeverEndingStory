@@ -6,7 +6,9 @@ import * as Yup from "yup";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import { useDispatch } from "react-redux";
 import "./LoginPage.css";
-
+import KakaoLogin from "react-kakao-login"
+import Axios from "axios";
+const config = require("../../../config/key")
 interface LoginPageProps {
   history: {
     replace: Function;
@@ -21,11 +23,10 @@ interface LoginUser {
   }
   type: string;
 }
-
+ 
 function LoginPage(props: LoginPageProps) {
-  const dispatch:any = useDispatch();
+  const dispatch: any = useDispatch();
   const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
-
   const [formErrorMessage, setFormErrorMessage] = useState("");
   const [rememberMe, setRememberMe] = useState(rememberMeChecked);
 
@@ -36,6 +37,27 @@ function LoginPage(props: LoginPageProps) {
   const initialEmail = localStorage.getItem("rememberMe")
     ? localStorage.getItem("rememberMe")!
     : undefined;
+
+  const kakaoLogin = (login : any) => {
+    Axios.post('/api/passport/kakao/oauth', {profile : login.profile})
+      .then((res: any) => {
+        if (res.data.success) {
+          if (res.data.newUser) {
+            props.history.replace({
+              pathname: `/passport/register`,
+              state: {
+                snsId: login.profile.id,
+                snsProvider: "kakao",
+              }
+            })
+          }
+          else {
+            props.history.replace("/");
+          }
+        }
+      })
+
+  }
 
   return (
     <Formik
@@ -176,6 +198,24 @@ function LoginPage(props: LoginPageProps) {
                     >
                       로그인
                     </button>
+                    <KakaoLogin
+                      token={config.KAKAO_KEY}
+                      onSuccess={kakaoLogin}
+                      // onFailure={}
+                      className="login-button login-kakao">
+                      카카오 로그인
+
+                    </KakaoLogin>
+                      {/* <button
+                        type="submit"
+                        className="login-button login-kakao"
+                        disabled={isSubmitting}
+                        // onClick={() => {
+                        //   console.log("SUBMIT");
+                        //   return kakaoLogin()
+                        // }}
+                      >
+                    </button> */}
                   </div>
 
                 </Form.Item>

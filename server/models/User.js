@@ -24,6 +24,12 @@ const userSchema = mongoose.Schema({
         type: String,
         minglength: 5
     },
+    snsId:{
+        type: Number,
+    },
+    snsProvider:{
+        type: String
+    },
     role: {
         type: Number,
         default: 0
