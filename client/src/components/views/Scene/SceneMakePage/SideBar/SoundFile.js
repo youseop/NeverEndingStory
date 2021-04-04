@@ -5,8 +5,9 @@ function SoundFile({ sound_audio, sound, setSoundFile, setReload }) {
     let cutIdx = sound_audio.src.lastIndexOf("/") + 1;
     let sound_uri = decodeURI(sound_audio.src.substr(cutIdx))
     const onClick_music = () => {
-        if (!sound_audio.paused && sound_uri === sound.music.substr(cutIdx)) {
-            sound_audio.pause();
+        if (sound_uri === sound.music.substr(cutIdx)) {
+            sound_audio.src = "";
+            setSoundFile("");
         } else {
             sound_audio.src = sound.music;
             sound_audio.play();
@@ -18,8 +19,7 @@ function SoundFile({ sound_audio, sound, setSoundFile, setReload }) {
 
     return (
         <div
-            className={sound_uri === sound.music.substr(cutIdx) ?
-                "bgmSidebar_box playing" : "bgmSidebar_box wait"}
+            className={`bgmSidebar_box ${sound_uri === sound.music.substr(cutIdx)}`}
             onClick={onClick_music}
         >
             {sound.name}

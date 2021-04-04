@@ -6,12 +6,8 @@ function BgmFile({ bgm_audio, bgm, setBgmFile, setReload }) {
     let bgm_uri = decodeURI(bgm_audio.src.substr(cutIdx))
     const onClick_music = () => {
         if (bgm_uri === bgm.music.substr(cutIdx)) {
-            if (bgm_audio.paused) {
-                bgm_audio.src = ""
-                setBgmFile("");
-            }
-            else
-                bgm_audio.pause();
+            bgm_audio.src = ""
+            setBgmFile("");
         } else {
             bgm_audio.src = bgm.music;
             bgm_audio.play();

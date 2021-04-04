@@ -30,6 +30,7 @@ import { TextBlock } from "../../GamePlayPage/TextBlock";
 import { MS_PER_HR } from "../../../App"
 import moment from "moment";
 import SceneEndingPage from "../SceneEndingPage/SceneEndingPage";
+import VolumeController from "./VolumeController"
 
 
 let bgm_audio = new Audio();
@@ -637,7 +638,13 @@ const SceneMakePage = (props) => {
         };
     }, []);
 
-    const gameInfoIndex = useRef({ tab: 1, page: 0 })
+    const [bgmVolume, setBgmVolume] = useState(0.5)
+    const [bgmMuted, setBgmMuted] = useState(false)
+    const tempBgmVolume = useRef(0.5)
+
+    const [soundVolume, setSoundVolume] = useState(0.5)
+    const [soundMuted, setSoundMuted] = useState(false)
+    const tempSoundVolume = useRef(0.5)
 
     return (
         <div className="wrapper">
@@ -660,6 +667,7 @@ const SceneMakePage = (props) => {
                 EmptyCutList={EmptyCutList}
                 saveCut={saveCut}
                 onClick_plusBtn={onClick_plusBtn}
+                onRemove_cut={onRemove_cut}
             />
 
             <div className="scene">
@@ -749,7 +757,7 @@ const SceneMakePage = (props) => {
                 </div>
 
                 <div className="scene right-arrow"
-                    onClick={CutNumber < 29 && onSubmit_nextCut}>
+                    onClick={onSubmit_nextCut}>
                     <SVG src="arrow_1" width="50" height="50" color={CutNumber < 29 ? "#F5F5F5" : "black"} />
                 </div>
             </div>
@@ -825,22 +833,28 @@ const SceneMakePage = (props) => {
                 />
             </div>
             <div className="options">
-                <div className="scene_btn"
-                    onClick={onRemove_cut}>
-                    컷 삭제
+                <div className="scenemake_volume">
+                    <div className="scenemake_volume_text">배경음</div>
+                    <VolumeController
+                        audio={bgm_audio}
+                        volume={bgmVolume}
+                        setVolume={setBgmVolume}
+                        muted={bgmMuted}
+                        setMuted={setBgmMuted}
+                        tempVolume={tempBgmVolume}
+                    />
                 </div>
-                {/* <div className="scene_btn"
-                    onClick={onClick_script}
-                >On/Off</div>
-                <div className="scene_btn"
-                    onClick={onClick_script}
-                >Preview</div> */}
-                <div className="scene_btn"
-                    onClick={onClick_script}
-                >배경음 음소거</div>
-                <div className="scene_btn"
-                    onClick={onClick_script}
-                >효과음 음소거</div>
+                <div className="scenemake_volume">
+                    <div className="scenemake_volume_text">효과음</div>
+                    <VolumeController
+                        audio={sound_audio}
+                        volume={soundVolume}
+                        setVolume={setSoundVolume}
+                        muted={soundMuted}
+                        setMuted={setSoundMuted}
+                        tempVolume={tempSoundVolume}
+                    />
+                </div>
             </div>
 
             <UploadModal
@@ -865,7 +879,6 @@ const SceneMakePage = (props) => {
                     tag={essetModalState}
                     setTag={setEssetModalState}
                     setReload={setReload}
-                    gameInfoIndex={gameInfoIndex}
                 />
             }
         </div>

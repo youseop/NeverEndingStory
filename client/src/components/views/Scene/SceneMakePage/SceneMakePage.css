@@ -79,6 +79,20 @@
 .sceneBox_cutnumber.max{
     background-color: #FFE86F;
 }
+.sceneBox_del_btn{
+    text-align: center;
+    width: 80px;
+    padding:0px 5px 0px 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Noto Sans KR;    
+    background-color: #DDDDDD;
+    border: 1px solid rgba(70, 70, 70, 0.26);
+    border-radius: 8px;
+    cursor:default;
+}
 .scene {    
     grid-row: 3 /span 2;
     grid-column:1 / span 4;    
@@ -405,9 +419,26 @@
     background-color: #EEEEEE;
 }
 .options{
+    all:unset;
+    width:520px;
+    margin-top: 12px;
     grid-row: 5;
     grid-column: 3/ span 2;
     justify-content: flex-end;
+    display: inline-flex;
+}
+.scenemake_volume{
+    margin-right: 20px;
+}
+.scenemake_volume_text{
+    position: absolute;
+    text-align: center;
+    width:50px;
+    top:640px;
+    color:#DDDDDD;
+    font-family: Noto Sans KR;
+    font-size: 15px;
+    cursor:default;
 }
 
 .sideBar {

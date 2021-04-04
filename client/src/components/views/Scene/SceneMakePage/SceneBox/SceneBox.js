@@ -6,7 +6,7 @@ import './SceneBox.css';
 
 function SceneBox(props) {
     const { CutList, CutNumber, displayCut, setCutNumber,
-        Hover, setHover, EmptyCutList, saveCut, onClick_plusBtn } = props;
+        Hover, setHover, EmptyCutList, saveCut, onClick_plusBtn, onRemove_cut } = props;
 
     const onClick_GotoCut = (index) => {
         if (CutNumber > 29) {
@@ -66,9 +66,12 @@ function SceneBox(props) {
     return (
         <div className="sceneBox">
             <div className={((CutList.length) === 30 || (CutNumber + 1) === 30) ?
-                "sceneBox_cutnumber max" : "sceneBox_cutnumber"}>{CutNumber + 1}/30</div>
+                "sceneBox_cutnumber max" : "sceneBox_cutnumber"}>
+                {CutNumber - CutList.length === 0 || CutNumber - CutList.length === -1 ?
+                    `${CutNumber + 1}/30` : `${CutNumber + 1}/${CutList.length}`}</div>
             {display_SceneBox}
             {display_EmptyBox}
+            <div className="sceneBox_del_btn" onClick={onRemove_cut}>컷 삭제</div>
             {/* <Switch
                 checked={Hover}
                 checkedChildren={CutNumber}
