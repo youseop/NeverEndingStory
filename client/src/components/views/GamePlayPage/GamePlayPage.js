@@ -287,7 +287,7 @@ const ProductScreen = (props) => {
           dispatch(gameLoadingPage(0));
           dispatch(gameLoadingPage(6));
         } else {
-          message.error("Scene 정보가 없습니다.");
+          message.error("잘못된 접근입니다. 한 ID로는 하나의 스토리만을 진행해주세요.");
           props.history.replace(`/game/${gameId}`);
         }
       }
