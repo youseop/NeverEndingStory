@@ -14,7 +14,7 @@ function TextAnimation({ cut_script, setIsTyping }) {
     const [text, { skip }] = useWindupString(
         cut_script,
         {
-            pace: () => 200,
+            pace: () => 100,
             onFinished: () => {
                 if(voice)
                     voice.pause()

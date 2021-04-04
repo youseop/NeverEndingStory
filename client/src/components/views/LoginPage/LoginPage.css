@@ -77,4 +77,5 @@
 }
 .login-button:hover{
   background: rgb(76, 181, 251);
+  cursor: pointer;
 }
