@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef, createRef } from "react"
+import React, { useEffect, useState } from "react"
 import { NewGameButton } from "./LandingPage_buttons";
 import ContactUs from "../Footer/ContactUs"
+import { SVG } from "../../svg/icon";
 import "./LandingPage_banners.css"
 
 interface Props_type {
@@ -15,6 +16,7 @@ export function Banner_main({ replace }: Props_type) {
   const [IsModalVisible, setIsModalVisible] = useState(false);
 
   const slideRef = React.createRef<HTMLDivElement>();
+  const arrowRef = React.createRef<HTMLDivElement>();
 
   const stopBanner = () => {
     if (TimerID) {
@@ -24,13 +26,17 @@ export function Banner_main({ replace }: Props_type) {
 
   const startBanner = () => {
     const timer = setTimeout(() => {
-      if (CurrentSlide >= TOTAL_SLIDES - 1) {
-        setCurrentSlide(0)
-      } else {
-        setCurrentSlide(CurrentSlide + 1)
-      }
+      nextBanner()
     }, CurrentSlide == 0 ? 0 : 3000);
     setTimerID(timer)
+  }
+
+  const nextBanner = () => {
+    if (CurrentSlide >= TOTAL_SLIDES - 1) {
+      setCurrentSlide(0)
+    } else {
+      setCurrentSlide(CurrentSlide + 1)
+    }
   }
 
   useEffect(() => {
@@ -48,12 +54,21 @@ export function Banner_main({ replace }: Props_type) {
     }
   }, [CurrentSlide])
 
-  return (<div className="banner-container" ref={slideRef}
-    onMouseEnter={() => stopBanner()} onMouseLeave={() => startBanner()}>
-    <Banner_main1 replace={replace} />
-    <Banner_main2 isModalVisible={IsModalVisible} setIsModalVisible={setIsModalVisible} />
-    <Banner_main1 replace={replace} />
-  </div>);
+  return (
+    <div>
+      <div className="banner-container" ref={slideRef}
+        onMouseEnter={() => stopBanner()} onMouseLeave={() => startBanner()}>
+        <Banner_main1 replace={replace} />
+        <Banner_main2 isModalVisible={IsModalVisible} setIsModalVisible={setIsModalVisible} />
+        <Banner_main1 replace={replace} />
+      </div>
+      <div
+        className="banner-right-arrow"
+        ref={arrowRef}
+        onClick={() => { nextBanner(); }}>
+        <SVG src="arrow_1" width="100" height="100" color="#F5F5F5" />
+      </div>
+    </div>);
 }
 
 export function Banner_main1({ replace }: Props_type) {

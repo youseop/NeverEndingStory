@@ -11,6 +11,7 @@ export const PAUSE_GAMEPLAY = "pause_gamePlay"
 
 export const NAVBAR_CONTROL = "navbar_control";
 export const FOOTER_CONTROL = "footer_control";
+export const SEARCH_CONTROL = "search_control";
 
 export const SELECT_CHARACTER = "select_character";
 export const DETACH_CHARACTER = "detach_character";

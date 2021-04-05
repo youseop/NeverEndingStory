@@ -507,7 +507,6 @@ router.post("/rank", async (req, res) => {
 
 router.get("/simple-scene-info", check, async (req, res) => {
     
-    
     try {
         const gamePlaying = req.isMember ? req.user.gamePlaying : req.session.gamePlaying
         const sceneList = gamePlaying.sceneIdList
@@ -524,6 +523,17 @@ router.get("/simple-scene-info", check, async (req, res) => {
         }
         return res.status(200).json({ sceneinfo: sceneinfo })
     } catch (err) {
+        console.log(err);
+        return res.status(400).json({ success: false });
+    }
+});
+
+
+router.post("/search-game", async (req, res) => {
+    try {
+        const game = await Game.find({ title: { $regex: req.body.input, $options: 'm' } }, ["title", "category","thumbnail"] )
+        return res.status(200).json({ success: true, games: game });
+    }catch (err) {
         console.log(err);
         return res.status(400).json({ success: false });
     }

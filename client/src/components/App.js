@@ -18,7 +18,8 @@ import GamePlayPage from "./views/GamePlayPage/GamePlayPage.js";
 import SceneMakePage from "./views/Scene/SceneMakePage/SceneMakePage";
 
 import NavBar from "./views/NavBar/NavBar.tsx";
-import Footer from "./views/Footer/Footer.tsx"
+import Footer from "./views/Footer/Footer.tsx";
+import SearchResult from "./views/NavBar/Sections/SearchResult.tsx"
 import { LOCAL_HOST } from './Config';
 import './App.css';
 import PortraitWarning from './views/Etc/PortraitWarning';
@@ -60,6 +61,7 @@ function App() {
           <Route path="/gameplay" component={isPortrait? PortraitWarning: Valid(Auth(GamePlayPage, null))} />
           <Route exact path="/scene/make" component={isPortrait? PortraitWarning: Valid(Auth(SceneMakePage, true))} />
         </Switch>
+        < SearchResult/>
       </div>
       <Footer />
     </Suspense>

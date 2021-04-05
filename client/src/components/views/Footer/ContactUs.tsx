@@ -61,7 +61,7 @@ export default function ContactUs(props: any) {
     return (
         <div>
             <Modal
-                title="문의하기"
+                title="Contact us"
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}

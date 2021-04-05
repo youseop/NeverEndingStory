@@ -22,7 +22,7 @@ function RightMenu(props) {
     });
   };
 
-  if (!user.userData){
+  if (!user.userData) {
     return null;
   } else if (!user.userData.isAuth) {
     return (

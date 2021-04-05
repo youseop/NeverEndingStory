@@ -4,6 +4,7 @@ import RightMenu from "./Sections/RightMenu";
 import { Drawer, Button, Icon } from "antd";
 import "./Sections/Navbar.css";
 import { useSelector } from "react-redux";
+import Search from "./Sections/Search";
 
 interface State_controlpage {
   controlpage: {
@@ -42,6 +43,7 @@ function NavBar() {
         <Link to="/">이어봐</Link>
       </div>
       <div className="menu__container">
+        <Search />
         <div className="menu_rigth">
           <RightMenu mode="horizontal" />
         </div>
