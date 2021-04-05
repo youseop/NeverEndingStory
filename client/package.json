@@ -26,6 +26,7 @@
     "http-proxy-middleware": "^1.0.3",
     "immer": "^1.10.0",
     "lodash": "^4.17.21",
+    "mongodb-client-encryption": "^1.2.2",
     "node-fetch": "^1.7.3",
     "npm": "^7.7.1",
     "react": "^16.8.6",

@@ -472,7 +472,7 @@ const SceneMakePage = (props) => {
                                 prevSceneId: response.data.scene.prevSceneId,
                                 sceneId: response.data.scene._id,
                                 title: response.data.scene.title,
-                                userId: user.userData._id.toString(),
+                                userId: user.userData._id?.toString(),
                             })
                             history.replace({
                                 pathname: `/gameplay`,
@@ -565,7 +565,7 @@ const SceneMakePage = (props) => {
             })
     }, [reload, gameId])
 
-    let isWriter = writer?.toString() === user.userData?._id.toString();
+    let isWriter = writer?.toString() === user.userData?._id?.toString();
     useEffect(() => {
         if (gameDetail.character) {
             const reload_Sidebar = (< div className="sideBar">
@@ -662,9 +662,9 @@ const SceneMakePage = (props) => {
                 <div className="title">
                     <div>
                         <span>[{gameDetail?.title}]</span>
-                        {!isFirstScene &&
+                        {/* {!isFirstScene.current &&
                             <Clock format={`HH:mm:ss`} date={expTime} timezone={`Asia/Seoul`}></Clock>
-                        }
+                        } */}
                     </div>
                     {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
                     <div

@@ -64,22 +64,3 @@
     opacity: 0;
     transition: all 0.3s ease-in-out ;
 }
-
-.short_cut_box {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    height: 14%;
-    width: 20%;
-    background-color: rgb(196, 196, 196);
-}
-.short_cut_box_start {
-    height: 24%;
-    width: 5%;
-    border-top: rgba(0, 0, 0, 0) 100px;
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-    background-color: rgb(196, 196, 196);
-    
-}
