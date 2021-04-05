@@ -16,3 +16,22 @@
     width:100px;
 }
 
+@media (max-width:767px){
+    .volumeController_container{
+        width:calc(150vh/9);
+        display: inline-flex;
+    
+    }
+    
+    .volumeController_icon_container{
+        all:unset;
+        margin-top :calc(5vh/9);
+        color: rgb(182, 182, 182);
+        padding: calc(5vh/9) calc(10vh/9);
+        cursor: pointer;
+    }
+    
+    .volumeController_slide{
+        width:calc(100vh/9);
+    }
+}

@@ -1,15 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
+.sceneMake_nav{
+
+}
+.sceneMake_footer{
+    background-color: #f05454;
+}
 .wrapper {
     width : 1440px;
-    height: 750px;
+    height: 720px;
     margin: auto;
 
     display: grid;
-    grid-template-columns: 50px 280px 520px 50px 50px 400px 90px;
-    grid-template-rows: 80px 45px 45px 400px 50px 120px;
-    /* background-color: #fff; */
-    /* color: #444; */
+    grid-template-columns: 50px 280px 520px 50px 50px 405px 85px;
+    grid-template-rows: 50px 45px 45px 400px 50px 120px;
 }
 
 .debug-box {
@@ -22,10 +26,8 @@
     align-items: center;
     justify-content: space-between;
     padding-right: 50px;
-
     grid-row:1;
     grid-column:1 / span 4;    
-    margin-top: 10px;   
     font-size:25px;
     padding-left: 50px;
     font-family: Noto Sans KR;
@@ -158,11 +160,10 @@
   
 .right-arrow{
     width: 50px;
-    padding-top:200px;    
+    padding-top:190px;    
     background-color: #222831;
     cursor: pointer;
-}
-  
+}  
 .right-arrow:hover{
     background-color: #333942;
 }
@@ -269,8 +270,7 @@
     grid-column: 6 /span 1;
     
     /* margin-right: 15px; */
-    margin-top: 35px;
-    margin-bottom: 15px;
+    padding: 10px 0px 10px 0px;
     display: inline-flex;
     justify-content: flex-end;
 }
@@ -434,7 +434,7 @@
     position: absolute;
     text-align: center;
     width:50px;
-    top:640px;
+    top:610px;
     color:#DDDDDD;
     font-family: Noto Sans KR;
     font-size: 15px;

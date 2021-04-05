@@ -94,7 +94,7 @@ export function Ending_Icon() {
 export function Logo_Icon() {// 1049 * 536 기본
   return (
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-      width="70px" height="35px" viewBox="0 0 1049 536" enableBackground="new 0 0 1049 536" xmlSpace="preserve">
+      width="10px" height="5px" viewBox="0 0 1049 536" enableBackground="new 0 0 1049 536" xmlSpace="preserve">
       <image id="image0" width="1049" height="536" x="0" y="0"
         xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBkAAAIYCAQAAACC+vzmAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
                                           AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZ

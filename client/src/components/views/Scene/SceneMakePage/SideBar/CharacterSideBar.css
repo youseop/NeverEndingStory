@@ -1,7 +1,8 @@
 .characterSidebar__container {
   all: unset;
   position: absolute;
-  top: 254px;
+  top: 214px;
+  padding-top:10px;
   width: 370px;
   height: 145px;
   /* background-color: darkgoldenrod; */
@@ -18,7 +19,7 @@
   cursor: pointer;
   overflow: hidden;
   position: relative;
-  margin: 8px 4px 8px 4px;
+  margin: 0px 2px 0px 4px;
   border-radius: 50%;
   border: 0.3px solid rgb(0, 0, 0, 0.4);
   background-color: #808080;
@@ -37,8 +38,8 @@
 }
 
 .characterSidebar_image_box {
-  width: 67px;
-  height: 67px;
+  width: 64px;
+  height: 64px;
 }
 
 .characterSidebar_image_width {
@@ -63,7 +64,7 @@
 
 .characterSidebar_line {
   position: absolute;
-  top: 410px;
+  top: 380px;
   width: 370px;
   margin-left: 15px;
   height: 2px;
@@ -86,7 +87,7 @@
 all:unset;
 z-index: 100;
 position: absolute;
-top:249px;
+top:219px;
 margin:25px 0px 0px 150px;
 width:100px;
 height:100px;
@@ -102,11 +103,11 @@ cursor: pointer;
   opacity: 1;
 }
 
-.sidebar_add_esset_btn_side {
+.charSidebar_add_esset_btn_side {
   all: unset;
   z-index: 0;
   position: absolute;
-  top: 239px;
+  top: 209px;
   margin: 0px 0px 0px 392px;
   padding: 60px 0px 0px 5px;
   width: 60px;
@@ -118,7 +119,27 @@ cursor: pointer;
   border-radius: 0px 10px 10px 0px;
 }
 
-.sidebar_add_esset_btn_side:hover {
+.charSidebar_add_esset_btn_side:hover {
+  color: black;
+}
+
+.sidebar_add_esset_btn_side{
+all: unset;
+  z-index: 0;
+  position: absolute;
+  top: 0px;
+  right:-52px;
+  padding: 60px 0px 0px 5px;
+  width: 60px;
+  height: 113px;
+  font-size: 50px;
+  /* opacity: 0.8; */
+  cursor: pointer;
+  background-color: #C4C4C4;
+  border-radius: 0px 10px 10px 0px;
+}
+
+.sidebar_add_esset_btn_side:hover{
   color: black;
 }
 

@@ -24,15 +24,12 @@ function BackgroundSideBar({ gameDetail, curImg, setBackgroundImg, onEssetModal,
   return (
     <div className="modal">
       <div className="backSidebar__container">
-        {gameDetail?.background?.length === 0 &&
-          <div>
-            {(isFirstScene.current || isWriter) &&
-              <FileAddOutlined onClick={onEssetModal}
-                className="sidebar_add_esset_btn" />
-            }
-            <div className="sidebar_line" />
-          </div>
+        {(isFirstScene.current || isWriter) &&
+          <FileAddOutlined onClick={onEssetModal}
+            className={gameDetail?.background?.length === 0 ?
+              "sidebar_add_esset_btn" : "sidebar_add_esset_btn_side"} />
         }
+        {gameDetail?.bgm?.length === 0 && <div className="sidebar_line" />}
         {renderBackground}
       </div>
     </div>

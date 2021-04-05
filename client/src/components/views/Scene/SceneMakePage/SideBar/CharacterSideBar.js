@@ -7,7 +7,7 @@ import './CharacterSideBar.css'
 function CharacterSideBar({ gameDetail, setName, onEssetModal, isFirstScene, isWriter }) {
 
   const renderCharacter = gameDetail.character.map((character, index) => {
-    return(
+    return (
       <CharacterImg
         key={index}
         character={character}
@@ -20,7 +20,7 @@ function CharacterSideBar({ gameDetail, setName, onEssetModal, isFirstScene, isW
     <div>
       {(isFirstScene.current || isWriter) &&
         <FileAddOutlined onClick={onEssetModal}
-          className={gameDetail?.character?.length === 0 ? "charSidebar_add_esset_btn" : "sidebar_add_esset_btn_side"} />
+          className={gameDetail?.character?.length === 0 ? "charSidebar_add_esset_btn" : "charSidebar_add_esset_btn_side"} />
       }
       <div className="characterSidebar__container">
         {renderCharacter}

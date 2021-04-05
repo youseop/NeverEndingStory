@@ -49,7 +49,7 @@ function App() {
   }
 
   useConstructor(async () => {
-    dispatch(auth()).then(()=>{
+    dispatch(auth()).then(() => {
       setloaded(true);
     })
   })
@@ -76,7 +76,7 @@ function App() {
             <Route path="/gameplay" component={isPortrait ? PortraitWarning : Valid(Auth(GamePlayPage, null))} />
             <Route exact path="/scene/make" component={isPortrait ? PortraitWarning : Valid(Auth(SceneMakePage, true))} />
           </Switch>
-          < SearchResult/>
+          < SearchResult />
         </div>
         <Footer />
       </Suspense>

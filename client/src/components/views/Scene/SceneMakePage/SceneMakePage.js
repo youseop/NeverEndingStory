@@ -26,6 +26,7 @@ import { socket } from "../../../App";
 import { PlayCircleOutlined, PauseCircleOutlined, StopOutlined } from '@ant-design/icons';
 import { detachCharacter, popCharacter, setCharacterList } from "../../../../_actions/characterSelected_actions";
 import "./SceneMakePage.css";
+import "./SceneMakeMobilePage.css";
 
 import { LOCAL_HOST } from "../../../Config";
 import { TextBlock } from "../../GamePlayPage/TextBlock";
@@ -45,6 +46,15 @@ const SceneMakePage = (props) => {
     //     // Chrome에서는 returnValue 설정이 필요함
     //     event.returnValue = '';
     // });
+
+    useEffect(() => {
+        const rootDom = document.getElementById("root");
+        const footer = rootDom.getElementsByClassName("footer-container");
+        footer.className = "sceneMake_footer";
+        if (footer[0])
+            footer[0].remove();
+    }, [])
+
     const TEXT_MAX_LENGTH = 50;
     const LIMIT_HR = 1;
     const LIMIT_TO_MS = (LIMIT_HR * 60) * 60 * 1000
@@ -115,7 +125,6 @@ const SceneMakePage = (props) => {
 
     let scene;
     useEffect(() => {
-        dispatch(navbarControl(false));
         dispatch(footerControl(false));
     }, [])
 
@@ -823,12 +832,12 @@ const SceneMakePage = (props) => {
                     </div>
                 </div>
                 <div className="scene__btn_top">
-                    {(isFirstScene.current || isWriter) &&
+                    {/* {(isFirstScene.current || isWriter) &&
                         <div className="scene_btn scene_btn_red"
                             onClick={onEssetModal}>
                             에셋 추가
                         </div>
-                    }
+                    } */}
                     <div className="scene_btn"
                         onClick={onDeleteScene}>
                         제작 취소
