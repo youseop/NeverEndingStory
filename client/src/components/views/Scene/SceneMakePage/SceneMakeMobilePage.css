@@ -186,45 +186,46 @@
         justify-content: flex-start;
         
       }
-      .scene__name_block {
-        all: unset;
-        font-size: calc(18vh/9);
-        height:calc(38vh/9);
-        width:calc(180vh/9);
-        font-weight: bold;
-        color: black;
-        flex-direction: row;
-        opacity: 0.95;
-        color : #444;
-        background-color: #BBBBBB;
-        padding: calc(3vh/9) calc(20vh/9) calc(0vh/9) calc(20vh/9);
-        border-radius: calc(2vh/9);
-      }  
+
+      .text_container {
+        z-index: 99;
+        background-color: rgba(0, 0, 0, 0.815);
+        color: rgb(255, 255, 255);
+        padding: 5%;
+        border-radius: 0.3vmin;
+        bottom: 5%;
+        height: 24%;
+        width: 100%;
+        position: absolute;
+    }
     
-      .scene__text_line {
-        height: calc(5vh/9);
-        opacity: 0.95;
-        background-color: #BBBBBB;
-      }
-      
-      .scene__text_block {
-        all: unset;
-        font-size: calc(18vh/9);
-        font-weight: bold;
-        height: 80%;
-        padding: calc(5vh/9);
-        border-radius: calc(2vh/9);
-        opacity: 0.7;
-        padding: calc(20vh/9) calc(30vh/9) calc(20vh/9) calc(30vh/9);
-        background-color: #DDDDDD;
-      }
+      .name_block {
+        font-size: 2vmin;
+        font-weight: 300;
+        padding: calc(0vh/9) 3%;
+        border: white solid calc(1vh/9);
+        border-radius: calc(5vh/9);
+        background-color: rgba(0, 0, 0, 0.815);
+        top: -1.2vmin;
+        left:10%;
+        position: absolute;
+    }
     
-      .scene__script_btn{
-          z-index: 99;
-          position: absolute;
-          color:black;
-          cursor: pointer;
-      }
+    .name_block.atorney {
+        border-top: calc(1vh/9) solid rgb(196, 196, 196);
+        border-bottom: calc(1vh/9) solid rgb(196, 196, 196);
+        border-radius: calc(0vh/9);
+        background-color: #2882B4 !important;
+        top: -1.2vmin;
+        left:10%;
+        position: absolute;
+    }        
+    
+    .text_line {
+        width: 80vmin;
+        word-wrap: break-word;
+    
+    }
     
     
     .scene__SceneBox_color {
@@ -270,8 +271,8 @@
         grid-row: 1;
         grid-column: 6 /span 1;
         
-        /* margin-right: 15vh/9); */
-        margin-bottom: calc(10vh/9) calc(0vh/9) calc(10vh/9) calc(0vh/9);
+        /* margin-right: 15px; */
+        padding: calc(30vh/9) calc(0vh/9) calc(10vh/9) calc(0vh/9);
         display: inline-flex;
         justify-content: flex-end;
     }
@@ -289,7 +290,7 @@
         background-color: #DDDDDD;
         color: #30475e;
         cursor: pointer;
-        border:calc(0.1vh/9) solid rgb(0,0,0,0.2);
+        border:calc(0.1vh/9) solid rgb(0,0,0,0.2);        
     }
     
     .scene_btn:hover{
@@ -383,6 +384,9 @@
         grid-column: 2/span 3;
         position: relative;
     }
+    textarea::placeholder{
+        font-size: calc(18vh/9);    
+    }
     .textbox_script{   
         all: unset;
         padding:calc(15vh/9) calc(30vh/9) calc(15vh/9) calc(30vh/9);
@@ -454,7 +458,7 @@
       .characterSidebar__container {
         all: unset;
         position: absolute;
-        top: calc(214vh/9);
+        top: calc(285vh/9);
         padding-top:calc(10vh/9);
         width: calc(375vh/9);
         height: calc(145vh/9);
@@ -491,8 +495,8 @@
       }
       
       .characterSidebar_image_box {
-        width: calc(65vh/9);
-        height: calc(65vh/9);
+        width: calc(60vh/9);
+        height: calc(60vh/9);
       }
       
       .characterSidebar_image_width {
@@ -517,7 +521,7 @@
       
       .characterSidebar_line {
         position: absolute;
-        top: calc(380vh/9);
+        top: calc(451vh/9);
         width: calc(370vh/9);
         margin-left: calc(15vh/9);
         height: calc(2vh/9);
@@ -526,7 +530,7 @@
       }
       
       .sidebar_add_esset_btn {
-        margin: calc(20vh/9) calc(0vh/9) calc(0vh/9) calc(135vh/9);
+        margin: calc(2vh/9) calc(0vh/9) calc(0vh/9) calc(112vh/9);
         border-radius: calc(8vh/9);
         text-align: center;
         font-size: calc(100vh/9);
@@ -540,7 +544,7 @@
       all:unset;
       z-index: 100;
       position: absolute;
-      top:calc(219vh/9);
+      top:calc(288vh/9);
       margin:calc(25vh/9) calc(0vh/9) calc(0vh/9) calc(150vh/9);
       width:calc(100vh/9);
       height:calc(100vh/9);
@@ -560,7 +564,7 @@
         all: unset;
         z-index: 0;
         position: absolute;
-        top: calc(209vh/9);
+        top:calc(280vh/9);
         margin: calc(0vh/9) calc(0vh/9) calc(0vh/9) calc(392vh/9);
         padding: calc(60vh/9) calc(0vh/9) calc(0vh/9) calc(5vh/9);
         width: calc(60vh/9);
@@ -598,7 +602,8 @@
       
       .sidebar_line {
         position: absolute;
-        top: calc(171vh/9);
+        right:calc(20vh/9);
+        top: calc(176vh/9);
         width: calc(370vh/9);
         height: calc(2vh/9);
         opacity: 0.7;
