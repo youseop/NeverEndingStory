@@ -12,7 +12,6 @@ import { faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { of, forkJoin, Observable } from "rxjs";
 import { map, tap, flatMap } from "rxjs/operators";
 import TopRatingContributer from "./TopRatingContributer";
-import Tree from "../TreeVisualization/Tree/Tree.tsx";
 import RadialTree from '../TreeVisualization/RadialTree';
 
 import { render } from 'react-dom';
@@ -330,7 +329,6 @@ export default function GameDetailPage(props) {
                             isAdmin={isAdmin}
                             updateTree={updateTree}
                         />
-                        {/* <Tree /> */}
                     </>
                     }
                     <Comment gameId={gameId} />
