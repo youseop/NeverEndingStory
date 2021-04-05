@@ -25,7 +25,7 @@ router.get("/auth", auth, (req, res) => {
     });
 });
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
 
     const user = new User(req.body);
     user.nickname = sanitize(user.nickname)
@@ -35,12 +35,19 @@ router.post("/register", (req, res) => {
     if (req.session.gameHistory) {
         user.gameHistory = req.session.gameHistory
     }
-    user.save((err, doc) => {
-        if (err) return res.json({ success: false, err });
-        return res.status(200).json({
-            success: true
-        });
-    });
+    
+    //! generateToken includes save
+    user.generateToken((err, user) => {
+        if (err) return res.status(400).json({ success: false, err });
+        res.cookie("w_authExp", user.tokenExp);
+        res.cookie("w_auth", user.token)
+        .status(200)
+        .json({
+            success:true
+        })
+
+    })
+    
 });
 
 router.post("/login", (req, res) => {
@@ -77,6 +84,9 @@ router.get("/logout", auth, (req, res) => {
         });
     });
 });
+
+
+
 
 router.get("/playing-list/clear", check, async (req, res) => {
     try {
@@ -147,6 +157,21 @@ router.post("/profile", (req, res) => {
     });
 });
 
+
+router.post("/nickname-check", (req, res) => {
+    User.findOne({ nickname: req.body.nickname }, (err, user) => {
+        if (err) return res.json({ success: false, err });
+        if (!user)
+            return res.status(200).send({
+                success: true,
+                usedNickname: false
+            });
+        return res.status(200).send({
+            success: true,
+            usedNickname: true
+        });
+    });
+});
 
 router.post("/email-check", (req, res) => {
     User.findOne({ email: req.body.email }, (err, user) => {

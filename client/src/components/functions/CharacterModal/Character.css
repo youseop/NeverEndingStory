@@ -1,21 +1,15 @@
 .bttn {
+  font-size: 18px;
   opacity: 0%;
 }
 .bttn:hover {
   color: rgb(170, 44, 44);
   cursor: pointer;
 }
-@keyframes fadeIn {
-  from {
-      opacity: 0%;
-  }
-  to {
-      opacity: 100%;
-  }
-}
 
 .CharacterBlock:hover .bttn {
-  animation: fadeIn 0.5s forwards;
+  opacity: 1;
+  transition: opacity 500ms ease-in-out;
 }
 
 .characterImg {

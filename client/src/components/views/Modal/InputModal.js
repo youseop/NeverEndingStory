@@ -17,18 +17,18 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   const [visible, setVisible] = useState(false);
   const [sceneTitle, setSceneTitle] = useState("");
   const [remainTime, setRemainTime] = useState(0);
-  const [decreaseTimer, setDecreaseTimer] = useState(null);
+  // const [decreaseTimer, setDecreaseTimer] = useState(null);
   const [validated, setValidated] = useState(1)
 
+  const decreaseTimer = useRef(undefined)
   const createFlag = useRef(false)
 
   const tick = 30;
 
 
   // const user_id = user.userData.isAuth ? user.userData._id.toString() : "";
-  let user_id;
   const handleCreate = async () => {
-    clearTimeout(decreaseTimer);
+    clearTimeout(decreaseTimer.current);
     if (createFlag.current || !visible) {
       return;
     }
@@ -44,7 +44,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
     const res = await axios.post("/api/scene/create", data);
     //! socket 보내서 서버에서 scene Cache x exp 업데이트
 
-    socket.emit("created_choice", { sceneId: scene_id, userId: user.us, exp: res.data.exp })
+    socket.emit("created_choice", { sceneId: scene_id, userId: user.userData._id, exp: res.data.exp })
     // tmp scene create
 
     setVisible(false);
@@ -65,21 +65,25 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   const onClickHandler = () => {
     if (user.userData.isAuth) {
       dispatch(gamePause(true));
-      clearTimeout(decreaseTimer);
+      clearTimeout(decreaseTimer.current);
       let tick = 30;
+
       setRemainTime(tick);
       decTimer = setInterval(() => {
         tick--;
+
         if (tick === 0) {
           clearInterval(decTimer);
           cancelHandler();
           return;
         }
+
         setRemainTime(tick);
       }, 970);
-      setDecreaseTimer(decTimer);
+      decreaseTimer.current = decTimer
 
-      socket.emit("empty_num_decrease", { scene_id, user_id });
+      socket.emit("empty_num_decrease", { scene_id, user_id: user.userData._id});
+
       setVisible(true);
     }
     else {
@@ -88,8 +92,9 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   }
 
   const cancelHandler = () => {
-    socket.emit("empty_num_increase", { scene_id, user_id });
-    clearTimeout(decreaseTimer);
+    socket.emit("empty_num_increase", { scene_id, user_id : user.userData._id });
+    clearTimeout(decreaseTimer.current);
+
     setVisible(false);
     dispatch(gamePause(false));
   }
@@ -101,13 +106,15 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   const [dino, setDino] = useState(0);
 
   useEffect(() => {
-    socket.off("validated");
-    socket.on("validated", (data) => {
-      setValidated(validated * -1)
-    })
+    // socket.off("validated");
+    // socket.on("validated", (data) => {
+    //   console.log("SET VALIDATED", scene_id)
+    //   // setValidated(validated * -1)
+    // })
 
     socket.off("decrease_failed");
     socket.on("decrease_failed", () => {
+
       setVisible(false);
       setDino(0);
       setDino(1);
@@ -118,7 +125,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
 
   useEffect(() => {
     if (dino) {
-      clearTimeout(decreaseTimer);
+      clearTimeout(decreaseTimer.current);
     }
   }, [dino]);
 

@@ -20,4 +20,5 @@
 
 .button-newgame:hover {
   background: #e74a4a;
+  cursor: pointer;
 }

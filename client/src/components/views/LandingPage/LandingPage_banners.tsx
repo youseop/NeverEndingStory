@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState,useRef } from "react"
 import { NewGameButton } from "./LandingPage_buttons";
 import ContactUs from "../Footer/ContactUs"
 import { SVG } from "../../svg/icon";
@@ -12,15 +12,16 @@ const TOTAL_SLIDES = 3;
 
 export function Banner_main({ replace }: Props_type) {
   const [CurrentSlide, setCurrentSlide] = useState(0);
-  const [TimerID, setTimerID] = useState<NodeJS.Timeout | undefined>(undefined);
+  // const [TimerID, setTimerID] = useState<NodeJS.Timeout | undefined>(undefined);
   const [IsModalVisible, setIsModalVisible] = useState(false);
 
   const slideRef = React.createRef<HTMLDivElement>();
   const arrowRef = React.createRef<HTMLDivElement>();
 
+  const TimerID = useRef<any>(undefined)
   const stopBanner = () => {
-    if (TimerID) {
-      clearTimeout(TimerID);
+    if (TimerID.current !== undefined) {
+      clearTimeout(TimerID.current);
     }
   }
 
@@ -28,7 +29,7 @@ export function Banner_main({ replace }: Props_type) {
     const timer = setTimeout(() => {
       nextBanner()
     }, CurrentSlide == 0 ? 0 : 3000);
-    setTimerID(timer)
+    TimerID.current = timer
   }
 
   const nextBanner = () => {
@@ -53,6 +54,7 @@ export function Banner_main({ replace }: Props_type) {
       stopBanner()
     }
   }, [CurrentSlide])
+  
 
   return (
     <div>

@@ -35,7 +35,7 @@ export default function ContactUs(props: any) {
             PhoneNumber: PhoneNumber,
             Content: Content
         }
-        if (feedback.Content.length) {
+        if (feedback.Content?.length) {
             Axios.post("api/users/send-feedback", feedback).then((response) => {
                 if (response.data.success) {
                     message.success('전송되었습니다. 고맙습니다.');

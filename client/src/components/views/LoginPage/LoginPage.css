@@ -64,17 +64,24 @@
   all: unset;
 
   min-width: 100%;
-  height: 65px;
+  height: 65px !important;
   margin-top: 10px;
 
-  font-size: 25px;
-  font-weight: bold;
+  font-size: 25px !important;
+  font-weight: bold !important;
   text-align: center;
-  color: #ffffff;
+  color: #ffffff !important;
 
   border-radius: 5px;
   background: rgb(64, 153, 212);
 }
 .login-button:hover{
   background: rgb(76, 181, 251);
+  cursor: pointer;
+}
+.login-kakao{
+  background: rgba(254, 229, 0, 0.897) !important;
+}
+.login-kakao:hover{
+  background: rgba(254, 229, 0, 0.986) !important;
 }

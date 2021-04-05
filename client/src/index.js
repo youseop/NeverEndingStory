@@ -6,6 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
+import ScrollToTop from './utils/scrollToTop';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from "react-router-dom";
 
@@ -14,6 +15,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import ReduxThunk from 'redux-thunk';
+import './FontAwsome';
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 
@@ -26,6 +28,7 @@ ReactDOM.render(
         )}
     >
         <BrowserRouter>
+            <ScrollToTop/>
             <App />
         </BrowserRouter>
     </Provider>

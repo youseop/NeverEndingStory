@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'production') {
         s3: new AWS.S3(),
         bucket: 'iovar',
         key(req, file, cb) {
-            cb(null, `original/${Date.now()}${path.basename(file.originalname)}`)
+            cb(null, `uploads/${Date.now()}${path.basename(file.originalname)}`)
         },
     })
 } else {

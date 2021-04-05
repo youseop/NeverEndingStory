@@ -95,10 +95,6 @@ const sceneSchema = mongoose.Schema({
                     type: Date,
                     default: null, 
                 },
-                timer: {
-                    type: Number,
-                    default: null,
-                },
                 isMakingScene: {
                     type: Boolean,
                     default: false, 
