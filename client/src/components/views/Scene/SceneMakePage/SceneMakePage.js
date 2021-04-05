@@ -573,6 +573,8 @@ const SceneMakePage = (props) => {
                         setBackgroundImg={setBackgroundImg}
                         onEssetModal={onEssetModal}
                         isFirstScene={isFirstScene}
+                        curImg={BackgroundImg}
+                        setReload={setReload}
                     />
                 </div>
                 <div ref={bgmSidebarElement} style={{ display: 'none' }}>

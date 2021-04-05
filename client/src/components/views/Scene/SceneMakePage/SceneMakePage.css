@@ -108,7 +108,7 @@
     font-family: Noto Sans KR;
     /* font-size: 15px; */
     border-radius: 2px;
-    /* background-color: red; */
+    background-color: rgba(221, 221, 221, 0.5);
     position: absolute;
     cursor:pointer;
 }
@@ -269,8 +269,8 @@
     grid-column: 6 /span 1;
     
     /* margin-right: 15px; */
-    margin-top: 12px;
-    margin-bottom: 28px;
+    margin-top: 35px;
+    margin-bottom: 15px;
     display: inline-flex;
     justify-content: flex-end;
 }
@@ -278,7 +278,7 @@
 .scene_btn{ 
     all: unset;
     width:80px;
-    padding-top:6.5px;
+    padding-top:1px;
     text-align: center;
     font-size: 15px;
     font-weight: bold;
