@@ -1,7 +1,6 @@
 import React from 'react'
 import { LOCAL_HOST } from "../../../../Config";
 
-
 function BackgroundImg({ imgUrl, setBackgroundImg, curImg, setReload }) {
 
   const onClick_img = () => {
