@@ -1,0 +1,31 @@
+
+.admin_btn{
+  cursor: pointer;
+  margin-bottom: 20px;
+  width: 130px;
+  height: 36px;
+  background: rgb(88, 88, 88);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin_btn:hover{
+  cursor: pointer;  
+  margin-bottom: 20px;
+  width: 130px;
+  height: 36px;
+  background: rgb(96, 96, 96);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dragDrop_container{
+  width: 100%;
+  height: 900px;
+  box-shadow: 3px 3px 3px 3px #f3f3f38c;
+  overflow: hidden;
+}

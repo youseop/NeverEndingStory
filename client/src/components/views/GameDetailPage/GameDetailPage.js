@@ -1,8 +1,6 @@
-import { Button, message } from "antd";
+import { message } from "antd";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { LOCAL_HOST } from "../../Config"
 import Comment from '../Comment/Comment.js';
 import { socket } from "../../App";
 import { SVG } from "../../svg/icon";
@@ -12,12 +10,10 @@ import { faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { of, forkJoin, Observable } from "rxjs";
 import { map, tap, flatMap } from "rxjs/operators";
 import TopRatingContributer from "./TopRatingContributer";
-import RadialTree from '../TreeVisualization/RadialTree';
-
-import { render } from 'react-dom';
-import data from '../TreeVisualization/data';
 
 import "./GameDetailPage.css";
+import AdminPage from "./AdminPage";
+import { Link } from "react-router-dom";
 
 const config = require('../../../config/key')
 
@@ -29,10 +25,11 @@ const getRecursive = (managedData, id) => {
           sceneId: data.sceneId, 
           gameId: data.gameId,
           userId: data.userId, 
-          id: data.id, 
+          _id: data._id, 
           complaintCnt: data.complaintCnt, 
           characterName: data.characterName,
           firstScript: data.firstScript,
+          parentSceneId: data.parentSceneId,
           children: [],
         },
         childIds: data.children
@@ -199,7 +196,6 @@ export default function GameDetailPage(props) {
     const onClick_adminToggle = () => {
         setIsAdmin((state) => !state)
     }
-
     if(totalSceneCnt){
         return (
             <div className="detailPage__container">
@@ -283,8 +279,6 @@ export default function GameDetailPage(props) {
                     }
                 </div>
                 <div className="detailPage__info_container">
-                    <div className="detailPage__title">
-                    </div>
                     <div className="detailPage__genre">
                         장르:
                         <div className="bold_text">
@@ -295,10 +289,21 @@ export default function GameDetailPage(props) {
                             {gameDetail?.creator?.nickname.substr(0, 20)}
                         </div>
                     </div>
+                    { gameDetail?.creator?._id.toString() === user?.userData?._id &&
+                        <Link 
+                            to={`/admin/${gameId}`}
+                            className="admin_btn"
+                        >
+                            관리자 페이지
+                        </Link>
+                    }   
                     <div className="detailPage__description">
                         {gameDetail.description}
                     </div>
-                    <div 
+
+                    {/* by 유섭 - 디버깅용으로 쓰려고 남겨놓았습니다. 
+                        혹시 불편하시다면 지워도 상관 없습니다! */}
+                    {/* <div 
                         style={isDelete ? 
                             {color:"#d6d6d6", backgroundColor:"red"} 
                             : 
@@ -330,7 +335,7 @@ export default function GameDetailPage(props) {
                             updateTree={updateTree}
                         />
                     </>
-                    }
+                    } */}
                     <Comment gameId={gameId} />
                 </div>
             </div>

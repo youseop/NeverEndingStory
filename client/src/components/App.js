@@ -21,6 +21,7 @@ import NavBar from "./views/NavBar/NavBar.tsx";
 import Footer from "./views/Footer/Footer.tsx"
 import { LOCAL_HOST } from './Config';
 import './App.css';
+import AdminPage from './views/GameDetailPage/AdminPage';
 
 const config = require('../config/key');
 // export let socket = io(`http://${LOCAL_HOST}:5000`, {transports : ['websocket']});
@@ -42,6 +43,7 @@ function App() {
           <Route exact path="/profile/:userId" component={Auth(Profile, true)} />
           <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
           <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
+          <Route path="/admin/:gameId" component={Auth(AdminPage, true)} />
           <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />
           <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage, true))} />
         </Switch>

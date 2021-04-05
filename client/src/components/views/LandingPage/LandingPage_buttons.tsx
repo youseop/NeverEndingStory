@@ -21,16 +21,12 @@ interface responseTypes{
 }
 
 export function NewGameButton({replace}:newGameButtonProps) {
-
     const [visible, setVisible] = useState<any>(false);
     const [formRef, setFormRef] = useState<any>(null);
-    // const [formRef, setFormRef] = useState<null | {validateFileds:any}></null>;
     const user = useSelector<any, any>((state) => state.user);
 
 
-
     const uploadGameFrame = async (title : String, description:any) => {
-        // tmp scene create
         const gameResponse : responseTypes = await Axios.post("/api/game/uploadgameframe", {title, description});
 
         if (!gameResponse.data.success) {
@@ -84,7 +80,6 @@ export function NewGameButton({replace}:newGameButtonProps) {
 
             uploadGameFrame(values.title, values.description);
             formRef?.resetFields();
-            // setVisible(false);
         });
 
     }
@@ -98,9 +93,6 @@ export function NewGameButton({replace}:newGameButtonProps) {
 
     return (
         <>
-            {/* <button className="button-newgame" onClick ={uploadGameFrame}>
-                NEW 게임 만들기
-            </button> */}
             <button className="button-newgame" onClick={handleClick}>
                 NEW 게임 만들기
             </button>

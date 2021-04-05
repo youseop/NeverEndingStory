@@ -264,6 +264,30 @@
   justify-content: center;
 }
 
+.admin_btn{
+  cursor: pointer;
+  margin-bottom: 20px;
+  width: 130px;
+  height: 36px;
+  background: rgb(88, 88, 88);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin_btn:hover{
+  cursor: pointer;  
+  margin-bottom: 20px;
+  width: 130px;
+  height: 36px;
+  background: rgb(96, 96, 96);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .detailPage__gamePlay_link .icon{
   padding-top: 18px;
   display: flex;
@@ -279,7 +303,7 @@
 .detailPage__interaction {
   width: 200px;
   position: relative;
-  bottom: 660px;
+  bottom: 687px;
   left: 950px;
   display: flex;
   align-items: flex-end;
