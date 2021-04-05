@@ -14,7 +14,7 @@ import { socket } from "../../App"
 import { loadEmptyNum, savePrevScene } from "../../../_actions/sync_actions"
 import useKey from "../../functions/useKey";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
-import { navbarControl } from "../../../_actions/controlPage_actions";
+import { navbarControl,footerControl } from "../../../_actions/controlPage_actions";
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
 import { useLocation } from "react-router";
 import TreeMapPopup from "./TreeMap";
@@ -66,12 +66,11 @@ const ProductScreen = (props) => {
   const [Dislike, setDislike] = useState(false);
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
-  const [TreeMap, setTreeMap] = useState(false);
+  // const [TreeMap, setTreeMap] = useState(false);
   const [lastMotion, setLastMotion] = useState(false)
   const [view, setView] = useState(0);
   const [thumbsUp, setThumbsUp] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
-
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
   const maximizableElement = useRef(null);
@@ -207,6 +206,9 @@ const ProductScreen = (props) => {
         }
       })
     }
+    else{
+      message.error("로그인이 필요합니다.")
+    }
   }
 
   useEffect(() => {
@@ -249,19 +251,22 @@ const ProductScreen = (props) => {
 
   }, [sceneId])
 
-  //* navigation bar control
+  //* navigation bar and footer control
   useEffect(() => {
     dispatch(navbarControl(false));
+    dispatch(footerControl(false));
   }, []);
 
   //* game pause control
   useEffect(() => {
-    if (HistoryMap || Dislike || TreeMap) {
+    // if (HistoryMap || Dislike || TreeMap) {
+    if (HistoryMap || Dislike) {
       dispatch(gamePause(true));
     } else {
       dispatch(gamePause(false));
     }
-  }, [HistoryMap, Dislike, TreeMap]);
+  }, [HistoryMap, Dislike]);
+// }, [HistoryMap, Dislike, TreeMap]);
 
   useEffect(() => {
     setLastMotion(false)
@@ -283,7 +288,7 @@ const ProductScreen = (props) => {
           dispatch(gameLoadingPage(0));
           dispatch(gameLoadingPage(6));
         } else {
-          message.error("Scene 정보가 없습니다.");
+          message.error("잘못된 접근입니다. 한 ID로는 하나의 스토리만을 진행해주세요.");
           props.history.replace(`/game/${gameId}`);
         }
       }
@@ -336,7 +341,7 @@ const ProductScreen = (props) => {
     return (
       <div
         className={`${isFullscreen
-          ? "gamePlay__container_fullscreen"
+          ? "gamePlay__container gamePlay__container_fullscreen"
           : "gamePlay__container"
           }`}
         ref={maximizableElement}
@@ -402,12 +407,12 @@ const ProductScreen = (props) => {
               setTrigger={setHistoryMap}
               setScene={setScene}
             />
-            <TreeMapPopup
+            {/* <TreeMapPopup
               userhistory={userHistory}
               history={History}
               trigger={TreeMap}
               setTrigger={setTreeMap}
-            />
+            /> */}
           </div>
         </div>
         <div className="gamePlay__btn_container">
@@ -452,14 +457,14 @@ const ProductScreen = (props) => {
             >
               미니맵
             </button>
-            <button
+            {/* <button
               className="gamePlay__btn"
               onClick={() => {
                 setTreeMap((state) => !state);
               }}
             >
               트리맵
-            </button>
+            </button> */}
             <button
               className="gamePlay__btn"
               onClick={() => setDislike((state) => !state)}

@@ -5,7 +5,8 @@ import {
   PUSH_CHARACTER,
   POP_CHARACTER,
   UPDATE_CHARACTER,
-  SET_CHARACTER_LIST
+  SET_CHARACTER_LIST,
+  ORDER_CHARACTER
 } from "./types";
 
 
@@ -48,7 +49,14 @@ export function pushCharacter(dataToSubmit) {
   let request;
   for (let i = 0; i < oldArray?.length; i++) {
     if (oldArray[i].index === characterSchema.index) {
-      request = [...oldArray]
+      request = [
+        ...oldArray.slice(0, i),
+        {
+          ...oldArray[i],
+          image: characterSchema.image,
+        },
+        ...oldArray.slice(i + 1, 4)
+      ]
       break;
     }
   }
@@ -75,7 +83,6 @@ export function updateCharacter(dataToSubmit) {
     },
     ...oldArray.slice(index + 1, 4)
   ]
-  // const request = [ ...oldArray ]
 
   return {
     type: UPDATE_CHARACTER,
@@ -89,6 +96,31 @@ export function setCharacterList(dataToSubmit) {
 
   return {
     type: SET_CHARACTER_LIST,
+    payload: request,
+  };
+}
+
+export function orderCharacter(dataToSubmit) {
+  const { oldArray, index, num } = dataToSubmit;
+  const lastIndex = oldArray.length-1;
+  let request = [...oldArray]
+  for (let i = 0; i < lastIndex; i++) {
+    if (request[i].index === index) {
+      if(num === "double") {
+        [request[i], request[0]] = [request[0], request[i]]
+      } else if(num==="pull") {
+        const tmp = request[i];
+        request.splice(i, 1);
+        request.push(tmp)
+      }
+       else {
+        [request[i], request[i-1]] = [request[i-1], request[i]]
+      }
+    }
+  }
+
+  return {
+    type: ORDER_CHARACTER,
     payload: request,
   };
 }

@@ -4,7 +4,7 @@ import './BackgroundSideBar.css'
 import BackgroundImg from './BackgroundImg'
 import './BackgroundSideBar.css'
 
-function BackgroundSideBar({ gameDetail, curImg, setBackgroundImg, onEssetModal, isFirstScene, setReload }) {
+function BackgroundSideBar({ gameDetail, curImg, setBackgroundImg, onEssetModal, isFirstScene, setReload, isWriter }) {
 
   const renderBackground = gameDetail.background.map((background, index) => {
     return (
@@ -26,7 +26,7 @@ function BackgroundSideBar({ gameDetail, curImg, setBackgroundImg, onEssetModal,
       <div className="backSidebar__container">
         {gameDetail?.background?.length === 0 &&
           <div>
-            {isFirstScene.current &&
+            {(isFirstScene.current || isWriter) &&
               <FileAddOutlined onClick={onEssetModal}
                 className="sidebar_add_esset_btn" />
             }

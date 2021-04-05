@@ -48,6 +48,13 @@ const io = require('socket.io')(server, {
 let scene_cache = {} // {empty: 2, cert: [{ userID: ??, }]}
 
 
+const trimCache = (sceneTmp) => {
+	  let formatCertList = [...sceneTmp.certificationList]
+	  for(let i = 0 ; i < formatCertList.length; i ++){
+		  	formatCertList[i] = {...formatCertList[i] , timer:null}
+		    }
+	  return {...sceneTmp, certificationList: formatCertList};
+}
 const updateCache = async (sceneId, userId, plus, exp) => {
   const idx = scene_cache[sceneId].certificationList.findIndex(item => item.userId === userId);
   if (idx < 0) {
@@ -97,16 +104,18 @@ const updateCache = async (sceneId, userId, plus, exp) => {
       }
     }, 30000)
   }
-
+  const formatCache = trimCache(scene_cache[sceneId])
   Scene.findOneAndUpdate(
     { _id: mongoose.Types.ObjectId(sceneId) },
     {
       "$set": {
-        "sceneTmp": scene_cache[sceneId],
+        "sceneTmp": formatCache,
       }
     }
   ).exec();
 }
+
+
 
 io.on('connection', socket => {
 
@@ -238,11 +247,9 @@ io.on('connection', socket => {
         emptyNum: sceneTmp.emptyNum,
         certificationList: [...newCertList],
       };
-      // console.log("??:", scene_cache[scene_id]);
       Scene.updateOne({ _id: scene_id }, { $set: { "sceneTmp": { ...scene_cache[scene_id] } } }).exec();
       io.sockets.to(scene_id).emit("validated", { sceneId: scene_id, emptyNum: scene_cache[scene_id].emptyNum });
     } catch {
-      console.log("err")
       return;
     }
   });
@@ -268,19 +275,18 @@ io.on('connection', socket => {
 
 
     const idx = scene_cache[prevSceneId].certificationList.findIndex(item => item.userId === userId);
-    // console.log("idx:", idx)
     if (idx > -1) {
       clearTimeout(scene_cache[prevSceneId].certificationList[idx].timer);
+      // scene_cache[prevSceneId].certificationList[idx].timer = null;
       scene_cache[prevSceneId].certificationList.splice(idx, 1)
     }
-
-
+    const formatCache = trimCache(scene_cache[prevSceneId])
     Scene.updateOne({
       _id: mongoose.Types.ObjectId(prevSceneId)
     },
       {
         $set: {
-          'sceneTmp': scene_cache[prevSceneId]
+          'sceneTmp': formatCache
         }
       }).exec();
 

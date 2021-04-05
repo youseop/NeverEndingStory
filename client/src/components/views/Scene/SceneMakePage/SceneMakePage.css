@@ -447,7 +447,7 @@
 }
 
 .backgroundImg {
-    z-index: 97;
+    z-index: 95;
     height: 100%;
     width: 100%;
     object-fit: cover;

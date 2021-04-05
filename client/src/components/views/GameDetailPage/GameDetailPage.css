@@ -42,6 +42,7 @@
   font-size: 38px;
   line-height: 36px;
   color: #E5E5E5;
+  object-fit : contain;
 }
 
 .detailPage__thumbnail {
@@ -367,11 +368,11 @@
   height: 11em;
   border-radius: 50%;
   background: #ffffff;
-  background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-  background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-  background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-  background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
-  background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: -moz-linear-gradient(left, #ffffff 10%, rgba(255,255,255, 0) 42%);
+  background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255,255,255, 0) 42%);
+  background: -o-linear-gradient(left, #ffffff 10%, rgba(255,255,255, 0) 42%);
+  background: -ms-linear-gradient(left, #ffffff 10%, rgba(255,255,255, 0) 42%);
+  background: linear-gradient(to right, #ffffff 10%, rgba(255,255,255, 0) 42%);
   position: relative;
   -webkit-animation: load3 1.4s infinite linear;
   animation: load3 1.4s infinite linear;
@@ -390,7 +391,7 @@
   content: '';
 }
 .loader:after {
-  background: #c50d0d00;
+  background: #0b111a;
   width: 75%;
   height: 75%;
   border-radius: 50%;
@@ -422,3 +423,6 @@
     transform: rotate(360deg);
   }
 }
+
+
+

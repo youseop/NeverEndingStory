@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { useSelector } from 'react-redux';
 import "./LandingPage_buttons.css"
 import "antd/dist/antd.css";
 import Axios from "axios"
@@ -22,8 +23,11 @@ interface responseTypes{
 export function NewGameButton({replace}:newGameButtonProps) {
 
     const [visible, setVisible] = useState<any>(false);
-    const [formRef, setFormRef] = useState<any>(null);
+    const [gameTitle, setGameTitle] = useState<String>("");
+    const [gameDescription, setGameDescription] = useState<String>("");
+
     // const [formRef, setFormRef] = useState<null | {validateFileds:any}></null>;
+    const user = useSelector<any, any>((state) => state.user);
 
 
 
@@ -65,40 +69,36 @@ export function NewGameButton({replace}:newGameButtonProps) {
         }, 1000);
     };
     
-    const handleCreate = () => {
-        formRef?.validateFields((err: Error, values: {title : String, description : any}) => {
-            if (err) {
-                return;
-            }
-
-            uploadGameFrame(values.title, values.description);
-            formRef?.resetFields();
-            // setVisible(false);
-        });
-
+    const handleClick = () =>{
+        if(user.userData?.isAuth){
+            setVisible(true)
+        }
+        else{
+            message.error("로그인이 필요합니다.")
+        }
     }
 
-    const saveFormRef = useCallback(node => {
-        if (node !== null) {
-            setFormRef(node);
-        }
-    }, []);
+    const handleCreate = () => {
 
+        uploadGameFrame(gameTitle, gameDescription);
+
+    }
 
     return (
         <>
             {/* <button className="button-newgame" onClick ={uploadGameFrame}>
                 NEW 게임 만들기
             </button> */}
-            <button className="button-newgame" onClick={() => setVisible(true)}>
+            <button className="button-newgame" onClick={handleClick}>
                 NEW 게임 만들기
             </button>
         
             <TitleModalForm 
-                ref={saveFormRef}
                 visible={visible}
                 onCancel={() => setVisible(false)}
                 onCreate={() => handleCreate()}
+                setGameTitle={setGameTitle}
+                setGameDescription={setGameDescription}
             />
         </>
     )

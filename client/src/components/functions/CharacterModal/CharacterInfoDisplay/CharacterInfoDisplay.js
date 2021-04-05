@@ -7,7 +7,6 @@ import './CharacterInfoDisplay.css';
 function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
-
   const onClick_putCharacter = (index, url) => {
     const characterSchema = {
       index: character.index,

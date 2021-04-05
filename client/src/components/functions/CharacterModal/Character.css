@@ -1,3 +1,17 @@
+.bttn {
+  font-size: 18px;
+  opacity: 0%;
+}
+.bttn:hover {
+  color: rgb(170, 44, 44);
+  cursor: pointer;
+}
+
+.CharacterBlock:hover .bttn {
+  opacity: 1;
+  transition: opacity 500ms ease-in-out;
+}
+
 .characterImg {
   object-fit: cover;
   height:100%;
@@ -18,11 +32,16 @@
   object-fit: cover;
   height:100%;
   width: auto;
-  cursor: pointer;
+  cursor:grab;
   transition: 0.1s;
   margin: 2px;
   border-radius: 4px;
 }
+
+.characterImg_clicked:active {
+  cursor:grabbing;
+}
+
 .characterImg_clicked:hover {
   background-color: rgba(211, 211, 211, 0.315);
 }
@@ -61,7 +80,7 @@
 
 
   font-size: 0.2rem;
-  cursor: ew-resize;
+  cursor: ew-resize !important;
   border-radius: 3px;
   display: flex;
   justify-content: center;
@@ -77,7 +96,7 @@
   transform: translate(-100%, -50%);
 
   font-size: 0.2rem;
-  cursor: ew-resize;
+  cursor: ew-resize !important;
   border-radius: 3px;
   display: flex;
   justify-content: center;
@@ -125,10 +144,16 @@
 }
 
 .btn_character_delete {
-  position:relative;
-  top: 24px
+  position:absolute;
+  top: 7px;
 }
-.btn_character_delete:hover {
-  color: rgb(170, 44, 44);
-  cursor: pointer;
+
+.btn_character_down {
+  position:absolute;
+  top: 7px;
+}
+
+.btn_character_Doubledown {
+  position:absolute;
+  top: 7px;
 }

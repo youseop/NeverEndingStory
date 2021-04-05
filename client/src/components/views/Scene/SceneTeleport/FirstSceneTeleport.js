@@ -59,17 +59,19 @@ const FirstSceneTeleport = ({ gameId, setScene }) => {
                 visible={isWarningVisible}
                 maskClosable={false}
                 closable={false}
-                centered = {true}
+                centered={true}
                 footer={
                     <React.Fragment>
-                        <Button key = "ok" type= "primary" onClick={playingListClear}>
+                        <Button key="ok" type="primary" onClick={playingListClear}>
                             확인
                         </Button>
-                        <Button key = "cancel" onClick={cancelModal}>
+                        <Button key="cancel" onClick={cancelModal}>
                             취소
                         </Button>
                     </React.Fragment>
                 }
+                getContainer='.gamePlay__container'
+                centered={true}
             >
 
                 <p>첫 화면으로 돌아갑니다.</p>

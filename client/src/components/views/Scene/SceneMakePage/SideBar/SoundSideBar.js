@@ -4,8 +4,7 @@ import "./BgmSideBar.css";
 
 import SoundFile from "./SoundFile";
 
-function SoundSideBar({ gameDetail, sound_audio, setSoundFile, onEssetModal, isFirstScene, setReload }) {
-
+function SoundSideBar({ gameDetail, sound_audio, setSoundFile, onEssetModal, isFirstScene, setReload, isWriter }) {
     const renderSound = gameDetail.sound.map((sound, index) => {
         return (
             <div
@@ -27,7 +26,7 @@ function SoundSideBar({ gameDetail, sound_audio, setSoundFile, onEssetModal, isF
             <div className="bgmSidebar__container">
                 {gameDetail?.sound?.length === 0 &&
                     <div>
-                        {isFirstScene.current &&
+                        {(isFirstScene.current || isWriter) &&
                             <FileAddOutlined onClick={onEssetModal}
                                 className="sidebar_add_esset_btn" />
                         }

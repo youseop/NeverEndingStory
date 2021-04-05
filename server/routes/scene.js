@@ -64,6 +64,7 @@ router.post('/create', auth, async (req, res) => {
 
   // TODO : 추후 makingGameList 제한 필요
   const exp = Date.now() + MS_PER_HR
+  const newExp = new Date(exp)
   // console.log("In create : ",exp)
   user.makingGameList.push({ sceneId: scene._id, gameId: req.body.gameId, exp });
 

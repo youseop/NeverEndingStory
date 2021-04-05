@@ -1,5 +1,5 @@
 import "./TextBlock.css";
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { message } from "antd";
 import InputModal from "../Modal/InputModal";
@@ -44,7 +44,7 @@ export const TextBlock = (props) => {
         }
     </>
 };
-
+ 
 // 선택지 display
 export const TextBlockChoice = (props) => {
 
@@ -87,7 +87,6 @@ export const TextBlockChoice = (props) => {
             </Link>
         );
     });
-
     return (
         <div className={`text_window ${theme}`} >
             <TextBlock

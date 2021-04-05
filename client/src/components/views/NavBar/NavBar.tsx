@@ -5,6 +5,7 @@ import { Drawer, Button, Icon } from "antd";
 import { Logo_Icon } from "../../svg/icon"
 import "./Sections/Navbar.css";
 import { useSelector } from "react-redux";
+import Search from "./Sections/Search";
 
 interface State_controlpage {
   controlpage: {
@@ -37,13 +38,13 @@ function NavBar() {
       animation: "0.8s ease-out 0s 1 hide",
     };
   }
-  
   return (
     <nav className="menu" style={style}>
       <div className="menu__logo">
         <Link to="/"><Logo_Icon/></Link>
       </div>
       <div className="menu__container">
+        <Search />
         <div className="menu_rigth">
           <RightMenu mode="horizontal" />
         </div>

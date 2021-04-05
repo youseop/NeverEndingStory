@@ -10,6 +10,8 @@ export const LOADINGPAGE_GAMEPLAY = "gameLoading_gamePlay"
 export const PAUSE_GAMEPLAY = "pause_gamePlay"
 
 export const NAVBAR_CONTROL = "navbar_control";
+export const FOOTER_CONTROL = "footer_control";
+export const SEARCH_CONTROL = "search_control";
 
 export const SELECT_CHARACTER = "select_character";
 export const DETACH_CHARACTER = "detach_character";
@@ -17,6 +19,7 @@ export const POP_CHARACTER = "pop_character";
 export const PUSH_CHARACTER = "push_character";
 export const UPDATE_CHARACTER = "update_character";
 export const SET_CHARACTER_LIST = "set_character_list";
+export const ORDER_CHARACTER = "order_character";
 
 
 export const SELECT_MOVINGTARGET = "select_movingtarget";
