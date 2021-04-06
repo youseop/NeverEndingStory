@@ -57,11 +57,11 @@ function NavBar() {
           title=" "
           placement="right"
           className="menu_drawer"
-          closable={false}
+          closable={true}
           onClose={onClose}
           visible={visible}
         >
-          <RightMenu mode="inline" />
+          <RightMenu mode="inline"/>
         </Drawer>
       </div>
     </nav>
