@@ -283,9 +283,7 @@ const ProductScreen = (props) => {
     setLastMotion(false)
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
       (response) => {
-        console.log("suces", response)
         if (response.data.success) {
-          console.log("suces")
           const history = {
             gameId: gameId,
             sceneId: response.data.sceneIdList,
@@ -301,13 +299,12 @@ const ProductScreen = (props) => {
           dispatch(gameLoadingPage(0));
           dispatch(gameLoadingPage(6));
         } else {
-          console.log("working")
           if(response.data.msg)
             message.error(response.data.msg);
           props.history.replace(`/game/${gameId}`);
         }
       }
-    ).then(()=>{console.log("fuck")});
+    )
   }, [sceneId]);
 
 
