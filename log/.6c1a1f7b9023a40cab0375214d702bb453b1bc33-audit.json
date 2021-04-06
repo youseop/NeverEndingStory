@@ -71,9 +71,14 @@
             "hash": "0c344bba75255b29d957c0dc67a93c7f"
         },
         {
-            "date": 1617670833586,
+            "date": 1617681015277,
+            "name": "log/2021-04-06-smart-push.log",
+            "hash": "bf05bd10e83a5385c02e5d612b002054"
+        },
+        {
+            "date": 1617714226457,
             "name": "log\\2021-04-06-smart-push.log",
-            "hash": "d3bf66802ea4e758eded0e0c4e0ca556"
+            "hash": "b9a53c683680c5b898c269725572315c"
         }
     ]
 }

@@ -37,6 +37,16 @@ a:visited:hover {
     position: absolute;
 }
 
+.text_container.atorney {
+    opacity: 1;
+    background-image: repeating-linear-gradient(45deg, #000114 25%, transparent 25%, transparent 75%, #000114 75%, #000114), repeating-linear-gradient(45deg, #000114 25%, #282846 25%, #282846 75%, #000114 75%, #000114);
+    background-position: 0 0, 2px 2px;
+    background-size: 4px 4px;
+    border-top: 3px solid rgb(196, 196, 196);
+    border-bottom: 3px solid rgb(196, 196, 196);
+    background-color: #e5e5f7;
+}
+
 .name_block {
     font-size: 2vmin;
     font-weight: 300;
@@ -126,17 +136,6 @@ a:visited:hover {
     animation: fadeInBlack 1s forwards;
 }
 
-.text_container.atorney {
-    opacity: 1;
-    background-image: repeating-linear-gradient(45deg, #000114 25%, transparent 25%, transparent 75%, #000114 75%, #000114), repeating-linear-gradient(45deg, #000114 25%, #282846 25%, #282846 75%, #000114 75%, #000114);
-    background-position: 0 0, 2px 2px;
-    background-size: 4px 4px;
-    border-top: 1px solid rgb(196, 196, 196);
-    border-bottom: 1px solid rgb(196, 196, 196);
-    background-color: #e5e5f7;
-    color: rgb(255, 255, 255);
-    position: absolute;
-}
 
 .name_block.atorney {
     border-top: 1px solid rgb(196, 196, 196);
@@ -174,4 +173,71 @@ a:visited:hover {
     color: aliceblue;
     font-size: 2vmin;
     font-weight: 400;
+}
+
+.short_cut_box {
+    padding: 3px;
+    padding-left: 5%;
+    width: 40%;
+    background-color: rgb(196, 196, 196);
+    color: black;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+}
+.short_cut_box:before {
+    content: '';
+    position: absolute;
+    left: 60.2%;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 70px 70px;
+    border-color: transparent transparent rgb(196, 196, 196);
+    transform: translateX(-100%);
+  }
+
+.short_cut_box_container {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 18%;
+    width: 30%;
+    display: flex;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+
+@keyframes SizeFlicker {
+    from {
+        height: 8%;
+    width: 8%;
+    font-size: 1.2vmin;
+    } to {
+        height: 7.5%;
+        width: 7.5%;
+        font-size: 1.1vmin;
+    }
+}
+.click_icon_container {
+    background-color: rgba(0, 0, 0, 0.521);
+    height: 8%;
+    width: 8%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    border-radius: 5px;
+    animation: SizeFlicker 0.7s ease-in-out alternate infinite;
+    position: absolute;
+    right: 3%;
+    bottom: 6%;
+    z-index: 99;
+}
+
+.click_icon_container.atorney {
+    background-color: #2828467c;
 }

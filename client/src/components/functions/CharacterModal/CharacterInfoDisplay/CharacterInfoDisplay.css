@@ -75,17 +75,15 @@
 .image_array_image{
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover;    
 }
   
 .image_array_image_width {
-    position: absolute;
     width:auto;
     height: 100%;
 } 
 
 .image_array_image_height {
-    position: absolute;
     width:100%;
     height: auto;
 }  

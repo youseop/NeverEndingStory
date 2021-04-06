@@ -34,27 +34,28 @@
 
 /*toggle full screen*/
 .gamePlay__btn_container {
-    padding: 5px;
     position: absolute;
     left: 0%;
     bottom: 0%;
     transform: translate(0%, 0%);
     z-index: 200;
-    width: 100vw;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
 }
 
+
 .gamePlay__btn {
   all: unset;
   color: rgb(182, 182, 182);
-  padding: 5px 10px;
+  padding: 0px 10px;
   border-radius: 3px;
   margin: 2px;
   font-size: bold;
   transition-duration: 0.2s;
   font-size: 0.9rem;
+  height: 1% !important;
 }
 
 .gamePlay__btnClicked {
@@ -81,9 +82,6 @@
 
 .backgroundImg_container_fullscreen{
   position: absolute;
-  left: 50%;
-  top: -10%;
-  transform: translate(-50%, 10%);
   transform-origin: center center;
   overflow: hidden;
   transition-duration: 0.05s;
@@ -91,8 +89,15 @@
 }
 .backgroundImg_container {
   position: absolute;
-  left: 50%;
-  transform: translate(-50%, 10%);
+  transform: translateY(10%);
+  transform-origin: center center;
+  overflow: hidden;
+  transition-duration: 0.05s;
+}
+
+.backgroundImg_container.full {
+  position: absolute;
+  transform: translateY(7.3%);
   transform-origin: center center;
   overflow: hidden;
   transition-duration: 0.05s;

@@ -4,7 +4,7 @@ import MyDropzone from "../../../Dropzone/MyDropzone";
 import "../EssetModal.css";
 import "./BackgroundTab.css";
 
-function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList, isInfo }) {
+function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList }) {
     const [backgroundCards, setBackgroundCards] = useState("");
     const [blobCards, setBlobCards] = useState("");
     const onDrop = (files) => {
@@ -45,33 +45,25 @@ function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList
             }))
     }, [backBlobList]);
 
-    if (isInfo)
-        return (
-            <div className="backgroundTab_container_info">
-                <div className="backgroundTab_Box_info">
-                    <div>{backgroundCards} {blobCards}</div>
-                </div>
+
+    return (
+        <div className="backgroundTab_container">
+            <div className="backgroundTab_dropzone">
+                <MyDropzone
+                    onDrop={onDrop}
+                    multiple={true}
+                    maxSize={10485761} // 10MB + 1
+                    accept="image/*"
+                    type="background"
+                    icon="image"
+                >
+                </MyDropzone>
             </div>
-        );
-    else
-        return (
-            <div className="backgroundTab_container">
-                <div className="backgroundTab_dropzone">
-                    <MyDropzone
-                        onDrop={onDrop}
-                        multiple={true}
-                        maxSize={10485761} // 10MB + 1
-                        accept="image/*"
-                        type="background"
-                        icon="image"
-                    >
-                    </MyDropzone>
-                </div>
-                <div className="backgroundTab_Box">
-                    <div>{backgroundCards} {blobCards}</div>
-                </div>
+            <div className="backgroundTab_Box">
+                <div>{backgroundCards} {blobCards}</div>
             </div>
-        );
+        </div>
+    );
 }
 
 export default BackgroundTab;
