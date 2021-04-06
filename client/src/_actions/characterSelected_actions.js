@@ -30,7 +30,7 @@ export function popCharacter(dataToSubmit) {
   let request;
   for (let i = 0; i < oldArray.length; i++) {
     if (oldArray[i].index === index) {
-      message.info("삭제되었습니다.");
+      // message.info("삭제되었습니다.");
       oldArray.splice(i, 1)
       request = [...oldArray]
       break;
@@ -102,19 +102,19 @@ export function setCharacterList(dataToSubmit) {
 
 export function orderCharacter(dataToSubmit) {
   const { oldArray, index, num } = dataToSubmit;
-  const lastIndex = oldArray.length-1;
+  const lastIndex = oldArray.length - 1;
   let request = [...oldArray]
   for (let i = 0; i < lastIndex; i++) {
     if (request[i].index === index) {
-      if(num === "double") {
+      if (num === "double") {
         [request[i], request[0]] = [request[0], request[i]]
-      } else if(num==="pull") {
+      } else if (num === "pull") {
         const tmp = request[i];
         request.splice(i, 1);
         request.push(tmp)
       }
-       else {
-        [request[i], request[i-1]] = [request[i-1], request[i]]
+      else {
+        [request[i], request[i - 1]] = [request[i - 1], request[i]]
       }
     }
   }

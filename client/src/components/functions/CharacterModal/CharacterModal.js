@@ -15,7 +15,7 @@ function CharacterModal({ GameCharacterList, setName }) {
   // }
 
   const currentCharacter = useSelector((state) => state.character);
-  useConstructor(()=>{dispatch(detachCharacter())})
+  useConstructor(() => { dispatch(detachCharacter()) })
   const onClick_removeCharacter = () => {
     let index = currentCharacter.characterSelected.index;
     dispatch({ oldArray: CharacterList, index })
@@ -42,15 +42,13 @@ function CharacterModal({ GameCharacterList, setName }) {
 
   return (
     <div>
-      <div className="modal">
-        {/* <div onClick={onClick_detachCharacter}>캐릭터 선택 해제</div> */}
-        <CharacterInfoDisplay
-          setName={setName}
-          GameCharacterList={GameCharacterList}
-          character={currentCharacter.characterSelected}
-        />
-        {/* {isAdded && <div onClick={onClick_removeCharacter}>삭제</div>} */}
-      </div>
+      {/* <div onClick={onClick_detachCharacter}>캐릭터 선택 해제</div> */}
+      <CharacterInfoDisplay
+        setName={setName}
+        GameCharacterList={GameCharacterList}
+        character={currentCharacter.characterSelected}
+      />
+      {/* {isAdded && <div onClick={onClick_removeCharacter}>삭제</div>} */}
     </div>
   )
 }

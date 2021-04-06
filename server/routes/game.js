@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, "uploads\\");
+            cb(null, "uploads/");
         },
         filename: (req, file, cb) => {
             cb(null, `${Date.now()}_${file.originalname}`);

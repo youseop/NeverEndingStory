@@ -206,16 +206,14 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => 
     });
   }
   return (
-    <Modal className="scenemake_modal"
+    <Modal className="scenemake_essetmodal"
       visible={visible}
       okText="Upload"
       onCancel={cancelUpload}
       onOk={upload}
-      width={1500}
       closable={false}
       keyboard={false}
       maskClosable={false}
-      style={{ top: 50 }}
     >
       <div className="sceenmake_modal_container">
         <EssetModalTab setTag={setTag} tag={tag} />

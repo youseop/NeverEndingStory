@@ -24,7 +24,6 @@
 .title {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding-right: 50px;
     grid-row:1;
     grid-column:1 / span 4;    
@@ -36,14 +35,16 @@
     cursor:default;
 }
 .title-btn{
-    /* display: inline-block; */
-    width:60px;
-    height: 24px;
+    text-align: center;
+    width: 65px;
     font-size:15px;
+    border: 1px solid rgba(70, 70, 70, 0.26);
     padding: 0px 2px 2px 2px;
-    margin-left: 25px;    
-    border-radius: 6px;
+    margin-top: 7px;
+    margin-right: 3px;
+    border-radius: 2px;
     background-color: #f05454;
+    border: 1px solid #d03232;
     color:#fff;
     font-weight: 100;
     overflow: hidden;
@@ -68,8 +69,7 @@
     text-align: end;
     width: 65px;
     padding:0px 5px 0px 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin:5px 3px 5px 0px;
     font-size: 20px;
     font-weight: bold;
     font-family: Noto Sans KR;    
@@ -82,18 +82,21 @@
     background-color: #FFE86F;
 }
 .sceneBox_del_btn{
+    all: unset;
+    width:75px;
     text-align: center;
-    width: 80px;
-    padding:0px 5px 0px 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 20px;
-    font-weight: bold;
-    font-family: Noto Sans KR;    
-    background-color: #DDDDDD;
-    border: 1px solid rgba(70, 70, 70, 0.26);
+    font-size: 16px;
+    margin:7px 0px 7px 0px;
+    font-weight: 500;
     border-radius: 8px;
-    cursor:default;
+    font-family: Noto Sans KR;
+    background-color: #f05454;
+    border: 3px solid #d03232;
+    color: #FFFFFF;
+    cursor: pointer;    
+}
+.sceneBox_del_btn:hover{
+    background-color: #f16565;
 }
 .scene {    
     grid-row: 3 /span 2;
@@ -224,26 +227,36 @@
       color:black;
       cursor: pointer;
   }
-
+.scene__SceneBox{
+    margin-top: 10px;
+    width: 22px;
+    height: 25px;
+    /* background-color: orange;
+    border:0.1px solid greenyellow; */
+    cursor:pointer;    
+}
 
 .scene__SceneBox_color {
     width: 17px;
     height: 17px;
     border-radius: 8px;
-    margin-top: 14px;
+    margin-top: 4px;
+    margin-left: 1px;
     background-color: #EEEEEE;
     border: 1px solid rgba(70, 70, 70, 0.26);
-    cursor: pointer;
+}
+.scene__SceneBox_color:hover{
+    background-color: #FFE86F;
 }
 
 .scene__CurrentSceneBox {
     width: 17px;
     height: 17px;
     border-radius: 8px;
-    margin-top: 14px;
+    margin-top: 4px;
+    margin-left: 1px;
     background-color: #f05454;
     border: 1px solid rgba(70, 70, 70, 0.26);
-    cursor: pointer;
 }
 
 .scene__EmptySceneBox {
@@ -255,13 +268,12 @@
     border: 1px solid rgba(70, 70, 70, 0);
 }
 .sceneBox_plus{
-    width: 17px;
-    height: 40px;
+    top:120px;
+    position: absolute;
     font-size:26px;
     font-weight: bold;
+    text-align: center;
     color: #fff;
-    text-align: left;
-    cursor: pointer;
 }
 
 
@@ -288,15 +300,16 @@
     background-color: #DDDDDD;
     color: #30475e;
     cursor: pointer;
-    border:0.1px solid rgb(0,0,0,0.2);
+    border:3px solid #AAAAAA;
 }
 
 .scene_btn:hover{
-    background-color: #070606;
+    background-color: #EEEEEE;
 }
 .scene_btn_blue{
     font-weight: 500;
     background-color: #399cff;
+    border:3px solid #177add;
     color: #EEEEEE;
 } 
 .scene_btn_blue:hover{
@@ -323,14 +336,15 @@
 
 .scene_side_btn{ 
     all: unset;
-    width:95px;
-    padding-top:6.5px;
+    width:89px;
+    padding-top:3px;
     text-align: center;
     font-size: 15px;
     font-weight: bold;
     border-radius: 8px;
     font-family: Noto Sans KR;
     background-color: #DDDDDD;
+    border: 3px solid #AAAAAA;
     color: #30475e;
     cursor: pointer;    
 }
@@ -339,6 +353,7 @@
 }
 .scene_side_btn.light{
     background-color: #FFE86F;
+    border: 3px solid #DDC64D;
 }
 .scene_side_btn.light:hover{
     background-color: #FFE86F;
@@ -401,13 +416,14 @@
     all: unset;
     position: absolute;
     right:0px;
-    padding-top:12.5px;
-    padding-bottom: 12.5px;
+    padding-top:8px;
+    padding-bottom: 8px;
     margin-right: 100px;
     margin-top: 40px;
     width:140px;
     height:55px;
     background-color: #DDDDDD;
+    border:3px solid #AAAAAA;
     font-family: Noto Sans KR;
     border-radius: 12px;
     font-size: 18px;

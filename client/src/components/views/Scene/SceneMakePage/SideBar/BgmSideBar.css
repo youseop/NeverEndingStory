@@ -1,11 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-
-.bgmSidebar__container{
-    margin: 15px;
-    color: rgba(0, 0, 0, 0.65);
-    /* background-color: tomato; */
-    overflow: scroll;
-  }
   
   .bgmSidebar__container::-webkit-scrollbar {
     display: none;

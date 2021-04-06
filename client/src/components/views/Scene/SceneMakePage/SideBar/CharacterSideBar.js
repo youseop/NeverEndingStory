@@ -19,13 +19,18 @@ function CharacterSideBar({ gameDetail, setName, onEssetModal, isFirstScene, isW
   return (
     <div>
       {(isFirstScene.current || isWriter) &&
-        <FileAddOutlined onClick={onEssetModal}
-          className={gameDetail?.character?.length === 0 ? "charSidebar_add_esset_btn" : "charSidebar_add_esset_btn_side"} />
+        <div className="sidebar__container">
+          <FileAddOutlined onClick={onEssetModal}
+            className={gameDetail?.character?.length === 0 ?
+              "sidebar_add_esset_btn" : "sidebar_add_esset_btn_side"} />
+        </div>
       }
-      <div className="characterSidebar__container">
-        {renderCharacter}
-      </div>
-      <div className="characterSidebar_line">
+      {(gameDetail?.character?.length !== 0) &&
+        <div className="characterSidebar__container">
+          {renderCharacter}
+        </div>
+      }
+      <div className="sidebar_line">
       </div>
     </div>
   )

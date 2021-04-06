@@ -23,15 +23,15 @@ function SoundSideBar({ gameDetail, sound_audio, setSoundFile, onEssetModal, isF
 
     return (
         <div className="modal">
-            <div className="bgmSidebar__container">
+            <div className="sidebar__container">
                 {(isFirstScene.current || isWriter) &&
                     <FileAddOutlined onClick={onEssetModal}
                         className={gameDetail?.sound?.length === 0 ?
                             "sidebar_add_esset_btn" : "sidebar_add_esset_btn_side"} />
                 }
-                {gameDetail?.bgm?.length === 0 && <div className="sidebar_line" />}
                 <div>{renderSound}</div>
             </div>
+            {gameDetail?.sound?.length === 0 && <div className="sidebar_line" />}
         </div>
     );
 }

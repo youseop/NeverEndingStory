@@ -1,11 +1,10 @@
-.scenemake_modal{
-    /* display : flex; */
-    /* width:60% !important; */
-    /* height:70% !important; */
+.scenemake_modal.ant-modal{
+    top:45px;
+    width:1050px !important;
+    justify-content : center;
+    /* background-color: tomato; */
 }
-.scenemake_modal_form_container{
-    
-}
+
 .scenemake_modal_form{
     display:flex;
     justify-content:center;
@@ -29,12 +28,6 @@
     background-color: #DDDDDD;
     cursor: pointer;
     border:0.1px solid rgb(0,0,0,0.1);
-}
-.scenemake_modal>.ant-modal-content{
-    /* display : flex; */
-    justify-content : center;
-    margin-left : 15%;
-    margin-right : 15%;
 }
 
 .scenemake_modal_detail{

@@ -24,13 +24,15 @@ function SceneBox(props) {
     const display_SceneBox = CutList.map((Cut, index) => {
         if (CutNumber === index) {
             return (
-                (<div className="scene__CurrentSceneBox" key={`${index}`}></div>)
+                (<div className="scene__SceneBox" key={`${index}`}>
+                    <div className="scene__CurrentSceneBox"></div>
+                </div>)
             );
         } else {
             if (Hover) {
                 return (
                     <div
-                        className="scene__SceneBox_color"
+                        className="scene__SceneBox"
                         key={`${index}`}
                         onMouseOver={() => onClick_GotoCut(index)}
                     ></div>
@@ -38,10 +40,12 @@ function SceneBox(props) {
             } else {
                 return (
                     <div
-                        className="scene__SceneBox_color"
+                        className="scene__SceneBox"
                         key={`${index}`}
                         onClick={() => onClick_GotoCut(index)}
-                    ></div>
+                    >
+                        <div className="scene__SceneBox_color"></div>
+                    </div>
                 )
             }
         }
@@ -51,15 +55,21 @@ function SceneBox(props) {
         if (CutNumber - CutList.length === index) {
             if (index === 0)
                 return (
-                    <div className="scene__CurrentSceneBox" key={`${index}`}></div>
+                    <div className="scene__SceneBox" key={`${index}`}>
+                        <div className="scene__CurrentSceneBox" />
+                    </div>
                 );
         } else if (index === 0 || index === 1 && CutNumber - CutList.length === 0) {
             return (
-                <div className="sceneBox_plus" onClick={onClick_plusBtn} key={`${index}`}>+</div>
+                <div className="scene__SceneBox" onClick={onClick_plusBtn} key={`${index}`}>
+                    <div className="sceneBox_plus">+</div>
+                </div>
             );
         } else {
             return (
-                <div className="scene__EmptySceneBox" key={`${index}`}></div>
+                <div className="scene__SceneBox" key={`${index}`}>
+                    <div className="scene__EmptySceneBox" />
+                </div>
             );
         }
     });

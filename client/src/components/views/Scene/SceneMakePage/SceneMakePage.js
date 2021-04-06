@@ -613,18 +613,21 @@ const SceneMakePage = (props) => {
         if (gameDetail.character) {
             const reload_Sidebar = (< div className="sideBar">
                 <div ref={characterSidebarElement}>
-                    <CharacterModal
-                        reload={reload} //update용
-                        setName={setName}
-                        GameCharacterList={gameDetail.character}
-                    />
-                    <CharacterSideBar
-                        gameDetail={gameDetail}
-                        setName={setName}
-                        onEssetModal={onEssetModal}
-                        isFirstScene={isFirstScene}
-                        isWriter={isWriter}
-                    />
+                    <div className="modal">
+
+                        <CharacterModal
+                            reload={reload} //update용
+                            setName={setName}
+                            GameCharacterList={gameDetail.character}
+                        />
+                        <CharacterSideBar
+                            gameDetail={gameDetail}
+                            setName={setName}
+                            onEssetModal={onEssetModal}
+                            isFirstScene={isFirstScene}
+                            isWriter={isWriter}
+                        />
+                    </div>
                 </div>
                 <div ref={backgroundSidebarElement} style={{ display: 'none' }}>
                     <BackgroundSideBar
@@ -713,17 +716,17 @@ const SceneMakePage = (props) => {
         return (
             <div className="wrapper">
                 <div className="title">
-                    <div>
-                        <span>[{gameDetail?.title}]</span>
-                        {!isFirstScene &&
-                            <Clock format={`HH:mm:ss`} date={expTime} timezone={`Asia/Seoul`}></Clock>
-                        }
-                    </div>
-                    {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
                     <div
                         className="title-btn"
                         onClick={() => setEssetModalState(5)}>
-                        상세정보
+                        게임정보
+                    </div>
+                    <div>
+                        <span>[{gameDetail?.title}]</span>
+                        {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
+                        {!isFirstScene &&
+                            <Clock format={`HH:mm:ss`} date={expTime} timezone={`Asia/Seoul`}></Clock>
+                        }
                     </div>
                 </div>
                 <SceneBox
