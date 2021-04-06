@@ -52,10 +52,9 @@ function AdminPage(props) {
   
   const currUserData = useSelector((state) => state.user.userData);
   const [gameDetail, setGameDetail] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isHide, setIsHide] = useState(true);
+  const [contributerList, setContributerList] = useState([]);
   const [isDelete, setIsDelete] = useState(false);
-  const [data,setData] = useState({});
+  const [selectedUser, setSelectedUser] = useState("");
   const [treeData, setTreeData] = useState({
       name: "", 
       userId: "",
@@ -64,14 +63,13 @@ function AdminPage(props) {
   });
 
   function updateTree() {
-    Axios.get(`/api/treedata/${gameId}`, variable). then((response) => {
+    Axios.get(`/api/treedata/${gameId}`). then((response) => {
         if (response.data.success) {
             const { rawData, firstNodeId } = response.data;
             let data = {};
             for (let i=0; i<rawData.length; i++){
             data = { ...data, [rawData[i]._id]: rawData[i]}
             } 
-            setData(data);
             getRecursive(data, firstNodeId).subscribe(d=> {
                 setTreeData(d); 
             });
@@ -83,45 +81,59 @@ function AdminPage(props) {
     Axios.post("/api/game/detail", variable).then((response) => {
         if (response.data.success) {
             setGameDetail(response.data.gameDetail);
+            const tmp = [];
+            for (let i=0; i<response.data.gameDetail.contributerList.length; i++){
+              tmp.push(response.data.gameDetail.contributerList[i].userId);
+            }
+            setContributerList(tmp);
         } else {
             message.error("게임 정보를 로딩하는데 실패했습니다.");
         }
     });
     updateTree();
   },[]);
-  
-  const onClick_toggle = () => {
-    setIsHide((state) => !state)
-    setIsAdmin((state) => !state)
-  }
 
   const onClick_delete = () => {
     setIsDelete((state) => !state);
   }
   
+  const onCartegoryChange = (event) => {
+    let cat_idx = event.currentTarget.value;
+    setSelectedUser(event.currentTarget[cat_idx].text);
+};
+
   const [translate, setTranslate] = useState({
-    x: 0,
-    y: 0
+    x:170,
+    y:60
   });
   const [zoom, setZoom] = useState(700);
 
   const onClick_replace = () => {
     setTranslate({
-      x:0,
-      y:0
+      x:230,
+      y:100
     })
+    setZoom(700);
   }
 
   const onClick_zoomIn = () => {
-    setZoom((state) => state+100);
+    if(zoom < 2000){
+      setZoom((state) => state+300);
+      setTranslate({
+        x: translate.x - 150,
+        y: translate.y - 150
+      });
+    }
   }
 
   const onClick_zoomOut = () => {
-    setZoom((state) => {
-      if (state > 100){
-        return (state-100);
-      }
-    })
+    if(zoom > 400){
+      setZoom((state) => state-300);
+      setTranslate({
+        x: translate.x + 150,
+        y: translate.y + 150
+      });
+    }
   }
 
   const handleDragMove = (e) => {
@@ -131,12 +143,15 @@ function AdminPage(props) {
     });
   };
 
+  console.log(gameDetail)
+  console.log(contributerList)
+
   return (
-    <div className="detailPage__container">
+    <div className="adminPage__container">
       
-      <div className="detailPage__thumbnail_container">
+      <div className="adminPage__thumbnail container">
         <img
-            className="detailPage__thumbnail"
+            className="adminPage__thumbnail"
             src={
                 process.env.NODE_ENV === 'production' ?
                     gameDetail.thumbnail
@@ -144,80 +159,75 @@ function AdminPage(props) {
                     `${config.SERVER}/${gameDetail?.thumbnail}`}
             alt="thumbnail"
         />
-        <div className="detailPage__gradation"></div>
-        <div className="detailPage__UPTitle">
-            {gameDetail?.title}
+        <div className="adminPage__gradation"></div>
+        <div className="adminPage__UPTitle">
+            관리자 페이지
+            <br/>
+            <br/>
+            <div>{gameDetail?.title} 제목 수정</div>
         </div>
+      </div>
+      <div className="adminPage__body">
+        <div className="adminPage__description">
+            <br/>
+            게임 설명 수정
+            {gameDetail.description}
+        </div>
+
+        {(treeData.userId !== "" && currUserData?._id === treeData.userId) ?
+        <>
+            <div 
+                style={isDelete ? {backgroundColor:"red"} : {backgroundColor:"black"} }
+                onClick={onClick_delete}
+                className="admin_btn"
+            >
+                {isDelete?
+                "삭제 모드로"
+                :
+                "삭제 ㅌ"
+                }
+            </div>
+
+            <div onClick={onClick_zoomIn}>확대</div>
+            <div onClick={onClick_zoomOut}>축소</div>
+            <div onClick={onClick_replace}>원 상태로 복구</div>
+            
+            <div className="scenemake_modal_detail_category_container">
+                <select className="scenemake_modal_category" onChange={onCartegoryChange}>
+                    {contributerList.map((contributer, index) => (
+                        <option key={index} value={contributer}>
+                            {contributer}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="dragDrop_container">
+              <DragMove onDragMove={handleDragMove}>
+                <div
+                  style={{
+                    transform: `translateX(${translate.x}px) translateY(${translate.y}px)`
+                  }}
+                >
+                  <RadialTree 
+                      data={treeData} 
+                      width={zoom} 
+                      height={zoom} 
+                      userId={currUserData._id}
+                      dummy={false}
+                      isDelete={isDelete}
+                      updateTree={updateTree}
+                  />
+                </div>
+              </DragMove>
+            </div>
+        </>
+        :
+        <>
+        잘못된 접근입니다.fdsds
+        </>
+        }
+      </div> 
     </div>
-
-      {(treeData.userId !== "" && currUserData?._id === treeData.userId) ?
-      <>
-          <div 
-              style={isDelete ? {backgroundColor:"red"} : {backgroundColor:"black"} }
-              onClick={onClick_delete}
-              className="admin_btn"
-          >
-              {isDelete?
-              "삭제 하기"
-              :
-              "삭제 ㅌ"
-              }
-          </div>
-          <div 
-              style={isAdmin ? {backgroundColor:"red"} : {backgroundColor:"black"} }
-              onClick={onClick_toggle}
-              className="admin_btn"
-          >
-              {isAdmin?
-              "신고 횟수 숨기기"
-              :
-              "신고 횟수 보기"
-              }
-          </div>
-          <div 
-              style={isHide ? {backgroundColor:"red"} : {backgroundColor:"black"} }
-              onClick={onClick_toggle}
-              className="admin_btn"
-          >
-              {isHide?
-              "스토리 상세정보 보지 않기"
-              :
-              "스토리 상세정보 보기"
-              }
-          </div>
-
-          <div onClick={onClick_zoomIn}>확대</div>
-          <div onClick={onClick_zoomOut}>축소</div>
-          <div onClick={onClick_replace}>원 상태로 복구</div>
-          
-          <div className="dragDrop_container">
-            <DragMove onDragMove={handleDragMove}>
-              <div
-                style={{
-                  transform: `translateX(${translate.x}px) translateY(${translate.y}px)`
-                }}
-              >
-                <RadialTree 
-                    data={treeData} 
-                    width={zoom} 
-                    height={zoom} 
-                    userId={currUserData._id}
-                    isAdmin={isAdmin}
-                    isHide={isHide}
-                    isDelete={isDelete}
-                    updateTree={updateTree}
-                    clickable={true}
-                />
-              </div>
-            </DragMove>
-          </div>
-      </>
-      :
-      <>
-      잘못된 접근입니다.fdsds
-      </>
-      }
-    </div> 
   )
 }
 

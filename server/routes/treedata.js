@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+import { Complaint } from "../models/Complaint";
 import { User } from "../models/User";
 const { check } = require("../middleware/check");
 
@@ -47,7 +48,7 @@ const deleteData = async (managedData, id) => {
   )
   await Game.updateOne(
     { 
-      _id:  gameId, 
+      _id:  gameId,  
       "contributerList.userId": userId 
     },
     { $pull: { 'contributerList.$.sceneIdList': sceneId } }
@@ -121,6 +122,52 @@ router.get('/:gameId', async (req,res) => {
     return res.status(200).json({success: true, rawData, firstNodeId});
   } catch (err) {
     console.log(err)
+    return res.json({ success: false, err })
+  }
+})
+
+router.get('/nodeInfo/:userId/:sceneId/:gameId', async (req,res) => {
+  try{
+    const { userId, sceneId, gameId } = req.params;
+    let sceneUserInfo = await User.findOne(
+      {_id: userId}, 
+      {
+        _id: 0,
+        email: 1,
+        nickname: 1,
+        image: 1,
+        contributedSceneList: {$elemMatch: {gameId: gameId }}
+      }
+    )
+    const sceneCutList = await Scene.findOne(
+      {_id: sceneId},
+      {
+        _id: 0,
+        cutList: 1
+      }
+    )
+    const gameInfo = await Game.findOne(
+      {_id: gameId},
+      {
+        _id: 0,
+        sceneCnt: 1
+      }
+    )
+    const complaints = await Complaint.find({
+      gameId: gameId,
+      sceneId: sceneId,
+    },
+    {
+      _id: 0,
+      title: 1,
+      description: 1
+    }
+    )
+    const cutList = sceneCutList.cutList;
+    const totalSceneCnt = gameInfo.sceneCnt;
+    return res.status(200).json({success: true, sceneUserInfo, cutList, totalSceneCnt, complaints});
+  } catch (err) {
+    console.log(err);
     return res.json({ success: false, err })
   }
 })

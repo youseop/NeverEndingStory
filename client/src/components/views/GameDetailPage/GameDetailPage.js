@@ -14,6 +14,7 @@ import TopRatingContributer from "./TopRatingContributer";
 import "./GameDetailPage.css";
 import AdminPage from "./AdminPage";
 import { Link } from "react-router-dom";
+import RadialTree from "../TreeVisualization/RadialTree.js";
 
 const config = require('../../../config/key')
 

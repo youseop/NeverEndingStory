@@ -24,8 +24,84 @@
 }
 
 .dragDrop_container{
-  width: 100%;
-  height: 900px;
-  box-shadow: 3px 3px 3px 3px #f3f3f38c;
+  width: 90%;
+  height: 800px;
+  margin: auto;
+  border: 2.52px solid rgba(255, 244, 244, 0.534);
+  border-radius: 5px;
   overflow: hidden;
+}
+
+.adminPage__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  color: #FFFFFF;
+  width: 1152px;
+  /* width: 1440px; */
+  margin: auto;
+}
+
+.adminPage__gradation {
+  width: 1180px;
+  height: 200px;
+  position: relative;
+  bottom: 200px;
+  left:-2px;
+  background: linear-gradient( to top, #222831 , #22283100);
+  z-index: 1;
+}
+
+
+.adminPage__thumbnail .container{
+  width: 100%;
+  height: 605px;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 38px;
+  line-height: 36px;
+  color: #E5E5E5;
+  object-fit : contain;
+}
+
+
+.adminPage__thumbnail {
+  width: 100%;
+  /* height: 790px; */
+  height: 580px;
+  overflow: hidden;
+  object-fit: contain;
+}
+
+
+.adminPage__UPTitle {
+  position: relative;
+  bottom: 363px;
+  left: 39px;
+  z-index: 2;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 47px;
+  line-height: 36px;
+  width: 800px;
+}
+
+.adminPage__body{
+  width: 100%;
+}
+
+.adminPage__description{
+  all: unset;
+  white-space: pre-line;
+  width: 100%;
+  height: auto;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-size: 17px;
+  font-weight: 100;
+  color: #E5E5E5;
 }

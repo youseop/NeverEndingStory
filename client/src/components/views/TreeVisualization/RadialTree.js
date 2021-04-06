@@ -31,13 +31,21 @@ export default class extends React.Component {
     super(props);
     this.state = {
       visible: false,
+      node: null
     };
     this.handleVisible = this.handleVisible.bind(this);
+    this.handleNode = this.handleNode.bind(this);
   }
 
   handleVisible() {
     this.setState(state => ({ 
       visible: !state.visible
+    }));
+  }
+
+  handleNode(node) {
+    this.setState(state => ({
+      node: node
     }));
   }
 
@@ -54,23 +62,44 @@ export default class extends React.Component {
         bottom: 0
       },
       userId,
-      isAdmin,
+      dummy,
       isDelete,
-      isHide,
       updateTree,
-      clickable,
+      // selectedUserId
     } = this.props;
 
     if (width < 10) return null;
 
-    const onCancel = () => {
+    const onCancel = (node) => {
       this.handleVisible();
+      if(!this.state.visible){
+        this.handleNode(node);
+      } else {
+        this.handleNode(null);
+      }
     }
 
     async function onClick_node (node, that) {
-      if (isDelete){
-        const confirmComment= `${node.data.name} 과 ${node.data.name} 에서 이어지는 스토리들을 모두 삭제하시겠습니까?`;
+      //? 더미 생성 코드
+      if(dummy) {
+        const confirmComment='더미 Scene 생성 by 유섭_ 씬만들고 지우기 너무 힘들어서 만들었습니다...(배포시 이 버튼과 scene.js /makedummy router삭제부탁드려요)'
         if(window.confirm(confirmComment)){
+          const resource = {
+            prevSceneId: node.data.sceneId,
+            userId: node.data.userId,
+            gameId: node.data.gameId,
+          }
+          await Axios.post('/api/scene/makedummy', resource);
+          updateTree();
+          message.info("더미 생성(새로고침하면 반영됩니다. 빡세네요 고치기...)");
+          that.forceUpdate();
+        }
+        return;
+      }
+
+      if (isDelete){
+        const confirmComment= `클릭하신 스토리와 이어지는 스토리들을 모두 삭제하시겠습니까?\n한 번 삭제하면 되돌릴 수 없습니다.\n"삭제하겠습니다."를 입력창에 입력해주세요.`;
+        if(window.prompt(confirmComment) === "삭제하겠습니다."){
           const {sceneId, gameId} = node.data;
           message
             .loading("삭제 중 입니다...", 1.5)
@@ -88,16 +117,20 @@ export default class extends React.Component {
         } else {
           message.info("취소되었습니다.")
         }
-      } else if(isHide){
-        if (!node.data.isExpanded) {
-          node.data.x0 = node.x;
-          node.data.y0 = node.y;
-        }
-        node.data.isExpanded = !node.data.isExpanded;
-        that.forceUpdate();
       } else {
-        onCancel();
+        onCancel(node);
       }
+      //? 자식 toggle 코드
+      // else if(isHide){
+      //   if (!node.data.isExpanded) {
+      //     node.data.x0 = node.x;
+      //     node.data.y0 = node.y;
+      //   }
+      //   node.data.isExpanded = !node.data.isExpanded;
+      //   that.forceUpdate();
+      // } else {
+      //   onCancel();
+      // }
     }
 
     return (
@@ -105,6 +138,7 @@ export default class extends React.Component {
         <AdminModalForm 
             visible={this.state.visible}
             onCancel={onCancel}
+            node={this.state.node}
         />
         <svg width={width} height={height}>
           {/* 그라데이션 효과 */}
@@ -252,8 +286,6 @@ export default class extends React.Component {
                   {(nodes) => (
                     <Group>
                       {nodes.map(({ key, data: node, state }) => {
-                        const width = 40;
-                        const height = 20;
                         return (
                           <Group
                             top={state.y}
@@ -264,17 +296,14 @@ export default class extends React.Component {
                             <circle
                               r={10}
                               fill={
-                                isAdmin && node.data.complaintCnt > 19
+                                node.data.complaintCnt > 19
                                   ? "#ff0000"
-                                  : isAdmin &&node.data.complaintCnt > 9
+                                  : node.data.complaintCnt > 9
                                   ? "#dd521b"
-                                  : !isAdmin && node.data.userId === userId ?
-                                  "#fd4213"
                                   : 
                                   "#b32704"
                               }
                               onClick={() => {
-                                if(clickable)
                                   onClick_node(node, this);
                               }}
                             />
@@ -290,19 +319,11 @@ export default class extends React.Component {
                                   : "#000"
                               }
                             >
-                              {isAdmin ? 
-                              `${node.data.complaintCnt}회`
-                              : 
+                              {
                               node.data.parentSceneId === "rootNode"?
                               "첫 번째 스토리"
                               :
-                              !isHide?
                               ""
-                              :
-                              node.data?.children.length === 0 ? 
-                              ""
-                              :
-                              "click"
                               }
                             </text>
                           </Group>

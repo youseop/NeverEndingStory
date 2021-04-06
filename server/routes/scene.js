@@ -195,7 +195,7 @@ router.post('/save', auth, async (req, res) => {
         game.contributerList = [{
           userId: userId,
           userSceneCnt: 1,
-          sceneIdList: [sceneId.toString()]
+          sceneIdList: [sceneId.toString()],
         }]
         game.save((err) => {
           if (err) return res.json({ success: false, err })
