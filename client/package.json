@@ -20,6 +20,7 @@
     "@typescript-eslint/parser": "^2.26.0",
     "antd": "^3.24.1",
     "axios": "^0.21.1",
+    "bcrypt": "^5.0.1",
     "core-js": "^3.6.4",
     "dotenv": "^8.2.0",
     "formik": "^1.5.8",

@@ -2,8 +2,10 @@ import React, { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import RightMenu from "./Sections/RightMenu";
 import { Drawer, Button, Icon } from "antd";
+import { Logo_Icon } from "../../svg/icon"
 import "./Sections/Navbar.css";
 import { useSelector } from "react-redux";
+import Search from "./Sections/Search";
 
 interface State_controlpage {
   controlpage: {
@@ -39,9 +41,10 @@ function NavBar() {
   return (
     <nav className="menu" style={style}>
       <div className="menu__logo">
-        <Link to="/">이어봐</Link>
+        <Link to="/"><Logo_Icon/></Link>
       </div>
       <div className="menu__container">
+        <Search />
         <div className="menu_rigth">
           <RightMenu mode="horizontal" />
         </div>

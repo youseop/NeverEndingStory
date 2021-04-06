@@ -14,7 +14,7 @@ import { socket } from "../../App"
 import { loadEmptyNum, savePrevScene } from "../../../_actions/sync_actions"
 import useKey from "../../functions/useKey";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
-import { navbarControl } from "../../../_actions/controlPage_actions";
+import { navbarControl,footerControl } from "../../../_actions/controlPage_actions";
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
 import { useLocation } from "react-router";
 import TreeMapPopup from "./TreeMap";
@@ -261,9 +261,10 @@ const ProductScreen = (props) => {
 
   }, [sceneId])
 
-  //* navigation bar control
+  //* navigation bar and footer control
   useEffect(() => {
     dispatch(navbarControl(false));
+    dispatch(footerControl(false));
   }, []);
 
   //* game pause control
@@ -438,20 +439,6 @@ const ProductScreen = (props) => {
               >
                 {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
               </div>
-              {/* <div
-                className="gamePlay__btn"
-                style={{ width: "80px", height:"15px" }} //slider width
-              >
-                <Slider
-                  min={0}
-                  max={1}
-                  step={0.02}
-                  value={volume}
-                  onChange={event => {
-                    volumeControl(event)
-                  }}
-                />
-              </div> */}
               <div>
                 {i === Scene.cutList.length - 1 &&
                   <>
@@ -473,21 +460,19 @@ const ProductScreen = (props) => {
                   onClick={() => setHistoryMap((state) => !state)}
                 >
                   미니맵
-            </button>
-                {/* <button
-              className="gamePlay__btn"
-              onClick={() => {
-                setTreeMap((state) => !state);
-              }}
-            >
-              트리맵
-            </button> */}
+                </button>
+                <button
+                  className="gamePlay__btn"
+                  onClick={() => setHistoryMap((state) => !state)}
+                >
+                  대화기록
+                </button>
                 <button
                   className="gamePlay__btn"
                   onClick={() => setDislike((state) => !state)}
                 >
                   신고
-            </button>
+                </button>
               </div>
               {errorMessage ? (
                 <button

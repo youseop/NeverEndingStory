@@ -31,10 +31,18 @@
     font-weight: bold;
     font-size: 23px;
     /* background-color: teal; */
+    cursor: pointer;
+}
+.bgmTab_text_box.true{
+    color:#399cff;
+    opacity: 0.8;
+}
+.bgmTab_text_box.false:hover{
+    color:black;
 }
 .bgmTab_text_box:hover{
     background-color: #ddd;
-    color:black;
+    opacity: 1.0;
 }
 
 .bgmTab_image{

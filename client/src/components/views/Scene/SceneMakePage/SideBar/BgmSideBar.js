@@ -4,7 +4,7 @@ import "./BgmSideBar.css";
 
 import BgmFile from "./BgmFile";
 
-function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, onEssetModal, isFirstScene, isWriter }) {
+function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, onEssetModal, isFirstScene, setReload, isWriter }) {
 
     const renderBgm = gameDetail.bgm.map((bgm, index) => {
         return (
@@ -15,6 +15,7 @@ function BgmSideBar({ gameDetail, bgm_audio, setBgmFile, onEssetModal, isFirstSc
                     bgm_audio={bgm_audio}
                     bgm={bgm}
                     setBgmFile={setBgmFile}
+                    setReload={setReload}
                 />
             </div>
         );

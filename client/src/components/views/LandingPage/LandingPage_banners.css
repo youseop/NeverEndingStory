@@ -10,6 +10,9 @@
   display: flex;
   cursor:default;
 }
+.banner-container:hover ~ .banner-right-arrow {
+  opacity: 0.5;
+}
 
 .banner-main1 {
   position: relative;
@@ -101,4 +104,22 @@
 .banner-main2-button:hover {
   background: #db4747;
   cursor: pointer;
+}
+
+.banner-right-arrow {
+  /* display: none; */
+  position: absolute;
+  width: 5%;
+  height: 180px;
+  top: 30%;
+  right: 0px;
+
+  padding: 40px 0px;
+
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+.banner-right-arrow:hover {
+  opacity: 0.9;
 }

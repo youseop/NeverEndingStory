@@ -82,19 +82,18 @@
   cursor: pointer;
 }
 
-.charSidebar_add_esset_btn {
-  all: unset;
-  z-index: 100;
-  position: absolute;
-  top: 250px;
-  margin: 25px 0px 0px 150px;
-  width: 100px;
-  height: 100px;
-  font-size: 100px;
-  opacity: 0.8;
-  cursor: pointer;
+.charSidebar_add_esset_btn{  
+all:unset;
+z-index: 100;
+position: absolute;
+top:249px;
+margin:25px 0px 0px 150px;
+width:100px;
+height:100px;
+font-size: 100px;
+opacity: 0.8;
+cursor: pointer;
 }
-
 .charSidebar_add_esset_btn:hover {
   opacity: 1;
 }

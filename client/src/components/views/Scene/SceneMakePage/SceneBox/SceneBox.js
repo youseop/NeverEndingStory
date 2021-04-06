@@ -1,3 +1,4 @@
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 import { Switch } from 'antd';
 import React, { memo } from 'react';
 import '../SceneMakePage.css';
@@ -5,7 +6,7 @@ import './SceneBox.css';
 
 function SceneBox(props) {
     const { CutList, CutNumber, displayCut, setCutNumber,
-        Hover, setHover, EmptyCutList, saveCut } = props;
+        Hover, setHover, EmptyCutList, saveCut, onClick_plusBtn, onRemove_cut } = props;
 
     const onClick_GotoCut = (index) => {
         if (CutNumber > 29) {
@@ -48,8 +49,13 @@ function SceneBox(props) {
 
     const display_EmptyBox = EmptyCutList.map((EmptyCut, index) => {
         if (CutNumber - CutList.length === index) {
+            if (index === 0)
+                return (
+                    <div className="scene__CurrentSceneBox" key={`${index}`}></div>
+                );
+        } else if (index === 0 || index === 1 && CutNumber - CutList.length === 0) {
             return (
-                <div className="scene__CurrentSceneBox" key={`${index}`}></div>
+                <div className="sceneBox_plus" onClick={onClick_plusBtn} key={`${index}`}>+</div>
             );
         } else {
             return (
@@ -58,9 +64,14 @@ function SceneBox(props) {
         }
     });
     return (
-        <div className="box sceneBox">
+        <div className="sceneBox">
+            <div className={((CutList.length) === 30 || (CutNumber + 1) === 30) ?
+                "sceneBox_cutnumber max" : "sceneBox_cutnumber"}>
+                {CutNumber - CutList.length === 0 || CutNumber - CutList.length === -1 ?
+                    `${CutNumber + 1}/30` : `${CutNumber + 1}/${CutList.length}`}</div>
             {display_SceneBox}
             {display_EmptyBox}
+            <div className="sceneBox_del_btn" onClick={onRemove_cut}>컷 삭제</div>
             {/* <Switch
                 checked={Hover}
                 checkedChildren={CutNumber}
