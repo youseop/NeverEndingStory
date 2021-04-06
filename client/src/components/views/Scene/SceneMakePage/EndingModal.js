@@ -26,19 +26,12 @@ const EndingModal = ({ isEnding, visible, setEndingModalState, onSubmit_saveScen
 
 
     return (
-        <Modal className="scenemake_modal"
+        <Modal className="ending_modal"
             title="진행 방식을 선택해주세요."
             visible={visible}
-            width={900}
             onCancel={cancel}
-            centered={true}
             closable={false}
             footer={null}
-            bodyStyle={{
-                height: "370px",
-                display: "flex",
-                justifyContent: "space-around",
-            }}
         >
             <div
                 className="ending_modal_cancel_btn"

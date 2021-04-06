@@ -1,11 +1,26 @@
-.scenemake_modal.ant-modal{
+.scenemake_uploadmodal.ant-modal{
     top:45px;
-    width:1050px !important;
+    width:700px !important;
+    height: 0px;
     justify-content : center;
-    /* background-color: tomato; */
-}
+  }
+  .scenemake_uploadmodal>.ant-modal-content{
+    height: 650px;
+  }
+  .scenemake_uploadmodal>.ant-modal-content>.ant-modal-body{
+    height: 600px;
+  }
+  .scenemake_uploadmodal>.ant-modal-content>.ant-modal-footer{
+    height: 50px;
+  }
+  .scenemake_uploadmodal>.ant-modal-content>.ant-modal-footer>div>.ant-btn{
+    transition:none;
+  }
+  .scenemake_uploadmodal>.ant-modal-content>.ant-modal-footer>div>.ant-btn.ant-btn-primary{
+    transition:none;
+  }
 
-.scenemake_modal_form{
+.scenemake_uploadmodal_form{
     display:flex;
     justify-content:center;
     align-items:center;
@@ -20,7 +35,7 @@
     align-items: center;
 
 }
-.scenemake_modal_category{
+.scenemake_uploadmodal_category{
     position: absolute;
     margin-top: 5px;
     right:30px;
@@ -30,20 +45,20 @@
     border:0.1px solid rgb(0,0,0,0.1);
 }
 
-.scenemake_modal_detail{
+.scenemake_uploadmodal_detail{
     height:250px;
     display : flex;
     flex-direction: column;
     /* justify-content : space-between */
 }
-.scenemake_modal_detail_title_container{
+.scenemake_uploadmodal_detail_title_container{
     margin-top : 45px;
 }
-.scenemake_modal_detail_description_container{
+.scenemake_uploadmodal_detail_description_container{
     margin-top : 25px;
 
 }
-.scenemake_modal_detail_description{
+.scenemake_uploadmodal_detail_description{
     all:unset;    
     padding:15px 15px 10px 15px;
     width:95%;
@@ -52,10 +67,10 @@
     font-family: Noto Sans KR;
     background-color: #DDDDDD;
 }
-.scenemake_modal_detail_category_container{
+.scenemake_uploadmodal_detail_category_container{
 }
 
-.scenemake_modal_detail_title{
+.scenemake_uploadmodal_detail_title{
     all:unset;
     padding:0px 15px 0px 15px;
     font-size: 17px;

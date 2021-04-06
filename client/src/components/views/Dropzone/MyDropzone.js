@@ -40,7 +40,8 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL, type, icon }) 
                 )
                     :
                     <>
-                        <div><p className="thumbnail__msg"><b>파일 업로드</b></p>  </div>
+                        <div><p className="thumbnail__msg"><b>{type === "thumbnail" ?
+                            "Thumbnail Upload" : "파일 업로드"}</b></p>  </div>
                         {icon === "image" &&
                             <InstagramOutlined className="dropzone-icon" />
                         }

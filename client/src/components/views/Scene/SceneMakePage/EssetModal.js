@@ -208,14 +208,15 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => 
   return (
     <Modal className="scenemake_essetmodal"
       visible={visible}
-      okText="Upload"
+      okText="업로드"
+      cancelText="취소"
       onCancel={cancelUpload}
       onOk={upload}
       closable={false}
       keyboard={false}
       maskClosable={false}
     >
-      <div className="sceenmake_modal_container">
+      <div className="sceenmake_essetmodal_container">
         <EssetModalTab setTag={setTag} tag={tag} />
         {tag === 1 &&
           <CharacterTab

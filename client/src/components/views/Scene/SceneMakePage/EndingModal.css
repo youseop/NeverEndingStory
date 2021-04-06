@@ -1,3 +1,29 @@
+
+.ending_modal.ant-modal{
+    top:45px;
+    width:700px !important;
+    height: 0px;
+}
+.ending_modal>.ant-modal-content{
+    top:150px;
+    height: 420px;
+}
+.ending_modal>.ant-modal-content>.ant-modal-body{
+    height: 370px;
+    display: flex;
+    justify-content: space-around;
+    padding:20px;
+    margin:0px;
+  }
+  .ending_modal>.ant-modal-content>.ant-modal-header{
+    height: 70px;
+    padding:10px;
+    margin:0px;
+  }
+  .ending_modal>.ant-modal-content>.ant-modal-header>.ant-modal-title{
+    font-size: 30px;
+  }
+
 .ending_modal_cancel_btn{
     position: absolute;
     right:15px;
@@ -19,6 +45,10 @@
     background-color: white;
     border: 1px solid white;
 }
+.ending_modal_ending_btn>svg{
+    width:270px;
+    height:270px;
+}
 .ending_modal_ending_btn:hover{
     opacity: 1.0;
     border: 1px solid black;
@@ -35,6 +65,10 @@
     font-weight: bold;
     background-color: white;
     border: 1px solid white;
+}
+.ending_modal_choice_btn>svg{
+    width:270px;
+    height:270px;
 }
 .ending_modal_choice_btn:hover{
     opacity: 1.0;
