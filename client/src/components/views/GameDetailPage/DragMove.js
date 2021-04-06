@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function DragMove(props) {
   const {
@@ -11,6 +11,8 @@ export default function DragMove(props) {
     className
   } = props;
 
+  const element = useRef();
+
   const [isDragging, setIsDragging] = useState(false);
 
   const handlePointerDown = (e) => {
@@ -22,14 +24,23 @@ export default function DragMove(props) {
   };
 
   const handlePointerMove = (e) => {
-    if (isDragging) onDragMove(e);
+    if (isDragging) {
+      onDragMove(e);
+    }
   };
+
+  // useEffect(() => {
+  //   element.current.addEventListener('touchmove', handlePointerMove, false);
+  // },[])
 
   return (
     <div
+      ref={element}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerMove={handlePointerMove}
+      onTouchStart={handlePointerDown}
+      onTouchEnd={handlePointerUp}
       style={style}
       className={className}
     >

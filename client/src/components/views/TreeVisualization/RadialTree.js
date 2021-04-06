@@ -65,7 +65,8 @@ export default class extends React.Component {
       dummy,
       isDelete,
       updateTree,
-      // selectedUserId
+      selectedUser,
+      threshold
     } = this.props;
 
     if (width < 10) return null;
@@ -294,21 +295,22 @@ export default class extends React.Component {
                             opacity={state.opacity}
                           >
                             <circle
-                              r={10}
+                              r={node.data.parentSceneId === "rootNode"? 20 : 10 }
                               fill={
-                                node.data.complaintCnt > 19
-                                  ? "#ff0000"
-                                  : node.data.complaintCnt > 9
-                                  ? "#dd521b"
-                                  : 
-                                  "#b32704"
+                                selectedUser === node.data.userId ?
+                                "#026cc3"
+                                :
+                                node.data.complaintCnt > threshold ? 
+                                "#ca0011"
+                                : 
+                                "#d65d16"
                               }
                               onClick={() => {
                                   onClick_node(node, this);
                               }}
                             />
                             <text
-                              dy={".33em"}
+                              dy={"0.4em"}
                               fontSize={12}
                               fontFamily="Arial"
                               textAnchor={"middle"}
@@ -321,7 +323,7 @@ export default class extends React.Component {
                             >
                               {
                               node.data.parentSceneId === "rootNode"?
-                              "첫 번째 스토리"
+                              "시작"
                               :
                               ""
                               }

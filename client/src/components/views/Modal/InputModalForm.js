@@ -26,7 +26,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, form, remainTime }) =
         <Form layout="vertical">
           <Form.Item label="Title">
             {getFieldDecorator("title", {
-              rules: [
+              rules: [ 
                 {
                   required: true,
                   message: "제목을 입력해주세요!",

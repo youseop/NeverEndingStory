@@ -196,6 +196,7 @@ router.post('/save', auth, async (req, res) => {
           userId: userId,
           userSceneCnt: 1,
           sceneIdList: [sceneId.toString()],
+          nickname: user.nickname,
         }]
         game.save((err) => {
           if (err) return res.json({ success: false, err })
@@ -226,7 +227,8 @@ router.post('/save', auth, async (req, res) => {
         game.contributerList.push({
           userId: user._id,
           userSceneCnt: 1,
-          sceneIdList: [scene._id.toString()]
+          sceneIdList: [scene._id.toString()],
+          nickname: user.nickname,
         })
       }
       game.sceneCnt += 1;
@@ -454,7 +456,8 @@ router.post('/makedummy', async (req, res) => {
       game.contributerList.push({
         userId: user._id,
         userSceneCnt: 1,
-        sceneIdList: [sceneId]
+        sceneIdList: [sceneId],
+        nickname: user.nickname,
       })
     }
     game.sceneCnt += 1;
