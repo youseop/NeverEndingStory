@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { useSelector } from 'react-redux';
 import "./LandingPage_buttons.css"
 import "antd/dist/antd.css";
@@ -25,6 +25,7 @@ export function NewGameButton({replace}:newGameButtonProps) {
     const [visible, setVisible] = useState<any>(false);
     const [gameTitle, setGameTitle] = useState<String>("");
     const [gameDescription, setGameDescription] = useState<String>("");
+    const buttonFlag = useRef<boolean>(false)
 
     // const [formRef, setFormRef] = useState<null | {validateFileds:any}></null>;
     const user = useSelector<any, any>((state) => state.user);
@@ -32,7 +33,10 @@ export function NewGameButton({replace}:newGameButtonProps) {
 
 
     const uploadGameFrame = async (title : String, description:any) => {
+        if(buttonFlag.current)
+            return;
         // tmp scene create
+        buttonFlag.current = true;
         const gameResponse : responseTypes = await Axios.post("/api/game/uploadgameframe", {title, description});
 
         if (!gameResponse.data.success) {

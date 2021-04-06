@@ -5,12 +5,14 @@ import "../EssetModal.css";
 import "./CharacterTab.css";
 import { SVG } from "../../../../svg/icon";
 import useMouse from "../../../../functions/useMouse";
+import AssetLibraryModal from "../AssetLibraryModal"
 
-function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, setCharBlobList }) {
+function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, setCharBlobList, assetUsedFlag, blobAssetList }) {
+    const [LibraryModalVisible, setLibraryModalVisible] = useState(false)
     const [characterProfile, setCharacterProfile] = useState("");
     const [characterCards, setCharacterCards] = useState("");
     const [isUpdate, setIsUpdate] = useState(0);
-    const indexNum = useRef(0);
+    const indexNum = useRef(0); //! 몇번째 캐릭터냐?
 
     const onNameChange = (event) => {
         setBlobGame(game => {
@@ -35,7 +37,7 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                 return;
             }
             let curURL = URL.createObjectURL(files[i])
-            setCharBlobList(oldArray => [...oldArray, curURL])
+            setCharBlobList(oldArray => [...oldArray, curURL])  //! blob revoke url들만 지우려고 만든거임
 
             //new Character
             if (indexNum.current === "-1") {
@@ -68,7 +70,7 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
             const profile = () => {
                 // const img = new Image()
                 // img.src = image;
-                const image = blobGame.character[charPageNum.current].image_array[0]
+                const image = blobGame.character[charPageNum.current]?.image_array[0]
                 return (
                     <div>
                         <div className="characterTab_profile_image">
@@ -84,12 +86,12 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                         <Form>
                             <input
                                 onChange={onNameChange}
-                                value={blobGame.character[charPageNum.current].name}
+                                value={blobGame.character[charPageNum.current]?.name}
                                 className="characterTab_profile_name"
                                 placeholder="이름을 입력해주세요." />
                             <textarea
                                 onChange={onDescriptionChange}
-                                value={blobGame.character[charPageNum.current].description}
+                                value={blobGame.character[charPageNum.current]?.description}
                                 className="characterTab_profile_text"
                                 placeholder="설명을 입력해주세요." />
                             {/* <label>(혈액형/좋아하는 것 등 이모지넣을 수 있는 공간?)</label> */}
@@ -98,7 +100,7 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                 )
             }
             setCharacterProfile(profile);
-            const cards = blobGame.character[charPageNum.current].image_array.map((image, index) => {
+            const cards = blobGame.character[charPageNum.current]?.image_array.map((image, index) => {
                 // const img = new Image()
                 // img.src = image;
                 return (
@@ -134,8 +136,6 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
             }
         }
     }
-
-
     return (
         <div className="characterTab-container">
             {blobGame.character?.length > 0 &&
@@ -167,6 +167,22 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                 <div
                     className="characterTab_empty_dropzone"
                     id={-1}>
+                    <div onClick={() => {
+                        setLibraryModalVisible(true)
+                    }}>
+                        기존 에셋 추가하기
+                    </div>
+                    {<AssetLibraryModal
+                        visible={LibraryModalVisible}
+                        setVisible={setLibraryModalVisible}
+                        assetType="character"
+                        blobGame={blobGame}
+                        setBlob={setBlobGame}
+                        assetUsedFlag={assetUsedFlag}
+                        charPageNum={charPageNum}
+                        setIsUpdate={setIsUpdate}
+                        blobAssetList={blobAssetList}
+                    />}
                     <MyDropzone
                         onDrop={onDrop}
                         multiple={true}

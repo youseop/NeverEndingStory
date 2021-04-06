@@ -3,8 +3,11 @@ import { message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
 import "../EssetModal.css";
 import "./MusicTab.css";
+import AssetLibraryModal from "../AssetLibraryModal"
 
-function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, soundBlobList, setSoundBlobNames, soundBlobNames }) {
+function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, soundBlobList, setSoundBlobNames, soundBlobNames, blobAssetList, assetUsedFlag }) {
+    const [LibraryModalVisible, setLibraryModalVisible] = useState(false)
+
     const [soundCards, setSoundCards] = useState([]);
     const [blobCards, setBlobCards] = useState([]);
 
@@ -38,7 +41,7 @@ function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, so
             setBlobCards(soundBlobList.map((element, index) => {
                 return (
                     <div className="bgmTab_text_box" key={index}>
-                        {soundBlobNames[index].name}
+                        {element.name || soundBlobNames[index].name}
                     </div>
                 )
             }))
@@ -46,6 +49,18 @@ function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, so
 
     return (
         <div className="bgmTab_container">
+            <div className="bgmTab_library"
+                onClick={() => setLibraryModalVisible(true)}>
+                스토어에서 불러오기
+                </div>
+            <AssetLibraryModal
+                visible={LibraryModalVisible}
+                setVisible={setLibraryModalVisible}
+                assetType="sound"
+                assetUsedFlag={assetUsedFlag}
+                setBlob={setSoundBlobList}
+                blobAssetList={blobAssetList}
+            />
             <div className="bgmTab_dropzone">
                 <MyDropzone
                     onDrop={onDrop}

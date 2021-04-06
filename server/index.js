@@ -25,10 +25,13 @@ const connect = mongoose.connect(config.mongoURI,
   .then(() => logger.info("mongoose connected...!"))
   .catch(err => console.log(err));
 
-const redisClient = redis.createClient({
-    url : `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
-    password :process.env.REDIS_PASSWORD,
-  })
+let redisClient
+if (process.env.NODE_ENV === 'production') {
+  redisClient = redis.createClient({
+      url : `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+      password :process.env.REDIS_PASSWORD,
+    })
+}
 
 
 if (process.env.NODE_ENV === 'production') {
@@ -53,6 +56,7 @@ if(process.env.NODE_ENV === "production"){
 app.use(session(sessionOption))
 app.use('/api/users', require('./routes/users'));
 app.use('/api/passport', require('./routes/passport'));
+app.use('/api/asset', require('./routes/asset'));
 app.use('/api/game', require('./routes/game'));
 app.use('/api/scene', require('./routes/scene'));
 app.use('/api/complaint', require('./routes/complaint'));

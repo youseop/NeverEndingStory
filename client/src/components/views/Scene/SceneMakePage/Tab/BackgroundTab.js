@@ -3,8 +3,11 @@ import { Col, message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
 import "../EssetModal.css";
 import "./BackgroundTab.css";
+import AssetLibraryModal from "../AssetLibraryModal"
 
-function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList, isInfo }) {
+
+function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList, isInfo, assetUsedFlag, blobAssetList  }) {
+    const [LibraryModalVisible, setLibraryModalVisible] = useState(false)
     const [backgroundCards, setBackgroundCards] = useState("");
     const [blobCards, setBlobCards] = useState("");
     const onDrop = (files) => {
@@ -56,6 +59,18 @@ function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList
     else
         return (
             <div className="backgroundTab_container">
+                <div className="backgroundTab_library"
+                    onClick={() => setLibraryModalVisible(true)}>
+                    스토어에서 불러오기
+                </div>
+                <AssetLibraryModal
+                    visible={LibraryModalVisible}
+                    setVisible={setLibraryModalVisible}
+                    assetType="background"
+                    assetUsedFlag={assetUsedFlag}
+                    setBlob={setBackBlobList}
+                    blobAssetList={blobAssetList}
+                />
                 <div className="backgroundTab_dropzone">
                     <MyDropzone
                         onDrop={onDrop}
@@ -66,6 +81,7 @@ function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList
                         icon="image"
                     >
                     </MyDropzone>
+
                 </div>
                 <div className="backgroundTab_Box">
                     <div>{backgroundCards} {blobCards}</div>

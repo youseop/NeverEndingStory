@@ -73,23 +73,27 @@ const updateCache = async (sceneId, userId, plus, exp) => {
     clearTimeout(certTokenList[idx].timer);
 
     certTokenList[idx].exp = exp;
+    const timeDiff = exp - Date.now()
     certTokenList[idx].isMakingScene = true;
     certTokenList[idx].timer = setTimeout(() => {
 
       if (scene_cache[sceneId].certificationList.some(item => item.userId === userId)) {
+        console.log("BEFORE : ", scene_cache[sceneId].emptyNum)
         scene_cache[sceneId].emptyNum += 1;
+        console.log("AFTER : ", scene_cache[sceneId].emptyNum)
         io.sockets.to(userId.toString()).emit("timeout_making", { msg: "hi~" });
+        console.log("TIMEOUT !!", timeDiff)
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
         if (idx > -1) {
           scene_cache[sceneId].certificationList.splice(idx, 1)
           Scene.deleteOne({
             prevSceneId: mongoose.Types.ObjectId(sceneId),
             writer: mongoose.Types.ObjectId(userId)
-          }).exec().then((err) => { console.log(err) });
+          }, (err) => { console.log("DETELE ERR"); console.log(err) });
         }
       }
       return;
-    }, exp - Date.now())
+    }, timeDiff)
 
     scene_cache[sceneId].certificationList = certTokenList;
   }
@@ -212,7 +216,7 @@ io.on('connection', socket => {
             Scene.deleteOne({
               prevSceneId: mongoose.Types.ObjectId(scene_id),
               writer: mongoose.Types.ObjectId(certToken.userId)
-            }).exec().then((err) => { console.log(err) });
+            }, (err) => { console.log(err) });
   
           }
   
@@ -230,7 +234,7 @@ io.on('connection', socket => {
                 Scene.deleteOne({
                   prevSceneId: mongoose.Types.ObjectId(scene_id),
                   writer: mongoose.Types.ObjectId(certToken.userId)
-                }).exec().then((err) => { console.log(err) });
+                },(err) => { console.log(err) });
   
               }
   

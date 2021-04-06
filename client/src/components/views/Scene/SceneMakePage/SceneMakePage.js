@@ -65,6 +65,15 @@ const SceneMakePage = (props) => {
     const minSize = 300;
     const ratio = 1080 / 1920;
 
+    // 업로드 되었냐 안되었냐 flag.. -우성-
+    const uploadCharFileFlag = useRef([])
+    const uploadFileFlag = useRef([])
+    const assetUsedFlag = useRef({
+        character: [],
+        background: [],
+        bgm: [],
+        sound: []
+    })
     const [windowWidth, setwindowWidth] = useState(window.innerWidth);
     const [windowHeight, setwindowHeight] = useState(window.innerHeight);
     const [newScreenSize, setNewScreenSize] = useState({});
@@ -653,7 +662,6 @@ const SceneMakePage = (props) => {
             sound_audio.pause();
         };
     }, []);
-
     const gameInfoIndex = useRef({ tab: 1, page: 0 })
 
     if (gameDetail?.title) {
@@ -662,7 +670,7 @@ const SceneMakePage = (props) => {
                 <div className="title">
                     <div>
                         <span>[{gameDetail?.title}]</span>
-                        {!isFirstScene &&
+                        {!isFirstScene.current &&
                             <Clock format={`HH:mm:ss`} date={expTime} timezone={`Asia/Seoul`}></Clock>
                         }
                     </div>
@@ -670,7 +678,7 @@ const SceneMakePage = (props) => {
                     <div
                         className="title-btn"
                         onClick={() => setEssetModalState(5)}>
-                        상세정보 
+                        상세정보
                     </div>
                 </div>
                 <SceneBox
@@ -733,13 +741,13 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_name">{BgmFile.name}</div>
                                 </div>
                             ) : (
-                                <div>
-                                    <StopOutlined
-                                        style={{ fontSize: "20px" }}
-                                    />
-                                    <div className="scene__sound_name">BGM</div>
-                                </div>
-                            )}
+                                    <div>
+                                        <StopOutlined
+                                            style={{ fontSize: "20px" }}
+                                        />
+                                        <div className="scene__sound_name">BGM</div>
+                                    </div>
+                                )}
                             {SoundFile?.name ? (
                                 <div
                                     onClick={onClick_sound_player}
@@ -757,13 +765,13 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_name">{SoundFile.name}</div>
                                 </div>
                             ) : (
-                                <div>
-                                    <StopOutlined
-                                        style={{ fontSize: "20px" }}
-                                    />
-                                    <div className="scene__sound_name">Sound</div>
-                                </div>
-                            )}
+                                    <div>
+                                        <StopOutlined
+                                            style={{ fontSize: "20px" }}
+                                        />
+                                        <div className="scene__sound_name">Sound</div>
+                                    </div>
+                                )}
                         </div>
                     </div>
 
@@ -892,6 +900,9 @@ const SceneMakePage = (props) => {
                         setTag={setEssetModalState}
                         setReload={setReload}
                         gameInfoIndex={gameInfoIndex}
+                        uploadCharFileFlag={uploadCharFileFlag}
+                        uploadFileFlag={uploadFileFlag}
+                        assetUsedFlag={assetUsedFlag}
                     />
                 }
             </div>

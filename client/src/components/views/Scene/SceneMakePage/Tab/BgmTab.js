@@ -3,8 +3,11 @@ import { message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
 import "../EssetModal.css";
 import "./MusicTab.css";
+import AssetLibraryModal from "../AssetLibraryModal"
 
-function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList, setBgmBlobNames, bgmBlobNames }) {
+
+function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList, setBgmBlobNames, bgmBlobNames, blobAssetList, assetUsedFlag }) {
+    const [LibraryModalVisible, setLibraryModalVisible] = useState(false)
     const [bgmCards, setBgmCards] = useState([]);
     const [blobCards, setBlobCards] = useState([]);
 
@@ -16,6 +19,7 @@ function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlo
             }
             setFileQueue(oldArray => [...oldArray, files[i]])
             setTypeQueue(oldArray => [...oldArray, 2])
+
             setBgmBlobNames(oldArray => [...oldArray, files[i]])
             setBgmBlobList(oldArray => [...oldArray, URL.createObjectURL(files[i])])
         }
@@ -39,7 +43,7 @@ function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlo
             setBlobCards(bgmBlobList.map((element, index) => {
                 return (
                     <div className="bgmTab_text_box" key={index}>
-                        {bgmBlobNames[index].name}
+                        {element.name || bgmBlobNames[index].name}
                     </div>
                 )
             }))
@@ -47,6 +51,19 @@ function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlo
 
     return (
         <div className="bgmTab_container">
+            <div className="bgmTab_library"
+                onClick={() => setLibraryModalVisible(true)}>
+                스토어에서 불러오기
+                </div>
+            <AssetLibraryModal
+                visible={LibraryModalVisible}
+                setVisible={setLibraryModalVisible}
+                assetType="bgm"
+                assetUsedFlag={assetUsedFlag}
+                setBlob={setBgmBlobList}
+                setBlobName={setBgmBlobNames}
+                blobAssetList={blobAssetList}
+            />
             <div className="bgmTab_dropzone">
                 <MyDropzone
                     onDrop={onDrop}

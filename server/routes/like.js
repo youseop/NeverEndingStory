@@ -31,7 +31,7 @@ router.post('/setlike', async(req,res) => {
       return res.status(200).json({ success: true})
     } else {
       for (let i=0; i<like.length; i++){
-        Like.deleteOne({_id: like[i]._id}).exec()
+        Like.deleteOne({_id: like[i]._id})
       }
       return res.status(200).json({ success: true})
     }
