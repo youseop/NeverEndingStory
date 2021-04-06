@@ -9,13 +9,16 @@ import { socket } from "../../App";
 import { SVG } from "../../svg/icon";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faHeart, faLink } from "@fortawesome/free-solid-svg-icons";
 import TopRatingContributer from "./TopRatingContributer";
 import "./GameDetailPage.css";
-
+import qs from "qs";
+import { Invitaion } from "./Invitation";
 const config = require('../../../config/key')
 
 function GameDetailPage(props) {
+    const query = qs.parse(props.location?.search, { ignoreQueryPrefix: true });
+    console.log(query);
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
 
@@ -32,18 +35,18 @@ function GameDetailPage(props) {
 
     const user = useSelector((state) => state.user);
 
-    const playFirstScene = async (isFirst) => {
+    const playFirstScene = async (isFirst, isInvitation) => {
         try {
             let response;
-            if(isFirst){
+            if (isFirst) {
                 response = await Axios.get("/api/users/playing-list/clear");
                 // Not Yet Tested
-                if (user.userData.isAuth && isMaking){
-                    socket.emit("empty_num_increase", {user_id: user.userData._id.toString(), scene_id: response.data.prevOfLastScene.toString()});
+                if (user.userData.isAuth && isMaking) {
+                    socket.emit("empty_num_increase", { user_id: user.userData._id.toString(), scene_id: response.data.prevOfLastScene.toString() });
                 }
             }
             props.history.replace({
-                pathname: (!isFirst && isMaking) ? `/scene/make` : `/gameplay`,
+                pathname: (!isFirst && isMaking) ? `/scene/make` : `/gameplay${isInvitation ? "/full" : ""}`,
                 state: {
                     sceneId: isFirst ? response.data.teleportSceneId : sceneId,
                     gameId: gameId,
@@ -108,10 +111,10 @@ function GameDetailPage(props) {
                     setThumbsUpClicked(response.data.isClicked);
                 }
             })
-            Axios.post("/api/users/game-visit", {userId: user.userData._id}).then((response) => {
+            Axios.post("/api/users/game-visit", { userId: user.userData._id }).then((response) => {
                 if (response.data.success) {
                     const sceneIdLength = response.data?.gamePlaying?.sceneIdList?.length;
-                    if(sceneIdLength > 1)
+                    if (sceneIdLength > 1)
                         setIsPlayed(true);
                 }
             })
@@ -132,15 +135,34 @@ function GameDetailPage(props) {
                 }
             })
         }
-        else{
+        else {
             message.error("로그인이 필요합니다.")
         }
     }
-    if(totalSceneCnt){
-        
+    const pasteLink = () => {
+        const url = window.location.href + "?invitation=true"
+        console.log(url);
+        let urlInput = document.createElement("input");
+        document.body.appendChild(urlInput);
+        urlInput['value'] = url;
+        console.log(urlInput)
+        urlInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(urlInput);
+        message.info("링크가 복사되었습니다.")
+    }
+    if (query.invitation === "true") {
+        return (
+            <Invitaion
+                gameDetail={gameDetail}
+                playFirstScene={playFirstScene}
+            />
+        )
+    }
+    else if (totalSceneCnt) {
         return (
             <div className="detailPage__container">
-    
+
                 {/* 이미지 불러오는게 늦음 디버깅 필요 */}
                 <div className="detailPage__thumbnail_container">
                     <img
@@ -174,7 +196,7 @@ function GameDetailPage(props) {
                                 </div>
                             </div>
                         </div>
-    
+
                         {/* <Link
                             className="detailPage__gamePlay_link"
                             style={{ color: "#f05454" }}
@@ -198,7 +220,7 @@ function GameDetailPage(props) {
                             <div className="text">시작하기</div>
                         </Link> */}
                         {/* 게임 시작하기 or 이어 만들기 */}
-                        <div 
+                        <div
                             className="detailPage__gamePlay_link"
                             onClick={() => playFirstScene(false)}
                         >
@@ -235,7 +257,7 @@ function GameDetailPage(props) {
                         </div>
                     </div>
                     {isPlayed &&
-                        <div 
+                        <div
                             className="detailPage__gamePlayFromStart_link"
                             onClick={() => playFirstScene(true)}
                         >
@@ -244,10 +266,6 @@ function GameDetailPage(props) {
                     }
                 </div>
                 <div className="detailPage__info_container">
-                    <div className="detailPage__title">
-                        {/* {gameDetail.title} */}
-    
-                    </div>
                     <div className="detailPage__genre">
                         장르:
                         <div className="bold_text">
@@ -257,22 +275,32 @@ function GameDetailPage(props) {
                         <div className="bold_text">
                             {gameDetail?.creator?.nickname.substr(0, 20)}
                         </div>
+                        <span
+                            className="link_bttn"
+                            onClick={(e) => {
+                                pasteLink();
+                            }}>
+                            <FontAwesomeIcon
+                                icon={faLink}
+                            />
+                            초대링크복사
+                        </span>
                     </div>
                     <div className="detailPage__description">
                         {gameDetail.description}
                     </div>
-    
+
                     <Comment gameId={gameId} />
                 </div>
             </div>
         );
     }
-    else{
-        return(
+    else {
+        return (
             <div className="loader_container">
                 <div className="loader">Loading...</div>
             </div>
-            )
+        )
     }
 }
 

@@ -1,0 +1,74 @@
+.invitation_container {
+    position:relative;
+    width: 100%;
+    margin: auto;
+    top: 25vh;
+}
+
+@media (min-width: 450px) {
+    .invitation_container {
+        position:relative;
+        width: 60%;
+        margin: auto;
+        top: 0vh;
+
+    }
+}
+
+.invitation_container:before {
+    content: "";
+    display:block;
+    padding-top:56%;
+}
+
+.invitation__thumbnail_container {
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    top:0px;
+    left: 0px;;
+    
+    overflow: hidden;
+}
+
+.invitation__thumbnail {
+    position: absolute;
+    width: 100%;
+}
+
+.invitation__gamePlay {
+    position:absolute;
+    padding: 0vw 2vw;
+    padding-bottom: 1vw;
+    bottom: 2%;
+    right: 3%;
+    background-color: rgba(0, 0, 0, 0.61);
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.invitation__UPTitle {
+    font-size: 4vw;
+    font-weight: bolder;
+}
+
+.invitation__genre {
+    font-size: 0.5vw;
+    padding-bottom: 0vw;
+}
+.invitation__description{
+    font-size: 1.7vw;
+    font-weight: 500;
+    padding-bottom: 2vw;
+    max-width: 20vw;
+    word-break: break-all;
+}
+
+.detailPage__gamePlay_link.invitation {
+    margin-left: 0px;
+}

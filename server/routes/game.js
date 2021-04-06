@@ -371,38 +371,49 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
             const userId = req.user._id;
             user = await User.findOne({ _id: userId });
         }
-        else { 
+        else {
             user = req.session
-        } 
-        try {
-            const scene = await Scene.findOne({ _id: sceneId });
-            const val = await validateScene(user.gamePlaying, sceneId, gameId, false);
-            if (!val) {
-                return res.status(200).json({ success: false });
-            }
-            if (!objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], sceneId)) {
-                user.gamePlaying = {
-                    gameId, 
-                    sceneIdList: [...user.gamePlaying.sceneIdList, sceneId],
-                };
-            }
-            if (isMember){
-                user.save();
-            }
-            return res
-                .status(200)
-                .json({
-                    success: true,
-                    scene,
-                    sceneIdList: user.gamePlaying.sceneIdList,
-                });
-        } catch (err) {
-            console.log(err);
-            return res.status(400).json({ success: false });
         }
+
+        const scene = await Scene.findOne({ _id: sceneId });
+        if (!scene) {
+            throw "noScene"
+        }
+        const val = await validateScene(user.gamePlaying, sceneId, gameId, false);
+        if (!val) {
+            throw "invalid"
+        }
+        if (!objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], sceneId)) {
+            user.gamePlaying = {
+                gameId,
+                sceneIdList: [...user.gamePlaying.sceneIdList, sceneId],
+            };
+        }
+        if (isMember) {
+            user.save();
+        }
+        return res
+            .status(200)
+            .json({
+                success: true,
+                scene,
+                sceneIdList: user.gamePlaying.sceneIdList,
+            });
     } catch (err) {
         console.log(err);
-        return res.status(400).json({ success: false });
+        let msg;
+        switch (err) {
+            case 'noScene':
+                msg = "해당 씬은 관리자 권한으로 삭제되었습니다."
+                break;
+            case 'invalid':
+                msg = "하나의 ID로 한 게임만 즐겨주세요"
+                break;
+            default:
+                break;
+
+        }
+        return res.status(200).json({ success: false, msg });
     }
 });
 
@@ -412,10 +423,10 @@ router.post("/refreshHistory", check, async (req, res) => {
     // 유저 정보로 gamePlaying 가지고 오기
     try {
         let user;
-        if(req.isMember){
+        if (req.isMember) {
             user = await User.findOne({ _id: req.user._id });
         }
-        else{
+        else {
             user = req.session
         }
         let {
@@ -423,7 +434,7 @@ router.post("/refreshHistory", check, async (req, res) => {
         } = user;
         // 첫번째 씬으로 돌아가려 할 때 이상해질 수 있음...
         user.gamePlaying.sceneIdList = sceneIdList.slice(0, sceneIndex + 1);
-        if(req.isMember){
+        if (req.isMember) {
             user.save();
         }
         return res
@@ -440,11 +451,13 @@ router.get("/getSceneInfo/:sceneId", async (req, res) => {
     sceneId = mongoose.Types.ObjectId(sceneId);
     try {
         const scene = await Scene.findOne({ _id: sceneId });
+        const game_createor = await Game.findOne({ _id: scene?.gameId }).select("creator");
+
         if (scene === null) {
             // console.log("??????")
             return res.status(200).json({ success: false });
         }
-        return res.status(200).json({ success: true, scene });
+        return res.status(200).json({ success: true, scene, creator: game_createor.creator });
     } catch (err) {
         console.log(err);
         return res.status(400).json({ success: false });
@@ -506,8 +519,8 @@ router.post("/rank", async (req, res) => {
 })
 
 router.get("/simple-scene-info", check, async (req, res) => {
-    
-    
+
+
     try {
         const gamePlaying = req.isMember ? req.user.gamePlaying : req.session.gamePlaying
         const sceneList = gamePlaying.sceneIdList

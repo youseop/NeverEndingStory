@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import BackgroundSideBar from "./SideBar/BackgroundSideBar";
 import CharacterSideBar from "./SideBar/CharacterSideBar";
 import BgmSideBar from "./SideBar/BgmSideBar";
@@ -132,13 +132,14 @@ const SceneMakePage = (props) => {
     }, [user])
 
     //! scene save할 때 필요한 정보 갖고오기
+    const creator = useRef(null);
     useEffect(() => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
 
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
             // console.log(res.data)
-            if (res.data.success && validation.data.success) { scene = res.data.scene; }
+            if (res.data.success && validation.data.success) { scene = res.data.scene; creator.current=res.data.creator }
             else {
                 // console.log("get scene ERROR");
                 props.history.replace("/");
@@ -565,7 +566,9 @@ const SceneMakePage = (props) => {
             })
     }, [reload, gameId])
 
-    let isWriter = writer?.toString() === user.userData?._id?.toString();
+    let isWriter = creator.current?.toString() === user.userData?._id?.toString();
+
+    console.log(creator, isWriter);
     useEffect(() => {
         if (gameDetail.character) {
             const reload_Sidebar = (< div className="sideBar">

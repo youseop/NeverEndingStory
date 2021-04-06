@@ -63,7 +63,7 @@ export function Click_Icon(props) {
     width="50%" 
     height="auto" 
     viewBox="0 0 450.47 450.47" 
-    style={{"enable-background":"new 0 0 450.47 450.47"}}
+    // style={{"enable-background":"new 0 0 450.47 450.47"}}
     xmlSpace="preserve"
     fill="white">
     <g>
