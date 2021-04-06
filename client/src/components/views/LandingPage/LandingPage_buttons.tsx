@@ -5,35 +5,32 @@ import "antd/dist/antd.css";
 import Axios from "axios"
 import { message } from "antd";
 
-const {TitleModalForm}: any = require("../Modal/TitleModalForm")
-interface newGameButtonProps{
-    replace : Function;
+const { TitleModalForm }: any = require("../Modal/TitleModalForm")
+interface newGameButtonProps {
+    replace: Function;
 }
 
-interface responseTypes{
+interface responseTypes {
     data: {
         game: {
-            _id:string;
+            _id: string;
         }
         sceneId: string;
         success: boolean;
     };
 }
 
-export function NewGameButton({replace}:newGameButtonProps) {
+export function NewGameButton({ replace }: newGameButtonProps) {
 
     const [visible, setVisible] = useState<any>(false);
     const [gameTitle, setGameTitle] = useState<String>("");
     const [gameDescription, setGameDescription] = useState<String>("");
 
-    // const [formRef, setFormRef] = useState<null | {validateFileds:any}></null>;
     const user = useSelector<any, any>((state) => state.user);
 
-
-
-    const uploadGameFrame = async (title : String, description:any) => {
+    const uploadGameFrame = async (title: String, description: any) => {
         // tmp scene create
-        const gameResponse : responseTypes = await Axios.post("/api/game/uploadgameframe", {title, description});
+        const gameResponse: responseTypes = await Axios.post("/api/game/uploadgameframe", { title, description });
 
         if (!gameResponse.data.success) {
             alert("game Frame제작 실패");
@@ -48,7 +45,7 @@ export function NewGameButton({replace}:newGameButtonProps) {
             title: "",
         };
 
-        const sceneResponse : responseTypes = await Axios.post("/api/scene/create", firstScene);
+        const sceneResponse: responseTypes = await Axios.post("/api/scene/create", firstScene);
         if (!sceneResponse.data.success) {
             alert("scene Frame제작 실패");
             return;
@@ -57,7 +54,7 @@ export function NewGameButton({replace}:newGameButtonProps) {
         message.success(
             "첫 Scene을 생성해주세요. 오른쪽의 버튼을 활용해 이미지들을 추가할 수 있습니다."
         );
-        
+
         setTimeout(() => {
             replace({
                 pathname: `/scene/make`,
@@ -68,32 +65,27 @@ export function NewGameButton({replace}:newGameButtonProps) {
             });
         }, 1000);
     };
-    
-    const handleClick = () =>{
-        if(user.userData?.isAuth){
+
+    const handleClick = () => {
+        if (user.userData?.isAuth) {
             setVisible(true)
         }
-        else{
+        else {
             message.error("로그인이 필요합니다.")
         }
     }
 
     const handleCreate = () => {
-
         uploadGameFrame(gameTitle, gameDescription);
-
     }
 
     return (
         <>
-            {/* <button className="button-newgame" onClick ={uploadGameFrame}>
-                NEW 게임 만들기
-            </button> */}
             <button className="button-newgame" onClick={handleClick}>
                 NEW 게임 만들기
             </button>
-        
-            <TitleModalForm 
+
+            <TitleModalForm
                 visible={visible}
                 onCancel={() => setVisible(false)}
                 onCreate={() => handleCreate()}

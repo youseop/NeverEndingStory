@@ -20,7 +20,7 @@
   background-color: #30475e;
 }
 
-.input-feedback1{
+.input-feedback1 {
   /* color: rgb(255, 28, 28)!; */
   color: yellow!;
 }
@@ -49,14 +49,14 @@
   color: rgb(64, 153, 212);
   background-color: rgba(76, 181, 251, 0.219);
 }
-.login-register:hover{
+.login-register:hover {
   border-bottom-style: solid;
   border-width: 1px;
 }
 
-.login-error{
+.login-error {
   padding-left: 2px;
-  font-size : 18px;
+  font-size: 18px;
   color: rgb(255, 28, 28);
 }
 
@@ -75,13 +75,24 @@
   border-radius: 5px;
   background: rgb(64, 153, 212);
 }
-.login-button:hover{
+.login-button:hover {
   background: rgb(76, 181, 251);
   cursor: pointer;
 }
-.login-kakao{
+.login-kakao {
   background: rgba(254, 229, 0, 0.897) !important;
 }
-.login-kakao:hover{
+.login-kakao:hover {
   background: rgba(254, 229, 0, 0.986) !important;
+}
+
+@media (max-width: 767px) {
+  .loginPage-container {
+    width: 100%;
+    margin: 0;
+  }
+  .loginDiv-container {
+    width: 100%;
+    margin-top: 20px;
+  }
 }

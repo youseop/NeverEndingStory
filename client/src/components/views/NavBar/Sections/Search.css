@@ -2,7 +2,7 @@
   position: absolute;
   width: 200px;
   top: 24px;
-  right: 13%;
+  right: 200px;
   transition: all 0.4s ease-in-out;
 }
 
@@ -10,9 +10,8 @@
   position: absolute;
   width: 80px;
   top: 24px;
-  right: 10%;
+  right: 150px;
   transition: all 0.4s ease-in-out;
-  /* background-color: aqua; */
 }
 
 .search-icon {
@@ -58,4 +57,14 @@
   color: #ffffff;
   border-radius: 5px;
   transition: all 0.4s ease-in-out;
+}
+
+@media (max-width: 767px) {
+  .search-container-on {
+    right: 25px;
+  }
+
+  .search-container-off {
+    right: 5px;
+  }
 }
