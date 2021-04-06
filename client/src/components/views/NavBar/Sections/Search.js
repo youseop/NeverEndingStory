@@ -34,7 +34,6 @@ export default function Search() {
         <input
           className="search-textinput-on"
           ref={textInputRef}
-          value={searchOn}
           onChange={() => onChangeHandler()}
         />
       </div>
@@ -53,7 +52,6 @@ export default function Search() {
         <input
           className="search-textinput-off"
           ref={textInputRef}
-          value={searchOn}
         />
       </div>
     );

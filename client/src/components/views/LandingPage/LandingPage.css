@@ -1,5 +1,6 @@
 .mainPage_container {
   width: 1440px;
+  /* max-width: 1440px; */
   margin: auto;
   box-sizing: border-box;
   display: grid;
@@ -15,4 +16,25 @@
   overflow: hidden;
   position: relative;
   /* background: yellow; */
+}
+
+@media (max-width: 767px) {
+  .mainPage_container {
+    width: 100%;
+    min-width: 300px;
+    margin: auto;
+    box-sizing: border-box;
+    /* display: grid; */
+    /* grid-template-rows: 300px 300px 300px; */
+    /* gap: 5px; */
+    display: flex;
+    flex-direction: column;
+
+    background: #222831;
+  }
+
+  .box-container {
+    height: 250px;
+  }
+
 }

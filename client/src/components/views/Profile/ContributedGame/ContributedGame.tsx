@@ -63,7 +63,7 @@ function ContributedGame(props: any) {
     })
   },[])
 
-  if(gameDetail.title === ""){
+  if(gameDetail?.title === ""){
     return <div></div>
   }
 

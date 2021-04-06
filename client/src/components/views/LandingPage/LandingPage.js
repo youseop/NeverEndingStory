@@ -48,8 +48,8 @@ function LandingPage(props) {
       <div className="box-container">
         <Banner_main replace={props.history.replace} />
       </div>
-      <GameList data={ListContainer.recent_games} games={games} />
-      <GameList data={ListContainer.popular_games} games={games} />
+      <GameList data={ListContainer.popular_games} games={games} rank={true} />
+      <GameList data={ListContainer.recent_games} games={games} rank={false}/>
     </div>
   );
 }

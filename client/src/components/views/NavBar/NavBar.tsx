@@ -32,7 +32,6 @@ function NavBar() {
       position: "fixed",
       zIndex: 5,
       width: "100%",
-      // transform: "translate(0,-69px)",
       opacity: 0,
       animation: "0.8s ease-out 0s 1 hide",
     };
@@ -55,7 +54,7 @@ function NavBar() {
           <Icon type="align-right" />
         </Button>
         <Drawer
-          title="이어봐"
+          title=" "
           placement="right"
           className="menu_drawer"
           closable={false}

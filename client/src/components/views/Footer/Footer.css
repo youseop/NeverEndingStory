@@ -5,6 +5,7 @@
 
 .footer-container {
   position: relative;
+  min-width: 1440px;
   height: 250px;
   background-color: #222831;
 
@@ -13,7 +14,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* background-color: yellow; */
 }
 
 .footer-info {
@@ -23,7 +23,6 @@
   font-size: 15px;
   text-align: center;
   color: #ffffff63;
-  /* background-color: yellow; */
 }
 
 .footer-info a {
@@ -52,4 +51,24 @@
   height: 50px;
   padding-top: 5px;
   padding-left: 5px;
+}
+
+@media (max-width: 767px) {
+  .footer-container {
+    min-width: 300px;
+    padding: 10px;
+  }
+
+  .footer-info {
+    padding-top: 15px;
+  }
+
+  .jg-icon {
+    width: 130px;
+    height: 40px;
+  }
+  .jg-img {
+    width: 125px;
+    height: 35px;
+  }
 }

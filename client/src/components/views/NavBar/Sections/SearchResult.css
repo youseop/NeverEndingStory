@@ -7,7 +7,7 @@
 
   box-sizing: border-box;
 
-  background: linear-gradient( to top,#22283100,#222831d3, #222831 80% );
+  background: linear-gradient( to top,#22283100,#222831d3 15%, #222831 80% );
 
   transition: all 0.5s ease-in-out;
 }
@@ -79,4 +79,11 @@
   color: #dddddd;
 
   opacity: 0.9;
+}
+
+@media (max-width: 767px) {
+  .searchResult-game {
+    width: 50%;
+    height: 30%;
+  }
 }
