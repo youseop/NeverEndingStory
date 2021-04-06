@@ -204,14 +204,20 @@ const updateHistoryFromPlaying = (user) => {
         gamePlaying: { gameId, sceneIdList },
         gameHistory,
     } = user;
-    for (let i = 0; i < gameHistory.length; i++) {
-        if (gameHistory[i].gameId && objCmp(gameHistory[i].gameId, gameId)) {
-            user.gameHistory[i].sceneIdList = [...sceneIdList];
-            user.gamePlaying.sceneIdList = [];
-            user.gamePlaying.gameId = null;
-            return;
-        }
+
+    const targetIndex = gameHistory.findIndex((e)=>objCmp(e.gameId,gameId))
+    if(targetIndex !== -1){
+        user.gameHistory.splice(targetIndex,1)
     }
+
+    // for (let i = 0; i < gameHistory.length; i++) {
+    //     if (gameHistory[i].gameId && objCmp(gameHistory[i].gameId, gameId)) {
+    //         user.gameHistory[i].sceneIdList = [...sceneIdList];
+    //         user.gamePlaying.sceneIdList = [];
+    //         user.gamePlaying.gameId = null;
+    //         return;
+    //     }
+    // }
 
     user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList] });
     user.gamePlaying.sceneIdList = [];
@@ -544,12 +550,59 @@ router.get("/simple-scene-info", check, async (req, res) => {
 
 router.post("/search-game", async (req, res) => {
     try {
-        const game = await Game.find({ title: { $regex: req.body.input, $options: 'm' } }, ["title", "category", "thumbnail"])
+        const game = await Game.find({ title: { $regex: req.body.input, $options: 'm' } }, ["title", "category","thumbnail"])
+        .sort({"sceneCnt": -1})
+        .limit(10);
         return res.status(200).json({ success: true, games: game });
     } catch (err) {
         console.log(err);
         return res.status(400).json({ success: false });
     }
 });
+
+router.get("/popular-games", (req, res) => {
+    Game.find()
+        .sort({"view": -1})
+        .limit(8)
+        .exec((err, games) => {
+            if (err) return res.status(400).send(err);
+            res.status(200).json({ success: true, games });
+        });
+});
+
+router.get("/recent-games", check, async (req, res) => {
+    let recent_play = req.isMember ? req.user.gameHistory : req.session.gameHistory;
+    let now_play = req.isMember ? req.user.gamePlaying : req.session.gamePlaying;
+    let games = []
+
+    if(now_play){
+        try {
+            const game = await Game.findOne({ _id: now_play.gameId });
+            games.push(game)
+        }catch (err) {
+            console.log(err);
+            return res.status(400).json({ success: false });
+        }
+    }
+    if(now_play && recent_play){
+        for(let i=1;i<=recent_play.length && i<=5;i++){
+            try {
+                if(objCmp(recent_play[recent_play.length-i].gameId,now_play.gameId)){
+                    continue;
+                }
+                const game = await Game.findOne({ _id: recent_play[recent_play.length-i].gameId });
+                games.push(game)
+            }catch (err) {
+                console.log(err);
+                return res.status(400).json({ success: false });
+            }
+        }
+    }
+    return res.status(200).send({
+        success: true,
+        games
+    })
+  
+})
 
 module.exports = router;

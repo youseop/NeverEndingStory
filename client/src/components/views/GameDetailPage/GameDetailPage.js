@@ -18,7 +18,6 @@ const config = require('../../../config/key')
 
 function GameDetailPage(props) {
     const query = qs.parse(props.location?.search, { ignoreQueryPrefix: true });
-    console.log(query);
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
 
@@ -141,11 +140,9 @@ function GameDetailPage(props) {
     }
     const pasteLink = () => {
         const url = window.location.href + "?invitation=true"
-        console.log(url);
         let urlInput = document.createElement("input");
         document.body.appendChild(urlInput);
         urlInput['value'] = url;
-        console.log(urlInput)
         urlInput.select();
         document.execCommand("copy");
         document.body.removeChild(urlInput);
