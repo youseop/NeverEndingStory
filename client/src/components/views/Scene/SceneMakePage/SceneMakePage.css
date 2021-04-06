@@ -1,457 +1,431 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-
-.wrapper {
-    width : 1440px;
-    height: 750px;
-    margin: auto;
-
-    display: grid;
-    grid-template-columns: 50px 280px 520px 50px 50px 400px 90px;
-    grid-template-rows: 80px 45px 45px 400px 50px 120px;
-    /* background-color: #fff; */
-    /* color: #444; */
+ .wrapper {
+     width : 1440px;
+     height: 750px;
+     margin: auto;
+     display: grid;
+     grid-template-columns: 50px 280px 520px 50px 50px 400px 90px;
+     grid-template-rows: 80px 45px 45px 400px 50px 120px;
+    /* background-color: #fff;
+     */
+    /* color: #444;
+     */
 }
-
-.debug-box {
-    background-color: blue;
-    border-radius: 5px;
+ .debug-box {
+     background-color: blue;
+     border-radius: 5px;
 }
-
-.title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-right: 50px;
-
-    grid-row:1;
-    grid-column:1 / span 4;    
-    margin-top: 10px;   
-    font-size:25px;
-    padding-left: 50px;
-    font-family: Noto Sans KR;
-    color:#ffffff;
-    font-weight: bold;
-    cursor:default;
+ .title {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding-right: 50px;
+     grid-row:1;
+     grid-column:1 / span 4;
+     margin-top: 10px;
+     font-size:25px;
+     padding-left: 50px;
+     font-family: Noto Sans KR;
+     color:#ffffff;
+     font-weight: bold;
+     cursor:default;
 }
-.title-btn{
-    /* display: inline-block; */
-    width:60px;
-    height: 24px;
-    font-size:15px;
-    padding: 0px 2px 2px 2px;
-    margin-left: 25px;    
-    border-radius: 6px;
-    background-color: #f05454;
-    color:#fff;
-    font-weight: 100;
-    overflow: hidden;
-    cursor: pointer;
-    /* border: 1px solid rgba(70, 70, 70, 0.26); */
+ .title-btn{
+    /* display: inline-block;
+     */
+     width:60px;
+     height: 24px;
+     font-size:15px;
+     padding: 0px 2px 2px 2px;
+     margin-left: 25px;
+     border-radius: 6px;
+     background-color: #f05454;
+     color:#fff;
+     font-weight: 100;
+     overflow: hidden;
+     cursor: pointer;
+    /* border: 1px solid rgba(70, 70, 70, 0.26);
+     */
 }
-.title-btn:hover{    
-    background-color: #f16565;
+ .title-btn:hover{
+     background-color: #f16565;
 }
-.sceneBox {
-    grid-row: 2;
-    grid-column:1 / span 4;
-        
-    margin-left: 50px;    
-    margin-right: 50px;    
-
-    display: inline-flex;    
-    justify-content: space-between;      
-    /* background-color: #399cff;    */
+ .sceneBox {
+     grid-row: 2;
+     grid-column:1 / span 4;
+     margin-left: 50px;
+     margin-right: 50px;
+     display: inline-flex;
+     justify-content: space-between;
+    /* background-color: #399cff;
+     */
 }
-.sceneBox_cutnumber{
-    text-align: end;
-    width: 65px;
-    padding:0px 5px 0px 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 20px;
-    font-weight: bold;
-    font-family: Noto Sans KR;    
-    background-color: #DDDDDD;
-    border: 1px solid rgba(70, 70, 70, 0.26);
-    border-radius: 8px;
-    cursor:default;
+ .sceneBox_cutnumber{
+     text-align: end;
+     width: 65px;
+     padding:0px 5px 0px 5px;
+     margin-top: 5px;
+     margin-bottom: 5px;
+     font-size: 20px;
+     font-weight: bold;
+     font-family: Noto Sans KR;
+     background-color: #DDDDDD;
+     border: 1px solid rgba(70, 70, 70, 0.26);
+     border-radius: 8px;
+     cursor:default;
 }
-.sceneBox_cutnumber.max{
-    background-color: #FFE86F;
+ .sceneBox_cutnumber.max{
+     background-color: #FFE86F;
 }
-.sceneBox_del_btn{
-    text-align: center;
-    width: 80px;
-    padding:0px 5px 0px 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 20px;
-    font-weight: bold;
-    font-family: Noto Sans KR;    
-    background-color: #DDDDDD;
-    border: 1px solid rgba(70, 70, 70, 0.26);
-    border-radius: 8px;
-    cursor:default;
+ .sceneBox_del_btn{
+     text-align: center;
+     width: 80px;
+     padding:0px 5px 0px 5px;
+     margin-top: 5px;
+     margin-bottom: 5px;
+     font-size: 20px;
+     font-weight: bold;
+     font-family: Noto Sans KR;
+     background-color: #DDDDDD;
+     border: 1px solid rgba(70, 70, 70, 0.26);
+     border-radius: 8px;
+     cursor:default;
 }
-.scene {    
-    grid-row: 3 /span 2;
-    grid-column:1 / span 4;    
-    position:relative;
-    display: flex;   
+ .scene {
+     grid-row: 3 /span 2;
+     grid-column:1 / span 4;
+     position:relative;
+     display: flex;
 }
-.scene__sound_container {    
-    top:20px;
-    right:50px;
-    width:200px;
-    z-index: 99;
-    color:black;
-    font-family: Noto Sans KR;
-    /* font-size: 15px; */
-    border-radius: 2px;
-    background-color: rgba(221, 221, 221, 0.5);
-    position: absolute;
-    cursor:pointer;
+ .scene__sound_container {
+     top:20px;
+     right:50px;
+     width:200px;
+     z-index: 99;
+     color:black;
+     font-family: Noto Sans KR;
+    /* font-size: 15px;
+     */
+     border-radius: 2px;
+     background-color: rgba(221, 221, 221, 0.5);
+     position: absolute;
+     cursor:pointer;
 }
-
-.scene__sound_box{
-    width:100%;
-    height:100%;    
-    /* background-color: blueviolet; */
+ .scene__sound_box{
+     width:100%;
+     height:100%;
+    /* background-color: blueviolet;
+     */
 }
-.scene__sound_icon{
-    font-size: 25px;
-    margin-right: 5px;
-    /* background-color: blue; */
+ .scene__sound_icon{
+     font-size: 25px;
+     margin-right: 5px;
+    /* background-color: blue;
+     */
 }
-
-.scene__sound_bgm_name{
-    width:85%;
-    position: absolute;
-    bottom:27px;
-    font-size: 18px;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    display: inline-block;
-    /* background-color: aquamarine; */
+ .scene__sound_bgm_name{
+     width:85%;
+     position: absolute;
+     bottom:27px;
+     font-size: 18px;
+     overflow: hidden;
+     text-overflow:ellipsis;
+     white-space:nowrap;
+     display: inline-block;
+    /* background-color: aquamarine;
+     */
 }
-.scene__sound_sound_name{
-    width:85%;
-    position: absolute;
-    bottom:0px;
-    font-size: 18px;
-    overflow: hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
-    display: inline-block;
+ .scene__sound_sound_name{
+     width:85%;
+     position: absolute;
+     bottom:0px;
+     font-size: 18px;
+     overflow: hidden;
+     white-space:nowrap;
+     text-overflow:ellipsis;
+     display: inline-block;
 }
-.left-arrow{
-    width: 50px;
-    padding-top:200px;  
-    background-color: #222831;
-    transform: scaleX(-1);  
-    cursor: pointer;
+ .left-arrow{
+     width: 50px;
+     padding-top:200px;
+     background-color: #222831;
+     transform: scaleX(-1);
+     cursor: pointer;
 }
-.left-arrow:hover{
-    background-color: #333942;
+ .left-arrow:hover{
+     background-color: #333942;
 }
-  
-.right-arrow{
-    width: 50px;
-    padding-top:200px;    
-    background-color: #222831;
-    cursor: pointer;
+ .right-arrow{
+     width: 50px;
+     padding-top:200px;
+     background-color: #222831;
+     cursor: pointer;
 }
-  
-.right-arrow:hover{
-    background-color: #333942;
+ .right-arrow:hover{
+     background-color: #333942;
 }
-
-.scene__text_container {
-    z-index: 98;
-  
-    bottom: 20px;
-    left: 150px;
-    height: 170px;
-    width: 600px;
-  
-    position: absolute;
-    color: black;
-    font-family: Noto Sans KR;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    
-  }
-  .scene__name_block {
-    all: unset;
-    font-size: 18px;
-    height:38px;
-    width:180px;
-    font-weight: bold;
-    color: black;
-    flex-direction: row;
-    opacity: 0.95;
-    color : #444;
-    background-color: #BBBBBB;
-    padding: 3px 20px 0px 20px;
-    border-radius: 2px;
-  }  
-
-  .scene__text_line {
-    height: 5px;
-    opacity: 0.95;
-    background-color: #BBBBBB;
-  }
-  
-  .scene__text_block {
-    all: unset;
-    font-size: 18px;
-    font-weight: bold;
-    height: 80%;
-    padding: 5px;
-    border-radius: 2px;
-    opacity: 0.7;
-    padding: 20px 30px 20px 30px;
-    background-color: #DDDDDD;
-  }
-
-  .scene__script_btn{
-      z-index: 99;
-      position: absolute;
-      color:black;
-      cursor: pointer;
-  }
-
-
-.scene__SceneBox_color {
-    width: 17px;
-    height: 17px;
-    border-radius: 8px;
-    margin-top: 14px;
-    background-color: #EEEEEE;
-    border: 1px solid rgba(70, 70, 70, 0.26);
-    cursor: pointer;
+ .scene__text_container {
+     z-index: 98;
+     bottom: 20px;
+     left: 150px;
+     height: 170px;
+     width: 600px;
+     position: absolute;
+     color: black;
+     font-family: Noto Sans KR;
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-start;
 }
-
-.scene__CurrentSceneBox {
-    width: 17px;
-    height: 17px;
-    border-radius: 8px;
-    margin-top: 14px;
-    background-color: #f05454;
-    border: 1px solid rgba(70, 70, 70, 0.26);
-    cursor: pointer;
+ .scene__name_block {
+     all: unset;
+     font-size: 18px;
+     height:38px;
+     width:180px;
+     font-weight: bold;
+     color: black;
+     flex-direction: row;
+     opacity: 0.95;
+     color : #444;
+     background-color: #BBBBBB;
+     padding: 3px 20px 0px 20px;
+     border-radius: 2px;
 }
-
-.scene__EmptySceneBox {
-    width: 17px;
-    height: 17px;
-    border-radius: 8px;
-    margin-top: 14px;
-    background-color: rgba(255, 255, 255, 0);
-    border: 1px solid rgba(70, 70, 70, 0);
+ .scene__text_line {
+     height: 5px;
+     opacity: 0.95;
+     background-color: #BBBBBB;
 }
-.sceneBox_plus{
-    width: 17px;
-    height: 40px;
-    font-size:26px;
-    font-weight: bold;
-    color: #fff;
-    text-align: left;
-    cursor: pointer;
+ .scene__text_block {
+     all: unset;
+     font-size: 18px;
+     font-weight: bold;
+     height: 80%;
+     padding: 5px;
+     border-radius: 2px;
+     opacity: 0.7;
+     padding: 20px 30px 20px 30px;
+     background-color: #DDDDDD;
 }
-
-
-.scene__btn_top {
-    grid-row: 1;
-    grid-column: 6 /span 1;
-    
-    /* margin-right: 15px; */
-    margin-top: 35px;
-    margin-bottom: 15px;
-    display: inline-flex;
-    justify-content: flex-end;
+ .scene__script_btn{
+     z-index: 99;
+     position: absolute;
+     color:black;
+     cursor: pointer;
 }
-
-.scene_btn{ 
-    all: unset;
-    width:80px;
-    padding-top:1px;
-    text-align: center;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 8px;
-    margin-left: 10px;
-    font-family: Noto Sans KR;
-    background-color: #DDDDDD;
-    color: #30475e;
-    cursor: pointer;
-    border:0.1px solid rgb(0,0,0,0.2);
+ .scene__SceneBox_color {
+     width: 17px;
+     height: 17px;
+     border-radius: 8px;
+     margin-top: 14px;
+     background-color: #EEEEEE;
+     border: 1px solid rgba(70, 70, 70, 0.26);
+     cursor: pointer;
 }
-
-.scene_btn:hover{
-    background-color: #EEEEEE;
+ .scene__CurrentSceneBox {
+     width: 17px;
+     height: 17px;
+     border-radius: 8px;
+     margin-top: 14px;
+     background-color: #f05454;
+     border: 1px solid rgba(70, 70, 70, 0.26);
+     cursor: pointer;
 }
-.scene_btn_blue{
-    font-weight: 500;
-    background-color: #399cff;
-    color: #EEEEEE;
-} 
-.scene_btn_blue:hover{
-    background-color: #4aadff;
+ .scene__EmptySceneBox {
+     width: 17px;
+     height: 17px;
+     border-radius: 8px;
+     margin-top: 14px;
+     background-color: rgba(255, 255, 255, 0);
+     border: 1px solid rgba(70, 70, 70, 0);
 }
-.scene_btn_red{
-    font-weight: 500;
-    font-size:15.5px;
-    background-color: #f05454;
-    color: #EEEEEE;
-} 
-.scene_btn_red:hover{
-    background-color: #f16565;
+ .sceneBox_plus{
+     width: 17px;
+     height: 40px;
+     font-size:26px;
+     font-weight: bold;
+     color: #fff;
+     text-align: left;
+     cursor: pointer;
 }
-
-.btn_side {
-    grid-row: 3;
-    grid-column: 6;
-
-    margin-bottom: 10px;
-    display: inline-flex;
-    justify-content: space-between;
+ .scene__btn_top {
+     grid-row: 1;
+     grid-column: 6 /span 1;
+    /* margin-right: 15px;
+     */
+     margin-top: 35px;
+     margin-bottom: 15px;
+     display: inline-flex;
+     justify-content: flex-end;
 }
-
-.scene_side_btn{ 
-    all: unset;
-    width:95px;
-    padding-top:6.5px;
-    text-align: center;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 8px;
-    font-family: Noto Sans KR;
-    background-color: #DDDDDD;
-    color: #30475e;
-    cursor: pointer;    
+ .scene_btn{
+     all: unset;
+     width:80px;
+     padding-top:1px;
+     text-align: center;
+     font-size: 15px;
+     font-weight: bold;
+     border-radius: 8px;
+     margin-left: 10px;
+     font-family: Noto Sans KR;
+     background-color: #DDDDDD;
+     color: #30475e;
+     cursor: pointer;
+     border:0.1px solid rgb(0,0,0,0.2);
 }
-.scene_side_btn:hover{ 
-    background-color: #EEEEEE;
+ .scene_btn:hover{
+     background-color: #EEEEEE;
 }
-.scene_side_btn.light{
-    background-color: #FFE86F;
+ .scene_btn_blue{
+     font-weight: 500;
+     background-color: #399cff;
+     color: #EEEEEE;
 }
-.scene_side_btn.light:hover{
-    background-color: #FFE86F;
+ .scene_btn_blue:hover{
+     background-color: #4aadff;
 }
-
-.textbox_name{
-    all: unset;
-    padding-left: 20px;
-    font-size: 18px;
-    grid-row: 5;
-    grid-column: 2;
-    margin: 7px 30px 0px 0px;
-    color:black;
-    font-weight: 300;
-    font-family: Noto Sans KR;
-    background-color: #DDDDDD;
-    border-radius: 8px;   
-    position: relative;
+ .scene_btn_red{
+     font-weight: 500;
+     font-size:15.5px;
+     background-color: #f05454;
+     color: #EEEEEE;
 }
-
-.textbox__name_block_btn{
-    z-index: 110;
-    right:10px;
-    top:-7px;      
-    width:43px;
-    height: 60px;
-    padding: 20px 10px 10px 15px;
-    /* background-color: violet; */
-    position: absolute; 
-    transform:rotate(90deg);
-    cursor: pointer;
-
+ .scene_btn_red:hover{
+     background-color: #f16565;
 }
-
-.textbox__name_block_btn:hover{
-    opacity: 0.5;
+ .btn_side {
+     grid-row: 3;
+     grid-column: 6;
+     margin-bottom: 10px;
+     display: inline-flex;
+     justify-content: space-between;
 }
-.textbox_bottom{
-    all: unset;
-    grid-row: 6;
-    grid-column: 2/span 3;
-    position: relative;
+ .scene_side_btn{
+     all: unset;
+     width:95px;
+     padding-top:6.5px;
+     text-align: center;
+     font-size: 15px;
+     font-weight: bold;
+     border-radius: 8px;
+     font-family: Noto Sans KR;
+     background-color: #DDDDDD;
+     color: #30475e;
+     cursor: pointer;
 }
-.textbox_script{   
-    all: unset;
-    padding:15px 30px 15px 30px;
-    font-size: 18px;
-    width: 63%;
-    height: 80px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    color:black;
-    font-weight: 300;
-    font-family: Noto Sans KR;
-    background-color: #fff;
-    border-radius: 8px; 
+ .scene_side_btn:hover{
+     background-color: #EEEEEE;
 }
-
-.enter{
-    all: unset;
-    position: absolute;
-    right:0px;
-    padding-top:12.5px;
-    padding-bottom: 12.5px;
-    margin-right: 100px;
-    margin-top: 40px;
-    width:140px;
-    height:55px;
-    background-color: #DDDDDD;
-    font-family: Noto Sans KR;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
+ .scene_side_btn.light{
+     background-color: #FFE86F;
 }
-.enter:hover{
-    background-color: #EEEEEE;
+ .scene_side_btn.light:hover{
+     background-color: #FFE86F;
 }
-.options{
-    all:unset;
-    width:520px;
-    margin-top: 12px;
-    grid-row: 5;
-    grid-column: 3/ span 2;
-    justify-content: flex-end;
-    display: inline-flex;
+ .textbox_name{
+     all: unset;
+     padding-left: 20px;
+     font-size: 18px;
+     grid-row: 5;
+     grid-column: 2;
+     margin: 7px 30px 0px 0px;
+     color:black;
+     font-weight: 300;
+     font-family: Noto Sans KR;
+     background-color: #DDDDDD;
+     border-radius: 8px;
+     position: relative;
 }
-.scenemake_volume{
-    margin-right: 20px;
+ .textbox__name_block_btn{
+     z-index: 110;
+     right:10px;
+     top:-7px;
+     width:43px;
+     height: 60px;
+     padding: 20px 10px 10px 15px;
+    /* background-color: violet;
+     */
+     position: absolute;
+     transform:rotate(90deg);
+     cursor: pointer;
 }
-.scenemake_volume_text{
-    position: absolute;
-    text-align: center;
-    width:50px;
-    top:640px;
-    color:#DDDDDD;
-    font-family: Noto Sans KR;
-    font-size: 15px;
-    cursor:default;
+ .textbox__name_block_btn:hover{
+     opacity: 0.5;
 }
-
-.sideBar {
-    grid-row: 4 / span 3;
-    grid-column: 6;
+ .textbox_bottom{
+     all: unset;
+     grid-row: 6;
+     grid-column: 2/span 3;
+     position: relative;
 }
-
-.backgroundImg {
-    z-index: 95;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    margin:0;
-    border-radius: 0;
-    position: relative;
-  }
+ .textbox_script{
+     all: unset;
+     padding:15px 30px 15px 30px;
+     font-size: 18px;
+     width: 63%;
+     height: 80px;
+     margin-top: 10px;
+     margin-bottom: 10px;
+     color:black;
+     font-weight: 300;
+     font-family: Noto Sans KR;
+     background-color: #fff;
+     border-radius: 8px;
+}
+ .enter{
+     all: unset;
+     position: absolute;
+     right:0px;
+     padding-top:12.5px;
+     padding-bottom: 12.5px;
+     margin-right: 100px;
+     margin-top: 40px;
+     width:140px;
+     height:55px;
+     background-color: #DDDDDD;
+     font-family: Noto Sans KR;
+     border-radius: 12px;
+     font-size: 18px;
+     font-weight: bold;
+     text-align: center;
+     cursor: pointer;
+}
+ .enter:hover{
+     background-color: #EEEEEE;
+}
+ .options{
+     all:unset;
+     width:520px;
+     margin-top: 12px;
+     grid-row: 5;
+     grid-column: 3/ span 2;
+     justify-content: flex-end;
+     display: inline-flex;
+}
+ .scenemake_volume{
+     margin-right: 20px;
+}
+ .scenemake_volume_text{
+     position: absolute;
+     text-align: center;
+     width:50px;
+     top:640px;
+     color:#DDDDDD;
+     font-family: Noto Sans KR;
+     font-size: 15px;
+     cursor:default;
+}
+ .sideBar {
+     grid-row: 4 / span 3;
+     grid-column: 6;
+}
+ .backgroundImg {
+     z-index: 95;
+     height: 100%;
+     width: 100%;
+     object-fit: cover;
+     margin:0;
+     border-radius: 0;
+     position: relative;
+}
+ 

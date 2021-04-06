@@ -1,0 +1,55 @@
+.log_container {
+    opacity: 90%;
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    width: 40%;
+    height: 70%;
+    top: 10%;
+}
+
+.log_box{
+    width: 100%;
+    height: 100%;
+    overflow-Y: auto;
+}
+
+.log_box::-webkit-scrollbar {
+    width: 10px;
+}
+.log_box::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.log_box::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+}
+
+.log {
+    padding-top: 20px;
+    width: 100%;
+    word-break: break-all;
+}
+
+.log_title {
+    width: 100%;
+    font-size: 30px;
+    padding-bottom: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.HistoryMap_popup.log{
+    background-color: black;
+    opacity: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

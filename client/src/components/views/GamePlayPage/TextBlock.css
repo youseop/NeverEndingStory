@@ -20,7 +20,7 @@ a:visited:hover {
 
 .text_window {
     height: 100%;
-    width: inherit;
+    width: 100%;
     top: 0px;
     position: absolute;
 }

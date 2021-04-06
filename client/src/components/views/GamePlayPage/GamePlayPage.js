@@ -32,6 +32,7 @@ import {
   faCompress,
   faExpand,
 } from "@fortawesome/free-solid-svg-icons";
+import LogPopup from "./LogPopup";
 
 const bgm_audio = new Audio();
 bgm_audio.volume = 0.5
@@ -67,6 +68,7 @@ const ProductScreen = (props) => {
   const [Dislike, setDislike] = useState(false);
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
+  const [Log, setLog] = useState(false);
   // const [TreeMap, setTreeMap] = useState(false);
   const [lastMotion, setLastMotion] = useState(false)
   const [view, setView] = useState(0);
@@ -270,13 +272,12 @@ const ProductScreen = (props) => {
   //* game pause control
   useEffect(() => {
     // if (HistoryMap || Dislike || TreeMap) {
-    if (HistoryMap || Dislike) {
+    if (HistoryMap || Dislike || Log) {
       dispatch(gamePause(true));
     } else {
       dispatch(gamePause(false));
     }
-  }, [HistoryMap, Dislike]);
-  // }, [HistoryMap, Dislike, TreeMap]);
+  }, [HistoryMap, Dislike, Log]);
 
   useEffect(() => {
     setLastMotion(false)
@@ -432,10 +433,16 @@ const ProductScreen = (props) => {
               setTrigger={setHistoryMap}
               setScene={setScene}
             />
+            <LogPopup
+              trigger={Log}
+              setTrigger={setLog}
+              cutList={Scene.cutList}
+              i={i}
+            />
             <div className="gamePlay__btn_container">
               <div
                 className="gamePlay__btn"
-                onClick={mute}
+                onClick={(e)=>{mute(); e.stopPropagation()}}
               >
                 {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
               </div>
@@ -444,7 +451,7 @@ const ProductScreen = (props) => {
                   <>
                     <button
                       className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
-                      onClick={onClick_thumbsUp}
+                      onClick={(e)=>{onClick_thumbsUp(); e.stopPropagation()}}
                     >
                       좋아요: {thumbsUp}
                     </button>
@@ -457,40 +464,42 @@ const ProductScreen = (props) => {
                 }
                 <button
                   className="gamePlay__btn"
-                  onClick={() => setHistoryMap((state) => !state)}
+                  onClick={(e) => {setHistoryMap((state) => !state); e.stopPropagation()}}
                 >
                   미니맵
                 </button>
                 <button
                   className="gamePlay__btn"
-                  onClick={() => setHistoryMap((state) => !state)}
+                  onClick={(e) => {setLog((state) => !state); e.stopPropagation()}}
                 >
                   대화기록
                 </button>
                 <button
                   className="gamePlay__btn"
-                  onClick={() => setDislike((state) => !state)}
+                  onClick={(e) => {setDislike((state) => !state); e.stopPropagation()}}
                 >
                   신고
                 </button>
               </div>
               {errorMessage ? (
                 <button
-                  onClick={() =>
+                  onClick={(e) =>{
                     alert(
                       "Fullscreen is unsupported by this browser, please try another browser."
-                    )
+                    );
+                    e.stopPropagation()
+                  }
                   }
                   className="gamePlay__btn"
                 >
                   {errorMessage}
                 </button>
               ) : isFullscreen ? (
-                <button onClick={handleExitFullscreen} className="gamePlay__btn">
+                <button onClick={(e) => {handleExitFullscreen(); e.stopPropagation()}} className="gamePlay__btn">
                   <FontAwesomeIcon icon={faCompress} />
                 </button>
               ) : (
-                <button ref={fullButton} onClick={setIsFullscreen} className="gamePlay__btn">
+                <button ref={fullButton} onClick={(e)=>{setIsFullscreen(); e.stopPropagation()}} className="gamePlay__btn">
                   <FontAwesomeIcon icon={faExpand} />
                 </button>
               )}
