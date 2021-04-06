@@ -20,10 +20,14 @@
 .scenemake_essetmodal>.ant-modal-content>.ant-modal-footer>div>.ant-btn{
   width:73px;
   height:32px;
+  font-size: 14px;
+  transition:none;
 }
 .scenemake_essetmodal>.ant-modal-content>.ant-modal-footer>div>.ant-btn.ant-btn-primary{
   width:77px;
   height:32px;
+  font-size: 14px;
+  transition:none;
 }
 
 .sceenmake_modal_container{

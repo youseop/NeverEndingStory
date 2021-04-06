@@ -129,6 +129,10 @@ textarea::placeholder{
     top:260px;
     transform: scaleX(-1);  
 }
+.characterTab_leftarrow>svg{
+    width: 50px;
+    height: 50px;
+}
 .characterTab_leftarrow:hover{
     cursor: pointer;
     opacity: 0.7;
@@ -139,6 +143,10 @@ textarea::placeholder{
     position: absolute;
     right:-15px;
     top:260px;
+}
+.characterTab_rightarrow>svg{
+    width: 50px;
+    height: 50px;
 }
 
 .characterTab_rightarrow:hover{

@@ -11,27 +11,38 @@
     padding: 5px 10px;
     cursor: pointer;
 }
+.volumeController_icon{
+    font-size: 25px !important;
+}
 
 .volumeController_slide{
     width:100px;
 }
 
-@media (max-width:767px){
+@media (max-width:8500px){
     .volumeController_container{
-        width:calc(150vh/9);
-        display: inline-flex;
-    
+        width:75%;
+        height:100%;
+        /* background-color: red; */
     }
     
     .volumeController_icon_container{
         all:unset;
-        margin-top :calc(5vh/9);
+        margin-top :calc(0vh/9);
         color: rgb(182, 182, 182);
-        padding: calc(5vh/9) calc(10vh/9);
+        padding: calc(0vh/9) calc(0vh/9);
         cursor: pointer;
+    }
+    .volumeController_icon{
+        font-size: calc(40vh/9) !important;
     }
     
     .volumeController_slide{
-        width:calc(100vh/9);
+        width:70%;
+        margin-left: calc(0vh/9);
+    }
+    .volumeController_slide>.rangeslider-horizontal{
+        margin-top:calc(15vh/9);
+        padding-right: calc(30vh/9);
     }
 }

@@ -199,7 +199,7 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                         charPageNum.current++
                         setIsUpdate(num => num + 1)
                     }}>
-                    <SVG src="arrow_1" width="50" height="50" color="#222831" />
+                    <SVG src="arrow_1" color="#222831" />
                 </div>
             }
         </div>

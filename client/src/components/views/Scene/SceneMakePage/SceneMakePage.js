@@ -745,7 +745,7 @@ const SceneMakePage = (props) => {
                 <div className="scene">
                     <div className="scene left-arrow"
                         onClick={onLeft}>
-                        <SVG src="arrow_1" width="50" height="50" color="#F5F5F5" />
+                        <SVG src="arrow_1" color="#F5F5F5" />
                     </div>
                     <div
                         className="backgroundImg"
@@ -782,21 +782,22 @@ const SceneMakePage = (props) => {
                                     {
                                         BgmFile.name && bgm_audio.paused &&
                                         <PlayCircleOutlined
-                                            className="scene__sound_icon" />
+                                            className="scene__sound_icon bgm" />
                                     }
                                     {
                                         BgmFile.name && !bgm_audio.paused &&
                                         <PauseCircleOutlined
-                                            className="scene__sound_icon" />
+                                            className="scene__sound_icon bgm" />
                                     }
                                     <div className="scene__sound_bgm_name">{BgmFile.name}</div>
                                 </div>
                             ) : (
                                 <div
+                                    className="scene__sound_box"
                                     onClick={onClick_bgm_box}
                                 >
                                     <StopOutlined
-                                        className="scene__sound_icon" />
+                                        className="scene__sound_icon bgm" />
                                     <div className="scene__sound_bgm_name">BGM</div>
                                 </div>
                             )}
@@ -808,21 +809,22 @@ const SceneMakePage = (props) => {
                                     {
                                         SoundFile.name && sound_audio.paused &&
                                         <PlayCircleOutlined
-                                            className="scene__sound_icon" />
+                                            className="scene__sound_icon sound" />
                                     }
                                     {
                                         SoundFile.name && !sound_audio.paused &&
                                         <PauseCircleOutlined
-                                            className="scene__sound_icon" />
+                                            className="scene__sound_icon sound" />
                                     }
                                     <div className="scene__sound_sound_name">{SoundFile.name}</div>
                                 </div>
                             ) : (
                                 <div
+                                    className="scene__sound_box"
                                     onClick={onClick_sound_box}
                                 >
                                     <StopOutlined
-                                        className="scene__sound_icon" />
+                                        className="scene__sound_icon sound" />
                                     <div className="scene__sound_sound_name">Sound</div>
                                 </div>
                             )}
@@ -831,7 +833,7 @@ const SceneMakePage = (props) => {
 
                     <div className="scene right-arrow"
                         onClick={onSubmit_nextCut}>
-                        <SVG src="arrow_1" width="50" height="50" color={CutNumber < 29 ? "#F5F5F5" : "black"} />
+                        <SVG src="arrow_1" color={CutNumber < 29 ? "#F5F5F5" : "black"} />
                     </div>
                 </div>
                 <div className="scene__btn_top">
@@ -879,9 +881,9 @@ const SceneMakePage = (props) => {
                 {sideBar !== 0 && sideBar}
                 <div
                     className="textbox_name">
-                    <div className="textbox__name_block_btn">
+                    {/* <div className="textbox__name_block_btn">
                         <SVG src="arrow_1" width="15" height="25" color="#FFFFFF" />
-                    </div>
+                    </div> */}
                 </div>
                 <input
                     onChange={onNameChange}
@@ -911,7 +913,7 @@ const SceneMakePage = (props) => {
                 </div>
                 <div className="options">
                     <div className="scenemake_volume">
-                        <div className="scenemake_volume_text">배경음</div>
+                        <div className="scenemake_volume_text">BGM</div>
                         <VolumeController
                             audio={bgm_audio}
                             volume={bgmVolume}
@@ -922,7 +924,7 @@ const SceneMakePage = (props) => {
                         />
                     </div>
                     <div className="scenemake_volume">
-                        <div className="scenemake_volume_text">효과음</div>
+                        <div className="scenemake_volume_text">SFX</div>
                         <VolumeController
                             audio={sound_audio}
                             volume={soundVolume}

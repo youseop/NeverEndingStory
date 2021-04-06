@@ -1,7 +1,7 @@
 @import 'SceneMakePage.css';
 @import '../../../App.css';
 
-@media (max-width:850px){
+@media (max-width:8500px){
     .app {
         padding-top: calc(69vh/6);
       }
@@ -11,7 +11,7 @@
         margin: auto;
         display: grid;
         grid-template-columns: calc(50vh/9) calc(280vh/9) calc(520vh/9) calc(50vh/9) calc(50vh/9) calc(405vh/9) calc(85vh/9);
-        grid-template-rows: calc(80vh/9) calc(45vh/9) calc(45vh/9) calc(400vh/9) calc(50vh/9) calc(120vh/9);
+        grid-template-rows: calc(80vh/9) calc(45vh/9) calc(50vh/9) calc(395vh/9) calc(50vh/9) calc(120vh/9);
     }
     
     .debug-box {
@@ -20,12 +20,12 @@
     }
     
     .title {
-        display: flex;
-        align-items: center;
+        /* display: flex; */
+        /* align-items: center; */
         padding-right: calc(50vh/9);
         grid-row:1;
         grid-column:1 / span 4;    
-        font-size:calc(25vh/9);
+        font-size:calc(40vh/9) !important;
         padding-left: calc(50vh/9);
         font-family: Noto Sans KR;
         color:#ffffff;
@@ -34,12 +34,12 @@
     }
     .title-btn{
         text-align: center;
-        width: calc(65vh/9);
-        font-size:calc(15vh/9);
+        width: calc(120vh/9);
+        font-size:calc(27vh/9);
         border: calc(1vh/9) solid rgba(70, 70, 70, 0.26);
         padding: calc(0vh/9) calc(2vh/9) calc(2vh/9) calc(2vh/9);
         margin-top: calc(7vh/9);
-        margin-right: calc(3vh/9);
+        margin-right: calc(10vh/9);
         border-radius: calc(2vh/9);
         background-color: #f05454;
         border: calc(1vh/9) solid #d03232;
@@ -65,10 +65,10 @@
     }
     .sceneBox_cutnumber{
         text-align: end;
-        width: calc(65vh/9);
-        margin:calc(5vh/9) calc(3vh/9) calc(5vh/9) calc(0vh/9);
+        width: calc(90vh/9);
+        margin:calc(0vh/9) calc(3vh/9) calc(0vh/9) calc(0vh/9);
         padding:calc(0vh/9) calc(5vh/9) calc(0vh/9) calc(5vh/9);
-        font-size: calc(20vh/9);
+        font-size: calc(27vh/9);
         font-weight: bold;
         font-family: Noto Sans KR;    
         background-color: #DDDDDD;
@@ -81,10 +81,10 @@
     }
     .sceneBox_del_btn{
         all: unset;
-        width:calc(75vh/9);
+        width:calc(100vh/9);
         text-align: center;
-        font-size: calc(16vh/9);
-        margin:calc(7vh/9) calc(0vh/9) calc(7vh/9) calc(0vh/9);
+        font-size: calc(27vh/9);
+        margin:calc(0vh/9) calc(0vh/9) calc(0vh/9) calc(0vh/9);
         font-weight: 500;
         border-radius: calc(8vh/9);
         font-family: Noto Sans KR;
@@ -105,11 +105,12 @@
     .scene__sound_container {    
         top:calc(20vh/9);
         right:calc(50vh/9);
-        width:calc(200vh/9);
+        width:calc(230vh/9);
         z-index: 99;
         color:black;
         font-family: Noto Sans KR;
         /* font-size: 15vh/9); */
+        margin: 0px;
         border-radius: calc(2vh/9);
         background-color: rgba(221, 221, 221, 0.5);
         position: absolute;
@@ -118,7 +119,7 @@
     
     .scene__sound_box{
         width:100%;
-        height:100%;    
+        height:calc(40vh/9) ;    
         /* background-color: blueviolet; */
     }
     .scene__sound_icon{
@@ -126,23 +127,36 @@
         margin-right: calc(5vh/9);
         /* background-color: blue; */
     }
+    .scene__sound_icon.bgm{
+        position: absolute;
+        top:calc(10vh/9);
+        font-size: calc(25vh/9);
+        margin-right: calc(5vh/9);
+    }
+    .scene__sound_icon.sound{
+        position: absolute;
+        top:calc(49vh/9);
+        font-size: calc(25vh/9);
+        margin-right: calc(5vh/9);
+    }
     
     .scene__sound_bgm_name{
         width:85%;
         position: absolute;
-        bottom:calc(27vh/9);
-        font-size: calc(18vh/9);
+        bottom:calc(40vh/9);
+        right:calc(5vh/9);
+        font-size: calc(25vh/9);
         overflow: hidden;
         text-overflow:ellipsis;
         white-space:nowrap;
         display: inline-block;
-        /* background-color: aquamarine; */
     }
     .scene__sound_sound_name{
         width:85%;
         position: absolute;
         bottom:calc(0vh/9);
-        font-size: calc(18vh/9);
+        right:calc(5vh/9);
+        font-size: calc(25vh/9);
         overflow: hidden;
         white-space:nowrap;
         text-overflow:ellipsis;
@@ -155,6 +169,10 @@
         transform: scaleX(-1);  
         cursor: pointer;
     }
+    .left-arrow>svg{
+        width:calc(50vh/9);
+        height:calc(50vh/9);
+    }
     .left-arrow:hover{
         background-color: #333942;
     }
@@ -165,7 +183,10 @@
         background-color: #222831;
         cursor: pointer;
     }
-      
+    .right-arrow>svg{
+        width:calc(50vh/9);
+        height:calc(50vh/9);
+    }      
     .right-arrow:hover{
         background-color: #333942;
     }
@@ -230,30 +251,32 @@
     
     .scene__SceneBox{
         margin-top: calc(10vh/9);
-        width: calc(22vh/9);
-        height: calc(25vh/9);
-        cursor:pointer;    
+        width: calc(18vh/9);
+        height: calc(18vh/9);
+        cursor:pointer;  
+        /* background-color: #177add;   */
+        /* border:1px solid greenyellow; */
     }
     
     .scene__SceneBox_color {
-        width: calc(17vh/9);
-        height: calc(17vh/9);
+        width: calc(20vh/9);
+        height: calc(20vh/9);
         border-radius: calc(8vh/9);
-        margin-top: calc(5vh/9);
-        margin-left: calc(1vh/9);
+        margin-top: calc(0vh/9);
+        margin-left: calc(0vh/9);
         background-color: #EEEEEE;
-        border: calc(1vh/9) solid rgba(70, 70, 70, 0.26);
+        border: calc(0vh/9) solid rgba(70, 70, 70, 0.26);
     }
     .scene__SceneBox_color:hover{
         background-color: #FFE86F;
     }
     
     .scene__CurrentSceneBox {
-        width: calc(17vh/9);
-        height: calc(17vh/9);
+        width: calc(20vh/9);
+        height: calc(20vh/9);
         border-radius: calc(8vh/9);
-        margin-top: calc(5vh/9);
-        margin-left: calc(1vh/9);
+        margin-top: calc(0vh/9);
+        margin-left: calc(0vh/9);
         background-color: #f05454;
         border: calc(1vh/9) solid rgba(70, 70, 70, 0.26);
     }
@@ -268,8 +291,9 @@
         border: calc(1vh/9) solid rgba(70, 70, 70, 0);
     }
     .sceneBox_plus{
-        top:calc(120vh/9);
+        top:calc(180vh/9);
         position: absolute;
+        font-family: Noto Sans KR;
         font-size:calc(26vh/9);
         font-weight: bold;
         text-align: center;
@@ -282,17 +306,17 @@
         grid-column: 6 /span 1;
         
         /* margin-right: 15vh/9); */
-        padding: calc(30vh/9) calc(0vh/9) calc(10vh/9) calc(0vh/9);
+        padding: calc(27vh/9) calc(0vh/9) calc(0vh/9) calc(0vh/9);
         display: inline-flex;
         justify-content: flex-end;
     }
     
     .scene_btn{ 
         all: unset;
-        width:calc(80vh/9);
-        padding-top:calc(1vh/9);
+        width:calc(120vh/9);
+        padding-top:calc(0vh/9);
         text-align: center;
-        font-size: calc(15vh/9);
+        font-size: calc(29vh/9);
         font-weight: bold;
         border-radius: calc(8vh/9);
         margin-left: calc(10vh/9);
@@ -329,7 +353,7 @@
         grid-row: 3;
         grid-column: 6;
     
-        margin-bottom: calc(10vh/9);
+        margin-bottom: calc(0vh/9);
         display: inline-flex;
         justify-content: space-between;
     }
@@ -337,9 +361,10 @@
     .scene_side_btn{ 
         all: unset;
         width:calc(89vh/9);
-        padding-top:calc(3vh/9);
+        padding-top:calc(0vh/9);
+        margin-bottom: calc(5vh/9);
         text-align: center;
-        font-size: calc(15vh/9);
+        font-size: calc(27vh/9);
         font-weight: bold;
         border-radius: calc(8vh/9);
         font-family: Noto Sans KR;
@@ -362,7 +387,7 @@
     .textbox_name{
         all: unset;
         padding-left: calc(20vh/9);
-        font-size: calc(18vh/9);
+        font-size: calc(27vh/9);
         grid-row: 5;
         grid-column: 2;
         margin: calc(7vh/9) calc(30vh/9) calc(0vh/9) calc(0vh/9);
@@ -398,7 +423,7 @@
         position: relative;
     }
     textarea::placeholder{
-        font-size: calc(18vh/9);    
+        font-size: calc(27vh/9);    
     }
     .textbox_script{   
         all: unset;
@@ -419,17 +444,17 @@
         all: unset;
         position: absolute;
         right:calc(0vh/9);
-        padding-top:calc(9vh/9);
-        padding-bottom: calc(9vh/9);
+        margin-top: calc(10vh/9);
+        padding-bottom: calc(45vh/9);
         margin-right: calc(100vh/9);
-        margin-top: calc(40vh/9);
+        margin-top: calc(15vh/9);
         width:calc(140vh/9);
         height:calc(55vh/9);
         background-color: #DDDDDD;
         border:calc(3vh/9) solid #AAAAAA;
         font-family: Noto Sans KR;
         border-radius: calc(12vh/9);
-        font-size: calc(18vh/9);
+        font-size: calc(27vh/9);
         font-weight: bold;
         text-align: center;
         cursor: pointer;
@@ -443,20 +468,21 @@
         margin-top: calc(12vh/9);
         grid-row: 5;
         grid-column: 3/ span 2;
-        justify-content: flex-end;
+        justify-content: flex-start;
         display: inline-flex;
     }
     .scenemake_volume{
-        margin-right: calc(20vh/9);
+        margin-right: calc(0vh/9);
+        width:50%;
+        display: inline-flex;
     }
     .scenemake_volume_text{
-        position: absolute;
-        text-align: center;
-        width:calc(50vh/9);
-        top:calc(640vh/9);
+        position: relative;
+        top:calc(0vh/9);
+        width:25%;
         color:#DDDDDD;
         font-family: Noto Sans KR;
-        font-size: calc(15vh/9);
+        font-size: calc(27vh/9);
         cursor:default;
     }
     
@@ -534,7 +560,7 @@
       }
 
       .sidebar_add_esset_btn {
-        margin: calc(2vh/9) calc(0vh/9) calc(0vh/9) calc(112vh/9);
+        margin: calc(20vh/9) calc(0vh/9) calc(0vh/9) calc(135vh/9);
         border-radius: calc(8vh/9);
         text-align: center;
         font-size: calc(100vh/9);
@@ -628,7 +654,7 @@
         font-family: Noto Sans KR;
         font-size: calc(20vh/9);
         padding: calc(5vh/9);
-        height: calc(45vh/9);
+        height: calc(53vh/9);
         font-weight: bold;
         color: #222831;
         overflow: hidden;
@@ -707,11 +733,7 @@
     
     .characterList_Info:hover {
         box-shadow: calc(0vh/9) calc(0vh/9) calc(0vh/9) calc(3vh/9) #FFE86F;  
-    }
-    
-    .characterList_Text{
-        font-size: 0.3rem;
-    } 
+    }    
     
     .image_array__container{
         position: absolute;
@@ -765,47 +787,7 @@
       width: calc(20vh/9);
       object-fit: cover;
     }
-
-    .sceenmake_modal_container{
-  
-        /* width:100%; */
-        height:calc(630vh/9);
-        position: relative;
-        /* position: absolute; */
-        /* background-color: blue; */
-      }
-      
-      
-      .tabs {  
-        position: absolute;
-        top:calc(0vh/9);
-        width:100%;
-        height:calc(50vh/9);
-        display: flex;
-        text-align: center;
-        color: #dddddd;
-        background-color: #30475e;
-        border-bottom: calc(4vh/9) solid #222831;
-      }
-      .tab {
-        all:unset;
-        font-family: Noto Sans KR;  
-        font-size: calc(18vh/9);
-        font-weight: bold;
-        flex: 1 0 auto;
-        padding: calc(12vh/9);  
-        cursor: pointer;
-      }
-      
-      .tab:hover{
-        background-color: #41586f;
-      }
-      .is-selected {
-        background-color: #222831;
-      }
-      .is-selected:hover{
-        background-color: #222831;
-      }
+ 
       .rangeslider-horizontal {
         height: calc(10vh/9);
         border-radius: calc(7vh/9);
@@ -836,8 +818,7 @@
     } 
     
     .dropzone-icon{
-       font-size: 7rem;
-    
+       font-size: 12vh;    
     }
     
     .thumbnail__container{
@@ -858,14 +839,19 @@
     .thumbnail__msg{
         margin-top : calc(10vh/9);
         margin-bottom: calc(10vh/9);
-       font-size: medium;
+        font-size: 2.5vh;
+    }
+    .thumbnail__msg.true{
+        font-size: 0vh;        
     }
     .characterTab-container{
         position: absolute;
         top:calc(70vh/9);
         width:calc(1000vh/9);
         height:calc(540vh/9);
-        /* background-color: blueviolet; */
+        margin: auto;
+        left:50%;
+        transform: translate(-50%);
     }
     
     .characterTab_profile_image{
@@ -918,8 +904,8 @@
         font-family: Noto Sans KR;
         left: calc(320vh/9);
         top: calc(85vh/9);
-        font-size: calc(18vh/9);
-        width:calc(200vh/9);
+        font-size: calc(27vh/9);
+        width:calc(260vh/9);
         height: calc(30vh/9);
         color:black;
         padding-left:calc(15vh/9);
@@ -941,7 +927,7 @@
         margin: calc(10vh/9) calc(50vh/9) calc(10vh/9) calc(0vh/9);
         padding: calc(15vh/9) calc(15vh/9) calc(0vh/9) calc(15vh/9);
         color:black;
-        font-size: calc(18vh/9);    
+        font-size: calc(27vh/9); 
         background-color: #ffffff;
     }
     .characterTab_profile_text:hover{
@@ -985,6 +971,10 @@
         top:calc(260vh/9);
         transform: scaleX(-1);  
     }
+    .characterTab_leftarrow>svg{
+        width: calc(50vh/9);
+        height: calc(50vh/9);
+    }
     .characterTab_leftarrow:hover{
         cursor: pointer;
         opacity: 0.7;
@@ -995,6 +985,11 @@
         position: absolute;
         right:calc(-15vh/9);
         top:calc(260vh/9);
+        font-size:10px;
+    }
+    .characterTab_rightarrow>svg{
+        width: calc(50vh/9);
+        height: calc(50vh/9);
     }
     
     .characterTab_rightarrow:hover{
@@ -1005,7 +1000,7 @@
     .characterTab_pagenum{
         position: absolute;
         top : calc(25vh/9);
-        right:calc(25vh/9);
+        right:calc(60vh/9);
         font-size: calc(35vh/9);
         font-weight: bold;
     }
@@ -1014,7 +1009,7 @@
         position: absolute;
         font-family: Noto Sans KR;
         top : calc(25vh/9);
-        right:calc(25vh/9);
+        right:calc(60vh/9);
         font-size: calc(35vh/9);
         font-weight: bold;
     }
@@ -1035,10 +1030,10 @@
     .backgroundTab_Box{
         margin-top: calc(20vh/9);
         margin-left:calc(8vh/9);
-        width:calc(906vh/9);
-        height: calc(360vh/9);
+        width:100%;
+        height: 63%;
         overflow:scroll;
-        /* background-color: peru; */
+        background-color: peru;
     }
     
     .backgroundTab_Box::-webkit-scrollbar {
@@ -1049,7 +1044,7 @@
         display: inline-block;
         width:calc(290vh/9);
         height:calc(168vh/9);    
-        margin:calc(0vh/9) calc(3vh/9) calc(3vh/9) calc(0vh/9);
+        margin:calc(0vh/9) calc(3vh/9) calc(3vh/9) calc(0vh/9);        
         /* background-color: #ffffff; */
         /* border: 0.1vh/9) solid #ffffff; */
       
@@ -1127,4 +1122,71 @@
     background-color: red;
     justify-content : center;
 }
+.scenemake_essetmodal.ant-modal{
+    top:calc(45vh/9);
+    width:calc(1050vh/9) !important;
+    height: calc(0vh/9);
+    justify-content : center;
+  }
+  .scenemake_essetmodal>.ant-modal-content{
+    height: calc(730vh/9);
+    /* background-color: teal !important; */
+  }
+  .scenemake_essetmodal>.ant-modal-content>.ant-modal-body{
+    height: calc(680vh/9);
+    /* background-color: orange !important; */
+  }
+  .scenemake_essetmodal>.ant-modal-content>.ant-modal-footer{
+    height: calc(50vh/9);
+    /* background-color: greenyellow !important; */
+  }
+  
+  .scenemake_essetmodal>.ant-modal-content>.ant-modal-footer>div>.ant-btn{
+    width:calc(73vh/9);
+    height:calc(32vh/9);
+    font-size: calc(14vh/9);
+}
+.scenemake_essetmodal>.ant-modal-content>.ant-modal-footer>div>.ant-btn.ant-btn-primary{
+    width:calc(77vh/9);
+    height:calc(32vh/9);
+    font-size: calc(14vh/9);
+  }
+  
+  .sceenmake_modal_container{
+    
+    height:calc(630vh/9);
+    position: relative;
+  }
+  
+  
+  .tabs {  
+    position: absolute;
+    top:calc(0vh/9);
+    width:100%;
+    height:calc(50vh/9);
+    display: flex;
+    text-align: center;
+    color: #dddddd;
+    background-color: #30475e;
+    border-bottom: calc(4vh/9) solid #222831;
+  }
+  .tab {
+    all:unset;
+    font-family: Noto Sans KR;  
+    font-size: calc(27vh/9);
+    font-weight: bold;
+    flex: 1 0 auto;
+    padding: 0.5vh calc(12vh/9);  
+    cursor: pointer;
+  }
+  
+  .tab:hover{
+    background-color: #41586f;
+  }
+  .is-selected {
+    background-color: #222831;
+  }
+  .is-selected:hover{
+    background-color: #222831;
+  }
 }

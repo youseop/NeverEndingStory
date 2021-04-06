@@ -21,7 +21,6 @@
 
 .dropzone-icon{
    font-size: 7rem;
-
 }
 
 .thumbnail__container{
@@ -42,5 +41,5 @@
 .thumbnail__msg{
     margin-top : 10px;
     margin-bottom: 10px;
-   font-size: medium;
+    font-size: medium;
 }

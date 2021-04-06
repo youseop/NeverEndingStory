@@ -28,7 +28,8 @@ function VolumeController({ audio, volume, setVolume, muted, setMuted, tempVolum
                 className="volumeController_icon_container"
                 onClick={mute}
             >
-                {muted ? <VolumeOffIcon style={{ fontSize: 30 }} /> : <VolumeUpIcon style={{ fontSize: 30 }} />}
+                {muted ? <VolumeOffIcon className="volumeController_icon" /> :
+                    <VolumeUpIcon className="volumeController_icon" />}
             </div>
             <div className="volumeController_slide">
                 <Slider

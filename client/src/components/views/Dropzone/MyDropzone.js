@@ -11,7 +11,7 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL, type, icon }) 
         mention = "16 : 9 비율을 권장합니다."
     }
     else if (type === "character") {
-        mention = "배경이 없는 사진을 권장합니다."
+        mention = "배경없는 사진을 권장합니다."
     } else if (type === "bgm" || type === "sound") {
         mention = "음원을 업로드 해주세요."
     }
@@ -50,7 +50,7 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL, type, icon }) 
                         {icon === "file" &&
                             <FileAddOutlined className="dropzone-icon" />
                         }
-                        <div><p className="thumbnail__msg"><b>{mention}</b></p></div>
+                        <div><p className={`thumbnail__msg ${type === "character"}`}><b>{mention}</b></p></div>
                     </>
                 }
             </div>
