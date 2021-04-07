@@ -309,7 +309,7 @@ export function Click_Icon(props) {
     xmlns="http://www.w3.org/2000/svg" 
     xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     width="50%" 
-    height="auto" 
+    height="100" 
     viewBox="0 0 450.47 450.47" 
     // style={{"enable-background":"new 0 0 450.47 450.47"}}
     xmlSpace="preserve"

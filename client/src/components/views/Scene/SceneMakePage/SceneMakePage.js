@@ -127,7 +127,6 @@ const SceneMakePage = (props) => {
         }
         socket.off("timeout_making")
         socket.on("timeout_making", data => {
-            // console.log("GO HOME")
             props.history.replace("/")
         })
 
@@ -141,10 +140,8 @@ const SceneMakePage = (props) => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
 
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
-            // console.log(res.data)
             if (res.data.success && validation.data.success) { scene = res.data.scene; creator.current=res.data.creator }
             else {
-                // console.log("get scene ERROR");
                 props.history.replace("/");
                 return;
             }
@@ -602,7 +599,6 @@ const SceneMakePage = (props) => {
 
     let isWriter = creator.current?.toString() === user.userData?._id?.toString();
 
-    console.log(creator, isWriter);
     useEffect(() => {
         if (gameDetail.character) {
             const reload_Sidebar = (< div className="sideBar">
