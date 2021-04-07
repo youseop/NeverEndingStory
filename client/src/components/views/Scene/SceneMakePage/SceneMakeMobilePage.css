@@ -1435,7 +1435,7 @@
     background-color: white;
     border: calc(1vh/9) solid white;
 }
-.ending_modal_choice_btn>svg{
+.ending_modal_choice_container>svg{
     width:calc(270vh/9);
     height:calc(270vh/9);
 }
@@ -1453,5 +1453,19 @@
     font-weight: bold;
 }
 
-  
+.ending_modal_description{
+    position: absolute;
+    top: 0px;
+    height: calc(0vh/9);
+    width: calc(270vh/9);
+    padding: calc(40vh/9);
+    font-size: 0vh;
+    /* background-color: black; */
+    color: white;
+    opacity: 0;
+    transition: all 0.3s ease-in-out ;
+}
+.ending_modal_description:hover {
+    opacity: 1.0;
+}
 }

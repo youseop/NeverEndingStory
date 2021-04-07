@@ -920,6 +920,7 @@ const SceneMakePage = (props) => {
                     placeholder="이름"
                     value={Name}
                     ref={nameElement}
+                    maxLength={15}
                     className="textbox_name"
                 />
 
