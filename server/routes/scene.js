@@ -64,7 +64,6 @@ router.post('/create', auth, async (req, res) => {
   const userId = req.user._id
   const game = await Game.findOne({_id:req.body.gameId}).select("category");
   const theme = getTheme(game.category)
-  console.log(theme);
   const scene = new Scene({
     gameId: req.body.gameId,
     writer: userId,
@@ -322,9 +321,6 @@ router.delete('/', async (req, res) => {
   const idx = user.makingGameList.findIndex(item => item.gameId.toString() === req.body.gameId)
   if (idx > -1) {
     user.makingGameList.splice(idx, 1)
-  }
-  else {
-    console.log("THERE IS NO MAKING GAME -- 이상하네")
   }
   user.gamePlaying.sceneIdList.pop();
   user.gamePlaying.isMaking = false;

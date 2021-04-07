@@ -25,7 +25,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
     const [GameTitle, setGameTitle] = useState({ defaultTitle });
     const [description, setDescription] = useState({ defaultDescription });
     const [isPrivate, setIsPrivate] = useState(0);
-    const [category, setCategory] = useState(defaultCategory);
+    const [category, setCategory] = useState(defaultCategory || "살아남기");
 
     const [blobURL, setBlobURL] = useState("");
     const [thumbFile, setThumbFile] = useState([]);
