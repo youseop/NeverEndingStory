@@ -12,14 +12,14 @@
     cursor: pointer;
 }
 .volumeController_icon{
-    font-size: 25px !important;
+    font-size: 30px !important;
 }
 
 .volumeController_slide{
     width:100px;
 }
 
-@media (max-width:8500px){
+@media (max-width:850px) and (orientation:landscape){
     .volumeController_container{
         width:75%;
         height:100%;
@@ -31,15 +31,17 @@
         margin-top :calc(0vh/9);
         color: rgb(182, 182, 182);
         padding: calc(0vh/9) calc(0vh/9);
+        background-color: tomato;
         cursor: pointer;
     }
     .volumeController_icon{
+        position: absolute;
         font-size: calc(40vh/9) !important;
     }
     
     .volumeController_slide{
         width:70%;
-        margin-left: calc(0vh/9);
+        margin-left: calc(45vh/9);
     }
     .volumeController_slide>.rangeslider-horizontal{
         margin-top:calc(15vh/9);

@@ -1,17 +1,17 @@
 .scenemake_uploadmodal.ant-modal{
     top:45px;
-    width:700px !important;
+    width:730px !important;
     height: 0px;
     justify-content : center;
   }
   .scenemake_uploadmodal>.ant-modal-content{
-    height: 650px;
+    height: 670px;
   }
   .scenemake_uploadmodal>.ant-modal-content>.ant-modal-body{
-    height: 600px;
+    height: 620px;
   }
   .scenemake_uploadmodal>.ant-modal-content>.ant-modal-footer{
-    height: 50px;
+    height: 60px;
   }
   .scenemake_uploadmodal>.ant-modal-content>.ant-modal-footer>div>.ant-btn{
     transition:none;
@@ -19,6 +19,12 @@
   .scenemake_uploadmodal>.ant-modal-content>.ant-modal-footer>div>.ant-btn.ant-btn-primary{
     transition:none;
   }
+
+  .scenemake_uploadmodal_form_container{
+    font-family: Noto Sans KR;
+    font-size: 25px;
+    font-weight: bold;  
+}
 
 .scenemake_uploadmodal_form{
     display:flex;
@@ -43,6 +49,9 @@
     background-color: #DDDDDD;
     cursor: pointer;
     border:0.1px solid rgb(0,0,0,0.1);
+    font-family: Noto Sans KR;
+    font-size: 17px;
+    font-weight: bold;  
 }
 
 .scenemake_uploadmodal_detail{
@@ -53,18 +62,21 @@
 }
 .scenemake_uploadmodal_detail_title_container{
     margin-top : 45px;
+    font-family: Noto Sans KR;
+    font-size: 20px;
+    font-weight: bold;  
 }
 .scenemake_uploadmodal_detail_description_container{
     margin-top : 25px;
-
+    font-family: Noto Sans KR;
+    font-size: 20px;
+    font-weight: bold;  
 }
 .scenemake_uploadmodal_detail_description{
     all:unset;    
     padding:15px 15px 10px 15px;
     width:95%;
     height: 90px;
-    font-size:17px;
-    font-family: Noto Sans KR;
     background-color: #DDDDDD;
 }
 .scenemake_uploadmodal_detail_category_container{
@@ -73,9 +85,10 @@
 .scenemake_uploadmodal_detail_title{
     all:unset;
     padding:0px 15px 0px 15px;
-    font-size: 17px;
+    font-family: Noto Sans KR;
+    font-size: 20px;
+    font-weight: bold;  
     width:95%;
     border-radius: 4px;
     background-color: #DDDDDD;
-    font-family: Noto Sans KR;
 }

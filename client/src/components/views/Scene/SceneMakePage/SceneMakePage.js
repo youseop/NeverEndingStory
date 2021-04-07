@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import BackgroundSideBar from "./SideBar/BackgroundSideBar";
 import CharacterSideBar from "./SideBar/CharacterSideBar";
 import BgmSideBar from "./SideBar/BgmSideBar";
@@ -47,13 +47,36 @@ const SceneMakePage = (props) => {
     //     event.returnValue = '';
     // });
 
-    useEffect(() => {
-        const rootDom = document.getElementById("root");
+    const isMobile = useRef(false);
+    const rootDom = document.getElementById("root");
+    useLayoutEffect(() => {
         const footer = rootDom.getElementsByClassName("footer-container");
-        footer.className = "sceneMake_footer";
         if (footer[0])
             footer[0].remove();
-    }, [])
+        var filter = "win16|win32|win64|mac";
+        if (navigator.platform) {
+            isMobile.current = filter.indexOf(navigator.platform.toLowerCase()) < 0;
+        }
+    }, []);
+
+    //! mobile focus event
+    useEffect(() => {
+        if (isMobile) {
+            const focusMobileText = (event) => {
+                if (event.target.tagName === "TEXTAREA" || event.target.tagName === "INPUT") {
+                    if (document.body.style.zoom !== "180%")
+                        document.body.style.zoom = "180%"
+                } else {
+                    if (document.body.style.zoom !== "100%")
+                        document.body.style.zoom = "100%"
+                }
+            }
+            document.addEventListener("mousedown", focusMobileText);
+            return _ => {
+                document.removeEventListener("mousedown", focusMobileText);
+            }
+        }
+    }, []);
 
     const TEXT_MAX_LENGTH = 50;
     const LIMIT_HR = 1;
@@ -392,7 +415,8 @@ const SceneMakePage = (props) => {
             setCutNumber(CutList.length + 1);
         else
             setCutNumber(CutList.length);
-        scriptElement.current.focus()
+        if (!isMobile.current)
+            scriptElement.current.focus()
     };
 
 
@@ -413,7 +437,8 @@ const SceneMakePage = (props) => {
             setScript("");
         }
         setCutNumber((oldNumber) => oldNumber + 1);
-        scriptElement.current.focus()
+        if (!isMobile.current)
+            scriptElement.current.focus()
     };
 
     const onRemove_cut = () => {
@@ -495,13 +520,13 @@ const SceneMakePage = (props) => {
             if (response.data.success) {
                 dispatch(detachCharacter());
                 message
-                    .loading("게임 업로드 중..", 1.0)
+                    .loading((isTmp ? "임시 저장 중..." : "게임 업로드 중.."), 1.0)
                     .then(() => {
                         if (!isTmp) {
                             message.success("게임 제작이 완료되었습니다.", 1.0)
                         }
                         else {
-                            message.success("업로드 성공.")
+                            message.success("임시 저장 완료.")
                         }
                     }
                     ).then(() => {
@@ -745,7 +770,7 @@ const SceneMakePage = (props) => {
                 <div className="scene">
                     <div className="scene left-arrow"
                         onClick={onLeft}>
-                        <SVG src="arrow_1" color="#F5F5F5" />
+                        <SVG src="arrow_1" width="100%" height="100%" color="#F5F5F5" />
                     </div>
                     <div
                         className="backgroundImg"
@@ -833,7 +858,7 @@ const SceneMakePage = (props) => {
 
                     <div className="scene right-arrow"
                         onClick={onSubmit_nextCut}>
-                        <SVG src="arrow_1" color={CutNumber < 29 ? "#F5F5F5" : "black"} />
+                        <SVG src="arrow_1" width="100%" height="100%" color={CutNumber < 29 ? "#F5F5F5" : "black"} />
                     </div>
                 </div>
                 <div className="scene__btn_top">

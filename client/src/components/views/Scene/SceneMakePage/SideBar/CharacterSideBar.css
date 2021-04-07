@@ -21,27 +21,30 @@
   position: relative;
   margin: 0px 2px 0px 4px;
   border-radius: 50%;
-  border: 0.3px solid rgb(0, 0, 0, 0.4);
+  border: 0.3px solid rgb(0, 0, 0, 0.2);
   background-color: #808080;
   object-fit: cover;
 }
 
 .characterSidebar_box.selected {
-  -webkit-box-shadow: 0px 0px 8px 2px #FFEC69;
-  box-shadow: 0px 0px 8px 2px #FFEC69;
+  /* -webkit-box-shadow: 0px 0px 8px 2px #399cFF; */
+  background-color: #FFFFFF;
+  border: 0.3px solid rgb(0, 0, 0, 0.7);
 }
-
-.characterSidebar_box:hover {
-  opacity: 0.9;
-  border: 0.5px solid rgb(0, 0, 0, 0.1);
-  background-color: #919191;
+.characterSidebar_box.focused{
+  box-shadow: 0px 0px 2px 3.5px #399cFF;  
 }
-
+.characterSidebar_box.selected.focused {
+  background-color: #FFE86F;
+  }
 .characterSidebar_image_box {
   width: 64px;
   height: 64px;
+  opacity: 0.7;
 }
-
+.characterSidebar_image_box.selected{
+  opacity: 1.0;
+}
 .characterSidebar_image_width {
   position: absolute;
   left: -15%;

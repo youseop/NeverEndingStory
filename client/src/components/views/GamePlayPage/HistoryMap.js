@@ -25,7 +25,7 @@ function MapToRight() {
 }
 
 function GoToScene(props) {
-  const { userhistory, gameId, sceneId, targetScene,setScene } = props;
+  const { userhistory, gameId, sceneId, targetScene, setScene } = props;
   const data = { data: { sceneIndex: targetScene - 1 } };
   Axios.post("/api/game/refreshHistory", data).then((response) => {
     if (!response.data.success) {
@@ -93,7 +93,7 @@ function HistoryMapPopup(props) {
         <div
           className="HistoryMap_scene"
           key={index + 1}
-          style={{border:"0.2em orange solid"}}
+          style={{ border: "0.2em orange solid" }}
         >
           <div className="HistoryMap_scene_num"> #{index + 1}</div>
           <img className="HistoryMap_scene_img" src={scene.background} />

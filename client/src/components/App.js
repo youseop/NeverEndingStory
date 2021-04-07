@@ -63,7 +63,7 @@ function App() {
   if (loaded) {
     return (
       <Suspense fallback={(<div>Loading...</div>)}>
-        {/* <NavBar /> */}
+        <NavBar />
         <div className="app">
           <Switch>
             <Route exact path="/" component={Auth(LandingPage, null)} />
@@ -73,8 +73,8 @@ function App() {
             <Route exact path="/profile/:userId" component={Auth(Profile, true)} />
             <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
             <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
-            <Route path="/gameplay" component={isPortrait ? PortraitWarning : Valid(Auth(GamePlayPage, null))} />
-            <Route exact path="/scene/make" component={isPortrait ? PortraitWarning : Valid(Auth(SceneMakePage, true))} />
+            <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />
+            <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage, true))} />
           </Switch>
           < SearchResult />
         </div>

@@ -139,7 +139,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
             closable={false}
         >
             <div className="scenemake_uploadmodal_form_container">
-                <h4><b>게임 업로드</b></h4>
+                게임 업로드
                 <Form onSubmit={upload}>
 
                     <div className="scenemake_uploadmodal_form">
@@ -161,13 +161,11 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                     </div>
                     <div className="scenemake_uploadmodal_detail">
                         <div className="scenemake_uploadmodal_detail_title_container">
-
-                            <h4><b>제목</b></h4>
+                            제목
                             <textarea maxLength={30} className="scenemake_uploadmodal_detail_title" onChange={onTitleChange} value={GameTitle} />
                         </div>
-
                         <div className="scenemake_uploadmodal_detail_description_container">
-                            <h4><b>게임 설명</b></h4>
+                            게임 설명
                             <textarea maxLength={1000} className="scenemake_uploadmodal_detail_description" rows="4" onChange={onDescriptionChange} value={description} />
                         </div>
 

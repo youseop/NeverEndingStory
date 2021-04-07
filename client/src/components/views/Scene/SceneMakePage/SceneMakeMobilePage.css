@@ -1,7 +1,46 @@
 @import 'SceneMakePage.css';
 @import '../../../App.css';
 
-@media (max-width:850px){
+/* 추후에 리팩토링 하겠습니다 UI 바꾸면서 다시짜겠음*/
+@media (max-width:850px) and (orientation:landscape){
+    .menu{
+        height: calc(105vh/9) !important;
+    }
+    .menu__logo {
+        width: 15vh !important;
+        float: left;
+      }
+    .menu__logo>a{
+        height:0px;
+    }
+    .menu__logo>a>svg {
+        width:15vh;
+        height:7.5vh;
+    }
+    .search-container-off {
+    position: absolute;
+    width: 80px;
+    top: 20% !important;
+    right: 15% !important;
+    transition: all 0.4s ease-in-out;
+    /* background-color: aqua; */
+    }
+    .search-container-on {
+    position: absolute;
+    width: 80px;
+    top: 20% !important;
+    right: 15% !important;
+    transition: all 0.4s ease-in-out;
+    }
+    .search-icon {
+    /* position:absolute; */
+    width: 25px;
+    height: 30px;
+    left: 50%;
+    /* padding-left: 10%; */
+    /* background-color: aqua; */
+    cursor: pointer;
+    }
     .app {
         padding-top: calc(105vh/9);
       }
@@ -425,7 +464,7 @@
     textarea::placeholder{
         font-size: calc(27vh/9);    
     }
-    .textbox_script{   
+    .textbox_script{ 
         all: unset;
         padding:calc(15vh/9) calc(30vh/9) calc(15vh/9) calc(30vh/9);
         font-size: calc(18vh/9);
@@ -440,6 +479,18 @@
         border-radius: calc(8vh/9); 
     }
     
+    .textbox_script.true{   
+        /* all:unset;
+        background-color: red;  
+        position: absolute;
+        top:-55vh;
+        left:-14.2vh;
+        width:100vw;
+        height:100vh;
+        z-index: 100; */
+    }
+    
+
     .enter{
         all: unset;
         position: absolute;
@@ -524,20 +575,24 @@
       }
       
       .characterSidebar_box.selected {
-        -webkit-box-shadow: calc(0vh/9) calc(0vh/9) calc(8vh/9) calc(2vh/9) #FFEC69;
-        box-shadow: calc(0vh/9) calc(0vh/9) calc(8vh/9) calc(2vh/9) #FFEC69;
+        background-color: #FFFFFF;
+        border: calc(0.3vh/9) solid rgb(0, 0, 0, 0.7);
+    }
+    .characterSidebar_box.focused{
+        box-shadow: calc(0vh/9) calc(0vh/9) calc(2vh/9) calc(3.5vh/9) #399cFF;  
       }
-      
-      .characterSidebar_box:hover {
-        opacity: 0.9;
-        border: calc(0.5vh/9) solid rgb(0, 0, 0, 0.1);
-        background-color: #919191;
-      }
+      .characterSidebar_box.selected.focused {
+      background-color: #FFE86F;
+    }
       
       .characterSidebar_image_box {
         width: calc(60vh/9);
         height: calc(60vh/9);
-      }
+        opacity: 0.3;
+    }
+    .characterSidebar_image_box.selected{
+      opacity: 1.0;
+    }
       
       .characterSidebar_image_width {
         position: absolute;
@@ -761,8 +816,12 @@
         height:calc(100vh/9);
         /* border-radius: 8vh/9); */
         /* border: 0.5vh/9) solid rgb(0,0,0,0.2); */
+        border:calc(5vh/9) solid #DDDDDD;
         background-color: #747474;
     } 
+    .image_array__box.selected{
+        border:calc(5vh/9) solid #399CFF;
+    }
     .image_array__box:hover{
         opacity: 0.9;
     }
@@ -872,7 +931,7 @@
     
     .characterTab_cards_Box{
         width:calc(630vh/9);
-        height:calc(210vh/9);    
+        height:calc(250vh/9);    
         position: absolute;
         overflow: scroll;
         left:calc(320vh/9);
@@ -906,7 +965,7 @@
         top: calc(85vh/9);
         font-size: calc(27vh/9);
         width:calc(260vh/9);
-        height: calc(30vh/9);
+        height: calc(35vh/9);
         color:black;
         padding-left:calc(15vh/9);
         font-weight: bold;
@@ -951,7 +1010,7 @@
     
     .characterTab_char_dropzone{   
         position: absolute;    
-        top: calc(310vh/9);
+        top: calc(330vh/9);
         width:calc(210vh/9);
         height:calc(210vh/9);
         left:calc(70vh/9);    
@@ -1032,7 +1091,7 @@
         width:100%;
         height: 63%;
         overflow:scroll;
-        background-color: peru;
+        /* background-color: peru; */
     }
     
     .backgroundTab_Box::-webkit-scrollbar {
@@ -1077,7 +1136,7 @@
 .bgmTab_Box{
     margin: calc(20vh/9) calc(50vh/9) calc(0vh/9) calc(50vh/9);
     width:90%;
-    height: calc(325vh/9);
+    height: calc(370vh/9);
     overflow:scroll;
     /* background-color: peru; */
 }
@@ -1121,11 +1180,11 @@
     justify-content : center;
   }
   .scenemake_essetmodal>.ant-modal-content{
-    height: calc(750vh/9);
+    height: calc(790vh/9);
     /* background-color: teal !important; */
   }
   .scenemake_essetmodal>.ant-modal-content>.ant-modal-body{
-    height: calc(680vh/9);
+    height: calc(720vh/9);
     padding:calc(30vh/9);
     /* background-color: orange !important; */
   }
@@ -1199,11 +1258,11 @@
     justify-content : center;
   }
   .scenemake_uploadmodal>.ant-modal-content{
-    height: calc(730vh/9);
+    height: calc(790vh/9);
     /* background-color: teal !important; */
   }
   .scenemake_uploadmodal>.ant-modal-content>.ant-modal-body{
-    height: calc(660vh/9);
+    height: calc(720vh/9);
     padding:calc(30vh/9);
     /* background-color: orange !important; */
   }
@@ -1232,6 +1291,80 @@
     border-color: #10253C;
   }
   
+
+  .scenemake_uploadmodal_form_container{
+    font-family: Noto Sans KR;
+    font-size: calc(25vh/9);
+    font-weight: bold;  
+}
+
+.scenemake_uploadmodal_form{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+.scenemake_dropzone_container{
+    display:flex;
+    margin-top : calc(20vh/9);
+    width: calc(320vh/9);
+    height: calc(200vh/9);
+    justify-content: center;
+    align-items: center;
+
+}
+.scenemake_uploadmodal_category{
+    position: absolute;
+    margin-top: calc(5vh/9);
+    right:calc(30vh/9);
+    width : calc(170vh/9);
+    background-color: #DDDDDD;
+    cursor: pointer;
+    border:calc(0.1vh/9) solid rgb(0,0,0,0.1);
+    font-family: Noto Sans KR;
+    font-size: calc(27vh/9);
+    font-weight: bold;  
+}
+
+.scenemake_uploadmodal_detail{
+    height:calc(250vh/9);
+    display : flex;
+    flex-direction: column;
+    /* justify-content : space-between */
+}
+.scenemake_uploadmodal_detail_title_container{
+    margin-top : calc(45vh/9);
+    font-family: Noto Sans KR;
+    font-size: calc(20vh/9);
+    font-weight: bold;  
+}
+.scenemake_uploadmodal_detail_description_container{
+    margin-top : calc(25vh/9);
+    font-family: Noto Sans KR;
+    font-size: calc(20vh/9);
+    font-weight: bold;  
+}
+.scenemake_uploadmodal_detail_description{
+    all:unset;    
+    padding:calc(15vh/9) calc(15vh/9) calc(10vh/9) calc(15vh/9);
+    width:95%;
+    height: calc(90vh/9);
+    background-color: #DDDDDD;
+}
+.scenemake_uploadmodal_detail_category_container{
+}
+
+.scenemake_uploadmodal_detail_title{
+    all:unset;
+    padding:calc(0vh/9) calc(15vh/9) calc(0vh/9) calc(15vh/9);
+    font-family: Noto Sans KR;
+    font-size: calc(20vh/9);
+    font-weight: bold;  
+    width:95%;
+    border-radius: calc(4vh/9);
+    background-color: #DDDDDD;
+}
+
 .ending_modal.ant-modal{
     top:calc(45vh/9);
     width:calc(700vh/9) !important;
