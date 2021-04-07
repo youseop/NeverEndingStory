@@ -18,7 +18,6 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         trim: true,
-        unique: 1
     },
     password: {
         type: String,
@@ -134,6 +133,7 @@ userSchema.methods.generateToken = function (cb) {
     user.tokenExp = oneHour;
     user.token = token;
     user.save(function (err, user) {
+        console.log(err)
         if (err) return cb(err)
         cb(null, user);
     })

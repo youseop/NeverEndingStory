@@ -64,7 +64,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "cross-env GENERATE_SOURCEMAP=false NODE_ENV=production react-scripts build",
+    "build": "cross-env NODE_ENV=production GENERATE_SOURCEMAP=false TZ='Asia/Seoul' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
