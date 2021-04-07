@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
-import Slider from 'react-rangeslider'
 import "./VolumeController.css";
 
 function VolumeController({ audio, volume, setVolume, muted, setMuted, tempVolume }) {
@@ -31,7 +30,7 @@ function VolumeController({ audio, volume, setVolume, muted, setMuted, tempVolum
                 {muted ? <VolumeOffIcon className="volumeController_icon" /> :
                     <VolumeUpIcon className="volumeController_icon" />}
             </div>
-            <div className="volumeController_slide">
+            {/* <div className="volumeController_slide">
                 <Slider
                     min={0}
                     max={1}
@@ -41,7 +40,7 @@ function VolumeController({ audio, volume, setVolume, muted, setMuted, tempVolum
                         volumeControl(event)
                     }}
                 />
-            </div>
+            </div> */}
         </div>
     )
 }
