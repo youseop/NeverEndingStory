@@ -310,9 +310,12 @@ export default function GameDetailPage(props) {
                             {gameDetail.category}
                         </div>
                         작가:
-                        <div className="bold_text">
+                        <Link
+                            to={`/profile/${gameDetail.creator._id}`}
+                            className="bold_text"
+                        >
                             {gameDetail?.creator?.nickname.substr(0, 20)}
-                        </div>
+                        </Link>
                         <span
                             className="link_bttn"
                             onClick={(e) => {

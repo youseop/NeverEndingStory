@@ -24,7 +24,15 @@ function ContributerCard({contributer, creatorNickname, fakeRatio, contributeRat
                 "detailPage__contributer_nickname"
                 }
                 >
-                {contributer.nickname.substr(0,11)}
+                { contributer.nickname.length > 11?
+                <>
+                {`${contributer.nickname.substr(0,11)}...`}
+                </>
+                :
+                <>
+                {contributer.nickname}
+                </>
+                }
             </Link>
             <div className="detailPage__contributer_graph">
                 <div 

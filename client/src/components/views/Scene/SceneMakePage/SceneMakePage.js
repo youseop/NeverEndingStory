@@ -115,7 +115,7 @@ const SceneMakePage = (props) => {
 
     let scene;
     useEffect(() => {
-        dispatch(navbarControl(false));
+        dispatch(navbarControl(true));
         dispatch(footerControl(false));
     }, [])
 

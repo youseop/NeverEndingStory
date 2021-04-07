@@ -72,7 +72,7 @@ function App() {
             <Route exact path="/login" component={Auth(LoginPage, false)} />
             <Route exact path="/register" component={Auth(RegisterPage, false)} />
             <Route exact path="/passport/register" component={Auth(PassportRegisterPage, false)} />
-            <Route exact path="/profile/:userId" component={Auth(Profile, true)} />
+            <Route exact path="/profile/:userId" component={Auth(Profile, null)} />
             <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
             <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
             <Route path="/gameplay/:full" component={isPortrait ? PortraitWarning : Valid(Auth(GamePlayPage, null))} />
