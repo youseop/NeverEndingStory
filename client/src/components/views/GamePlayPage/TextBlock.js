@@ -1,23 +1,21 @@
 import "./TextBlock.css";
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { message } from "antd";
 import InputModal from "../Modal/InputModal";
 import TextAnimation from './TextAnimation'
 import SceneEndingPage from "../Scene/SceneEndingPage/SceneEndingPage";
-
+import { Click_Icon } from "../../svg/icon"
 // 일단 4 나중에 어떻게 할지 다시 결정..
 const CHOICE_NUM = 4;
 
 export const TextBlock = (props) => {
     let { cut_name, cut_script, setIsTyping, isTyping, theme } = props;
 
-    theme = 'atorney';
-
     return <>
-        {
-            cut_script ?
-                <div className={`text_window ${theme}`} >
+        <div className={`text_window ${theme}`} >
+            {
+                cut_script ?
                     <div className={`text_container ${theme}`} >
                         <div className={`name_block ${theme}`} >
                             {cut_name}
@@ -31,20 +29,32 @@ export const TextBlock = (props) => {
                             }
                             </div>
                         </div>
+                        {/* <div className="short_cut_box_container">
+                            <div className="short_cut_box">
+                            </div>
+                        </div> */}
                     </div>
+                    :
+                    <>
+                        <div className={`text_line ${theme}`} > {
+                            isTyping ? < TextAnimation
+                                cut_script={" "}
+                                setIsTyping={setIsTyping}
+                            /> : cut_script
+                        }
+                        </div>
+                    </>
+            }
+            {!isTyping &&
+                <div className={`click_icon_container ${theme}`}>
+                    <Click_Icon />
+                    <span>Click!</span>
                 </div>
-                :
-                <div className={`text_line ${theme}`} > {
-                    isTyping ? < TextAnimation
-                        cut_script={" "}
-                        setIsTyping={setIsTyping}
-                    /> : cut_script
-                }
-                </div>
-        }
+            }
+        </div>
     </>
 };
- 
+
 // 선택지 display
 export const TextBlockChoice = (props) => {
 
@@ -87,7 +97,6 @@ export const TextBlockChoice = (props) => {
             </Link>
         );
     });
-
     return (
         <div className={`text_window ${theme}`} >
             <TextBlock

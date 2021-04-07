@@ -12,17 +12,28 @@
 
 /* Rangeslider - Horizontal slider */
 .rangeslider-horizontal {
-  height: 7px;
+  height: 10px;
   border-radius: 7px;
+  cursor: pointer;
 }
 .rangeslider-horizontal .rangeslider__fill {
   background-color: rgb(182, 182, 182);
 }
 .rangeslider-horizontal .rangeslider__handle {
-  width: 13px;
-  height: 13px;
+  width: 15px;
+  height: 15px;
   border-radius: 13px;
+}
+.rangeslider-horizontal .rangeslider__handle:focus {
+  outline: none;
 }
 .rangeslider-horizontal .rangeslider__handle:after {
   width: 0px;
+}
+.rangeslider .rangeslider__handle-tooltip {
+  width: 0px;
+  font-size: 0px;
+}
+.rangeslider-horizontal .rangeslider__handle-tooltip:after {
+  border-top: 0px;
 }

@@ -6,7 +6,9 @@ import * as Yup from "yup";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import { useDispatch } from "react-redux";
 import "./LoginPage.css";
-
+import KakaoLogin from "react-kakao-login"
+import Axios from "axios";
+const config = require("../../../config/key")
 interface LoginPageProps {
   history: {
     replace: Function;
@@ -23,9 +25,8 @@ interface LoginUser {
 }
 
 function LoginPage(props: LoginPageProps) {
-  const dispatch:any = useDispatch();
+  const dispatch: any = useDispatch();
   const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
-
   const [formErrorMessage, setFormErrorMessage] = useState("");
   const [rememberMe, setRememberMe] = useState(rememberMeChecked);
 
@@ -36,6 +37,32 @@ function LoginPage(props: LoginPageProps) {
   const initialEmail = localStorage.getItem("rememberMe")
     ? localStorage.getItem("rememberMe")!
     : undefined;
+
+  const kakaoLogin = (login: any) => {
+    Axios.post('/api/passport/kakao/oauth', { profile: login.profile })
+      .then((res: any) => {
+        if (res.data.success) {
+          if (res.data.newUser) {
+            props.history.replace({
+              pathname: `/passport/register`,
+              state: {
+                snsId: login.profile.id,
+                snsProvider: "kakao",
+              }
+            })
+          }
+          else {
+            props.history.replace("/");
+          }
+        }
+      })
+
+  }
+  const fail = () => {
+    props.history.replace({
+      pathname: `/login`
+    })
+  }
 
   return (
     <Formik
@@ -98,7 +125,7 @@ function LoginPage(props: LoginPageProps) {
             <div className="loginDiv-container">
               <div className="login-Title">로그인</div>
               <div className="login-newUser">신규 사용자이신가요? <Link className="login-register" to="/register">계정만들기</Link></div>
-              <form onSubmit={handleSubmit} style={{ width: "600px" }}>
+              <form onSubmit={handleSubmit}>
                 <Form.Item required>
                   <Input
                     id="email"
@@ -167,16 +194,27 @@ function LoginPage(props: LoginPageProps) {
                   >
                     forgot password
                   </a> */}
-                  <div>
-                    <button
-                      type="submit"
-                      className="login-button"
-                      disabled={isSubmitting}
-                      onSubmit={() => handleSubmit()}
-                    >
-                      로그인
+                  <Form.Item>
+                    <div>
+                      <button
+                        type="submit"
+                        className="login-button"
+                        disabled={isSubmitting}
+                        onSubmit={() => handleSubmit()}
+                      >
+                        로그인
                     </button>
-                  </div>
+                      <KakaoLogin
+                        token={config.KAKAO_KEY}
+                        onSuccess={(login) => kakaoLogin(login)}
+                        onFail={() => { fail() }}
+                        className="login-button login-kakao">
+                        카카오 로그인
+
+                    </KakaoLogin>
+
+                    </div>
+                  </Form.Item>
 
                 </Form.Item>
               </form>

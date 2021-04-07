@@ -25,7 +25,7 @@ router.get("/auth", auth, (req, res) => {
     });
 });
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
 
     const user = new User(req.body);
     user.nickname = sanitize(user.nickname)
@@ -35,12 +35,19 @@ router.post("/register", (req, res) => {
     if (req.session.gameHistory) {
         user.gameHistory = req.session.gameHistory
     }
-    user.save((err, doc) => {
-        if (err) return res.json({ success: false, err });
-        return res.status(200).json({
-            success: true
-        });
-    });
+    
+    //! generateToken includes save
+    user.generateToken((err, user) => {
+        if (err) return res.status(400).json({ success: false, err });
+        res.cookie("w_authExp", user.tokenExp);
+        res.cookie("w_auth", user.token)
+        .status(200)
+        .json({
+            success:true
+        })
+
+    })
+    
 });
 
 router.post("/login", (req, res) => {
@@ -77,6 +84,9 @@ router.get("/logout", auth, (req, res) => {
         });
     });
 });
+
+
+
 
 router.get("/playing-list/clear", check, async (req, res) => {
     try {
@@ -148,6 +158,21 @@ router.post("/profile", (req, res) => {
 });
 
 
+router.post("/nickname-check", (req, res) => {
+    User.findOne({ nickname: req.body.nickname }, (err, user) => {
+        if (err) return res.json({ success: false, err });
+        if (!user)
+            return res.status(200).send({
+                success: true,
+                usedNickname: false
+            });
+        return res.status(200).send({
+            success: true,
+            usedNickname: true
+        });
+    });
+});
+
 router.post("/email-check", (req, res) => {
     User.findOne({ email: req.body.email }, (err, user) => {
         if (err) return res.json({ success: false, err });
@@ -170,5 +195,36 @@ router.post("/game-visit", check, (req, res) => {
         gamePlaying,
     })
 })
- 
+
+router.post("/send-feedback", async (req, res) => {
+    const nodemailer = require('nodemailer');
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_ID,
+          pass: process.env.EMAIL_PASSWORD
+        },
+      });
+
+    let info = await transporter.sendMail({
+    from: "이어봐 정글 프로젝트",
+    to: "chotjd329@hotmail.com, daejjyu@gmail.com, edlsw@naver.com, stkang9409@gmail.com, jeongws3240@gmail.com",
+    subject: `[이어봐] 고객 문의 메일 - (${req.body.Type})`,
+    text: `${req.body.Content}\n\n연락처1: ${req.body.Email}\n연락처2: ${req.body.PhoneNumber}`
+    });
+
+    if(info.rejected.length){
+        return res.status(200).send({
+            success: false,
+        });
+    }
+    return res.status(200).send({
+        success: true,
+    });
+});
+
 module.exports = router;

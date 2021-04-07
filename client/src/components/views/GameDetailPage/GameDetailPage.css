@@ -449,5 +449,18 @@
   }
 }
 
+.link_bttn {
+  cursor: pointer;
+}
+
+.link_bttn:hover{
+  text-decoration-line: underline;
+}
+
+.link_bttn:active{
+  opacity: 90%;
+}
+
+
 
 

@@ -13,6 +13,19 @@ const {sanitize} = require("../lib/sanitize")
 
 const MS_PER_HR = 3600000
 
+const getTheme = (category) => {
+  let theme;
+  switch (category) {
+    case "추리":
+      theme = "atorney";
+      break;
+    default:
+      theme = "";
+      break;
+  }
+  return theme;
+}
+
 
 const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
   const {
@@ -50,6 +63,8 @@ const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
 
 router.post('/create', auth, async (req, res) => {
   const userId = req.user._id
+  const game = await Game.findOne({_id:req.body.gameId}).select("category");
+  const theme = getTheme(game.category)
   const scene = new Scene({
     gameId: req.body.gameId,
     writer: userId,
@@ -59,13 +74,14 @@ router.post('/create', auth, async (req, res) => {
     isFirst: req.body.isFirst,
     depth: req.body.sceneDepth,
     prevSceneId: req.body.prevSceneId,
+    theme
   })
 
   const user = await User.findOne({ _id: userId });
 
   // TODO : 추후 makingGameList 제한 필요
   const exp = Date.now() + MS_PER_HR
-  // console.log("In create : ",exp)
+  const newExp = new Date(exp)
   user.makingGameList.push({ sceneId: scene._id, gameId: req.body.gameId, exp });
 
   if (req.body.isFirst) {
@@ -309,7 +325,7 @@ router.delete('/', async (req, res) => {
     user.makingGameList.splice(idx, 1)
   }
   else {
-    console.log("THERE IS NO MAKING GAME -- 이상하네")
+    console.log("THERE IS NO MAKING GAME")
   }
   user.gamePlaying.sceneIdList.pop();
   user.gamePlaying.isMaking = false;
@@ -337,7 +353,6 @@ router.get("/:sceneId", async (req, res) => {
     try {
         const scene = await Scene.findOne({ _id: sceneId });
         if (scene === null) {
-            // console.log("??????")
             return res.status(200).json({ success: false });
         }
         return res.status(200).json({ success: true, scene });

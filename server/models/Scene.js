@@ -64,6 +64,10 @@ const sceneSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
+    theme: {
+        type: String,
+        default: "",
+    },
     title: {
         type: String,
         default: "",
@@ -94,10 +98,6 @@ const sceneSchema = mongoose.Schema({
                 exp: {
                     type: Date,
                     default: null, 
-                },
-                timer: {
-                    type: Number,
-                    default: null,
                 },
                 isMakingScene: {
                     type: Boolean,

@@ -34,6 +34,10 @@
 .backSidebar_image_container{  
   width: 120px;
   height:100px;
+  border:5px solid #DDDDDD;
+}
+.backSidebar_image_container.true{  
+  border:5px solid #399CFF;
 }
 
 .backSidebar_image{

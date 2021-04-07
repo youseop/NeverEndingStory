@@ -68,4 +68,18 @@
 }
 .register-button:hover {
   background: rgb(76, 181, 251);
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .registerPage-container {
+    width: 100%;
+  }
+  .registerDiv-container {
+    width: 100%;
+    margin-top: 20px;
+  }
+  .register-button {
+    width: 100%;
+  }
 }

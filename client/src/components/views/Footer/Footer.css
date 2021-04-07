@@ -1,12 +1,74 @@
-.footer_container{
-    height: 80px;
+.footer-container-off {
+  height: 0px;
+  background-color: #222831;
+}
 
-    background-color: #222831;
-    color:white;
-    font-size: 1rem;
+.footer-container {
+  position: relative;
+  min-width: 1440px;
+  height: 250px;
+  background-color: #222831;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-info {
+  flex: 1;
+  padding-top: 50px;
+  font-family: Noto Sans KR;
+  font-size: 15px;
+  text-align: center;
+  color: #ffffff63;
+}
+
+.footer-info a {
+  font-family: Noto Sans KR;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  border-bottom-style: solid;
+  color: #ffffff63;
+}
+
+.footer-icons {
+  flex: 1;
+  padding-top: 5px;
+}
+
+.jg-icon {
+  width: 190px;
+  height: 55px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+.jg-img {
+  width: 180px;
+  height: 50px;
+  padding-top: 5px;
+  padding-left: 5px;
+}
+
+@media (max-width: 767px) {
+  .footer-container {
+    min-width: 300px;
+    padding: 10px;
+  }
+
+  .footer-info {
+    padding-top: 15px;
+  }
+
+  .jg-icon {
+    width: 130px;
+    height: 40px;
+  }
+  .jg-img {
+    width: 125px;
+    height: 35px;
+  }
 }

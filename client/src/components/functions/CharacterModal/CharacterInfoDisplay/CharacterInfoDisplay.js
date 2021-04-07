@@ -8,9 +8,6 @@ import './CharacterInfoDisplay.css';
 function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
-  useConstructor(() => {
-    dispatch(setCharacterList({ CharacterList: [] }));
-  });
   const onClick_putCharacter = (index, url) => {
     const characterSchema = {
       index: character.index,
@@ -55,8 +52,6 @@ function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
   })
 
   const characterDetailImages = character?.image_array?.map((url, index) => {
-    // const img = new Image();
-    // img.src = url;
     return (
       <div
         key={index}
@@ -65,10 +60,16 @@ function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
       >
         <img
           src={url}
-          alt=""
-          // className={img.height > img.width ?
-          //   "image_array_image_height" : "image_array_image_width"}
+          id={index}
           className="image_array_image"
+          alt=""
+        // onLoad={() => {
+        //   if (document.getElementById(index).naturalWidth > document.getElementById(index).naturalHeight) {
+        //     document.getElementById(index).className = "image_array_image_width"
+        //   } else {
+        //     document.getElementById(index).className = "image_array_image_height"
+        //   }
+        // }}
         />
       </div>
     )

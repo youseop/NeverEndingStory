@@ -4,7 +4,7 @@ import Character from "../../functions/CharacterModal/Character";
 
 import "./CharacterBlock.css";
 const CharacterBlock = (props) => {
-  const { GameCharacterList } = props;
+  const { GameCharacterList, setName } = props;
 
   const CharacterList = useSelector(state => state.character.CharacterList)
   const characterblocks = CharacterList?.map((charSchema, index) => {
@@ -14,6 +14,7 @@ const CharacterBlock = (props) => {
           GameCharacterList={GameCharacterList}
           index={index}
           charSchema={charSchema}
+          setName={setName}
         />
       </div>
     );

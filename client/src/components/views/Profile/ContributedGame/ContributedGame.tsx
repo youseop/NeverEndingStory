@@ -5,11 +5,12 @@ import {LOCAL_HOST} from "../../../Config";
 import { Link, useHistory } from "react-router-dom";
 
 import './ContributedGame.css';
-
 import { ObjectId } from "mongodb";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faFile, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { SCENE_ICON } from '../../../svg/icon';
+
+type ObjectID= typeof ObjectId;
 
 interface ContributedGame {
   gameId: string;
@@ -24,6 +25,7 @@ interface GameDetail {
   sceneCnt: number;
   thumbnail: string;
   title: string;
+  first_scene: ObjectID;
 }
 
 interface ThumbsUp {
@@ -42,6 +44,7 @@ function ContributedGame(props: any) {
     sceneCnt: 0,
     thumbnail: "",
     title: "",
+    first_scene: null,
   });
   const [thumbsUp, setThumbsUp] = useState<ThumbsUp>({
     like: 0,
@@ -65,49 +68,56 @@ function ContributedGame(props: any) {
     })
   },[])
 
-  if(gameDetail.title === ""){
+  if(gameDetail?.title === ""){
     return <div></div>
   }
 
   const description = gameDetail.description.length > 300 ? gameDetail.description.slice(0,300)+'...' : gameDetail.description;
-  return (
-    <div className="contribute__container">
-      <Link to={`/game/${gameId}`}>
-        <img
-          className="contribute__img"
-          src={`http://${LOCAL_HOST}:5000/${gameDetail.thumbnail}`}
-          alt="https://cdn.crowdpic.net/list-thumb/thumb_l_110F2464CA8958D839ECCBA33E453FDF.jpg"
-        />
-        <div className="contribute__icon">
-          <div>
-            {gameDetail.sceneCnt}
-            <FontAwesomeIcon icon={faFile} style={{ marginLeft: "10px" }} /> 
-          </div>
-          <div>
-            {view}
-            <FontAwesomeIcon icon={faEye} style={{ marginLeft: "10px" }} />
-          </div>
-          <div>
-            {thumbsUp.like} 
-            <FontAwesomeIcon style={{ marginLeft: "10px" }} icon={faHeart} />
-          </div>
-        </div>
-      </Link>
-      <div className="contribute__info">
-        <div className="contribute__title">{gameDetail.title}</div>
-        <div className="contribute__text">{description}</div>
-        {sceneCnt >= 0 ?
-          <div className="contribute__contributeCntText">
-            기여한 스토리 개수: 
-            <div className="contribute__cnt">
-              {sceneCnt}
+
+  if(!gameDetail?.first_scene) {
+    return (
+      ""
+    )
+  } else {
+    return (
+      <div className="contribute__container">
+        <Link to={`/game/${gameId}`}>
+          <img
+            className="contribute__img"
+            src={`http://${LOCAL_HOST}:5000/${gameDetail.thumbnail}`}
+            alt="https://cdn.crowdpic.net/list-thumb/thumb_l_110F2464CA8958D839ECCBA33E453FDF.jpg"
+            />
+          <div className="contribute__icon">
+            <div>
+              {gameDetail.sceneCnt}
+              <FontAwesomeIcon icon={faFile} style={{ marginLeft: "10px" }} /> 
+            </div>
+            <div>
+              {view}
+              <FontAwesomeIcon icon={faEye} style={{ marginLeft: "10px" }} />
+            </div>
+            <div>
+              {thumbsUp.like} 
+              <FontAwesomeIcon style={{ marginLeft: "10px" }} icon={faHeart} />
             </div>
           </div>
-          :
-          <div></div>
-        }
+        </Link>
+        <div className="contribute__info">
+          <div className="contribute__title">{gameDetail.title}</div>
+          <div className="contribute__text">{description}</div>
+          {sceneCnt >= 0 ?
+            <div className="contribute__contributeCntText">
+              기여한 스토리 개수: 
+              <div className="contribute__cnt">
+                {sceneCnt}
+              </div>
+            </div>
+            :
+            <div></div>
+          }
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 export default ContributedGame

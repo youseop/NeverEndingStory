@@ -188,93 +188,84 @@ function Profile(props: any) {
     const element: HTMLElement | null = document.getElementById(name);
     document.getElementById("contributedGame")!.style.display = "none";
     document.getElementById("contributedScene")!.style.display = "none";
-    // if(isUser)
-    //   document.getElementById("makingGame")!.style.display = "none";
     element!.style.display = "block";
   }
 
-  if (currUserData){
-    return (
-      <div className="profile__container">
-        
-        <div className="profile__thumbnail_container">
-          <img
-              className="profile__thumbnail"
-              src={`https://i.imgur.com/UwPKBqQ.jpg`}
-              alt=""
+  return (
+    <div className="profile__container">
+      
+      <div className="profile__thumbnail_container">
+        <img
+            className="profile__thumbnail"
+            src={`https://i.imgur.com/UwPKBqQ.jpg`}
+            alt=""
+        />
+        <div className="profile__gradation"></div>
+        <div className="profile__userInfo">
+          <img 
+            src={user.image} alt="" 
+            className="profile__img"
           />
-          <div className="profile__gradation"></div>
-          <div className="profile__userInfo">
-            <img 
-              src={user.image} alt="" 
-              className="profile__img"
-            />
-            <div className="profile__text">
-              <div>{user.nickname}</div>
-              <div>{user.email}</div>
-            </div>
-        </div>
-        </div>
-        
-        <div className="profile__btn_container">
-          <div 
-            className="profile__btn"
-            onClick={() => onClick_tab("contributedScene")}
-          >
-            만든 스토리 
+          <div className="profile__text">
+            <div>{user.nickname}</div>
+            <div>{user.email}</div>
           </div>
-          <div 
-            className="profile__btn"
-            onClick={() => onClick_tab("contributedGame")}
-          >
-            만든 게임 
-          </div>
-          
-          {/* {isUser &&
-          <div onClick={() => onClick_tab("makingGame")}>만들던 게임</div>
-          } */}
+      </div>
+      </div>
+      
+      <div className="profile__btn_container">
+        <div 
+          className="profile__btn"
+          onClick={() => onClick_tab("contributedScene")}
+        >
+          만든 스토리 
         </div>
         <div 
-          id="contributedScene"
-          style={{display:"block"}}
+          className="profile__btn"
+          onClick={() => onClick_tab("contributedGame")}
         >
-          <div className="profile__title">
-            기여한 스토리 {totalSceneContribute} 개
-          </div>
-          {displayContributedScene(user)}
-        </div>
-        <div 
-          id="contributedGame"
-          style={{display:"none"}}
-        >
-          <div className="profile__title">
-            기여한 게임 {totalGameContribute} 개
-          </div>
-          {displayContributedGame(user)}
+          만든 게임 
         </div>
         
         {/* {isUser &&
-        <div 
-          id="makingGame"
-          style={{display:"none"}}
-        >
-          만들던 게임
-          {displayMakingGame(currUserData)}
-        </div>
-        }
-        {isUser ? 
-        <div>isuser</div>
-        :
-        <div>isnt user</div>
+        <div onClick={() => onClick_tab("makingGame")}>만들던 게임</div>
         } */}
       </div>
-    )
-  } else {
-    return (
-      <div>
-        loading...
-      </div>)
-  }
+      <div 
+        id="contributedScene"
+        style={{display:"block"}}
+      >
+        <div className="profile__title">
+          기여한 스토리 {totalSceneContribute} 개
+        </div>
+        {displayContributedScene(user)}
+      </div>
+      <div 
+        id="contributedGame"
+        style={{display:"none"}}
+      >
+        <div className="profile__title">
+          기여한 게임 {totalGameContribute} 개
+        </div>
+        {displayContributedGame(user)}
+      </div>
+      
+      {/* {isUser &&
+      <div 
+        id="makingGame"
+        style={{display:"none"}}
+      >
+        만들던 게임
+        {displayMakingGame(currUserData)}
+      </div>
+      }
+      {isUser ? 
+      <div>isuser</div>
+      :
+      <div>isnt user</div>
+      } */}
+    </div>
+  )
 }
 
 export default Profile

@@ -83,7 +83,6 @@ export function updateCharacter(dataToSubmit) {
     },
     ...oldArray.slice(index + 1, 4)
   ]
-  console.log("updated");
 
   return {
     type: UPDATE_CHARACTER,
@@ -105,11 +104,17 @@ export function orderCharacter(dataToSubmit) {
   const { oldArray, index, num } = dataToSubmit;
   const lastIndex = oldArray.length-1;
   let request = [...oldArray]
-  for (let i = 1; i < lastIndex+1; i++) {
+  for (let i = 0; i < lastIndex+1; i++) {
     if (request[i].index === index) {
       if(num === "double") {
+        if (i > 0)
         [request[i], request[0]] = [request[0], request[i]]
-      } else {
+      } else if(num==="pull") {
+          const tmp = request[i];
+          request.splice(i, 1);
+          request.push(tmp)
+      }
+       else if ( i > 0) {
         [request[i], request[i-1]] = [request[i-1], request[i]]
       }
     }

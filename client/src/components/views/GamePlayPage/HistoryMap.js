@@ -73,7 +73,7 @@ function HistoryMapPopup(props) {
 
   useEffect(() => {
     if (props.trigger) {
-      Axios.get("api/game/simple-scene-info").then((response) => {
+      Axios.get("/api/game/simple-scene-info").then((response) => {
         sceneInfo = response.data.sceneinfo;
         setSceneInfo(sceneInfo);
       });
@@ -160,7 +160,7 @@ function HistoryMapPopup(props) {
         onOk={handleOk}
         onCancel={handleCancel}
         getContainer='.gamePlay__container'
-        centered='true'
+        centered={true}
       >
         <p>
           {targetScene} 번째 씬으로 돌아갑니다. 돌아가려는 씬까지의 기록은

@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'production') {
         s3: new AWS.S3(),
         bucket: 'iovar',
         key(req, file, cb) {
-            cb(null, `original/${Date.now()}${path.basename(file.originalname)}`)
+            cb(null, `uploads/${Date.now()}${path.basename(file.originalname)}`)
         },
     })
 } else {
@@ -127,6 +127,7 @@ router.post("/uploadgameframe", (req, res) => {
     game.title = sanitize(req.body.title);
     if (req.body.description)
         game.description = sanitize(req.body.description);
+    game.category = req.body.category;
     game.save((err, game) => {
         if (err) return res.json({ success: false, err });
 
@@ -204,14 +205,20 @@ const updateHistoryFromPlaying = (user) => {
         gamePlaying: { gameId, sceneIdList },
         gameHistory,
     } = user;
-    for (let i = 0; i < gameHistory.length; i++) {
-        if (gameHistory[i].gameId && objCmp(gameHistory[i].gameId, gameId)) {
-            user.gameHistory[i].sceneIdList = [...sceneIdList];
-            user.gamePlaying.sceneIdList = [];
-            user.gamePlaying.gameId = null;
-            return;
-        }
+
+    const targetIndex = gameHistory.findIndex((e)=>objCmp(e.gameId,gameId))
+    if(targetIndex !== -1){
+        user.gameHistory.splice(targetIndex,1)
     }
+
+    // for (let i = 0; i < gameHistory.length; i++) {
+    //     if (gameHistory[i].gameId && objCmp(gameHistory[i].gameId, gameId)) {
+    //         user.gameHistory[i].sceneIdList = [...sceneIdList];
+    //         user.gamePlaying.sceneIdList = [];
+    //         user.gamePlaying.gameId = null;
+    //         return;
+    //     }
+    // }
 
     user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList] });
     user.gamePlaying.sceneIdList = [];
@@ -371,38 +378,49 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
             const userId = req.user._id;
             user = await User.findOne({ _id: userId });
         }
-        else { 
+        else {
             user = req.session
-        } 
-        try {
-            const scene = await Scene.findOne({ _id: sceneId });
-            const val = await validateScene(user.gamePlaying, sceneId, gameId, false);
-            if (!val) {
-                return res.status(200).json({ success: false });
-            }
-            if (!objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], sceneId)) {
-                user.gamePlaying = {
-                    gameId, 
-                    sceneIdList: [...user.gamePlaying.sceneIdList, sceneId],
-                };
-            }
-            if (isMember){
-                user.save();
-            }
-            return res
-                .status(200)
-                .json({
-                    success: true,
-                    scene,
-                    sceneIdList: user.gamePlaying.sceneIdList,
-                });
-        } catch (err) {
-            console.log(err);
-            return res.status(400).json({ success: false });
         }
+
+        const scene = await Scene.findOne({ _id: sceneId });
+        if (!scene) {
+            throw "noScene"
+        }
+        const val = await validateScene(user.gamePlaying, sceneId, gameId, false);
+        if (!val) {
+            throw "invalid"
+        }
+        if (!objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], sceneId)) {
+            user.gamePlaying = {
+                gameId,
+                sceneIdList: [...user.gamePlaying.sceneIdList, sceneId],
+            };
+        }
+        if (isMember) {
+            user.save();
+        }
+        return res
+            .status(200)
+            .json({
+                success: true,
+                scene,
+                sceneIdList: user.gamePlaying.sceneIdList,
+            });
     } catch (err) {
         console.log(err);
-        return res.status(400).json({ success: false });
+        let msg;
+        switch (err) {
+            case 'noScene':
+                msg = "해당 씬은 관리자 권한으로 삭제되었습니다."
+                break;
+            case 'invalid':
+                msg = "하나의 ID로 한 게임만 즐겨주세요"
+                break;
+            default:
+                break;
+
+        }
+        return res.status(200).json({ success: false, msg });
     }
 });
 
@@ -412,10 +430,10 @@ router.post("/refreshHistory", check, async (req, res) => {
     // 유저 정보로 gamePlaying 가지고 오기
     try {
         let user;
-        if(req.isMember){
+        if (req.isMember) {
             user = await User.findOne({ _id: req.user._id });
         }
-        else{
+        else {
             user = req.session
         }
         let {
@@ -423,7 +441,7 @@ router.post("/refreshHistory", check, async (req, res) => {
         } = user;
         // 첫번째 씬으로 돌아가려 할 때 이상해질 수 있음...
         user.gamePlaying.sceneIdList = sceneIdList.slice(0, sceneIndex + 1);
-        if(req.isMember){
+        if (req.isMember) {
             user.save();
         }
         return res
@@ -434,6 +452,23 @@ router.post("/refreshHistory", check, async (req, res) => {
     }
 });
 
+
+router.get("/getSceneInfo/:sceneId", async (req, res) => {
+    let { sceneId } = req.params;
+    sceneId = mongoose.Types.ObjectId(sceneId);
+    try {
+        const scene = await Scene.findOne({ _id: sceneId });
+        const game_createor = await Game.findOne({ _id: scene?.gameId }).select("creator");
+
+        if (scene === null) {
+            return res.status(200).json({ success: false });
+        }
+        return res.status(200).json({ success: true, scene, creator: game_createor.creator });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ success: false });
+    }
+});
 
 router.post("/updatescenestatus", check, async (req, res) => {
     if (!req.user) {
@@ -489,8 +524,7 @@ router.post("/rank", async (req, res) => {
 })
 
 router.get("/simple-scene-info", check, async (req, res) => {
-    
-    
+
     try {
         const gamePlaying = req.isMember ? req.user.gamePlaying : req.session.gamePlaying
         const sceneList = gamePlaying.sceneIdList
@@ -511,5 +545,63 @@ router.get("/simple-scene-info", check, async (req, res) => {
         return res.status(400).json({ success: false });
     }
 });
+
+
+router.post("/search-game", async (req, res) => {
+    try {
+        const game = await Game.find({ title: { $regex: req.body.input, $options: 'm' } }, ["title", "category","thumbnail"])
+        .sort({"sceneCnt": -1})
+        .limit(10);
+        return res.status(200).json({ success: true, games: game });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ success: false });
+    }
+});
+
+router.get("/popular-games", (req, res) => {
+    Game.find()
+        .sort({"view": -1})
+        .limit(8)
+        .exec((err, games) => {
+            if (err) return res.status(400).send(err);
+            res.status(200).json({ success: true, games });
+        });
+});
+
+router.get("/recent-games", check, async (req, res) => {
+    let recent_play = req.isMember ? req.user.gameHistory : req.session.gameHistory;
+    let now_play = req.isMember ? req.user.gamePlaying : req.session.gamePlaying;
+    let games = []
+
+    if(now_play){
+        try {
+            const game = await Game.findOne({ _id: now_play.gameId });
+            games.push(game)
+        }catch (err) {
+            console.log(err);
+            return res.status(400).json({ success: false });
+        }
+    }
+    if(now_play && recent_play){
+        for(let i=1;i<=recent_play.length && i<=5;i++){
+            try {
+                if(objCmp(recent_play[recent_play.length-i].gameId,now_play.gameId)){
+                    continue;
+                }
+                const game = await Game.findOne({ _id: recent_play[recent_play.length-i].gameId });
+                games.push(game)
+            }catch (err) {
+                console.log(err);
+                return res.status(400).json({ success: false });
+            }
+        }
+    }
+    return res.status(200).send({
+        success: true,
+        games
+    })
+  
+})
 
 module.exports = router;
