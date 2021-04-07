@@ -7,7 +7,7 @@ import { SVG } from "../../../../svg/icon";
 import useMouse from "../../../../functions/useMouse";
 import AssetLibraryModal from "../AssetLibraryModal"
 
-function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, setCharBlobList, assetUsedFlag, blobAssetList }) {
+function CharacterTab({ blobGame, setBlobGame, blobCharList, setBlobCharList, setFileQueue, charPageNum, assetUsedFlag, blobAssetList }) {
     const [LibraryModalVisible, setLibraryModalVisible] = useState(false)
     const [characterProfile, setCharacterProfile] = useState("");
     const [characterCards, setCharacterCards] = useState("");
@@ -15,10 +15,20 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
     const indexNum = useRef(0); //! 몇번째 캐릭터냐?
 
     const onNameChange = (event) => {
+
         setBlobGame(game => {
             game.character[charPageNum.current].name = event.currentTarget.value
             return game
         })
+
+        // setBlobCharList(blobCharacterList => {
+        //     blobCharacterList[charPageNum.current] = {
+        //         ...blobCharacterList[charPageNum.current],
+        //         name = event.currentTarget.value
+        //     }
+        //     return blobCharacterList
+        // })
+
         setIsUpdate(num => num + 1)
     };
 
@@ -31,40 +41,111 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
     };
 
     const onDrop = (files) => {
+        let blobURL = []
+        let id = -100;
+
         for (var i = 0; i < files.length; i++) {
             if (!files[i]) {
                 message.error("10MB 이하의 이미지 파일을 업로드해주세요.");
                 return;
             }
             let curURL = URL.createObjectURL(files[i])
-            setCharBlobList(oldArray => [...oldArray, curURL])  //! blob revoke url들만 지우려고 만든거임
-
-            //new Character
-            if (indexNum.current === "-1") {
-                setBlobGame(game => {
-                    game.character = [...game.character, {
-                        name: "",
-                        description: "",
-                        image_array: [curURL],
-                    }]
-                    return game
-                })
-                indexNum.current = blobGame.character.length - 1
-            }
-            else {
-                setBlobGame(game => {
-                    game.character[indexNum.current].image_array = [...game.character[indexNum.current].image_array, curURL]
-                    return game
-                })
-            }
+            blobURL.push(curURL)
         }
-        setCharFileQueue(oldArray => [...oldArray, { index: Number(indexNum.current), array: files }])
+
+        //new Character
+        if (indexNum.current === "-1") {
+            setBlobGame(game => {
+                if(game.character.length)
+                    id = game.character[game.character.length - 1].id + 1
+                else
+                    id = 0;
+
+                game.character = [...game.character, {
+                    name: "",
+                    description: "",
+                    image_array: blobURL,
+                    id: id,
+                }]
+                return game
+            })
+            indexNum.current = blobGame.character.length - 1
+        }
+        else {
+            setBlobGame(game => {
+                id = game.character[indexNum.current].id
+                                                                //! blob FIRST
+                game.character[indexNum.current].image_array = [...blobURL, ...game.character[indexNum.current].image_array]
+                return game
+            })
+        }
+
+        console.log("id:::",id)
+        //! indexNum - 몇번째 페이지에서 dropzone을 눌렀는지 -- 새로운녀석때문에
+        setFileQueue(oldArray => [...oldArray, { type: "character", id : id, num:files.length, fileArray: files }])
         setIsUpdate(num => num + 1)
+
     };
 
+    const characterDelete = () => {
+        let characterId;
+        
+        setBlobGame(game => { // delete for blob
+            characterId = game.character[charPageNum.current].id
+            game.character.splice(charPageNum.current,1)
 
+            return game
+        })
+
+        setFileQueue(oldArray => {  // delete for files
+            let fileIdx = oldArray.findIndex(i=> i.id === characterId)
+            console.log("file DELETE ! ", fileIdx, characterId)
+            if (fileIdx > -1)
+                oldArray.splice(fileIdx,1)
+            return oldArray
+        })
+        setIsUpdate(num => num+1)
+    }
+
+    const characterSplice = (event) => {
+        let characterId;
+        const idx = event.target.id
+        setBlobGame(game=>{
+            characterId = game.character[charPageNum.current].id
+            if (game.character[charPageNum.current].image_array.length > 1 ){
+                game.character[charPageNum.current].image_array.splice(idx,1)
+            }
+            else{
+                game.character.splice(charPageNum.current,1)
+            }
+            return game
+        })
+
+        //! blob 먼저 -- Real 이후에! 로 설정하면, 누른 idx가 항상 파일의 image_array의 idx와 같음
+        setFileQueue(oldArray => {
+
+            let fileIdx = oldArray.findIndex(i => i.id === characterId)
+            if(fileIdx > -1){
+                if(oldArray[fileIdx].num > idx){    // just for blob
+                    if(oldArray[fileIdx].fileArray.length > 1){    // splice
+                        oldArray[fileIdx].fileArray.splice(idx,1)
+                        oldArray[fileIdx].num--;
+                    }
+                    else{
+                        oldArray.splice(fileIdx,1)  // delete
+                    }
+                }
+                else{
+                    console.log("already uploaded file!!!")
+                }
+            }
+            return oldArray
+        })
+        setIsUpdate(num => num + 1)
+    }
 
     // 왜 인자로 넘어온 game이 처음에 존재하지 않는지 모르겠음
+    //! blobGame은 모달 창이 믿고있는 이 게임의 캐릭터.
     useEffect(() => {
         if (blobGame.character && charPageNum.current < blobGame.character.length) {
             const profile = () => {
@@ -81,6 +162,12 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                                 src={image}
                                 alt="img"
                             />
+                        </div>
+                        <div
+                            id={charPageNum.current}
+                            className="characterTab_profile_delete"
+                            onClick={characterDelete}>
+                            삭제하기
                         </div>
 
                         <Form>
@@ -109,13 +196,21 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                         key={index}
                         className="characterTab_cards"
                     >
-                        <img
-                            // className={img.width > img.height ?
-                            //     "characterTab_image_width" : "characterTab_image_height"}
-                            className="characterTab_image"
-                            src={image}
-                            alt="img"
-                        />
+                        <div>
+                            <img
+                                // className={img.width > img.height ?
+                                //     "characterTab_image_width" : "characterTab_image_height"}
+                                className="characterTab_image"
+                                src={image}
+                                alt="img"
+                            />
+                        </div>
+                        <div
+                            id={index}
+                            className="characterTab_image_delete"
+                            onClick={characterSplice}>
+                            삭제하기
+                        </div>
                     </div>
                 )
             })
@@ -127,6 +222,8 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
 
     }, [isUpdate, blobGame]);
 
+
+    //! ON CLICK 한 친구의 ID를 찾는다. -- 눌렀을 때, PATH 에 모든 DIV가 뜨는데, 해당 녀석들의 ID를 찾는다.
     useMouse("mousedown", handleMouse)
     function handleMouse(event) {
         for (var i = 0; i < event.path.length; i++) {
@@ -164,37 +261,44 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                 </div>
             }
             {blobGame.character?.length === charPageNum.current &&
-                <div
-                    className="characterTab_empty_dropzone"
-                    id={-1}>
-                    <div onClick={() => {
-                        setLibraryModalVisible(true)
-                    }}>
-                        기존 에셋 추가하기
+                <>
+                    <div className="characterTab_upload_container">
+                        <div className="characterTab_library"
+                            onClick={() => {
+                                setLibraryModalVisible(true)
+                            }}>
+                            캐릭터 저장소
                     </div>
-                    {<AssetLibraryModal
-                        visible={LibraryModalVisible}
-                        setVisible={setLibraryModalVisible}
-                        assetType="character"
-                        blobGame={blobGame}
-                        setBlob={setBlobGame}
-                        assetUsedFlag={assetUsedFlag}
-                        charPageNum={charPageNum}
-                        setIsUpdate={setIsUpdate}
-                        blobAssetList={blobAssetList}
-                    />}
-                    <MyDropzone
-                        onDrop={onDrop}
-                        multiple={true}
-                        maxSize={10485761} // 10MB + 1
-                        accept="image/*"
-                        type="character"
-                        icon="image"
-                    />
-                    <div className="characterTab_instruct">
-                        캐릭터를 추가해주세요
+
+                        <AssetLibraryModal
+                            visible={LibraryModalVisible}
+                            setVisible={setLibraryModalVisible}
+                            assetType="character"
+                            blobGame={blobGame}
+                            setBlob={setBlobGame}
+                            assetUsedFlag={assetUsedFlag}
+                            charPageNum={charPageNum}
+                            setIsUpdate={setIsUpdate}
+                            blobAssetList={blobAssetList}
+                        />
+                        <div
+                            className="characterTab_empty_dropzone"
+                            id={-1}>
+                            <MyDropzone
+                                onDrop={onDrop}
+                                multiple={true}
+                                maxSize={10485761} // 10MB + 1
+                                accept="image/*"
+                                type="character"
+                                icon="image"
+                            />
+                        </div>
+                        <div className="characterTab_instruct">
+                            캐릭터를 추가해주세요
                     </div>
-                </div>
+                    </div>
+
+                </>
             }
             {
                 charPageNum.current !== 0 &&

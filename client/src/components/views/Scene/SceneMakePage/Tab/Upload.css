@@ -1,0 +1,18 @@
+.upload_container{
+    display: flex;
+    flex-direction: row;
+    
+}
+.upload_library{
+    width: 50%;
+    height : 202px;
+    cursor:pointer;
+    border: 0.1rem solid lightgray;
+    
+}
+.upload_library :hover{
+    opacity: 0.95;
+    color:black;
+    border: 0.1rem solid lightgray;
+    cursor:pointer;
+}

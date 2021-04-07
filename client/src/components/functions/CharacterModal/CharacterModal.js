@@ -8,6 +8,7 @@ import CharacterInfoDisplay from './CharacterInfoDisplay/CharacterInfoDisplay';
 import './CharacterModal.css';
 
 function CharacterModal({ GameCharacterList, setName }) {
+  console.log("CHARACTER MODAL ", GameCharacterList)
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
   // const onClick_detachCharacter = () => {

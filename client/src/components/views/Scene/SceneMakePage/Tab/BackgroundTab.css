@@ -7,8 +7,26 @@
     height:90%;
     /* background-color: aqua; */
 }
-
+.backgroundTab_upload_container{
+    display: flex;
+    flex-direction: row;
+    
+}
+.backgroundTab_library{
+    width: 50%;
+    height : 202px;
+    cursor:pointer;
+    border: 0.1rem solid lightgray;
+    
+}
+.backgroundTab_library :hover{
+    opacity: 0.95;
+    color:black;
+    border: 0.1rem solid lightgray;
+    cursor:pointer;
+}
 .backgroundTab_dropzone{
+    width : 50%;
     height: 36%;
 }
 .backgroundTab_Box{

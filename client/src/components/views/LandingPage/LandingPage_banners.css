@@ -1,91 +1,35 @@
 .banner-container {
   position: relative;
-  /* width: 2880px; */
   width: 300%;
-
   height: 580px;
   border-radius: 5px;
 
   overflow: hidden;
   display: flex;
-  cursor:default;
+  cursor: default;
+}
+.banner-container:hover ~ .banner-right-arrow {
+  opacity: 0.5;
 }
 
-.banner-main1 {
+.banner-main {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: #30475e;
 }
-.banner-main1-slogan1 {
+
+.banner-main-slogan {
   position: absolute;
-  top: 15%;
-  left: 5%;
-
-  font-family: Noto Sans KR;
-  font-weight: bold;
-  font-size: 130px;
-
-  color: #ffffff;
-}
-.banner-main1-slogan2 {
-  position: absolute;
-  top: 45%;
-  left: 5.2%;
-
-  font-family: Noto Sans KR;
-  font-weight: bold;
-  font-size: 80px;
-
-  color: #ffffff;
-}
-
-.banner-main2 {
-  position: relative;
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 255, 115, 0.432);
-}
-.banner-main2-slogan1 {
-  position: absolute;
-  top: 15%;
-  left: 20%;
-
   font-family: Noto Sans KR;
   font-weight: bold;
-  font-size: 100px;
-
   color: #ffffff;
 }
 
-.banner-main2-slogan2 {
-  position: absolute;
-  top: 40%;
-  left: 13%;
-
-  font-family: Noto Sans KR;
-  font-weight: bold;
-  font-size: 50px;
-
-  color: #ffffff;
-}
-
-.banner-main2-imoji {
-  position: absolute;
-  top: -100%;
-  left: 2%;
-  font-size: 1000px;
-  opacity: 0.12;
-}
-
-.banner-main2-button {
+.banner-main-button {
   all: unset;
 
   position: absolute;
-  top: 70%;
-  left: 40%;
-  width: 20%;
-  height: 10%;
 
   background: #e74a4a;
   border-radius: 10px;
@@ -95,10 +39,111 @@
   font-size: 25px;
   text-align: center;
   cursor: pointer;
-
   color: #ffffff;
 }
-.banner-main2-button:hover {
+.banner-main-button:hover {
   background: #db4747;
+}
+
+.banner-right-arrow {
+  position: absolute;
+  width: 5%;
+  height: 180px;
+  top: 30%;
+  right: 0px;
+
+  padding: 40px 0px;
+
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
   cursor: pointer;
+}
+.banner-right-arrow:hover {
+  opacity: 0.9;
+}
+
+/* first banner */
+.main1-background {
+  background-color: #30475e;
+}
+.main1-slogan1 {
+  top: 15%;
+  left: 5%;
+  font-size: 120px;
+}
+.main1-slogan2 {
+  top: 45%;
+  left: 5.2%;
+  font-size: 90px;
+}
+
+/* second banner */
+.main2-background {
+  background-color: rgb(34, 136, 80);
+}
+.main2-slogan1 {
+  top: 15%;
+  text-align: center;
+  font-size: 100px;
+}
+.main2-slogan2 {
+  top: 40%;
+  text-align: center;
+  font-size: 50px;
+}
+.main2-emoji1 {
+  top: -90%;
+  text-align: center;
+  font-size: 1000px;
+  opacity: 0.06;
+}
+.main2-button1 {
+  top: 70%;
+  left: 40%;
+  width: 20%;
+  height: 10%;
+
+  font-size: 25px;
+}
+
+@media (max-width: 767px) {
+  .banner-container {
+    height: 240px;
+  }
+
+  .banner-main-button {
+    border-radius: 5px;
+  }
+
+  .banner-right-arrow {
+    width: 8%;
+    top: 10%;
+    right: 0%;
+  }
+
+  /* first banner */
+  .main1-slogan1 {
+    font-size: 2rem;
+  }
+  .main1-slogan2 {
+    font-size: 1.5rem;
+  }
+
+  /* second banner */
+  .main2-slogan1 {
+    font-size: 1.9rem;
+  }
+  .main2-slogan2 {
+    font-size: 0.9rem;
+  }
+  .main2-emoji1 {
+    top: -30%;
+    font-size: 15rem;
+  }
+  .main2-button1 {
+    left: 30%;
+    width: 40%;
+    height: 15%;
+    font-size: 0.8rem;
+  }
 }

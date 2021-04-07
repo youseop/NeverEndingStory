@@ -3,10 +3,12 @@ import { Col, message } from "antd";
 import MyDropzone from "../../../Dropzone/MyDropzone";
 import "../EssetModal.css";
 import "./BackgroundTab.css";
+import "./Upload.css";
+
 import AssetLibraryModal from "../AssetLibraryModal"
 
 
-function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList, isInfo, assetUsedFlag, blobAssetList  }) {
+function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList, assetUsedFlag, blobAssetList }) {
     const [LibraryModalVisible, setLibraryModalVisible] = useState(false)
     const [backgroundCards, setBackgroundCards] = useState("");
     const [blobCards, setBlobCards] = useState("");
@@ -48,20 +50,13 @@ function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList
             }))
     }, [backBlobList]);
 
-    if (isInfo)
-        return (
-            <div className="backgroundTab_container_info">
-                <div className="backgroundTab_Box_info">
-                    <div>{backgroundCards} {blobCards}</div>
-                </div>
-            </div>
-        );
-    else
-        return (
-            <div className="backgroundTab_container">
-                <div className="backgroundTab_library"
+
+    return (
+        <div className="backgroundTab_container">
+            <div className="upload_container">
+                <div className="upload_library"
                     onClick={() => setLibraryModalVisible(true)}>
-                    스토어에서 불러오기
+                    배경 저장소
                 </div>
                 <AssetLibraryModal
                     visible={LibraryModalVisible}
@@ -83,11 +78,13 @@ function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList
                     </MyDropzone>
 
                 </div>
-                <div className="backgroundTab_Box">
-                    <div>{backgroundCards} {blobCards}</div>
-                </div>
+
             </div>
-        );
+            <div className="backgroundTab_Box">
+                <div>{backgroundCards} {blobCards}</div>
+            </div>
+        </div>
+    )
 }
 
 export default BackgroundTab;

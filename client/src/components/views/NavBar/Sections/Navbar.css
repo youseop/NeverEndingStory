@@ -1,30 +1,29 @@
-@import 'antd.css';
+@import "antd.css";
 
 @keyframes hide {
   0% {
-    opacity : 1;
-    transform: translate(0,-0);
+    opacity: 1;
+    transform: translate(0, -0);
   }
   100% {
-    opacity : 0;
-    transform: translate(0,-69px);
+    opacity: 0;
+    transform: translate(0, -69px);
   }
 }
 
 @keyframes show {
   0% {
-    opacity : 0;
-    transform: translate(0,-69px);
+    opacity: 0;
+    transform: translate(0, -69px);
   }
   100% {
-    opacity : 1;
-    transform: translate(0,0);
+    opacity: 1;
+    transform: translate(0, 0);
   }
 }
 
 .ant-menu {
   background: #222831;
-
 }
 .ant-menu-horizontal > .ant-menu-item:hover {
   border-bottom: 2px solid #fff;
@@ -37,24 +36,25 @@
 .menu {
   padding: 0 20px;
   /* border-bottom: solid 1px #e8e8e8; */
+  /* min-width:1440px; */
   overflow: auto;
   color: white;
   background-color: #222831;
   transform: opacity(0);
-  transition-duration: 1.0s;
+  transition-duration: 1s;
 }
 .menu::-webkit-scrollbar {
   display: none;
 }
 
-.menu:hover{
+.menu:hover {
   /* opacity: 1; */
   transform: opacity(1) !important;
   transform: translateY(0px);
-  opacity: 1.0 !important;
+  opacity: 1 !important;
   /* animation: 0.8s ease-out 0s 1 show */
   /* transform: opacity(1); */
-  transition-duration: 1.0s;
+  transition-duration: 1s;
 }
 
 .menu__logo {
@@ -66,13 +66,26 @@
   display: inline-block;
   font-size: 20px;
   font-weight: bold;
-  padding: 19px 5px;
+  padding: 15px 5px 0px 10px;
   color: white;
+  /* background-color: blueviolet; */
 }
 
 .menu__container .ant-menu-item {
   padding: 0px 5px;
   background-color: #222831;
+}
+
+.menu_drawer .ant-menu {
+  background-color: #dddddd;
+}
+
+.menu_drawer .ant-menu-item {
+  background-color: #dddddd;
+  font-family: Noto Sans KR;
+  font-size: 20px !important;
+  margin-top: 20px !important;
+  border-bottom: solid #222831 1px;
 }
 
 .menu__container .ant-menu-submenu-title {
@@ -82,7 +95,7 @@
 .menu__container .ant-menu-item a,
 .menu__container .ant-menu-submenu-title a {
   padding: 10px 15px;
-  color:#e8e8e8;
+  color: #e8e8e8;
 }
 
 .menu__container .ant-menu-horizontal {
@@ -102,13 +115,14 @@
   float: right;
   height: 32px;
   padding: 6px;
-  margin-top: 8px;
+  margin-top: 20px;
   display: none !important; /* use of important to overwrite ant-btn */
-  background: black;
+  background: rgb(36, 36, 36);
 }
 
 .menu_drawer .ant-drawer-body {
   padding: 0 !important;
+  color: yellow!;
 }
 
 /* align header of Drawer with header of page */
@@ -121,21 +135,11 @@
     display: inline-block !important;
   }
 
-  .menu_left,
   .menu_rigth {
     display: none;
   }
 
   .menu__logo a {
-    margin-left: -20px;
-  }
-
-  .menu__container .ant-menu-item,
-  .menu__container .ant-menu-submenu-title {
-    padding: 1px 20px;
-  }
-
-  .menu__logo a {
-    padding: 10px 20px;
+    margin-left: 5px;
   }
 }

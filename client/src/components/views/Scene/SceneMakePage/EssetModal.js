@@ -14,21 +14,33 @@ import "./EssetModal.css";
 
 const config = require('../../../../config/key');
 
-const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload, uploadCharFileFlag, uploadFileFlag, assetUsedFlag }) => {
+const EssetModal = ({ setGameDetail, gameDetail, gameId, visible, setTag, tag, setReload, uploadCharFileFlag, uploadFileFlag, assetUsedFlag }) => {
   const user = useSelector((state) => state.user);
-  const [fileQueue, setFileQueue] = useState([]);
-  const [typeQueue, setTypeQueue] = useState([]);
-  const [backBlobList, setBackBlobList] = useState([]);
-  const [bgmBlobList, setBgmBlobList] = useState([]);
-  const [bgmBlobNames, setBgmBlobNames] = useState([]);
-  const [soundBlobList, setSoundBlobList] = useState([]);
-  const [soundBlobNames, setSoundBlobNames] = useState([]);
-  const tempAssetUsedFlag = useRef(assetUsedFlag.current)
 
-  const [blobGame, setBlobGame] = useState([]);
-  const charPageNum = useRef(0);
+
+  //! -------- 처리 될 녀석들 -------
+  const [typeQueue, setTypeQueue] = useState([]);
   const [charFileQueue, setCharFileQueue] = useState([]);
   const [charBlobList, setCharBlobList] = useState([]);
+  const [bgmBlobNames, setBgmBlobNames] = useState([]); //!
+  const [soundBlobNames, setSoundBlobNames] = useState([]); //!
+  const tempAssetUsedFlag = useRef(assetUsedFlag.current) // !
+  //! -------------------------------
+
+  const [fileQueue, setFileQueue] = useState([]);
+
+  const [blobBgmList, setBlobBgmList] = useState([]); //! 이름 교체
+  const [blobSoundList, setBlobSoundList] = useState([]); //! 이름 교체
+
+
+
+  const [blobBackList, setBlobBackList] = useState([]);
+  const [blobCharList, setBlobCharList] = useState([])
+
+
+  const [blobGame, setBlobGame] = useState([]);
+
+  const charPageNum = useRef(0);
   const uploadFlag = useRef(false)
   const assetFlag = useRef(true)
   const assetList = useRef([])
@@ -38,23 +50,24 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload, uploa
 
   useEffect(() => {
     if (gameDetail)
-      setBlobGame(_.cloneDeep(gameDetail));
+      setBlobGame(_.cloneDeep(gameDetail)); //! 기존 녀석들의 복제품!! -- 잘 사용해보자
+    console.log("use EFFECT ", blobGame)
   }, [gameDetail])
 
   const revokeBlobList = () => {
-    charBlobList.forEach(function (value) {
+    blobCharList.forEach(function (value) {
       if (value)
         URL.revokeObjectURL(value)
     });
-    backBlobList.forEach(function (value) {
+    blobBackList.forEach(function (value) {
       if (value)
         URL.revokeObjectURL(value)
     });
-    bgmBlobList.forEach(function (value) {
+    blobBgmList.forEach(function (value) {
       if (value)
         URL.revokeObjectURL(value)
     });
-    soundBlobList.forEach(function (value) {
+    blobSoundList.forEach(function (value) {
       if (value)
         URL.revokeObjectURL(value)  //! url을 지워준다.
     });
@@ -68,22 +81,126 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload, uploa
   }
 
   const upload = () => {
+
     if (!uploadFlag.current) {
       uploadFlag.current = true;
-      revokeBlobList(); //! blobList를 지워준다.
 
-      uploadCharFiles()
 
-      if (fileQueue.length) {
-        uploadFiles()
-      }
-      else if (blobAssetList.current.length) {
-        assetsToForm(blobAssetList.current) // form 에 다 쌓아놓을게요
+      //! CAUTION : files "+ asset"  is possible --- stack on DB FORM
+      if (fileQueue.length) // if there are files, upload -> blobToReal
+        uploadFiles(fileQueue);
+      else {
+        blobToReal(null, null)  // just blobToReal
       }
 
-      assetUsedFlag.current = tempAssetUsedFlag.current // for memory assets that selected
+
     }
+
+
+    // if (!uploadFlag.current) {
+    //   revokeBlobList(); //! blobList를 지워준다.
+
+    //   uploadCharFiles()
+
+
+
+    //   if (fileQueue.length) {
+    //     uploadFiles()
+    //   }
+    //   else if (blobAssetList.current.length) {
+    //     assetsToForm(blobAssetList.current) // form 에 다 쌓아놓을게요
+    //   }
+
+    //   assetUsedFlag.current = tempAssetUsedFlag.current // for memory assets that selected
+    // }
   };
+
+  //! --------------- NEW --------------------------------
+  const uploadFiles = async (files) => {
+    console.log("uploadFiles", files)
+    let formData = new FormData();
+    let typeList = []
+    for (let i = 0; i < files.length; i++) {
+      let asset = files[i]
+      switch (asset.type) {
+        case "character":
+          for (let j = 0; j < asset.fileArray.length; j++) {
+            formData.append('files', asset.fileArray[j])
+            typeList.push({ type: asset.type, id: asset.id })
+          }
+          break;
+
+        default:
+          formData.append('files', asset.file)
+          typeList.push({ type: asset.type })
+          break;
+      }
+    }
+    setFileQueue([])
+    //! upload file 
+    const config = {
+      header: { "encrpyt": "multipart/form-data" },
+    };
+
+    const response = await Axios.post("/api/game/uploadfile", formData, config)
+    if (response.data.success) {
+      console.log("uploads COMPLETE", response.data.files)
+      blobToReal(response.data.files, typeList,)
+    }
+    else {
+      console.log("uploads FAIL")
+    }
+  }
+
+  const blobToReal = async (files, typeList) => {
+    const tmpBlobGame = blobGame;
+    if (files) {
+      let filePath;
+      for (let i = 0; i < typeList.length; i++) {
+        filePath = process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location
+        if (typeList[i].type === "character") {
+          // which character, which place
+          let characterIdx = tmpBlobGame.character.findIndex(character => character.id === typeList[i].id)
+          //! blob -> REAL
+          let fileIdx = tmpBlobGame.character[characterIdx].image_array.findIndex(file => file.substr(0, 5) === 'blob:')
+          tmpBlobGame.character[characterIdx].image_array[fileIdx] = filePath
+        }
+        else if (typeList[i].type === "background") {
+          // tmpBlobGame.background
+        }
+        else if (typeList[i].type === "bgm") {
+
+        }
+        else if (typeList[i].type === "sound") {
+
+        }
+      }
+      setBlobGame(tmpBlobGame)
+    }
+    const response = await Axios.post("/api/game/update", {
+      gameId,
+      character: tmpBlobGame.character,
+      background: tmpBlobGame.background,
+      bgm: tmpBlobGame.bgm,
+      sound: tmpBlobGame.sound
+    })
+    if (response.data.success) {
+      console.log("SUCCESS", tmpBlobGame)
+      // setGameDetail(tmpBlobGame)
+      setReload(reload => reload + 1)
+      setTag(0)
+    }
+    else {
+      message.error("update 오류가 발생했습니다.")
+    }
+
+
+
+
+  }
+
+
+  //! ----------------------------------------------------
 
   const uploadCharFiles = async () => {
     if (charFileQueue.length) {
@@ -189,26 +306,26 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload, uploa
   }
 
 
-  const uploadFiles = async () => {
+  // const uploadFiles = async () => {
 
-    //upload file queue
-    let formData = new FormData();
-    fileQueue.forEach(value => {
-      formData.append('files', value);
-    })
-    const header = {
-      header: { "encrpyt": "multipart/form-data" }, //content type을 같이 보내줘야한다!
-    };
+  //   //upload file queue
+  //   let formData = new FormData();
+  //   fileQueue.forEach(value => {
+  //     formData.append('files', value);
+  //   })
+  //   const header = {
+  //     header: { "encrpyt": "multipart/form-data" }, //content type을 같이 보내줘야한다!
+  //   };
 
-    const response = await Axios.post("/api/game/uploadfile", formData, header)
-    if (response.data.success) {
+  //   const response = await Axios.post("/api/game/uploadfile", formData, header)
+  //   if (response.data.success) {
 
-      uploadDB(response.data.files);
-    } else {
-      alert("업로드 실패");
-    }
+  //     uploadDB(response.data.files);
+  //   } else {
+  //     alert("업로드 실패");
+  //   }
 
-  }
+  // }
 
 
   const uploadDB = (files) => {
@@ -339,6 +456,7 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload, uploa
       form = { gameId: gameId, background: [], bgm: [], sound: [] }
     }
     else {
+
       setReload(reload => reload + 1)
       setTag(0)
     }
@@ -380,13 +498,20 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload, uploa
         <EssetModalTab setTag={setTag} tag={tag} />
         {tag === 1 &&
           <CharacterTab
-            blobGame={blobGame}
-            setBlobGame={setBlobGame}
             charPageNum={charPageNum}
-            setCharFileQueue={setCharFileQueue}
-            setCharBlobList={setCharBlobList}
+            // setCharFileQueue={setCharFileQueue}
+            // setCharBlobList={setCharBlobList}
+
             assetUsedFlag={tempAssetUsedFlag}
             blobAssetList={blobAssetList}
+
+
+            blobGame={blobGame}
+            setBlobGame={setBlobGame}
+            setFileQueue={setFileQueue}
+            blobCharList={blobCharList}
+            setBlobCharList={setBlobCharList}
+
           />
         }
         {tag === 2 &&
@@ -394,8 +519,8 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload, uploa
             gameDetail={gameDetail}
             setFileQueue={setFileQueue}
             setTypeQueue={setTypeQueue}
-            setBackBlobList={setBackBlobList}
-            backBlobList={backBlobList}
+            setBlobBackList={setBlobBackList}
+            blobBackList={blobBackList}
             assetUsedFlag={tempAssetUsedFlag}
             blobAssetList={blobAssetList}
 
@@ -406,8 +531,8 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload, uploa
             gameDetail={gameDetail}
             setFileQueue={setFileQueue}
             setTypeQueue={setTypeQueue}
-            setBgmBlobList={setBgmBlobList}
-            bgmBlobList={bgmBlobList}
+            setBlobBgmList={setBlobBgmList}
+            blobBgmList={blobBgmList}
             setBgmBlobNames={setBgmBlobNames}
             bgmBlobNames={bgmBlobNames}
             assetUsedFlag={tempAssetUsedFlag}
@@ -420,8 +545,8 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload, uploa
             gameDetail={gameDetail}
             setFileQueue={setFileQueue}
             setTypeQueue={setTypeQueue}
-            setSoundBlobList={setSoundBlobList}
-            soundBlobList={soundBlobList}
+            setBlobSoundList={setBlobSoundList}
+            blobSoundList={blobSoundList}
             setSoundBlobNames={setSoundBlobNames}
             soundBlobNames={soundBlobNames}
             assetUsedFlag={tempAssetUsedFlag}

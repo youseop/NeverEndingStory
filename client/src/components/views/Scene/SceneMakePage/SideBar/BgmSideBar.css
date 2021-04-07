@@ -20,13 +20,17 @@
     font-weight: bold;
     color: #222831;
     overflow: hidden;
+    text-overflow:ellipsis;
     position: relative;
     /* border-radius: 8px; */
     /* border: 0.5px solid rgb(0,0,0,0.2); */    
     cursor: pointer;
   }
-  
   .bgmSidebar_box:hover{
     background-color: #D5D5D5;
-    opacity: 0.9;
+    color:black;
   }
+  .bgmSidebar_box.true{
+    color:#399cff;
+  }
+  

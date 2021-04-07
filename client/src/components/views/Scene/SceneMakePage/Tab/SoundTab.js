@@ -5,11 +5,13 @@ import "../EssetModal.css";
 import "./MusicTab.css";
 import AssetLibraryModal from "../AssetLibraryModal"
 
+let sound_audio = new Audio();
 function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, soundBlobList, setSoundBlobNames, soundBlobNames, blobAssetList, assetUsedFlag }) {
     const [LibraryModalVisible, setLibraryModalVisible] = useState(false)
 
     const [soundCards, setSoundCards] = useState([]);
     const [blobCards, setBlobCards] = useState([]);
+    const [toggle, setToggle] = useState(0);
 
     const onDrop = (files) => {
         for (var i = 0; i < files.length; i++) {
@@ -28,49 +30,82 @@ function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, so
     useEffect(() => {
         if (gameDetail.sound)
             setSoundCards(gameDetail.sound.map((element, index) => {
+                let cutIdx = sound_audio.src.lastIndexOf("/") + 1;
+                let sound_uri = decodeURI(sound_audio.src.substr(cutIdx))
                 return (
-                    <div className="bgmTab_text_box" key={index}>
+                    <div className={`bgmTab_text_box ${sound_uri === element.music.substr(cutIdx)}`} key={index}
+                        onClick={() => {
+                            if (sound_audio.paused || sound_uri !== element.music.substr(cutIdx)) {
+                                sound_audio.src = (element.music)
+                                sound_audio.play();
+                            } else {
+                                sound_audio.src = ""
+                                sound_audio.pause();
+                            }
+                            setToggle(toggle => toggle + 1);
+                        }}>
                         {element.name}
                     </div>
                 )
             }))
-    }, [gameDetail]);
+    }, [gameDetail, toggle]);
 
     useEffect(() => {
         if (soundBlobList)
             setBlobCards(soundBlobList.map((element, index) => {
+                let cutIdx = sound_audio.src.lastIndexOf("/") + 1;
+
                 return (
-                    <div className="bgmTab_text_box" key={index}>
+                    <div className={`bgmTab_text_box ${sound_audio.src === element || sound_audio.src.substr(cutIdx) === element.music.substr(cutIdx)}`} key={index}
+                        onClick={() => {
+                            if (sound_audio.paused || sound_audio.src !== element) {
+                                sound_audio.src = element.music || element;
+                                sound_audio.play();
+                            } else {
+                                sound_audio.src = ""
+                                sound_audio.pause();
+                            }
+                            setToggle(toggle => toggle + 1);
+                        }}>
                         {element.name || soundBlobNames[index].name}
                     </div>
                 )
             }))
-    }, [soundBlobList]);
+    }, [soundBlobList, toggle]);
+
+    useEffect(() => {
+        return () => {
+            sound_audio.pause();
+            sound_audio.src = ""
+        };
+    }, []);
 
     return (
         <div className="bgmTab_container">
-            <div className="bgmTab_library"
-                onClick={() => setLibraryModalVisible(true)}>
-                스토어에서 불러오기
+            <div className="upload_container">
+                <div className="upload_library"
+                    onClick={() => setLibraryModalVisible(true)}>
+                    스토어에서 불러오기
                 </div>
-            <AssetLibraryModal
-                visible={LibraryModalVisible}
-                setVisible={setLibraryModalVisible}
-                assetType="sound"
-                assetUsedFlag={assetUsedFlag}
-                setBlob={setSoundBlobList}
-                blobAssetList={blobAssetList}
-            />
-            <div className="bgmTab_dropzone">
-                <MyDropzone
-                    onDrop={onDrop}
-                    multiple={true}
-                    maxSize={10485761} // 10MB + 1
-                    accept="audio/*"
-                    type="sound"
-                    icon="audio"
-                >
-                </MyDropzone>
+                <AssetLibraryModal
+                    visible={LibraryModalVisible}
+                    setVisible={setLibraryModalVisible}
+                    assetType="sound"
+                    assetUsedFlag={assetUsedFlag}
+                    setBlob={setSoundBlobList}
+                    blobAssetList={blobAssetList}
+                />
+                <div className="bgmTab_dropzone">
+                    <MyDropzone
+                        onDrop={onDrop}
+                        multiple={true}
+                        maxSize={10485761} // 10MB + 1
+                        accept="audio/*"
+                        type="sound"
+                        icon="audio"
+                    >
+                    </MyDropzone>
+                </div>
             </div>
             <div className="bgmTab_Box">
                 {soundCards !== 0 && <div>{soundCards}</div>}

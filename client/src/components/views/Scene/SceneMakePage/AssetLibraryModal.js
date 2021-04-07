@@ -2,21 +2,27 @@ import React, { useState, useRef, useEffect } from "react";
 import { Modal, message, Card, Col } from "antd";
 import Axios from "axios";
 import "./AssetLibraryModal.css"
+import LoadingPage from "../../GamePlayPage/LoadingPage"
 
 const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobName, charPageNum, assetUsedFlag, setIsUpdate, blobAssetList }) => {
     const [asset, setAsset] = useState(null)
+    const [toggle, setToggle] = useState(0);
+    const assetKorean = useRef(null)
     const cards = useRef(null)
     const selectCount = useRef(0)
+    const tempAssetUsedFlag = useRef({...assetUsedFlag.current})
     //! Asset 호출 -- 이후 분할
 
     const handleCancel = () => {
+        console.log()
+        tempAssetUsedFlag.current = assetUsedFlag.current
         setVisible(false)
     }
     const handleOk = () => {
         if (assetType === "character") {
             setBlob(game => {
                 // index가 length 보다 큰 경우 문제가 될 수 있으니 
-                for (const [key, value] of Object.entries(assetUsedFlag.current[assetType])) {
+                for (const [key, value] of Object.entries(tempAssetUsedFlag.current[assetType])) {
                     if (value.isAdd && value.index === undefined) { // click and not added -- add
                         value.index = game.character.length
                         value.asset.character.isAsset = true;
@@ -28,10 +34,10 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
                     }
                 }
                 game.character = game.character.filter(character => character !== undefined)
-                if(game.character.length > 0){
-                    charPageNum.current = game.character.length-1;
+                if (game.character.length > 0) {
+                    charPageNum.current = game.character.length - 1;
                 }
-                else{
+                else {
                     charPageNum.current = 0;
                 }
                 return game;
@@ -40,12 +46,12 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
         }
         else if (assetType === "background") {
             setBlob(oldArray => {
-                for (const [key, value] of Object.entries(assetUsedFlag.current[assetType])) {
+                for (const [key, value] of Object.entries(tempAssetUsedFlag.current[assetType])) {
                     if (value.isAdd && value.index === undefined) {
                         // 해제해도 남아있을 듯??
                         value.blobIndex = blobAssetList.current.length
                         blobAssetList.current.push(value.asset)
-                        
+
                         value.index = oldArray.length;
                         oldArray = [...oldArray, value.asset.background.image]
                     }
@@ -57,13 +63,13 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
                         value.index = undefined;
                     }
                 }
-                oldArray = oldArray.filter(background=>background!== undefined)
+                oldArray = oldArray.filter(background => background !== undefined)
                 return oldArray
             })
         }
         else if (assetType === "bgm") {
             setBlob(oldArray => {
-                for (const [key, value] of Object.entries(assetUsedFlag.current[assetType])) {
+                for (const [key, value] of Object.entries(tempAssetUsedFlag.current[assetType])) {
                     if (value.isAdd && value.index === undefined) {
                         // 해제해도 남아있을 듯??
                         value.blobIndex = blobAssetList.current.length
@@ -86,7 +92,7 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
         }
         else if (assetType === "sound") {
             setBlob(oldArray => {
-                for (const [key, value] of Object.entries(assetUsedFlag.current[assetType])) {
+                for (const [key, value] of Object.entries(tempAssetUsedFlag.current[assetType])) {
                     if (value.isAdd && value.index === undefined) {
                         // 해제해도 남아있을 듯??
                         value.blobIndex = blobAssetList.current.length
@@ -107,25 +113,32 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
                 return oldArray
             })
         }
+        assetUsedFlag.current = tempAssetUsedFlag.current
         setVisible(false)
 
     }
 
+
+
+
     const cardClick = (index, asset) => {
-        if (assetUsedFlag.current[assetType][index]?.isAdd) {
+        if (tempAssetUsedFlag.current[assetType][index]?.isAdd) {
             selectCount.current--;
-            assetUsedFlag.current[assetType][index].isAdd = false;
+            tempAssetUsedFlag.current[assetType][index].isAdd = false;
             // tempAssetList.current[index]=asset;
         }
         else {
             selectCount.current++;
-            if (assetUsedFlag.current[assetType][index] === undefined)
-                assetUsedFlag.current[assetType][index] = {}
+            if (tempAssetUsedFlag.current[assetType][index] === undefined)
+                tempAssetUsedFlag.current[assetType][index] = {}
 
-            assetUsedFlag.current[assetType][index].isAdd = true
-            assetUsedFlag.current[assetType][index].asset = asset
+            tempAssetUsedFlag.current[assetType][index].isAdd = true
+            tempAssetUsedFlag.current[assetType][index].asset = asset
 
         }
+        renderCards();
+
+
     }
 
 
@@ -136,14 +149,31 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
                 setAsset(response.data.asset)
             }
         })
+        if(assetType === "character"){
+            assetKorean.current = `캐릭터`
+        }
+        else if(assetType ==="background"){
+            assetKorean.current = `배경`
+        }
+        else if(assetType ==="bgm"){
+            assetKorean.current = `배경음악`
+        }
+        else if(assetType ==="sound"){
+            assetKorean.current = `효과음`
+        }
     }, [])
 
     useEffect(() => {
+        renderCards()
+    }, [asset])
+
+
+    const renderCards = () => {
         if (asset) {
             if (assetType === "character") {
                 cards.current = asset.map((asset, index) => {
                     let isSelected = `false`;
-                    if (assetUsedFlag.current['character'][index]?.isAdd) {
+                    if (tempAssetUsedFlag.current['character'][index]?.isAdd) {
                         isSelected = `true`;
                     }
                     return (
@@ -163,7 +193,7 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
             else if (assetType === "background") {
                 cards.current = asset.map((asset, index) => {
                     let isSelected = `false`;
-                    if (assetUsedFlag.current['background'][index]?.isAdd) {
+                    if (tempAssetUsedFlag.current['background'][index]?.isAdd) {
                         isSelected = `true`;
                     }
                     return (
@@ -183,7 +213,7 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
             else if (assetType === "bgm") {
                 cards.current = asset.map((asset, index) => {
                     let isSelected = `false`;
-                    if (assetUsedFlag.current['bgm'][index]?.isAdd) {
+                    if (tempAssetUsedFlag.current['bgm'][index]?.isAdd) {
                         isSelected = `true`;
                     }
                     return (
@@ -191,7 +221,7 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
                             className={`assetMusic_card assetMusic_card_${isSelected}`}
                             key={index}
                             onClick={() => cardClick(index, asset)}>
-                                {asset.bgm.name}
+                            {asset.bgm.name}
                         </div>
 
                     )
@@ -200,7 +230,7 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
             else if (assetType === "sound") {
                 cards.current = asset.map((asset, index) => {
                     let isSelected = `false`;
-                    if (assetUsedFlag.current['sound'][index]?.isAdd) {
+                    if (tempAssetUsedFlag.current['sound'][index]?.isAdd) {
                         isSelected = `true`;
                     }
                     return (
@@ -215,7 +245,11 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
                 })
             }
         }
-    }, [asset])
+        setToggle(toggle => toggle + 1);
+
+    }
+
+    
 
     // const characterCards = Axios.get(`/asset/character`).then( )
     return (
@@ -230,11 +264,20 @@ const AssetLibraryModal = ({ visible, setVisible, assetType, setBlob, setBlobNam
             width={1000}
         // onOk = {handleOk}\
         >
-            <div>
-                캐릭터 리스트
-            </div>
-            <div className="assetImg_container">
-                {cards.current}
+            <div className= "modal_content">
+                <div className="asset_title">
+                    {assetKorean.current}
+                </div>
+                {asset ?
+                    <div className="assetImg_container">
+                        
+                        {cards.current}
+                    </div>
+                    :
+                    <div className="loader_container">
+                        <div className="loader">Loading...</div>
+                    </div>
+                }
 
             </div>
 

@@ -4,14 +4,19 @@ import './BackgroundSideBar.css'
 import BackgroundImg from './BackgroundImg'
 import './BackgroundSideBar.css'
 
-function BackgroundSideBar({ gameDetail, setBackgroundImg, onEssetModal, isFirstScene, isWriter }) {
+function BackgroundSideBar({ gameDetail, curImg, setBackgroundImg, onEssetModal, isFirstScene, setReload, isWriter }) {
 
   const renderBackground = gameDetail.background.map((background, index) => {
     return (
       <div
         className="backSidebar_box"
         key={`${index}`}>
-        <BackgroundImg imgUrl={background.image} setBackgroundImg={setBackgroundImg} />
+        <BackgroundImg
+          imgUrl={background.image}
+          setBackgroundImg={setBackgroundImg}
+          curImg={curImg}
+          setReload={setReload}
+        />
       </div>
     )
   })
