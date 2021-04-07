@@ -186,7 +186,7 @@ const SceneMakePage = (props) => {
                 if (scene.isFirst) {
                     isFirstScene.current = true;
                 }
-
+                setEmptyCutList(Array.from({ length: 30-scene.cutList.length }, () => 0))
                 // 임시저장된 녀석 불러오기
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
