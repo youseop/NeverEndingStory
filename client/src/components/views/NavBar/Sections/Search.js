@@ -19,6 +19,7 @@ export default function Search() {
   const offClickHandler = () => {
     setSearchOn(false);
     textInputRef.current.value = "";
+    dispatch(searchControl(""));
   };
 
   const onChangeHandler = () => {
@@ -36,6 +37,9 @@ export default function Search() {
           ref={textInputRef}
           onChange={() => onChangeHandler()}
         />
+          <div className="search-close" onClick={() => offClickHandler()}>
+          <SVG src="close_1" width="100%" height="100%" color="#F5F5F5" />
+        </div>
       </div>
     );
   } else {

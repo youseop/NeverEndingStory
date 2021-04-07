@@ -228,7 +228,7 @@ export function GameList(props: ContainerProps) {
                 thumbnailPath = `${config.STORAGE}/${game.thumbnail}`
             if (rank) {
                 return (
-                    <div className="gamelist-game" key={index}>
+                    <div className="gamelist-game" key={game._id}>
                         <Link to={`/game/${game._id}`}>
                             <img className="game-image" src={thumbnailPath} alt={game.title}
                                 style={style} />
@@ -241,7 +241,7 @@ export function GameList(props: ContainerProps) {
                 );
             } else {
                 return (
-                    <div className="gamelist-game" key={index}>
+                    <div className="gamelist-game" key={game._id}>
                         <Link to={`/game/${game._id}`}>
                             <img className="game-image" src={thumbnailPath} alt={game.title}
                                 style={style} />
