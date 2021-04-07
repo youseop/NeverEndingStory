@@ -44,7 +44,7 @@ const gameSchema = mongoose.Schema({
   },
   ready: {
     type: Number,
-    default: 04
+    default: 0
   },
   contributerList: [contributerSchema],
   sceneCnt: {
