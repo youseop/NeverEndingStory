@@ -38,7 +38,7 @@ router.post("/register", async (req, res) => {
     
     //! generateToken includes save
     user.generateToken((err, user) => {
-        if (err) return res.status(400).json({ success: false, err });
+        if (err) return res.status(200).json({ success: false, err });
         res.cookie("w_authExp", user.tokenExp);
         res.cookie("w_auth", user.token)
         .status(200)
