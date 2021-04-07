@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Group } from "@vx/group";
 import { Tree } from "@vx/hierarchy";
-import { LinearGradient } from "@vx/gradient";
-import { LinkRadial, LinkRadialLine } from "@vx/shape";
+import { LinkRadial } from "@vx/shape";
 import { hierarchy } from "d3-hierarchy";
 import { pointRadial } from "d3-shape";
 import NodeGroup from "react-move/NodeGroup";

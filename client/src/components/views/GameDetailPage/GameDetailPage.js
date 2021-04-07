@@ -295,7 +295,7 @@ export default function GameDetailPage(props) {
                             to={`/admin/${gameId}`}
                             className="admin_btn"
                         >
-                            관리자 페이지
+                            스토리 미니맵
                         </Link>
                     }   
                     <div className="detailPage__description">

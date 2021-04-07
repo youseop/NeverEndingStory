@@ -10,6 +10,7 @@ import DragMove from './DragMove';
 import { message, Select, Slider } from 'antd';
 import { faCaretSquareUp, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 const { Option } = Select;
 const config = require('../../../config/key');
@@ -148,7 +149,6 @@ function AdminPage(props) {
   };
   
   function handleChange(value) {
-    console.log(value)
     setSelectedUser(value);
   }
 
@@ -159,7 +159,7 @@ function AdminPage(props) {
   return (
     <div className="adminPage__container">
       
-      <div className="adminPage__thumbnail container">
+      {/* <div className="adminPage__thumbnail container">
         <img
             className="adminPage__thumbnail"
             src={
@@ -176,22 +176,28 @@ function AdminPage(props) {
         <div className="adminPage__UPTitle">
           <div>
             {gameDetail?.title} 
-            {/* <div className="adminPage_edit">
+            <div className="adminPage_edit">
               제목 수정
-            </div> */}
+            </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="adminPage__body">
-        <div className="adminPage__description">
-          {/* <div className="adminPage_edit">
+        {/* <div className="adminPage__description">
+          <div className="adminPage_edit">
             게임 설명 수정
-          </div> */}
+          </div>
           {gameDetail.description}
-        </div>
+        </div> */}
 
         {(treeData.userId !== "" && currUserData?._id === treeData.userId) ?
-        <>       
+        <>     
+            <Link 
+                to={`/game/${gameId}`}
+                className="admin_btn"
+            >
+                게임으로 돌아가기
+            </Link>  
             <div className="admin_title">스토리 미니맵</div>
             <div className="dragDrop_container">
               <DragMove 
@@ -276,7 +282,7 @@ function AdminPage(props) {
         </>
         :
         <>
-        잘못된 접근입니다.fdsds
+        {/* 잘못된 접근입니다. */}
         </>
         }
       </div> 
