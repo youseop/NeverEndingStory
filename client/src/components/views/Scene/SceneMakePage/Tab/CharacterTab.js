@@ -86,10 +86,12 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                                 onChange={onNameChange}
                                 value={blobGame.character[charPageNum.current].name}
                                 className="characterTab_profile_name"
+                                maxLength={15}
                                 placeholder="이름을 입력해주세요." />
                             <textarea
                                 onChange={onDescriptionChange}
                                 value={blobGame.character[charPageNum.current].description}
+                                maxLength={50}
                                 className="characterTab_profile_text"
                                 placeholder="설명을 입력해주세요." />
                             {/* <label>(혈액형/좋아하는 것 등 이모지넣을 수 있는 공간?)</label> */}

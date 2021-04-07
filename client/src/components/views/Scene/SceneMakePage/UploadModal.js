@@ -175,9 +175,15 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                                 </option>
                             ))}
                         </select> */}
-                        <div className="scenemake_uploadmodal_detail_category_container">
-                            <select className="scenemake_uploadmodal_category" onChange={onCartegoryChange}>
-                                <option value="" selected disabled hidden>{category}</option>
+                        <div className="scenemake_modal_detail_category_container">
+                            <select 
+                                className="scenemake_modal_category" 
+                                onChange={onCartegoryChange}
+                                defaultValue={{ label:"살아남기", value:"살아남기"}}
+                            >
+                                <option value="" disabled hidden>
+                                    {category}
+                                </option>
                                 {CategoryOptions.map((item, index) => (
                                     <option key={index} value={item.value}>
                                         {item.label}
