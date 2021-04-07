@@ -1,30 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const teacherSchema = mongoose.Schema({
-  title: String,
-  likeCount: Number,
-  userList: {}
-});
-
-const Teacher = mongoose.model('teachers', teacherSchema);
-
-
-const studentSchema = mongoose.Schema({
+const graphLookupSchema = mongoose.Schema({
   name: String,
-  age: Number,
-  subject: String 
+  reportsTo: String,
 });
 
-const Student = mongoose.model('students', studentSchema);
+const GraphLookup = mongoose.model('graphLookup', graphLookupSchema);
 
-const classSchema = mongoose.Schema({
-  grade: Number,
-  class: Number,
-  teacher: teacherSchema,
-  student: [studentSchema]
-})
+const testTreeSchema = Schema({
+  userId: String,
+  sceneId: String,
+  name: String,
+  complaintCnt: {
+    type: Number,
+    default: 0
+  },
+  children: [String],
+},{ strict: false });
 
-const Class = mongoose.model('class', classSchema);
+const TestTree = mongoose.model('testTree', testTreeSchema);
 
-module.exports = {Teacher, Student, Class}
+module.exports = {GraphLookup, TestTree}

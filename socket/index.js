@@ -176,6 +176,28 @@ io.on('connection', socket => {
     updateCache(sceneId, userId, 1, 0)
   });
 
+  // 기존에 플레이 되던 씬 삭제시 emptynum += 1
+  socket.on('scene_deleted', async data => {
+    const prevSceneId = data.prevScene_id;
+    if (scene_cache[prevSceneId] === undefined) {
+      const prevSceneData = await Scene.findOne({ _id: mongoose.Types.ObjectId(prevSceneId) }).select("sceneTmp");
+      scene_cache[prevSceneId] = prevSceneData.sceneTmp;
+    }
+    
+    scene_cache[prevSceneId].emptyNum += 1;
+    io.sockets.to(prevSceneId).emit('empty_num_changed', 
+      { emptyNum: scene_cache[prevSceneId].emptyNum }
+    )
+    Scene.findOneAndUpdate(
+      { _id: mongoose.Types.ObjectId(prevSceneId) },
+      {
+        "$set": {
+          "sceneTmp": scene_cache[prevSceneId],
+        }
+      }
+    ).exec();
+});
+
   socket.on('validate_empty_num', async data => {
     const { scene_id } = data;
     if (scene_cache[scene_id]) {

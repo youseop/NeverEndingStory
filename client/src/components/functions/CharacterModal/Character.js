@@ -125,7 +125,6 @@ function Character(props) {
   }
 
   const onClickOrder = (num) => {
-    console.log("good");
     dispatch(orderCharacter({ oldArray: CharacterList, index: charSchema.index, num }));
   }
   return (

@@ -85,7 +85,7 @@ const SceneMakePage = (props) => {
     //! scene save할 때 필요한 정보 갖고오기
     useEffect(() => {
         (async () => {
-            const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
+            const res = await axios.get(`/api/scene/${sceneId}`)
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
             if (res.data.success && validation.data.success) { scene = res.data.scene; }
             else {
@@ -287,9 +287,11 @@ const SceneMakePage = (props) => {
         ]);
         displayCut(CutNumber + 1);
     }
+
     const onSubmit_first = () => {
         setUploadModalState(true)
     }
+
     const onSubmit_saveScene = async (event, isTmp = 0) => {
         if (CutList.length < 1) {
             message.error("최소 2개의 컷을 생성해주세요.");
@@ -308,7 +310,6 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
-
         if (isTmp || window.confirm("게임 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,
@@ -329,8 +330,8 @@ const SceneMakePage = (props) => {
                         else {
                             message.success("업로드 성공.")
                         }
-                    }
-                    ).then(() => {
+                        })
+                    .then(() => {
                         if (!isTmp && isFirstScene) {
                             history.replace(
                                 `/game/${gameId}`
@@ -392,7 +393,7 @@ const SceneMakePage = (props) => {
     const [gameDetail, setGameDetail] = useState([]);
     const [sideBar, setSideBar] = useState([]);
     useEffect(() => {
-        Axios.post('/api/game/getgamedetail', { gameId: gameId })
+        Axios.post('/api/game/detail', { gameId: gameId })
             .then(response => {
                 if (response.data.success) {
                     setGameDetail(response.data.gameDetail)

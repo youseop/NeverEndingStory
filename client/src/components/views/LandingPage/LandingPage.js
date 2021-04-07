@@ -29,8 +29,6 @@ function LandingPage(props) {
   const [popularGames, setpopularGames] = useState([]);
   const [recentGames, setrecentGames] = useState([]);
 
-  const [games, setGames] = useState([]);
-
   useEffect(() => {
     //* navigation bar control
     dispatch(navbarControl(true));
@@ -38,14 +36,6 @@ function LandingPage(props) {
 
     GameListInfos.popular_games.pos=0;
     GameListInfos.recent_games.pos=0;
-    
-    Axios.get("/api/game/getgames").then((response) => {
-      if (response.data.success) {
-        setGames(response.data.games);
-      } else {
-        alert("game load에 실패했습니다.");
-      }
-    });
 
     Axios.get("/api/game/popular-games").then((response) => {
       if (response.data.success) {

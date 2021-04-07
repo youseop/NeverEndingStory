@@ -29,6 +29,8 @@ const complaintSchema = mongoose.Schema({
   },
 }, {timestamps: true})
 
+complaintSchema.index({ gameId: 1, sceneId: 1});
+
 const Complaint = mongoose.model('Complaint', complaintSchema);
 
 module.exports = { Complaint }

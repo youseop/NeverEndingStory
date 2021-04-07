@@ -21,7 +21,8 @@ interface responseTypes {
 }
 
 export function NewGameButton({ replace }: newGameButtonProps) {
-
+    // theme state 추가하고 입력받아서 game Frame 만들때 같이 넣기..
+    const [category, setCategory] = useState<String>("");
     const [visible, setVisible] = useState<any>(false);
     const [gameTitle, setGameTitle] = useState<String>("");
     const [gameDescription, setGameDescription] = useState<String>("");
@@ -30,7 +31,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
 
     const uploadGameFrame = async (title: String, description: any) => {
         // tmp scene create
-        const gameResponse: responseTypes = await Axios.post("/api/game/uploadgameframe", { title, description });
+        const gameResponse: responseTypes = await Axios.post("/api/game/uploadgameframe", { title, description, category });
 
         if (!gameResponse.data.success) {
             alert("game Frame제작 실패");
@@ -91,6 +92,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
                 onCreate={() => handleCreate()}
                 setGameTitle={setGameTitle}
                 setGameDescription={setGameDescription}
+                setCategory={setCategory}
             />
         </>
     )

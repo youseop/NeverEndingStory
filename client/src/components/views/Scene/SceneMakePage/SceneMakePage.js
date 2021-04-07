@@ -119,7 +119,6 @@ const SceneMakePage = (props) => {
         dispatch(footerControl(false));
     }, [])
 
-
     useEffect(() => {
         if (user.userData) {
             socket.emit("leave room", { room: user.userData?._id?.toString() });
@@ -134,6 +133,7 @@ const SceneMakePage = (props) => {
 
     //! scene save할 때 필요한 정보 갖고오기
     const creator = useRef(null);
+    const theme = useRef(null);
     useEffect(() => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
@@ -145,7 +145,7 @@ const SceneMakePage = (props) => {
                 return;
             }
             // 임시저장한 녀석
-
+            theme.current = scene.theme;
             setWriter(scene.writer);
             const tmpExpTime = new Date(scene.createdAt).getTime() + LIMIT_TO_MS
             setExpTime(tmpExpTime)
@@ -165,7 +165,6 @@ const SceneMakePage = (props) => {
                 setCutNumber(scene.cutList.length - 1);
                 dispatch(gameLoadingPage(0));
                 dispatch(gameLoadingPage(1));
-
             }
             // 껍데기
             else {
@@ -406,7 +405,7 @@ const SceneMakePage = (props) => {
     };
 
     const onRemove_cut = () => {
-        if (CutList.length <= 1) {
+        if (CutList.length <= 1 && CutNumber < 1) {
             // setCutList([]);
             // setEmptyCutList((oldArray) => [
             //     0, ...oldArray
@@ -437,6 +436,12 @@ const SceneMakePage = (props) => {
             0, ...oldArray
         ]);
         displayCut(CutNumber + 1);
+    }
+
+    const setTree = () => {
+        Axios.post("/api/treedata/").then((response) => {
+          console.log('treedata successfully added');
+        });
     }
 
     const onSubmit_first = () => {
@@ -482,6 +487,7 @@ const SceneMakePage = (props) => {
             const response = await Axios.post(`/api/scene/save`, variable)
 
             if (response.data.success) {
+                setTree();
                 dispatch(detachCharacter());
                 message
                     .loading("게임 업로드 중..", 1.0)
@@ -587,7 +593,7 @@ const SceneMakePage = (props) => {
     const [sideBar, setSideBar] = useState([]);
 
     useEffect(() => {
-        Axios.post('/api/game/getgamedetail', { gameId: gameId })
+        Axios.post('/api/game/detail', { gameId: gameId })
             .then(response => {
                 if (response.data.success) {
                     setGameDetail(response.data.gameDetail)
@@ -757,7 +763,7 @@ const SceneMakePage = (props) => {
                                 cut_script={Script ? Script : "대사를 입력해주세요."}
                                 setIsTyping={null}
                                 isTyping={null}
-                                theme={null}
+                                theme={theme.current}
                             />
                         )}
                         <div className="scene__sound_container">
@@ -928,6 +934,7 @@ const SceneMakePage = (props) => {
                     onSubmit_saveScene={onSubmit_saveScene}
                     defaultTitle={gameDetail.title}
                     defaultDescription={gameDetail.description}
+                    defaultCategory={gameDetail.category}
                 />
                 <EndingModal
                     isEnding={isEnding}

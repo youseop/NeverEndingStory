@@ -12,7 +12,7 @@ const PrivateOptions = [
     { value: 1, label: "Public" },
 ];
 
-const CategoryOptions = [
+export const CategoryOptions = [
     { value: 0, label: "살아남기" },
     { value: 1, label: "로맨스" },
     { value: 2, label: "스토리" },
@@ -20,12 +20,12 @@ const CategoryOptions = [
     { value: 4, label: "병맛" },
 ];
 
-const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene, defaultTitle, defaultDescription }) => {
+const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene, defaultTitle, defaultDescription, defaultCategory }) => {
     const user = useSelector((state) => state.user);
     const [GameTitle, setGameTitle] = useState({ defaultTitle });
     const [description, setDescription] = useState({ defaultDescription });
     const [isPrivate, setIsPrivate] = useState(0);
-    const [category, setCategory] = useState(CategoryOptions[0].label);
+    const [category, setCategory] = useState(defaultCategory || "살아남기");
 
     const [blobURL, setBlobURL] = useState("");
     const [thumbFile, setThumbFile] = useState([]);
@@ -86,7 +86,6 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
 
     const uploadThumb = async () => {
         //revoke blobURL
-        URL.revokeObjectURL(blobURL)
 
         let formData = new FormData();
         const config = {
@@ -184,6 +183,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                         </select> */}
                         <div className="scenemake_modal_detail_category_container">
                             <select className="scenemake_modal_category" onChange={onCartegoryChange}>
+                                <option value="" selected disabled hidden>{category}</option>
                                 {CategoryOptions.map((item, index) => (
                                     <option key={index} value={item.value}>
                                         {item.label}

@@ -64,6 +64,10 @@ const sceneSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
+    theme: {
+        type: String,
+        default: "",
+    },
     title: {
         type: String,
         default: "",
