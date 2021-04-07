@@ -51,7 +51,6 @@ const EssetModal = ({ setGameDetail, gameDetail, gameId, visible, setTag, tag, s
   useEffect(() => {
     if (gameDetail)
       setBlobGame(_.cloneDeep(gameDetail)); //! 기존 녀석들의 복제품!! -- 잘 사용해보자
-    console.log("use EFFECT ", blobGame)
   }, [gameDetail])
 
   const revokeBlobList = () => {
@@ -117,7 +116,6 @@ const EssetModal = ({ setGameDetail, gameDetail, gameId, visible, setTag, tag, s
 
   //! --------------- NEW --------------------------------
   const uploadFiles = async (files) => {
-    console.log("uploadFiles", files)
     let formData = new FormData();
     let typeList = []
     for (let i = 0; i < files.length; i++) {
@@ -126,7 +124,7 @@ const EssetModal = ({ setGameDetail, gameDetail, gameId, visible, setTag, tag, s
         case "character":
           for (let j = 0; j < asset.fileArray.length; j++) {
             formData.append('files', asset.fileArray[j])
-            typeList.push({ type: asset.type, id: asset.id })
+            typeList.push({ type: asset.type, marking: asset.marking })
           }
           break;
 
@@ -160,9 +158,11 @@ const EssetModal = ({ setGameDetail, gameDetail, gameId, visible, setTag, tag, s
         filePath = process.env.NODE_ENV === 'development' ? `${config.SERVER}/${files[i].path}` : files[i].location
         if (typeList[i].type === "character") {
           // which character, which place
-          let characterIdx = tmpBlobGame.character.findIndex(character => character.id === typeList[i].id)
+          let characterIdx = tmpBlobGame.character.findIndex(character => character.marking === typeList[i].marking)
           //! blob -> REAL
+          console.log("characterIdx : ", characterIdx, tmpBlobGame.character)
           let fileIdx = tmpBlobGame.character[characterIdx].image_array.findIndex(file => file.substr(0, 5) === 'blob:')
+          console.log("fileIdx : ",fileIdx)
           tmpBlobGame.character[characterIdx].image_array[fileIdx] = filePath
         }
         else if (typeList[i].type === "background") {

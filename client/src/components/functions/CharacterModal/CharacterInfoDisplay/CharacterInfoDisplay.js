@@ -5,7 +5,8 @@ import { pushCharacter, selectCharacter } from '../../../../_actions/characterSe
 import './CharacterInfoDisplay.css';
 
 function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
-  console.log("CharacterInfoDisplay", character)
+
+  console.log("character : ", character, "GameCharacterList", GameCharacterList)
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
   const onClick_putCharacter = (index, url) => {
@@ -51,7 +52,6 @@ function CharacterInfoDisplay({ setName, character, GameCharacterList }) {
     )
   })
 
-  console.log("characterDetailImages",character)
   const characterDetailImages = character?.image_array?.map((url, index) => {
     return (
       <div

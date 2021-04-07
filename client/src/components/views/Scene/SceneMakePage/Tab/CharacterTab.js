@@ -42,7 +42,7 @@ function CharacterTab({ blobGame, setBlobGame, blobCharList, setBlobCharList, se
 
     const onDrop = (files) => {
         let blobURL = []
-        let id = -100;
+        let marking = -100;
 
         for (var i = 0; i < files.length; i++) {
             if (!files[i]) {
@@ -56,16 +56,19 @@ function CharacterTab({ blobGame, setBlobGame, blobCharList, setBlobCharList, se
         //new Character
         if (indexNum.current === "-1") {
             setBlobGame(game => {
-                if(game.character.length)
-                    id = game.character[game.character.length - 1].id + 1
+                if(game.character.length){
+                    marking = game.character[game.character.length - 1].marking + 1
+                    console.log(game.character)
+
+                }
                 else
-                    id = 0;
+                    marking = 0;
 
                 game.character = [...game.character, {
                     name: "",
                     description: "",
                     image_array: blobURL,
-                    id: id,
+                    marking: marking,
                 }]
                 return game
             })
@@ -73,33 +76,33 @@ function CharacterTab({ blobGame, setBlobGame, blobCharList, setBlobCharList, se
         }
         else {
             setBlobGame(game => {
-                id = game.character[indexNum.current].id
+                marking = game.character[indexNum.current].marking
                                                                 //! blob FIRST
                 game.character[indexNum.current].image_array = [...blobURL, ...game.character[indexNum.current].image_array]
                 return game
             })
         }
 
-        console.log("id:::",id)
+        console.log("marking:::", marking)
         //! indexNum - 몇번째 페이지에서 dropzone을 눌렀는지 -- 새로운녀석때문에
-        setFileQueue(oldArray => [...oldArray, { type: "character", id : id, num:files.length, fileArray: files }])
+        setFileQueue(oldArray => [...oldArray, { type: "character", marking : marking, num:files.length, fileArray: files }])
         setIsUpdate(num => num + 1)
 
     };
 
     const characterDelete = () => {
-        let characterId;
+        let characterMarking;
         
         setBlobGame(game => { // delete for blob
-            characterId = game.character[charPageNum.current].id
+            characterMarking = game.character[charPageNum.current].marking
             game.character.splice(charPageNum.current,1)
 
             return game
         })
 
         setFileQueue(oldArray => {  // delete for files
-            let fileIdx = oldArray.findIndex(i=> i.id === characterId)
-            console.log("file DELETE ! ", fileIdx, characterId)
+            let fileIdx = oldArray.findIndex(i=> i.marking === characterMarking)
+            console.log("file DELETE ! ", fileIdx, characterMarking)
             if (fileIdx > -1)
                 oldArray.splice(fileIdx,1)
             return oldArray
@@ -108,10 +111,10 @@ function CharacterTab({ blobGame, setBlobGame, blobCharList, setBlobCharList, se
     }
 
     const characterSplice = (event) => {
-        let characterId;
+        let characterMarking;
         const idx = event.target.id
         setBlobGame(game=>{
-            characterId = game.character[charPageNum.current].id
+            characterMarking = game.character[charPageNum.current].marking
             if (game.character[charPageNum.current].image_array.length > 1 ){
                 game.character[charPageNum.current].image_array.splice(idx,1)
             }
@@ -124,7 +127,7 @@ function CharacterTab({ blobGame, setBlobGame, blobCharList, setBlobCharList, se
         //! blob 먼저 -- Real 이후에! 로 설정하면, 누른 idx가 항상 파일의 image_array의 idx와 같음
         setFileQueue(oldArray => {
 
-            let fileIdx = oldArray.findIndex(i => i.id === characterId)
+            let fileIdx = oldArray.findIndex(i => i.marking === characterMarking)
             if(fileIdx > -1){
                 if(oldArray[fileIdx].num > idx){    // just for blob
                     if(oldArray[fileIdx].fileArray.length > 1){    // splice

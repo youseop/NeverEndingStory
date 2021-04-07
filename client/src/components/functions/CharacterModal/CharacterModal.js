@@ -8,7 +8,6 @@ import CharacterInfoDisplay from './CharacterInfoDisplay/CharacterInfoDisplay';
 import './CharacterModal.css';
 
 function CharacterModal({ GameCharacterList, setName }) {
-  console.log("CHARACTER MODAL ", GameCharacterList)
   const dispatch = useDispatch();
   const CharacterList = useSelector(state => state.character.CharacterList)
   // const onClick_detachCharacter = () => {
@@ -16,30 +15,29 @@ function CharacterModal({ GameCharacterList, setName }) {
   // }
 
   const currentCharacter = useSelector((state) => state.character);
-  useConstructor(()=>{dispatch(detachCharacter())})
-  const onClick_removeCharacter = () => {
-    let index = currentCharacter.characterSelected.index;
-    dispatch({ oldArray: CharacterList, index })
-    setName("")
-  }
+  useConstructor(()=>{console.log("WORK******"); dispatch(detachCharacter())})
 
   const [isAdded, setIsAdded] = useState(false);
 
-  useEffect(() => {
-    let flag = 0;
-    for (let i = 0; i < CharacterList?.length; i++) {
-      if (CharacterList[i].index === currentCharacter.characterSelected.index) {
-        flag = 1;
-        break;
-      }
-    }
-    if (flag === 1) {
-      setIsAdded(true);
-    } else {
-      setIsAdded(false);
-    }
+  // useEffect(() => {
+  //   let flag = 0;
+  //   for (let i = 0; i < CharacterList?.length; i++) {
+  //     if (CharacterList[i]?.index === currentCharacter?.characterSelected?.index) {
+  //       flag = 1;
+  //       break;
+  //     }
+  //   }
+  //   if (flag === 1) {
+  //     setIsAdded(true);
+  //   } else {
+  //     setIsAdded(false);
+  //   }
+    
+  // }, [currentCharacter, CharacterList])
 
-  }, [currentCharacter, CharacterList])
+  // useEffect(() => {
+  //   dispatch(selectCharacter(GameCharacterList[currentCharacter?.characterSelected?.index]))
+  // }, [GameCharacterList])
 
   return (
     <div>
@@ -48,7 +46,7 @@ function CharacterModal({ GameCharacterList, setName }) {
         <CharacterInfoDisplay
           setName={setName}
           GameCharacterList={GameCharacterList}
-          character={currentCharacter.characterSelected}
+          character={GameCharacterList[currentCharacter?.characterSelected?.index] || currentCharacter.characterSelected}
         />
         {/* {isAdded && <div onClick={onClick_removeCharacter}>삭제</div>} */}
       </div>

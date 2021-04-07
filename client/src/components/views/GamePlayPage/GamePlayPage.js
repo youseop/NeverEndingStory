@@ -283,9 +283,7 @@ const ProductScreen = (props) => {
     setLastMotion(false)
     Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
       (response) => {
-        console.log("suces", response)
         if (response.data.success) {
-          console.log("suces")
           const history = {
             gameId: gameId,
             sceneId: response.data.sceneIdList,
