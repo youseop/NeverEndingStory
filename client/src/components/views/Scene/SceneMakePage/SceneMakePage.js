@@ -119,7 +119,6 @@ const SceneMakePage = (props) => {
         dispatch(footerControl(false));
     }, [])
 
-
     useEffect(() => {
         if (user.userData) {
             socket.emit("leave room", { room: user.userData?._id?.toString() });
@@ -439,6 +438,12 @@ const SceneMakePage = (props) => {
         displayCut(CutNumber + 1);
     }
 
+    const setTree = () => {
+        Axios.post("/api/treedata/").then((response) => {
+          console.log('treedata successfully added');
+        });
+    }
+
     const onSubmit_first = () => {
         setUploadModalState(true)
     }
@@ -482,6 +487,7 @@ const SceneMakePage = (props) => {
             const response = await Axios.post(`/api/scene/save`, variable)
 
             if (response.data.success) {
+                setTree();
                 dispatch(detachCharacter());
                 message
                     .loading("게임 업로드 중..", 1.0)
@@ -587,7 +593,7 @@ const SceneMakePage = (props) => {
     const [sideBar, setSideBar] = useState([]);
 
     useEffect(() => {
-        Axios.post('/api/game/getgamedetail', { gameId: gameId })
+        Axios.post('/api/game/detail', { gameId: gameId })
             .then(response => {
                 if (response.data.success) {
                     setGameDetail(response.data.gameDetail)

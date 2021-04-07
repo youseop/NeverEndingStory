@@ -86,7 +86,6 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
 
     const uploadThumb = async () => {
         //revoke blobURL
-        URL.revokeObjectURL(blobURL)
 
         let formData = new FormData();
         const config = {

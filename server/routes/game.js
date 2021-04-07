@@ -297,7 +297,7 @@ router.get("/gamestart/:id", check, async (req, res) => {
                     user.gameHistory[i].isMaking = false;
 
                 }
-
+ 
                 user.gamePlaying = {
                     gameId: gameId,
                     sceneIdList: user.gameHistory[i].sceneIdList.slice(0, user.gameHistory[i].sceneIdList.length),
@@ -461,7 +461,6 @@ router.get("/getSceneInfo/:sceneId", async (req, res) => {
         const game_createor = await Game.findOne({ _id: scene?.gameId }).select("creator");
 
         if (scene === null) {
-            // console.log("??????")
             return res.status(200).json({ success: false });
         }
         return res.status(200).json({ success: true, scene, creator: game_createor.creator });
@@ -478,7 +477,7 @@ router.post("/updatescenestatus", check, async (req, res) => {
     return;
 });
 
-router.post("/getgamedetail", (req, res) => {
+router.post("/detail", (req, res) => {
     Game.findOne({ _id: req.body.gameId })
         .populate("creator")
         .exec((err, gameDetail) => {
@@ -489,12 +488,11 @@ router.post("/getgamedetail", (req, res) => {
 
 router.post("/rank", async (req, res) => {
     try {
-        const gameDetail = await Game.findOne({ _id: req.body.gameId })
+        const gameDetail = await Game.findOne(
+            { _id: req.body.gameId },
+            {_id: 0, sceneCnt: 1, contributerList: 1}
+        )
         const contributerList = gameDetail.contributerList;
-        let totalSceneCnt = 0;
-        for (let i = 0; i < contributerList.length; i++) {
-            totalSceneCnt += contributerList[i].userSceneCnt;
-        }
         const contributerCnt = contributerList.length;
         contributerList.sort(function (a, b) {
             return a.userSceneCnt < b.userSceneCnt ? 1 : a.userSceneCnt > b.userSceneCnt ? -1 : 0;
@@ -516,7 +514,7 @@ router.post("/rank", async (req, res) => {
             success: true,
             topRank: topRank,
             contributerCnt: contributerCnt,
-            totalSceneCnt: totalSceneCnt
+            totalSceneCnt: gameDetail.sceneCnt
         });
     } catch (err) {
         console.log(err);

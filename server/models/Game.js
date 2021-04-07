@@ -9,6 +9,14 @@ const Schema = mongoose.Schema;
 const gameSchema = mongoose.Schema({
   view : {
     type: Number,
+    default: 1
+  },
+  thumbsUp: {
+    type: Number,
+    default: 0
+  },
+  like: {
+    type: Number,
     default: 0
   },
   title : {
@@ -25,6 +33,9 @@ const gameSchema = mongoose.Schema({
   first_scene: {
     type: Schema.Types.ObjectId,
     ref: 'Scene'
+  },
+  first_node: {
+    type: String,
   },
   character: [characterSchema],
   background: [backgroundSchema],

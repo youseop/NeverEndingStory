@@ -1,0 +1,67 @@
+.adminModalForm_container{
+  width: 100%;
+  height: 100%;
+}
+
+.adminModalForm_title {
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 23px;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.complaint {
+  margin-top: 20px;
+}
+
+.ant-modal-body {
+  padding-top: 10px !important;
+}
+
+.adminModalForm_card{
+  transform: translate(100px, -0px);
+  background-color: rgba(128, 128, 128, 0.568);
+  border-radius: 5px;
+  width: 250px;
+  padding-bottom: 5px;
+}
+
+.complaint_description {
+  display: flex;
+  margin-top: 7px;
+  margin-bottom: 15px;
+}
+
+.adminModalForm_nickname {
+  font-weight: 600;
+}
+
+.adminModalForm_number {
+  font-size: 20px;
+  color: rgb(243, 89, 0);
+  line-height: 19px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.complaint_container {
+  height: 275px;
+  overflow: scroll;
+}
+
+
+.complaint_container::-webkit-scrollbar {
+  display: none;
+}
+
+.complaint_gradation{
+  background: linear-gradient( to top, #EEEEEE , #EEEEEE00);
+  width: 480px;
+  height: 40px;
+  z-index: 2;
+  position: relative;
+  bottom: 40px;
+}

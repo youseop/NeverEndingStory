@@ -6,7 +6,6 @@ import { TextBlock, TextBlockChoice } from "./TextBlock.js";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
-import DislikePopup from "./Dislike";
 import HistoryMapPopup from "./HistoryMap";
 import LoadingPage from "./LoadingPage";
 import { message } from "antd";
@@ -25,6 +24,7 @@ import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import Slider from 'react-rangeslider'
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import Complaint from './Complaint.js';
 
 
 import {
@@ -74,6 +74,7 @@ const ProductScreen = (props) => {
   const [view, setView] = useState(0);
   const [thumbsUp, setThumbsUp] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
+
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
   const maximizableElement = useRef(null);
@@ -386,7 +387,7 @@ const ProductScreen = (props) => {
             <LoadingPage />
             {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
               <img
-                className="gamePlay_backgroundImg"
+                className="backgroundImg"
                 src={Scene.cutList[i]?.background}
                 alt="Network Error"
               />
@@ -501,11 +502,17 @@ const ProductScreen = (props) => {
                 </button>
               )}
             </div>
-            <DislikePopup
+            {/* <DislikePopup
               sceneId={sceneId}
               gameId={gameId}
               trigger={Dislike}
               setTrigger={setDislike}
+            /> */}
+            <Complaint
+              sceneId={sceneId}
+              gameId={gameId}
+              isModalVisible={Dislike}
+              setIsModalVisible={setDislike}
             />
           </div>
         </div>

@@ -1,22 +1,61 @@
-import { Button, message } from "antd";
+import { message } from "antd";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "./GameDetailPage.css";
-import { LOCAL_HOST } from "../../Config"
 import Comment from '../Comment/Comment.js';
 import { socket } from "../../App";
 import { SVG } from "../../svg/icon";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faHeart, faLink } from "@fortawesome/free-solid-svg-icons";
+import { of, forkJoin, Observable } from "rxjs";
+import { map, tap, flatMap } from "rxjs/operators";
 import TopRatingContributer from "./TopRatingContributer";
+
 import "./GameDetailPage.css";
+import AdminPage from "./AdminPage";
+import { Link } from "react-router-dom";
+import RadialTree from "../TreeVisualization/RadialTree.js";
 import qs from "qs";
 import { Invitaion } from "./Invitation";
+
 const config = require('../../../config/key')
 
-function GameDetailPage(props) {
+const getRecursive = (managedData, id) => {
+    return getFromServer(managedData, id).pipe(
+      map(data => ({
+        parent: { 
+          name: data.name, 
+          sceneId: data.sceneId, 
+          gameId: data.gameId,
+          userId: data.userId, 
+          _id: data._id, 
+          complaintCnt: data.complaintCnt, 
+          characterName: data.characterName,
+          firstScript: data.firstScript,
+          parentSceneId: data.parentSceneId,
+          children: [],
+        },
+        childIds: data.children
+      })),
+      flatMap(parentWithChildIds =>
+        forkJoin([
+          of(parentWithChildIds.parent),
+          ...parentWithChildIds.childIds.map(childId => getRecursive(managedData, childId))
+        ])
+      ),
+      tap(
+        ([parent, ...children]) => (parent.children = children)
+      ),
+      map(([parent]) => parent)
+    );
+};
+
+// mocked back-end response 
+const getFromServer = (managedData, id) => {
+    return of(managedData[id]);
+};
+
+export default function GameDetailPage(props) {
     const query = qs.parse(props.location?.search, { ignoreQueryPrefix: true });
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
@@ -30,6 +69,12 @@ function GameDetailPage(props) {
     const [totalSceneCnt, setTotalSceneCnt] = useState(0);
     const [ContributerCnt, setContributerCnt] = useState(0);
     const [contributerList, setContributerList] = useState([]);
+    const [treeData, setTreeData] = useState({
+        name: "", 
+        userId: "",
+        complaint: 0,
+        children: []
+    });
     const [isPlayed, setIsPlayed] = useState(false);
 
     const user = useSelector((state) => state.user);
@@ -55,9 +100,24 @@ function GameDetailPage(props) {
             console.log(err);
         }
     }
+    
+    function updateTree() {
+        Axios.get(`/api/treedata/${gameId}`, variable). then((response) => {
+            if (response.data.success) {
+                const { rawData, firstNodeId } = response.data;
+                let data = {};
+                for (let i=0; i<rawData.length; i++){
+                data = { ...data, [rawData[i]._id]: rawData[i]}
+                } 
+                getRecursive(data, firstNodeId).subscribe(d=> {
+                    setTreeData(d); 
+                });
+            }
+        })
+    }
 
     useEffect(() => {
-        Axios.post("/api/game/getgamedetail", variable).then((response) => {
+        Axios.post("/api/game/detail", variable).then((response) => {
             if (response.data.success) {
                 setGameDetail(response.data.gameDetail);
             } else {
@@ -81,12 +141,12 @@ function GameDetailPage(props) {
                 message.error("로그인 해주세요.");
             }
         });
-
+        updateTree();
     }, []);
 
     useEffect(() => {
         if (user && user.userData) {
-            const variable = {
+            let variable = {
                 userId: user.userData._id,
                 objectId: gameId
             }
@@ -95,12 +155,7 @@ function GameDetailPage(props) {
                     setView(response.data.view);
                 }
             })
-        }
-    }, [user])
-
-    useEffect(() => {
-        if (user && user.userData) {
-            const variable = {
+            variable = {
                 objectId: gameId,
                 userId: user.userData._id,
             }
@@ -121,8 +176,7 @@ function GameDetailPage(props) {
     }, [user])
 
     function onClick_thumbsUp() {
-        if (user.userData?.isAuth) {
-            // ((state) => state+1);
+        if (user?.userData?.isAuth) {
             const variable = {
                 userId: user.userData._id,
                 objectId: gameId
@@ -147,6 +201,17 @@ function GameDetailPage(props) {
         document.execCommand("copy");
         document.body.removeChild(urlInput);
         message.info("링크가 복사되었습니다.")
+    }
+    
+    const [isDelete, setIsDelete] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    
+    const onClick_deleteToggle = () => {
+        setIsDelete((state) => !state)
+    }
+    
+    const onClick_adminToggle = () => {
+        setIsAdmin((state) => !state)
     }
     if (query.invitation === "true") {
         return (
@@ -193,31 +258,7 @@ function GameDetailPage(props) {
                                 </div>
                             </div>
                         </div>
-
-                        {/* <Link
-                            className="detailPage__gamePlay_link"
-                            style={{ color: "#f05454" }}
-                            to={
-                                {
-                                    pathname: isMaking ? `/scene/make` : `/gameplay`,
-                                    state: {
-                                        gameId: gameId,
-                                        sceneId: sceneId
-                                    },
-                                }
-                            }>
-                            <div className="icon">
-                                <SVG
-                                    src="playIcon_1"
-                                    width="30"
-                                    height="30"
-                                    color="#FFF"
-                                />
-                            </div>
-                            <div className="text">시작하기</div>
-                        </Link> */}
-                        {/* 게임 시작하기 or 이어 만들기 */}
-                        <div
+                        <div 
                             className="detailPage__gamePlay_link"
                             onClick={() => playFirstScene(false)}
                         >
@@ -283,10 +324,53 @@ function GameDetailPage(props) {
                             초대링크복사
                         </span>
                     </div>
+                    { gameDetail?.creator?._id.toString() === user?.userData?._id &&
+                        <Link 
+                            to={`/admin/${gameId}`}
+                            className="admin_btn"
+                        >
+                            스토리 미니맵
+                        </Link>
+                    }   
                     <div className="detailPage__description">
                         {gameDetail.description}
                     </div>
 
+                    {/* by 유섭 - 디버깅용으로 쓰려고 남겨놓았습니다. 
+                        혹시 불편하시다면 지워도 상관 없습니다! */}
+                    {/* <div 
+                        style={isDelete ? 
+                            {color:"#d6d6d6", backgroundColor:"red"} 
+                            : 
+                            {color:"#d6d6d6", backgroundColor:"black"} 
+                        }
+                        onClick={onClick_deleteToggle}
+                    >
+                        삭제모드
+                    </div>
+                    <div 
+                        style={isAdmin ? 
+                            {color:"#d6d6d6", backgroundColor:"red"} 
+                            : 
+                            {color:"#d6d6d6", backgroundColor:"black"} 
+                        }
+                        onClick={onClick_adminToggle}
+                    >
+                        관리자모드
+                    </div>
+                    {(treeData.userId !== "" && user?.userData) &&
+                    <>
+                        <RadialTree 
+                            data={treeData} 
+                            width={800} 
+                            height={800} 
+                            isDelete={isDelete}
+                            userId={user.userData._id}
+                            isAdmin={isAdmin}
+                            updateTree={updateTree}
+                        />
+                    </>
+                    } */}
                     <Comment gameId={gameId} />
                 </div>
             </div>
@@ -300,5 +384,3 @@ function GameDetailPage(props) {
         )
     }
 }
-
-export default GameDetailPage;
