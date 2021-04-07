@@ -18,7 +18,7 @@ function Character(props) {
   const [moving, setMoving] = useState(true);
   const [sizing, setSizing] = useState(false);
   const [imgWidth, setImgWidth] = useState(0);
-  const [zIndex,setZIndex] = useState(96);
+  const [zIndex, setZIndex] = useState(96);
 
   const background_element = document.getElementById("backgroundImg_container");
   let pivot = [0, 0];
@@ -72,7 +72,7 @@ function Character(props) {
   }, [CharacterList])
 
   const onMouseDown = (e) => {
-    if (!background_element) {
+    if (!background_element || e.target !== e.currentTarget) {
       return;
     }
     addEvent(background_element, "mousemove", mouseMove, false);
@@ -102,10 +102,10 @@ function Character(props) {
     setSizing(false);
     setMoving(true);
     setZIndex(96)
-    dispatch(orderCharacter({ 
-      oldArray: CharacterList ? updateCharacter(dataToSubmit).payload : null, 
-      index: charSchema.index, 
-      num: "pull" 
+    dispatch(orderCharacter({
+      oldArray: CharacterList ? updateCharacter(dataToSubmit).payload : null,
+      index: charSchema.index,
+      num: "pull"
     }))
   }
 
@@ -119,7 +119,8 @@ function Character(props) {
     setSizing(false);
   }
 
-  const onClickDelete = () => {
+  const onClickDelete = (e) => {
+    e.stopPropagation();
     dispatch(popCharacter({ oldArray: CharacterList, index: charSchema.index }));
   }
 
@@ -142,11 +143,11 @@ function Character(props) {
         }}
       >
         <img
-          onMouseDown={onMouseDown}
           className={"characterImg_clicked"}
           id={`${index}`}
           src={charSchema.image}
           alt="img"
+          onMouseDown={onMouseDown}
         />
         {imgWidth &&
           <>
@@ -160,13 +161,17 @@ function Character(props) {
               icon={faAngleDoubleDown}
               className="bttn btn_character_Doubledown"
               style={{ left: `${imgWidth - 34}px` }}
-              onClick={() => { onClickOrder("double") }}
-            /> 
+              onClick={(e) => {
+                onClickOrder("double")
+              }}
+            />
             <FontAwesomeIcon
               icon={faAngleDown}
               className="bttn btn_character_down"
               style={{ left: `${imgWidth - 51}px` }}
-              onClick={() => onClickOrder("")}
+              onClick={(e) => {
+                onClickOrder("")
+              }}
             />
 
             <div

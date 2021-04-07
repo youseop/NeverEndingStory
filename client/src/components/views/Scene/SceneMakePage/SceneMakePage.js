@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
+import React, { useEffect, useMemo, useRef, useState, useLayoutEffect } from "react";
 import BackgroundSideBar from "./SideBar/BackgroundSideBar";
 import CharacterSideBar from "./SideBar/CharacterSideBar";
 import BgmSideBar from "./SideBar/BgmSideBar";
@@ -61,7 +61,7 @@ const SceneMakePage = (props) => {
 
     //! mobile focus event
     useEffect(() => {
-        if (isMobile) {
+        if (isMobile.current) {
             const focusMobileText = (event) => {
                 if (event.target.tagName === "TEXTAREA" || event.target.tagName === "INPUT") {
                     if (document.body.style.zoom !== "180%")
@@ -151,7 +151,6 @@ const SceneMakePage = (props) => {
         dispatch(footerControl(false));
     }, [])
 
-
     useEffect(() => {
         if (user.userData) {
             socket.emit("leave room", { room: user.userData?._id?.toString() });
@@ -159,27 +158,26 @@ const SceneMakePage = (props) => {
         }
         socket.off("timeout_making")
         socket.on("timeout_making", data => {
-            // console.log("GO HOME")
             props.history.replace("/")
         })
 
     }, [user])
 
     //! scene save할 때 필요한 정보 갖고오기
+    const creator = useRef(null);
+    const theme = useRef(null);
     useEffect(() => {
         (async () => {
             const res = await axios.get(`/api/game/getSceneInfo/${sceneId}`)
 
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
-            // console.log(res.data)
-            if (res.data.success && validation.data.success) { scene = res.data.scene; }
+            if (res.data.success && validation.data.success) { scene = res.data.scene; creator.current = res.data.creator }
             else {
-                // console.log("get scene ERROR");
                 props.history.replace("/");
                 return;
             }
             // 임시저장한 녀석
-
+            theme.current = scene.theme;
             setWriter(scene.writer);
             const tmpExpTime = new Date(scene.createdAt).getTime() + LIMIT_TO_MS
             setExpTime(tmpExpTime)
@@ -199,7 +197,6 @@ const SceneMakePage = (props) => {
                 setCutNumber(scene.cutList.length - 1);
                 dispatch(gameLoadingPage(0));
                 dispatch(gameLoadingPage(1));
-
             }
             // 껍데기
             else {
@@ -442,7 +439,7 @@ const SceneMakePage = (props) => {
     };
 
     const onRemove_cut = () => {
-        if (CutList.length <= 1) {
+        if (CutList.length <= 1 && CutNumber < 1) {
             // setCutList([]);
             // setEmptyCutList((oldArray) => [
             //     0, ...oldArray
@@ -473,6 +470,12 @@ const SceneMakePage = (props) => {
             0, ...oldArray
         ]);
         displayCut(CutNumber + 1);
+    }
+
+    const setTree = () => {
+        Axios.post("/api/treedata/").then((response) => {
+            console.log('treedata successfully added');
+        });
     }
 
     const onSubmit_first = () => {
@@ -518,6 +521,7 @@ const SceneMakePage = (props) => {
             const response = await Axios.post(`/api/scene/save`, variable)
 
             if (response.data.success) {
+                setTree();
                 dispatch(detachCharacter());
                 message
                     .loading((isTmp ? "임시 저장 중..." : "게임 업로드 중.."), 1.0)
@@ -540,7 +544,7 @@ const SceneMakePage = (props) => {
                                 prevSceneId: response.data.scene.prevSceneId,
                                 sceneId: response.data.scene._id,
                                 title: response.data.scene.title,
-                                userId: user.userData._id.toString(),
+                                userId: user.userData._id?.toString(),
                             })
                             history.replace({
                                 pathname: `/gameplay`,
@@ -623,7 +627,7 @@ const SceneMakePage = (props) => {
     const [sideBar, setSideBar] = useState([]);
 
     useEffect(() => {
-        Axios.post('/api/game/getgamedetail', { gameId: gameId })
+        Axios.post('/api/game/detail', { gameId: gameId })
             .then(response => {
                 if (response.data.success) {
                     setGameDetail(response.data.gameDetail)
@@ -633,7 +637,8 @@ const SceneMakePage = (props) => {
             })
     }, [reload, gameId])
 
-    let isWriter = writer?.toString() === user.userData?._id.toString();
+    let isWriter = creator.current?.toString() === user.userData?._id?.toString();
+
     useEffect(() => {
         if (gameDetail.character) {
             const reload_Sidebar = (< div className="sideBar">
@@ -795,7 +800,7 @@ const SceneMakePage = (props) => {
                                 cut_script={Script ? Script : "대사를 입력해주세요."}
                                 setIsTyping={null}
                                 isTyping={null}
-                                theme={null}
+                                theme={theme.current}
                             />
                         )}
                         <div className="scene__sound_container">
@@ -968,6 +973,7 @@ const SceneMakePage = (props) => {
                     onSubmit_saveScene={onSubmit_saveScene}
                     defaultTitle={gameDetail.title}
                     defaultDescription={gameDetail.description}
+                    defaultCategory={gameDetail.category}
                 />
                 <EndingModal
                     isEnding={isEnding}

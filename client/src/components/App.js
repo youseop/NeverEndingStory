@@ -23,6 +23,7 @@ import Footer from "./views/Footer/Footer.tsx";
 import SearchResult from "./views/NavBar/Sections/SearchResult.tsx"
 import { LOCAL_HOST } from './Config';
 import './App.css';
+import AdminPage from './views/GameDetailPage/AdminPage';
 import PortraitWarning from './views/Etc/PortraitWarning';
 import { useConstructor } from './functions/useConstructor';
 import { useDispatch } from 'react-redux';
@@ -60,6 +61,7 @@ function App() {
       window.removeEventListener('resize', handleResize);
     }
   }, [isPortrait])
+
   if (loaded) {
     return (
       <Suspense fallback={(<div>Loading...</div>)}>
@@ -70,11 +72,13 @@ function App() {
             <Route exact path="/login" component={Auth(LoginPage, false)} />
             <Route exact path="/register" component={Auth(RegisterPage, false)} />
             <Route exact path="/passport/register" component={Auth(PassportRegisterPage, false)} />
-            <Route exact path="/profile/:userId" component={Auth(Profile, true)} />
+            <Route exact path="/profile/:userId" component={Auth(Profile, null)} />
             <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
             <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
-            <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />
-            <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage, true))} />
+            <Route path="/gameplay/:full" component={isPortrait ? PortraitWarning : Valid(Auth(GamePlayPage, null))} />
+            <Route path="/gameplay" component={isPortrait ? PortraitWarning : Valid(Auth(GamePlayPage, null))} />
+            <Route path="/admin/:gameId" component={Auth(AdminPage, true)} />
+            <Route exact path="/scene/make" component={isPortrait ? PortraitWarning : Valid(Auth(SceneMakePage, true))} />
           </Switch>
           < SearchResult />
         </div>

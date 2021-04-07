@@ -1,0 +1,17 @@
+.complaintCard_container {
+  background-color: lawngreen;
+  padding: 5px;
+  background-color: rgb(223, 221, 221);
+  margin-bottom: 8px;
+  border-radius: 2px;
+}
+
+.complaintCard_title {
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.complaintCard_description {
+}

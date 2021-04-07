@@ -1,21 +1,27 @@
-import { Button, message } from "antd";
+import { message } from "antd";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "./GameDetailPage.css";
-import { LOCAL_HOST } from "../../Config"
 import Comment from '../Comment/Comment.js';
 import { socket } from "../../App";
 import { SVG } from "../../svg/icon";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faHeart, faLink } from "@fortawesome/free-solid-svg-icons";
+import { of, forkJoin, Observable } from "rxjs";
+import { map, tap, flatMap } from "rxjs/operators";
 import TopRatingContributer from "./TopRatingContributer";
+
 import "./GameDetailPage.css";
+import AdminPage from "./AdminPage";
+import { Link } from "react-router-dom";
+import RadialTree from "../TreeVisualization/RadialTree.js";
+import qs from "qs";
+import { Invitaion } from "./Invitation";
 
 const config = require('../../../config/key')
 
-function GameDetailPage(props) {
+export default function GameDetailPage(props) {
+    const query = qs.parse(props.location?.search, { ignoreQueryPrefix: true });
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
 
@@ -28,22 +34,28 @@ function GameDetailPage(props) {
     const [totalSceneCnt, setTotalSceneCnt] = useState(0);
     const [ContributerCnt, setContributerCnt] = useState(0);
     const [contributerList, setContributerList] = useState([]);
+    const [treeData, setTreeData] = useState({
+        name: "",
+        userId: "",
+        complaint: 0,
+        children: []
+    });
     const [isPlayed, setIsPlayed] = useState(false);
 
     const user = useSelector((state) => state.user);
 
-    const playFirstScene = async (isFirst) => {
+    const playFirstScene = async (isFirst, isInvitation) => {
         try {
             let response;
-            if(isFirst){
+            if (isFirst) {
                 response = await Axios.get("/api/users/playing-list/clear");
                 // Not Yet Tested
-                if (user.userData.isAuth && isMaking){
-                    socket.emit("empty_num_increase", {user_id: user.userData._id.toString(), scene_id: response.data.prevOfLastScene.toString()});
+                if (user.userData.isAuth && isMaking) {
+                    socket.emit("empty_num_increase", { user_id: user.userData._id.toString(), scene_id: response.data.prevOfLastScene.toString() });
                 }
             }
             props.history.replace({
-                pathname: (!isFirst && isMaking) ? `/scene/make` : `/gameplay`,
+                pathname: (!isFirst && isMaking) ? `/scene/make` : `/gameplay${isInvitation ? "/full" : ""}`,
                 state: {
                     sceneId: isFirst ? response.data.teleportSceneId : sceneId,
                     gameId: gameId,
@@ -55,7 +67,7 @@ function GameDetailPage(props) {
     }
 
     useEffect(() => {
-        Axios.post("/api/game/getgamedetail", variable).then((response) => {
+        Axios.post("/api/game/detail", variable).then((response) => {
             if (response.data.success) {
                 setGameDetail(response.data.gameDetail);
             } else {
@@ -79,12 +91,11 @@ function GameDetailPage(props) {
                 message.error("로그인 해주세요.");
             }
         });
-
     }, []);
 
     useEffect(() => {
         if (user && user.userData) {
-            const variable = {
+            let variable = {
                 userId: user.userData._id,
                 objectId: gameId
             }
@@ -93,12 +104,7 @@ function GameDetailPage(props) {
                     setView(response.data.view);
                 }
             })
-        }
-    }, [user])
-
-    useEffect(() => {
-        if (user && user.userData) {
-            const variable = {
+            variable = {
                 objectId: gameId,
                 userId: user.userData._id,
             }
@@ -108,10 +114,10 @@ function GameDetailPage(props) {
                     setThumbsUpClicked(response.data.isClicked);
                 }
             })
-            Axios.post("/api/users/game-visit", {userId: user.userData._id}).then((response) => {
+            Axios.post("/api/users/game-visit", { userId: user.userData._id }).then((response) => {
                 if (response.data.success) {
                     const sceneIdLength = response.data?.gamePlaying?.sceneIdList?.length;
-                    if(sceneIdLength > 1)
+                    if (sceneIdLength > 1)
                         setIsPlayed(true);
                 }
             })
@@ -119,8 +125,7 @@ function GameDetailPage(props) {
     }, [user])
 
     function onClick_thumbsUp() {
-        if (user.userData?.isAuth) {
-            // ((state) => state+1);
+        if (user?.userData?.isAuth) {
             const variable = {
                 userId: user.userData._id,
                 objectId: gameId
@@ -132,15 +137,43 @@ function GameDetailPage(props) {
                 }
             })
         }
-        else{
+        else {
             message.error("로그인이 필요합니다.")
         }
     }
-    if(totalSceneCnt){
-        
+    const pasteLink = () => {
+        const url = window.location.href + "?invitation=true"
+        let urlInput = document.createElement("input");
+        document.body.appendChild(urlInput);
+        urlInput['value'] = url;
+        urlInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(urlInput);
+        message.info("링크가 복사되었습니다.")
+    }
+
+    const [isDelete, setIsDelete] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    const onClick_deleteToggle = () => {
+        setIsDelete((state) => !state)
+    }
+
+    const onClick_adminToggle = () => {
+        setIsAdmin((state) => !state)
+    }
+    if (query.invitation === "true") {
+        return (
+            <Invitaion
+                gameDetail={gameDetail}
+                playFirstScene={playFirstScene}
+            />
+        )
+    }
+    else if (totalSceneCnt) {
         return (
             <div className="detailPage__container">
-    
+
                 {/* 이미지 불러오는게 늦음 디버깅 필요 */}
                 <div className="detailPage__thumbnail_container">
                     <img
@@ -174,31 +207,7 @@ function GameDetailPage(props) {
                                 </div>
                             </div>
                         </div>
-    
-                        {/* <Link
-                            className="detailPage__gamePlay_link"
-                            style={{ color: "#f05454" }}
-                            to={
-                                {
-                                    pathname: isMaking ? `/scene/make` : `/gameplay`,
-                                    state: {
-                                        gameId: gameId,
-                                        sceneId: sceneId
-                                    },
-                                }
-                            }>
-                            <div className="icon">
-                                <SVG
-                                    src="playIcon_1"
-                                    width="30"
-                                    height="30"
-                                    color="#FFF"
-                                />
-                            </div>
-                            <div className="text">시작하기</div>
-                        </Link> */}
-                        {/* 게임 시작하기 or 이어 만들기 */}
-                        <div 
+                        <div
                             className="detailPage__gamePlay_link"
                             onClick={() => playFirstScene(false)}
                         >
@@ -235,7 +244,7 @@ function GameDetailPage(props) {
                         </div>
                     </div>
                     {isPlayed &&
-                        <div 
+                        <div
                             className="detailPage__gamePlayFromStart_link"
                             onClick={() => playFirstScene(true)}
                         >
@@ -244,36 +253,51 @@ function GameDetailPage(props) {
                     }
                 </div>
                 <div className="detailPage__info_container">
-                    <div className="detailPage__title">
-                        {/* {gameDetail.title} */}
-    
-                    </div>
                     <div className="detailPage__genre">
                         장르:
                         <div className="bold_text">
                             {gameDetail.category}
                         </div>
                         작가:
-                        <div className="bold_text">
+                        <Link
+                            to={`/profile/${gameDetail.creator._id}`}
+                            className="bold_text"
+                        >
                             {gameDetail?.creator?.nickname.substr(0, 20)}
-                        </div>
+                        </Link>
+                        <span
+                            className="link_bttn"
+                            onClick={(e) => {
+                                pasteLink();
+                            }}>
+                            <FontAwesomeIcon
+                                icon={faLink}
+                            />
+                            초대링크복사
+                        </span>
                     </div>
+                    {gameDetail?.creator?._id.toString() === user?.userData?._id &&
+                        <Link
+                            to={`/admin/${gameId}`}
+                            className="admin_btn"
+                        >
+                            스토리 미니맵
+                        </Link>
+                    }
                     <div className="detailPage__description">
                         {gameDetail.description}
                     </div>
-    
+
                     <Comment gameId={gameId} />
                 </div>
             </div>
         );
     }
-    else{
-        return(
+    else {
+        return (
             <div className="loader_container">
                 <div className="loader">Loading...</div>
             </div>
-            )
+        )
     }
 }
-
-export default GameDetailPage;

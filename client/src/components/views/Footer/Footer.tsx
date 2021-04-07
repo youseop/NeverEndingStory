@@ -27,7 +27,10 @@ function Footer() {
           <p>
             저작권 등 기타 문의는 <a onClick={() => showModal()}>이곳</a>으로 문의 가능합니다.
         </p>
-          <ContactUs isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} />
+          <ContactUs 
+            isModalVisible={isModalVisible} 
+            setIsModalVisible={setIsModalVisible} 
+          />
         </div>
         <div className="footer-icons">
           <div className="jg-icon" onClick={() => { window.open("https://swjungle.net/") }}>

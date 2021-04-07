@@ -58,9 +58,9 @@ function LoginPage(props: LoginPageProps) {
       })
 
   }
-  const fail = () =>{
+  const fail = () => {
     props.history.replace({
-      pathname:`/login`
+      pathname: `/login`
     })
   }
 
@@ -125,7 +125,7 @@ function LoginPage(props: LoginPageProps) {
             <div className="loginDiv-container">
               <div className="login-Title">로그인</div>
               <div className="login-newUser">신규 사용자이신가요? <Link className="login-register" to="/register">계정만들기</Link></div>
-              <form onSubmit={handleSubmit} style={{ width: "600px" }}>
+              <form onSubmit={handleSubmit}>
                 <Form.Item required>
                   <Input
                     id="email"
@@ -206,14 +206,14 @@ function LoginPage(props: LoginPageProps) {
                     </button>
                       <KakaoLogin
                         token={config.KAKAO_KEY}
-                        onSuccess={(login) => kakaoLogin(login) }
-                        onFail={()=>{fail()}}
+                        onSuccess={(login) => kakaoLogin(login)}
+                        onFail={() => { fail() }}
                         className="login-button login-kakao">
                         카카오 로그인
 
                     </KakaoLogin>
 
-                  </div>
+                    </div>
                   </Form.Item>
 
                 </Form.Item>

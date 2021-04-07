@@ -2,7 +2,7 @@
   position: absolute;
   width: 200px;
   top: 24px;
-  right: 13%;
+  right: 200px;
   transition: all 0.4s ease-in-out;
 }
 
@@ -10,18 +10,23 @@
   position: absolute;
   width: 80px;
   top: 24px;
-  right: 10%;
+  right: 150px;
   transition: all 0.4s ease-in-out;
-  /* background-color: aqua; */
 }
 
 .search-icon {
-  /* position:absolute; */
   width: 25px;
   height: 30px;
   left: 50%;
-  /* padding-left: 10%; */
-  /* background-color: aqua; */
+  cursor: pointer;
+}
+
+.search-close {
+  position: absolute;
+  width: 25px;
+  height: 30px;
+  top: 10%;
+  right: -5%;
   cursor: pointer;
 }
 
@@ -29,7 +34,7 @@
   all: unset;
 
   position: absolute;
-  width: 90%;
+  width: 75%;
   top: 0%;
   left: 10%;
   margin-left: 5px;
@@ -58,4 +63,22 @@
   color: #ffffff;
   border-radius: 5px;
   transition: all 0.4s ease-in-out;
+}
+
+@media (max-width: 767px) {
+  .search-container-on {
+    right: 25px;
+  }
+
+  .search-textinput-on {
+    width: 62%;
+  }
+
+  .search-container-off {
+    right: 5px;
+  }
+
+  .search-close {
+    right: 10%;
+  }
 }

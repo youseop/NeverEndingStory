@@ -53,7 +53,8 @@ const contributerSchema = mongoose.Schema({
         ref: "User",
     },
     userSceneCnt: Number,
-    sceneIdList: [String]
+    sceneIdList: [String],
+    nickname: String,
 });
 
 const Contributer = mongoose.model("contributer", contributerSchema);

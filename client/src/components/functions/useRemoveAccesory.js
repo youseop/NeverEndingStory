@@ -1,4 +1,7 @@
+import { useEffect } from "react";
+
 import React, { useEffect } from "react"
+
 export const useRemoveAccesory = () => {
     useEffect(() => {
         const rootDom = document.getElementById("root");

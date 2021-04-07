@@ -9,6 +9,14 @@ const Schema = mongoose.Schema;
 const gameSchema = mongoose.Schema({
   view : {
     type: Number,
+    default: 1
+  },
+  thumbsUp: {
+    type: Number,
+    default: 0
+  },
+  like: {
+    type: Number,
     default: 0
   },
   title : {
@@ -26,10 +34,9 @@ const gameSchema = mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Scene'
   },
-  // writer: [{
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'User'
-  // }], //?- contributerList로 대체
+  first_node: {
+    type: String,
+  },
   character: [characterSchema],
   background: [backgroundSchema],
   bgm: [bgmSchema],

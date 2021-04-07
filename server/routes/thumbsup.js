@@ -18,6 +18,8 @@ router.post('/count', (req,res) => {
       ){
         isClicked = true;
         res.status(200).json({success: true, thumbsup:thumbsup.cnt, isClicked: isClicked})
+      } else if (thumbsup) {
+        res.status(200).json({success: true, thumbsup: thumbsup.cnt, isClicked: false})
       } else {
         res.status(200).json({success: true, thumbsup: 0, isClicked: false})
       }
