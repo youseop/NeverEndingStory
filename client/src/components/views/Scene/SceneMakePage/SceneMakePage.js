@@ -186,8 +186,9 @@ const SceneMakePage = (props) => {
                 if (scene.isFirst) {
                     isFirstScene.current = true;
                 }
-                setEmptyCutList(Array.from({ length: 30-scene.cutList.length }, () => 0))
+
                 // 임시저장된 녀석 불러오기
+                setEmptyCutList(Array.from({ length: 30 - scene.cutList.length}, () => 0))
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
                 dispatch(setCharacterList({ CharacterList: tmpFirstCut.characterList }));
@@ -822,15 +823,15 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_bgm_name">{BgmFile.name}</div>
                                 </div>
                             ) : (
-                                <div
-                                    className="scene__sound_box"
-                                    onClick={onClick_bgm_box}
-                                >
-                                    <StopOutlined
-                                        className="scene__sound_icon bgm" />
-                                    <div className="scene__sound_bgm_name">BGM</div>
-                                </div>
-                            )}
+                                    <div
+                                        className="scene__sound_box"
+                                        onClick={onClick_bgm_box}
+                                    >
+                                        <StopOutlined
+                                            className="scene__sound_icon bgm" />
+                                        <div className="scene__sound_bgm_name">BGM</div>
+                                    </div>
+                                )}
                             {SoundFile?.name ? (
                                 <div
                                     className="scene__sound_box"
@@ -849,15 +850,15 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_sound_name">{SoundFile.name}</div>
                                 </div>
                             ) : (
-                                <div
-                                    className="scene__sound_box"
-                                    onClick={onClick_sound_box}
-                                >
-                                    <StopOutlined
-                                        className="scene__sound_icon sound" />
-                                    <div className="scene__sound_sound_name">Sound</div>
-                                </div>
-                            )}
+                                    <div
+                                        className="scene__sound_box"
+                                        onClick={onClick_sound_box}
+                                    >
+                                        <StopOutlined
+                                            className="scene__sound_icon sound" />
+                                        <div className="scene__sound_sound_name">Sound</div>
+                                    </div>
+                                )}
                         </div>
                     </div>
 
