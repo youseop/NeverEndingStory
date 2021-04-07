@@ -5,12 +5,10 @@ import {LOCAL_HOST} from "../../../Config";
 import { Link, useHistory } from "react-router-dom";
 
 import './ContributedGame.css';
-import { ObjectId } from "mongodb";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faFile, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { SCENE_ICON } from '../../../svg/icon';
 
-type ObjectID= typeof ObjectId;
 
 interface ContributedGame {
   gameId: string;
@@ -25,7 +23,7 @@ interface GameDetail {
   sceneCnt: number;
   thumbnail: string;
   title: string;
-  first_scene: ObjectID;
+  first_scene: any;
 }
 
 interface ThumbsUp {
@@ -76,7 +74,7 @@ function ContributedGame(props: any) {
 
   if(!gameDetail?.first_scene) {
     return (
-      ""
+      <></>
     )
   } else {
     return (
