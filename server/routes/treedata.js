@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-import { Complaint } from "../models/Complaint";
-import { User } from "../models/User";
+const { Complaint } = require("../models/Complaint");
+const { User } = require("../models/User");
 const { check } = require("../middleware/check");
 
 const mongoose = require('mongoose');

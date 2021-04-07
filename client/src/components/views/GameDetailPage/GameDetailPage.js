@@ -260,7 +260,7 @@ export default function GameDetailPage(props) {
                         </div>
                         작가:
                         <Link
-                            to={`/profile/${gameDetail.creator._id}`}
+                            to={`/profile/${gameDetail.creator?._id}`}
                             className="bold_text"
                         >
                             {gameDetail?.creator?.nickname.substr(0, 20)}
