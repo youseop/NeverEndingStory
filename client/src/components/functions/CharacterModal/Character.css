@@ -36,6 +36,11 @@
   transition: 0.1s;
   margin: 2px;
   border-radius: 4px;
+  -webkit-user-select: none;
+  -webkit-touch-callout:inherit !important; 
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none !important;
 }
 
 .characterImg_clicked:active {

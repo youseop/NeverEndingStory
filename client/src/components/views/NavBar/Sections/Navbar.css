@@ -42,6 +42,7 @@
   background-color: #222831;
   transform: opacity(0);
   transition-duration: 1s;
+  z-index: 110 !important;
 }
 .menu::-webkit-scrollbar {
   display: none;

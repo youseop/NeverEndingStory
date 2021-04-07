@@ -60,7 +60,8 @@ export default function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
 
-    const [gameDetail, setGameDetail] = useState([]);
+    
+    const [gameDetail, setGameDetail] = useState({});
     const [sceneId, setSceneId] = useState([]);
     const [isMaking, setIsMaking] = useState(false);
     const [view, setView] = useState(0);
@@ -231,7 +232,7 @@ export default function GameDetailPage(props) {
                         className="detailPage__thumbnail"
                         src={
                             process.env.NODE_ENV === 'production' ?
-                                gameDetail.thumbnail
+                                gameDetail?.thumbnail
                                 :
                                 `${config.SERVER}/${gameDetail?.thumbnail}`}
                         alt="thumbnail"
@@ -307,14 +308,14 @@ export default function GameDetailPage(props) {
                     <div className="detailPage__genre">
                         장르:
                         <div className="bold_text">
-                            {gameDetail.category}
+                            {gameDetail?.category}
                         </div>
                         작가:
                         <Link
-                            to={`/profile/${gameDetail.creator._id}`}
+                            to={`/profile/${gameDetail?.creator?._id}`}
                             className="bold_text"
                         >
-                            {gameDetail?.creator?.nickname.substr(0, 20)}
+                            {gameDetail?.creator?.nickname?.substr(0, 20)}
                         </Link>
                         <span
                             className="link_bttn"
@@ -327,7 +328,7 @@ export default function GameDetailPage(props) {
                             초대링크복사
                         </span>
                     </div>
-                    { gameDetail?.creator?._id.toString() === user?.userData?._id &&
+                    { gameDetail?.creator?._id?.toString() === user?.userData?._id &&
                         <Link 
                             to={`/admin/${gameId}`}
                             className="admin_btn"
@@ -336,7 +337,7 @@ export default function GameDetailPage(props) {
                         </Link>
                     }   
                     <div className="detailPage__description">
-                        {gameDetail.description}
+                        {gameDetail?.description}
                     </div>
 
                     {/* by 유섭 - 디버깅용으로 쓰려고 남겨놓았습니다. 
