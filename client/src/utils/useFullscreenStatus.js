@@ -6,10 +6,8 @@ export default function useFullscreenStatus(elRef) {
   );
 
   const setFullscreen = () => {
-    console.log("working");
     if (elRef.current == null) return;
-    console.log("working");
-    
+
     elRef.current
       .requestFullscreen()
       .then(() => {

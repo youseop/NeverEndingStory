@@ -566,7 +566,6 @@ router.get("/popular-games", (req, res) => {
         .sort({"view": -1})
         .limit(8)
         .exec((err, games) => {
-            console.log(games);
             if (err) return res.status(400).send(err);
             res.status(200).json({ success: true, games });
         });
