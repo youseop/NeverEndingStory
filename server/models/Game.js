@@ -26,10 +26,6 @@ const gameSchema = mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Scene'
   },
-  // writer: [{
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'User'
-  // }], //?- contributerList로 대체
   character: [characterSchema],
   background: [backgroundSchema],
   bgm: [bgmSchema],
@@ -48,7 +44,7 @@ const gameSchema = mongoose.Schema({
   },
   ready: {
     type: Number,
-    default: 0
+    default: 04
   },
   contributerList: [contributerSchema],
   sceneCnt: {

@@ -127,6 +127,7 @@ router.post("/uploadgameframe", (req, res) => {
     game.title = sanitize(req.body.title);
     if (req.body.description)
         game.description = sanitize(req.body.description);
+    game.category = req.body.category;
     game.save((err, game) => {
         if (err) return res.json({ success: false, err });
 
@@ -565,6 +566,7 @@ router.get("/popular-games", (req, res) => {
         .sort({"view": -1})
         .limit(8)
         .exec((err, games) => {
+            console.log(games);
             if (err) return res.status(400).send(err);
             res.status(200).json({ success: true, games });
         });

@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { Modal, Form, message, Input } from "antd";
 import "./TitleModalForm.css"
+import { CategoryOptions } from "../Scene/SceneMakePage/UploadModal";
 
-const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGameDescription }) => {
+const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGameDescription, setCategory }) => {
     const onTitleChange = (event) => {
         setGameTitle(event.currentTarget.value.substr(0, 30));
     };
-    const onDescriptionChange = (event) =>{
+    const onDescriptionChange = (event) => {
         setGameDescription(event.currentTarget.value);
     }
+    const onCartegoryChange = (event) => {
+        let cat_idx = event.currentTarget.value;
+        setCategory(event.currentTarget[cat_idx].text);
+    };
 
     return (
         <Modal
@@ -20,7 +25,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGame
             onOk={onCreate}
             closable={false}
             bodyStyle={{
-                height: "425px",
+                height: "515px",
                 fontFamily: "Noto Sans KR",
                 fontSize: "18px",
                 fontWeight: "300"
@@ -35,13 +40,23 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGame
                         className="title_modalform_title"
                         maxLength={31}
                         onChange={onTitleChange}
-                         />
+                    />
                 </Form.Item>
                 <Form.Item label="게임 설명" name="description" rules={[
                     { required: true, message: "게임 설명을 입력해주세요!" },
                     { max: 1000, message: '설명은 1000자 이내여야 합니다.' },
                 ]}>
-                    <textarea maxLength={1001} onChange={onDescriptionChange}  className="title_modalform_description" />
+                    <textarea maxLength={1001} onChange={onDescriptionChange} className="title_modalform_description" />
+                </Form.Item>
+                <Form.Item label="category" name="description">
+                <select onChange={onCartegoryChange}>
+                    {CategoryOptions.map((item, index) => (
+                        <option key={index} value={item.value}>
+                            {item.label}
+                        </option>
+                    ))}
+                </select>
+
                 </Form.Item>
             </Form>
         </Modal>

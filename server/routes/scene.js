@@ -12,6 +12,19 @@ const {sanitize} = require("../lib/sanitize")
 
 const MS_PER_HR = 3600000
 
+const getTheme = (category) => {
+  let theme;
+  switch (category) {
+    case "추리":
+      theme = "atorney";
+      break;
+    default:
+      theme = "";
+      break;
+  }
+  return theme;
+}
+
 
 const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
   const {
@@ -49,6 +62,9 @@ const updatePlayingForFirst = (targetGameId, targetSceneId, user) => {
 
 router.post('/create', auth, async (req, res) => {
   const userId = req.user._id
+  const game = await Game.findOne({_id:req.body.gameId}).select("category");
+  const theme = getTheme(game.category)
+  console.log(theme);
   const scene = new Scene({
     gameId: req.body.gameId,
     writer: userId,
@@ -58,6 +74,7 @@ router.post('/create', auth, async (req, res) => {
     isFirst: req.body.isFirst,
     depth: req.body.sceneDepth,
     prevSceneId: req.body.prevSceneId,
+    theme
   })
 
   const user = await User.findOne({ _id: userId });

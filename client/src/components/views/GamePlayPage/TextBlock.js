@@ -12,8 +12,6 @@ const CHOICE_NUM = 4;
 export const TextBlock = (props) => {
     let { cut_name, cut_script, setIsTyping, isTyping, theme } = props;
 
-    theme = 'atorney';
-
     return <>
         <div className={`text_window ${theme}`} >
             {
