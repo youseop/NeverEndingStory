@@ -56,7 +56,7 @@ function CharacterTab({ blobGame, setBlobGame, blobCharList, setBlobCharList, se
         //new Character
         if (indexNum.current === "-1") {
             setBlobGame(game => {
-                if(game.character.length){
+                if (game.character.length) {
                     marking = game.character[game.character.length - 1].marking + 1
                     console.log(game.character)
 
@@ -77,49 +77,58 @@ function CharacterTab({ blobGame, setBlobGame, blobCharList, setBlobCharList, se
         else {
             setBlobGame(game => {
                 marking = game.character[indexNum.current].marking
-                                                                //! blob FIRST
+                //! blob FIRST
                 game.character[indexNum.current].image_array = [...blobURL, ...game.character[indexNum.current].image_array]
                 return game
             })
         }
 
         console.log("marking:::", marking)
-        //! indexNum - 몇번째 페이지에서 dropzone을 눌렀는지 -- 새로운녀석때문에
-        setFileQueue(oldArray => [...oldArray, { type: "character", marking : marking, num:files.length, fileArray: files }])
+        
+        setFileQueue(oldArray => {
+            //! upload file 1 , 2 , 3 ...
+            let fileIdx = oldArray.findIndex(i => i.marking === marking)
+            if(fileIdx > -1){
+                oldArray[fileIdx].fileArray = [...files, ...oldArray[fileIdx].fileArray]
+            }
+            else{
+                [...oldArray, { type: "character", marking: marking, num: files.length, fileArray: files }]
+            }
+        })
         setIsUpdate(num => num + 1)
 
     };
 
     const characterDelete = () => {
         let characterMarking;
-        
+
         setBlobGame(game => { // delete for blob
             characterMarking = game.character[charPageNum.current].marking
-            game.character.splice(charPageNum.current,1)
+            game.character.splice(charPageNum.current, 1)
 
             return game
         })
 
         setFileQueue(oldArray => {  // delete for files
-            let fileIdx = oldArray.findIndex(i=> i.marking === characterMarking)
+            let fileIdx = oldArray.findIndex(i => i.marking === characterMarking)
             console.log("file DELETE ! ", fileIdx, characterMarking)
             if (fileIdx > -1)
-                oldArray.splice(fileIdx,1)
+                oldArray.splice(fileIdx, 1)
             return oldArray
         })
-        setIsUpdate(num => num+1)
+        setIsUpdate(num => num + 1)
     }
 
     const characterSplice = (event) => {
         let characterMarking;
         const idx = event.target.id
-        setBlobGame(game=>{
+        setBlobGame(game => {
             characterMarking = game.character[charPageNum.current].marking
-            if (game.character[charPageNum.current].image_array.length > 1 ){
-                game.character[charPageNum.current].image_array.splice(idx,1)
+            if (game.character[charPageNum.current].image_array.length > 1) {
+                game.character[charPageNum.current].image_array.splice(idx, 1)
             }
-            else{
-                game.character.splice(charPageNum.current,1)
+            else {
+                game.character.splice(charPageNum.current, 1)
             }
             return game
         })
@@ -128,17 +137,17 @@ function CharacterTab({ blobGame, setBlobGame, blobCharList, setBlobCharList, se
         setFileQueue(oldArray => {
 
             let fileIdx = oldArray.findIndex(i => i.marking === characterMarking)
-            if(fileIdx > -1){
-                if(oldArray[fileIdx].num > idx){    // just for blob
-                    if(oldArray[fileIdx].fileArray.length > 1){    // splice
-                        oldArray[fileIdx].fileArray.splice(idx,1)
+            if (fileIdx > -1) {
+                if (oldArray[fileIdx].num > idx) {    // just for blob
+                    if (oldArray[fileIdx].fileArray.length > 1) {    // splice
+                        oldArray[fileIdx].fileArray.splice(idx, 1)
                         oldArray[fileIdx].num--;
                     }
-                    else{
-                        oldArray.splice(fileIdx,1)  // delete
+                    else {
+                        oldArray.splice(fileIdx, 1)  // delete
                     }
                 }
-                else{
+                else {
                     console.log("already uploaded file!!!")
                 }
             }
