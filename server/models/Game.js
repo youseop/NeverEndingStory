@@ -62,6 +62,14 @@ const gameSchema = mongoose.Schema({
     type: Number,
     default: 1
   },
+  parentGameId:{
+    type: Schema.Types.ObjectId,
+    ref : 'Game'
+  },
+  childrenGameId:[{
+    type: Schema.Types.ObjectId,
+    ref :'Game'
+  }]
 }, {timestamps: true})
 
 const Game = mongoose.model('Game', gameSchema);

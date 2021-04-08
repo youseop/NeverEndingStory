@@ -608,7 +608,6 @@ router.post("/fork", async (req,res) => {
     //! gameId를 받아서, game 을 검색한다.
     const {userId, parentGameId, title, description,category} = req.body
     const parentGame = await Game.findOne({_id:parentGameId})
-    console.log("parentGame ? ", parentGame)
     const game= new Game();
     game.title = sanitize(title);
     game.description = sanitize(description);
@@ -622,7 +621,6 @@ router.post("/fork", async (req,res) => {
     game.character = parentGame.character;
     game.bgm = parentGame.bgm;
     game.sound = parentGame.sound;
-
 
     game.save((err,game) => {
         if(err) return res.json({success: false, err});
