@@ -43,7 +43,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
     };
 
     const onDescriptionChange = (event) => {
-        setDescription(event.currentTarget.value);
+        setDescription(event.currentTarget.value.substr(0, 5000));
     };
 
     const onPrivateChange = (event) => {

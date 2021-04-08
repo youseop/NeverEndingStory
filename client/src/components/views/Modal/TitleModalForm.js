@@ -8,7 +8,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGame
         setGameTitle(event.currentTarget.value.substr(0, 30));
     };
     const onDescriptionChange = (event) => {
-        setGameDescription(event.currentTarget.value);
+        setGameDescription(event.currentTarget.value.substr(0, 5000));
     }
     const onCartegoryChange = (event) => {
         let cat_idx = event.currentTarget.value;
@@ -38,6 +38,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGame
                 ]}>
                     <textarea
                         className="title_modalform_title"
+                        required="required"
                         maxLength={31}
                         onChange={onTitleChange}
                     />
@@ -46,7 +47,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGame
                     { required: true, message: "게임 설명을 입력해주세요!" },
                     { max: 1000, message: '설명은 1000자 이내여야 합니다.' },
                 ]}>
-                    <textarea maxLength={1001} onChange={onDescriptionChange} className="title_modalform_description" />
+                    <textarea maxLength={1001} onChange={onDescriptionChange} className="title_modalform_description" required="required"/>
                 </Form.Item>
                 <Form.Item label="category" name="description">
                 <select onChange={onCartegoryChange}>

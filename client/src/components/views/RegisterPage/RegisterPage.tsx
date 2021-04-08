@@ -42,12 +42,13 @@ function RegisterPage(props: RegisterPageProps) {
       }}
       validationSchema={Yup.object().shape({
         nickname: Yup.string()
+          .max(15,'닉네임은 최대 15글자까지 입력 가능합니다.')
           .required('필수 정보입니다.'),
         email: Yup.string()
           .email('이메일 형식이 아닙니다.')
           .required('필수 정보입니다.'),
         password: Yup.string()
-          .min(6, '패스워드는 최소 6글자 이상이어야합니다.')
+          .min(6, '패스워드는 최소 6글자 이상 입력해주세요.')
           .required('필수 정보입니다.'),
         confirmPassword: Yup.string()
           .oneOf([Yup.ref('password'), undefined], '패스워드가 틀립니다.')
