@@ -86,7 +86,7 @@ const ProductScreen = (props) => {
   try {
     [isFullscreen, setIsFullscreen] = useFullscreenStatus(maximizableElement);
   } catch (e) {
-    errorMessage = "Fullscreen not supported";
+    errorMessage = "";
     isFullscreen = false;
     setIsFullscreen = undefined;
   }
@@ -454,7 +454,7 @@ const ProductScreen = (props) => {
                       좋아요: {thumbsUp}
                     </button>
                     <button
-                      className="gamePlay__btn"
+                      className="gamePlay__btn gameView"
                     >
                       조회수: {view}
                     </button>

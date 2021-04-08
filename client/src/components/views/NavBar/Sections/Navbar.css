@@ -134,6 +134,8 @@
 @media (max-width: 767px) {
   .menu__mobile-button {
     display: inline-block !important;
+    position: relative;
+    bottom: 10px;
   }
 
   .menu_rigth {

@@ -163,6 +163,9 @@ export default function GameDetailPage(props) {
     const onClick_adminToggle = () => {
         setIsAdmin((state) => !state)
     }
+
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+
     if (query.invitation === "true") {
         return (
             <Invitaion
@@ -186,6 +189,7 @@ export default function GameDetailPage(props) {
                                 `${config.SERVER}/${gameDetail?.thumbnail}`}
                         alt="thumbnail"
                     />
+                    <div className="detailPage__gradation"></div>
                     <div className="detailPage__contributer_container">
                         <div className="detailPage__contributer_title"> {ContributerCnt}명이 함께하는 이야기</div>
                         <TopRatingContributer
@@ -223,7 +227,6 @@ export default function GameDetailPage(props) {
                             {isPlayed ? "이어하기" : "시작하기"}
                         </div>
                     </div>
-                    <div className="detailPage__gradation"></div>
                     <div className="detailPage__UPTitle">
                         {gameDetail?.title}
                     </div>
