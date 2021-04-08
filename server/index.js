@@ -11,11 +11,12 @@ const redis = require('redis')
 const session = require("express-session")
 const RedisStore = require('connect-redis')(session)
 dotenv.config();
-
+ 
 const config = require("./config/key");
 const { logger } = require("./config/logger");
 const sessionOption =require("./config/session")
 
+const {sanitize} = require("./lib/sanitize")
 const app = express();
 const connect = mongoose.connect(config.mongoURI,
   {

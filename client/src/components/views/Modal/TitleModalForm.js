@@ -49,7 +49,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGame
                 ]}>
                     <textarea maxLength={1001} onChange={onDescriptionChange} className="title_modalform_description" required="required"/>
                 </Form.Item>
-                <Form.Item label="category" name="description">
+                <Form.Item label="카테고리" name="description">
                 <select onChange={onCartegoryChange}>
                     {CategoryOptions.map((item, index) => (
                         <option key={index} value={item.value}>
