@@ -489,6 +489,10 @@
   object-fit : contain;
   position: static;
   height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 .detailPage__thumbnail {
   width: 100%;
