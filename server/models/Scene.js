@@ -56,8 +56,8 @@ const sceneSchema = mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: "Game",
     },
-    type: Schema.Types.ObjectId,
     writer: {
+        type: Schema.Types.ObjectId,
         ref: "User",
     },
     recommend: {
