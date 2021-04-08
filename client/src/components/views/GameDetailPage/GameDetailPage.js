@@ -153,20 +153,6 @@ export default function GameDetailPage(props) {
         document.body.removeChild(urlInput);
         message.info("링크가 복사되었습니다.")
     }
-
-    const [isDelete, setIsDelete] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    const onClick_deleteToggle = () => {
-        setIsDelete((state) => !state)
-    }
-
-    const onClick_adminToggle = () => {
-        setIsAdmin((state) => !state)
-    }
-
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
-
     if (query.invitation === "true") {
         return (
             <Invitaion
