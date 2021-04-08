@@ -63,7 +63,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
         }
 
         message.success(
-            "첫 Scene을 생성해주세요. 오른쪽의 버튼을 활용해 이미지들을 추가할 수 있습니다."
+            "이야기를 시작해주세요. 오른쪽의 버튼을 활용해 이미지들을 추가할 수 있습니다."
         );
 
         setTimeout(() => {
