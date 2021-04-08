@@ -16,8 +16,8 @@ interface RegisterPageProps {
 }
 
 interface LocationState {
-    snsId : Number;
-    snsProvider:string;
+    snsId: Number;
+    snsProvider: string;
 }
 
 interface RegisterUser {
@@ -31,14 +31,14 @@ interface RegisterUser {
 
 interface FormType {
     nickname: string;
-    snsId : Number;
-    snsProvide : string;
+    snsId: Number;
+    snsProvide: string;
 }
 
 function PassportRegisterPage(props: RegisterPageProps) {
     const dispatch: any = useDispatch();
     const location = useLocation<LocationState>();
-    const { snsId, snsProvider} = location.state;
+    const { snsId, snsProvider } = location.state;
     return (
         <Formik
             initialValues={{
@@ -46,6 +46,7 @@ function PassportRegisterPage(props: RegisterPageProps) {
             }}
             validationSchema={Yup.object().shape({
                 nickname: Yup.string()
+                    .max(15, '닉네임은 최대 15글자까지 입력 가능합니다.')
                     .required('필수 정보입니다.'),
             })}
             onSubmit={(values, { setSubmitting }) => {
@@ -63,7 +64,7 @@ function PassportRegisterPage(props: RegisterPageProps) {
 
                     let dataToSubmit = {
                         nickname: values.nickname,
-                        snsId : snsId,
+                        snsId: snsId,
                         snsProvider: snsProvider,
                         image: "https://i.imgur.com/rF80MBo.png",
                         // image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`

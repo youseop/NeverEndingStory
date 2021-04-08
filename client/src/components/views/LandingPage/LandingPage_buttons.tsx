@@ -31,6 +31,16 @@ export function NewGameButton({ replace }: newGameButtonProps) {
 
     const uploadGameFrame = async (title: String, description: any) => {
         // tmp scene create
+        if(!title.length){
+            message.error("제목을 입력해주세요.")
+            return;
+        }
+        if(!description.length){
+            message.error("게임 설명을 입력해주세요.")
+            return;
+        }
+        
+        
         const gameResponse: responseTypes = await Axios.post("/api/game/uploadgameframe", { title, description, category });
 
         if (!gameResponse.data.success) {
