@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Modal, Form, message, Input } from "antd";
 import "./TitleModalForm.css"
 import { CategoryOptions } from "../Scene/SceneMakePage/UploadModal";
 
-const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGameDescription, setCategory }) => {
+const ModalFormComponent = ({ type,visible, onCancel, onCreate, setGameTitle, setGameDescription, setCategory }) => {
+    
     const onTitleChange = (event) => {
         setGameTitle(event.currentTarget.value.substr(0, 30));
     };
@@ -15,6 +16,13 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGame
         setCategory(event.currentTarget[cat_idx].text);
     };
 
+    const msg = useRef(null)
+    if(type === "fork"){
+        msg.current = "이 게임의 모든 캐릭터, 배경사진, 배경음악, 효과음이 복사됩니다."
+    }
+    else if(type === "create"){
+        msg.current = "여러분의 스토리를 제작해보세요!"
+    }
     return (
         <Modal
             visible={visible}
@@ -31,6 +39,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGame
                 fontWeight: "300"
             }}
         >
+            <div>{msg.current}</div>
             <Form layout="vertical">
                 <Form.Item label="제목" name="title" rules={[
                     { required: true, message: "제목을 입력해주세요!" },
@@ -43,13 +52,13 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setGameTitle, setGame
                         onChange={onTitleChange}
                     />
                 </Form.Item>
-                <Form.Item label="게임 설명" name="description" rules={[
-                    { required: true, message: "게임 설명을 입력해주세요!" },
+                <Form.Item label="스토리 설명" name="description" rules={[
+                    { required: true, message: "스토리 설명을 입력해주세요!" },
                     { max: 1000, message: '설명은 1000자 이내여야 합니다.' },
                 ]}>
                     <textarea maxLength={1001} onChange={onDescriptionChange} className="title_modalform_description" required="required"/>
                 </Form.Item>
-                <Form.Item label="category" name="description">
+                <Form.Item label="카테고리" name="description">
                 <select onChange={onCartegoryChange}>
                     {CategoryOptions.map((item, index) => (
                         <option key={index} value={item.value}>

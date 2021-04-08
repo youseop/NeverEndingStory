@@ -275,7 +275,7 @@ function GameBuildUpPage(props) {
     return (
         <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
             <div style={{ marginBottom: "2rem" }}>
-                <Title level={4}>게임에 필요한 캐릭터를 추가해주세요</Title>
+                <Title level={4}>스토리에 필요한 캐릭터를 추가해주세요</Title>
             </div>
             <Form>
                 <div

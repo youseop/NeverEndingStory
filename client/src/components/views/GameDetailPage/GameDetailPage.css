@@ -375,6 +375,10 @@
   font-weight: 100;
   color: #E5E5E5;
 }
+.detailPage__option{
+  display:flex;
+  
+}
 
 .loader_container {
   display:flex;

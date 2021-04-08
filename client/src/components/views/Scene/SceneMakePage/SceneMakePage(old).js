@@ -310,7 +310,7 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
-        if (isTmp || window.confirm("게임 제작을 완료하시겠습니까?")) {
+        if (isTmp || window.confirm("스토리 제작을 완료하시겠습니까?")) {
             const variable = {
                 gameId: gameId,
                 sceneId: sceneId,
@@ -322,10 +322,10 @@ const SceneMakePage = (props) => {
             if (response.data.success) {
                 dispatch(detachCharacter());
                 message
-                    .loading("게임 업로드 중..", 1.0)
+                    .loading("스토리 업로드 중..", 1.0)
                     .then(() => {
                         if (!isTmp) {
-                            message.success("게임 제작이 완료되었습니다.", 1.0)
+                            message.success("스토리 제작이 완료되었습니다.", 1.0)
                         }
                         else {
                             message.success("업로드 성공.")
@@ -398,7 +398,7 @@ const SceneMakePage = (props) => {
                 if (response.data.success) {
                     setGameDetail(response.data.gameDetail)
                 } else {
-                    alert('게임 정보를 로딩하는데 실패했습니다.')
+                    alert('스토리 정보를 로딩하는데 실패했습니다.')
                 }
             })
     }, [reload, gameId])
