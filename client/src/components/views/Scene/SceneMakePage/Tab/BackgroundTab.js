@@ -8,23 +8,38 @@ import "./Upload.css";
 import AssetLibraryModal from "../AssetLibraryModal"
 
 
-function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList, assetUsedFlag, blobAssetList }) {
+function BackgroundTab({ blobGame, setBlobGame, setFileQueue, gameDetail, setTypeQueue, setBackBlobList, backBlobList, assetUsedFlag, blobAssetList }) {
     const [LibraryModalVisible, setLibraryModalVisible] = useState(false)
     const [backgroundCards, setBackgroundCards] = useState("");
     const [blobCards, setBlobCards] = useState("");
     const onDrop = (files) => {
+        let blobURL = []
+        let blobBackgroundList = []
         for (var i = 0; i < files.length; i++) {
             if (!files[i]) {
                 message.error("10MB 이하의 이미지 파일을 업로드해주세요.");
                 return;
             }
-            setFileQueue(oldArray => [...oldArray, files[i]])
-            setTypeQueue(oldArray => [...oldArray, 1])
-            setBackBlobList(oldArray => [...oldArray, URL.createObjectURL(files[i])])
+            let curURL = URL.createObjectURL(files[i])
+            blobURL.push(curURL)
+            blobBackgroundList = [...blobBackgroundList, {
+                name: files[i],
+                image: curURL
+            }]
         }
+        setBlobGame(game => [...blobBackgroundList, ...game.background])
+        //! 삭제할때는??
+        setFileQueue(oldArray => [...oldArray, {type: "background", num:files.Array, fileArray:files}])
+        
     };
 
 
+
+    const backgroundDelete = (event) => {
+        setBlobGame(game => {
+            game.background = [game.background
+        })
+    }
     // 왜 인자로 넘어온 game이 처음에 존재하지 않는지 모르겠음
     useEffect(() => {
         if (gameDetail.background)
@@ -46,6 +61,12 @@ function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList
                         src={element}
                         alt="img"
                     />
+                    <div
+                        id={index}
+                        className="characterTab_image_delete"
+                        onClick={backgroundDelete}>
+                        삭제하기
+                        </div>
                 </div>
             }))
     }, [backBlobList]);

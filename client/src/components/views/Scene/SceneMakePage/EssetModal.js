@@ -160,9 +160,7 @@ const EssetModal = ({ setGameDetail, gameDetail, gameId, visible, setTag, tag, s
           // which character, which place
           let characterIdx = tmpBlobGame.character.findIndex(character => character.marking === typeList[i].marking)
           //! blob -> REAL
-          console.log("characterIdx : ", characterIdx, tmpBlobGame.character)
           let fileIdx = tmpBlobGame.character[characterIdx].image_array.findIndex(file => file.substr(0, 5) === 'blob:')
-          console.log("fileIdx : ",fileIdx)
           tmpBlobGame.character[characterIdx].image_array[fileIdx] = filePath
         }
         else if (typeList[i].type === "background") {
@@ -193,10 +191,6 @@ const EssetModal = ({ setGameDetail, gameDetail, gameId, visible, setTag, tag, s
     else {
       message.error("update 오류가 발생했습니다.")
     }
-
-
-
-
   }
 
 
@@ -502,6 +496,8 @@ const EssetModal = ({ setGameDetail, gameDetail, gameId, visible, setTag, tag, s
             // setCharFileQueue={setCharFileQueue}
             // setCharBlobList={setCharBlobList}
 
+            blobCharList={blobCharList}
+            setBlobCharList={setBlobCharList}
             assetUsedFlag={tempAssetUsedFlag}
             blobAssetList={blobAssetList}
 
@@ -509,8 +505,6 @@ const EssetModal = ({ setGameDetail, gameDetail, gameId, visible, setTag, tag, s
             blobGame={blobGame}
             setBlobGame={setBlobGame}
             setFileQueue={setFileQueue}
-            blobCharList={blobCharList}
-            setBlobCharList={setBlobCharList}
 
           />
         }
@@ -523,6 +517,10 @@ const EssetModal = ({ setGameDetail, gameDetail, gameId, visible, setTag, tag, s
             blobBackList={blobBackList}
             assetUsedFlag={tempAssetUsedFlag}
             blobAssetList={blobAssetList}
+
+          blobGame={blobGame}
+          setBlobGame={setBlobGame}
+          setFileQueue={setFileQueue}
 
           />
         }
