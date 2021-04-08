@@ -36,7 +36,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
             return;
         }
         if(!description.length){
-            message.error("게임 설명을 입력해주세요.")
+            message.error("스토리 설명을 입력해주세요.")
             return;
         }
         
@@ -93,7 +93,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
     return (
         <>
             <button className="button-newgame" onClick={handleClick}>
-                NEW 게임 만들기
+                NEW 스토리 만들기
             </button>
 
             <TitleModalForm

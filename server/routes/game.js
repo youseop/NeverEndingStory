@@ -604,4 +604,31 @@ router.get("/recent-games", check, async (req, res) => {
 
 })
 
+router.post("/fork", async (req,res) => {
+    //! gameId를 받아서, game 을 검색한다.
+    const {userId, parentGameId, title, description,category} = req.body
+    const parentGame = await Game.findOne({_id:parentGameId})
+    console.log("parentGame ? ", parentGame)
+    const game= new Game();
+    game.title = sanitize(title);
+    game.description = sanitize(description);
+    game.category = category;
+    game.parentId = parentGameId;
+  
+
+    
+    //! game.background - game.character - game.bgm - game.sound 복사
+    game.background = parentGame.background
+    game.character = parentGame.character;
+    game.bgm = parentGame.bgm;
+    game.sound = parentGame.sound;
+
+
+    game.save((err,game) => {
+        if(err) return res.json({success: false, err});
+        res.status(200).json({success:true, game})
+    })
+})
+
+
 module.exports = router;
