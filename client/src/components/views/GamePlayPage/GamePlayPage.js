@@ -12,7 +12,7 @@ import { socket } from "../../App"
 import { loadEmptyNum, savePrevScene } from "../../../_actions/sync_actions"
 import useKey from "../../functions/useKey";
 import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
-import { navbarControl,footerControl } from "../../../_actions/controlPage_actions";
+import { navbarControl, footerControl } from "../../../_actions/controlPage_actions";
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
 import { useLocation } from "react-router";
 import TreeMapPopup from "./TreeMap";
@@ -46,7 +46,7 @@ function useConstructor(callBack = () => { }) {
 
 //! playscreen
 const ProductScreen = (props) => {
-  const {full} = props?.match?.params;
+  const { full } = props?.match?.params;
   const location = useLocation();
 
   const { gameId, sceneId } = location.state;
@@ -264,7 +264,7 @@ const ProductScreen = (props) => {
 
   //* navigation bar and footer control
   useEffect(() => {
-    dispatch(navbarControl(false));
+    // dispatch(navbarControl(false));
     dispatch(footerControl(false));
   }, []);
 
@@ -298,7 +298,7 @@ const ProductScreen = (props) => {
           dispatch(gameLoadingPage(0));
           dispatch(gameLoadingPage(6));
         } else {
-          if(response.data.msg)
+          if (response.data.msg)
             message.error(response.data.msg);
           props.history.replace(`/game/${gameId}`);
         }
@@ -321,7 +321,7 @@ const ProductScreen = (props) => {
   let newScreenSize;
   if (windowWidth * ratio > windowHeight) {
     newScreenSize = (full === "full") ? {
-      width: `${windowHeight/ ratio}px`,
+      width: `${windowHeight / ratio}px`,
       height: `${windowHeight}px`,
       minWidth: `${minSize / ratio}px`,
       minHeight: `${minSize}px`,
@@ -335,7 +335,7 @@ const ProductScreen = (props) => {
   } else {
     newScreenSize = (full === "full") ? {
       width: `${windowWidth}px`,
-      height: `${windowWidth* ratio}px`,
+      height: `${windowWidth * ratio}px`,
       minWidth: `${minSize}px`,
       minHeight: `${minSize * ratio}px`,
     } : {
@@ -438,7 +438,7 @@ const ProductScreen = (props) => {
             <div className="gamePlay__btn_container">
               <div
                 className="gamePlay__btn"
-                onClick={(e)=>{mute(); e.stopPropagation()}}
+                onClick={(e) => { mute(); e.stopPropagation() }}
               >
                 {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
               </div>
@@ -447,7 +447,7 @@ const ProductScreen = (props) => {
                   <>
                     <button
                       className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
-                      onClick={(e)=>{onClick_thumbsUp(); e.stopPropagation()}}
+                      onClick={(e) => { onClick_thumbsUp(); e.stopPropagation() }}
                     >
                       좋아요: {thumbsUp}
                     </button>
@@ -460,26 +460,26 @@ const ProductScreen = (props) => {
                 }
                 <button
                   className="gamePlay__btn"
-                  onClick={(e) => {setHistoryMap((state) => !state); e.stopPropagation()}}
+                  onClick={(e) => { setHistoryMap((state) => !state); e.stopPropagation() }}
                 >
                   미니맵
                 </button>
                 <button
                   className="gamePlay__btn"
-                  onClick={(e) => {setLog((state) => !state); e.stopPropagation()}}
+                  onClick={(e) => { setLog((state) => !state); e.stopPropagation() }}
                 >
                   대화기록
                 </button>
                 <button
                   className="gamePlay__btn"
-                  onClick={(e) => {setDislike((state) => !state); e.stopPropagation()}}
+                  onClick={(e) => { setDislike((state) => !state); e.stopPropagation() }}
                 >
                   신고
                 </button>
               </div>
               {errorMessage ? (
                 <button
-                  onClick={(e) =>{
+                  onClick={(e) => {
                     alert(
                       "Fullscreen is unsupported by this browser, please try another browser."
                     );
@@ -491,11 +491,11 @@ const ProductScreen = (props) => {
                   {errorMessage}
                 </button>
               ) : isFullscreen ? (
-                <button onClick={(e) => {handleExitFullscreen(); e.stopPropagation()}} className="gamePlay__btn">
+                <button onClick={(e) => { handleExitFullscreen(); e.stopPropagation() }} className="gamePlay__btn">
                   <FontAwesomeIcon icon={faCompress} />
                 </button>
               ) : (
-                <button ref={fullButton} onClick={(e)=>{setIsFullscreen(); e.stopPropagation()}} className="gamePlay__btn">
+                <button ref={fullButton} onClick={(e) => { setIsFullscreen(); e.stopPropagation() }} className="gamePlay__btn">
                   <FontAwesomeIcon icon={faExpand} />
                 </button>
               )}

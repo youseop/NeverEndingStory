@@ -131,11 +131,11 @@
   padding: 14px 24px !important;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .menu__mobile-button {
     display: inline-block !important;
     position: relative;
-    bottom: 10px;
+    bottom: 0px;
   }
 
   .menu_rigth {
@@ -145,4 +145,9 @@
   .menu__logo a {
     margin-left: 5px;
   }
+  .menu__logo>a>svg {
+    width:60px;
+    height:30px;
+  }
 }
+

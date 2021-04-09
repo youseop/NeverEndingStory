@@ -38,7 +38,7 @@ function NavBar() {
     };
   }
   return (
-    <nav className="menu" style={style}>
+    <div id="menu" className="menu" style={style}>
       <div className="menu__logo">
         <Link to="/"><Logo_Icon/></Link>
       </div>
@@ -65,7 +65,7 @@ function NavBar() {
           <RightMenu mode="inline"/>
         </Drawer>
       </div>
-    </nav>
+    </div>
   );
 }
 

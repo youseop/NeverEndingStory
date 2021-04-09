@@ -48,11 +48,14 @@ const SceneMakePage = (props) => {
     // });
 
     const isMobile = useRef(false);
-    const rootDom = document.getElementById("root");
     useLayoutEffect(() => {
+        const rootDom = document.getElementById("root");
         const footer = rootDom.getElementsByClassName("footer-container");
         if (footer[0])
             footer[0].remove();
+        const nav = document.getElementById("menu");
+        nav.className += " isMake"
+        console.log(123, nav)
         var filter = "win16|win32|win64|mac";
         if (navigator.platform) {
             isMobile.current = filter.indexOf(navigator.platform.toLowerCase()) < 0;
@@ -188,7 +191,7 @@ const SceneMakePage = (props) => {
                 }
 
                 // 임시저장된 녀석 불러오기
-                setEmptyCutList(Array.from({ length: 30 - scene.cutList.length}, () => 0))
+                setEmptyCutList(Array.from({ length: 30 - scene.cutList.length }, () => 0))
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
                 dispatch(setCharacterList({ CharacterList: tmpFirstCut.characterList }));
@@ -732,6 +735,8 @@ const SceneMakePage = (props) => {
         return () => {
             bgm_audio.pause();
             sound_audio.pause();
+            const nav = document.getElementById("menu");
+            nav.className = "menu"
         };
     }, []);
 
@@ -823,15 +828,15 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_bgm_name">{BgmFile.name}</div>
                                 </div>
                             ) : (
-                                    <div
-                                        className="scene__sound_box"
-                                        onClick={onClick_bgm_box}
-                                    >
-                                        <StopOutlined
-                                            className="scene__sound_icon bgm" />
-                                        <div className="scene__sound_bgm_name">BGM</div>
-                                    </div>
-                                )}
+                                <div
+                                    className="scene__sound_box"
+                                    onClick={onClick_bgm_box}
+                                >
+                                    <StopOutlined
+                                        className="scene__sound_icon bgm" />
+                                    <div className="scene__sound_bgm_name">BGM</div>
+                                </div>
+                            )}
                             {SoundFile?.name ? (
                                 <div
                                     className="scene__sound_box"
@@ -850,15 +855,15 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_sound_name">{SoundFile.name}</div>
                                 </div>
                             ) : (
-                                    <div
-                                        className="scene__sound_box"
-                                        onClick={onClick_sound_box}
-                                    >
-                                        <StopOutlined
-                                            className="scene__sound_icon sound" />
-                                        <div className="scene__sound_sound_name">Sound</div>
-                                    </div>
-                                )}
+                                <div
+                                    className="scene__sound_box"
+                                    onClick={onClick_sound_box}
+                                >
+                                    <StopOutlined
+                                        className="scene__sound_icon sound" />
+                                    <div className="scene__sound_sound_name">Sound</div>
+                                </div>
+                            )}
                         </div>
                     </div>
 

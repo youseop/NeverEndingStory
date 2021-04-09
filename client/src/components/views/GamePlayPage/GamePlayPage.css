@@ -10,6 +10,7 @@
   height: calc(100vh + 15%);
   position: absolute;
   top: -15%;
+  /* background-color: aqua; */
 }
 .gamePlay__container_fullscreen{
   width: 100vw;
