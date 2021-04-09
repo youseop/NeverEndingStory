@@ -25,7 +25,7 @@ export default function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
 
-    
+
     const [gameDetail, setGameDetail] = useState({});
     const [sceneId, setSceneId] = useState([]);
     const [isMaking, setIsMaking] = useState(false);
@@ -163,19 +163,9 @@ export default function GameDetailPage(props) {
     const onClick_adminToggle = () => {
         setIsAdmin((state) => !state)
     }
-    if (query.invitation === "true") {
-        return (
-            <Invitaion
-                gameDetail={gameDetail}
-                playFirstScene={playFirstScene}
-            />
-        )
-    }
-    else if (totalSceneCnt) {
+    if (totalSceneCnt) {
         return (
             <div className="detailPage__container">
-
-                {/* 이미지 불러오는게 늦음 디버깅 필요 */}
                 <div className="detailPage__thumbnail_container">
                     <img
                         className="detailPage__thumbnail"
@@ -186,26 +176,25 @@ export default function GameDetailPage(props) {
                                 `${config.SERVER}/${gameDetail?.thumbnail}`}
                         alt="thumbnail"
                     />
-                    <div className="detailPage__contributer_container">
-                        <div className="detailPage__contributer_title"> {ContributerCnt}명이 함께하는 이야기</div>
-                        <TopRatingContributer
-                            contributerList={contributerList}
-                            creatorNickname={gameDetail?.creator?.nickname}
-                            totalSceneCnt={totalSceneCnt}
-                        />
-                    </div>
-                    <div className="detailPage__gamePlay">
-                        <div className="detailPage__gamePlay_container">
-                            <div className="detailPage__gamePlay_text">
-                                현재 스토리
+                    <div className="detailPage__gradation"></div>
+                </div>
+                <div className="detailPage__gamePlay">
+
+                    <div className="detailPage__UPTitle">
+                        {gameDetail?.title}
+                        <div className="detailPage__genre">
+                            <div style={{"display":"block"}}>
+                                작가:&nbsp;
+                                    <Link
+                                    to={`/profile/${gameDetail?.creator?._id}`}
+                                    className="bold_text"
+                                >
+                                    {gameDetail?.creator?.nickname?.substr(0, 20)}
+                                </Link>&nbsp;&nbsp;
+
                             </div>
-                            <div className="detailPage__gamePlay_sceneCntContainer">
-                                <div className="detailPage__gamePlay_sceneCnt">
-                                    {totalSceneCnt}
-                                </div>
-                                <div className="detailPage__gamePlay_cntText">
-                                    개
-                                </div>
+                            <div style={{"display":"block"}}>
+                                장르:&nbsp;{gameDetail?.category}&nbsp;
                             </div>
                         </div>
                         <div
@@ -222,69 +211,104 @@ export default function GameDetailPage(props) {
                             </div>
                             {isPlayed ? "이어하기" : "시작하기"}
                         </div>
-                    </div>
-                    <div className="detailPage__gradation"></div>
-                    <div className="detailPage__UPTitle">
-                        {gameDetail?.title}
-                    </div>
-                    <div className="detailPage__interaction">
-                        <div
-                            onClick={onClick_thumbsUp}
-                            className="detailPage__like"
-                        >
-                            {thumbsUp}
-                            {thumbsUpClicked ?
-                                <FontAwesomeIcon style={{ color: "red", marginLeft: "10px" }} icon={faHeart} />
-                                :
-                                <FontAwesomeIcon icon={faHeart} style={{ marginLeft: "10px" }} />
-                            }
+                        {isPlayed &&
+                            <div
+                                className="detailPage__gamePlayFromStart_link"
+                                onClick={() => playFirstScene(true)}
+                            >
+                                처음부터 하기
                         </div>
-                        <div className="detailPage__view">
-                            {view}
-                            <FontAwesomeIcon icon={faEye} style={{ marginLeft: "10px" }} />
+                        }
+                    </div>
+                    <div className="detailPage__contributer_container_box">
+                        <div className="detailPage__contributer_container">
+                            <div className="detailPage__contributer_title"> 가장 많은 기여를 한 사람</div>
+                            <TopRatingContributer
+                                contributerList={contributerList}
+                                creatorNickname={gameDetail?.creator?.nickname}
+                                totalSceneCnt={totalSceneCnt}
+                            />
+                        </div>
+                        <div className="detailPage__gamePlay_container_box">
+                            <div className="detailPage__gamePlay_container">
+                                <div className="detailPage__gamePlay_text">
+                                    현재 스토리
+                            </div>
+                                <div className="detailPage__gamePlay_sceneCntContainer">
+                                    <div className="detailPage__gamePlay_sceneCnt">
+                                        {totalSceneCnt}
+                                    </div>
+                                    <div className="detailPage__gamePlay_cntText">
+                                        개
+                                </div>
+                                </div>
+                            </div>
+                            <h1 style={{ "color": "white" }}>/</h1>
+                            <div className="detailPage__gamePlay_container">
+                                <div className="detailPage__gamePlay_text">
+                                    현재 기여자
+                            </div>
+                                <div className="detailPage__gamePlay_sceneCntContainer">
+                                    <div className="detailPage__gamePlay_sceneCnt">
+                                        {ContributerCnt}
+                                    </div>
+                                    <div className="detailPage__gamePlay_cntText">
+                                        명
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    {isPlayed &&
-                        <div
-                            className="detailPage__gamePlayFromStart_link"
-                            onClick={() => playFirstScene(true)}
-                        >
-                            처음부터 하기
-                        </div>
-                    }
                 </div>
                 <div className="detailPage__info_container">
-                    <div className="detailPage__genre">
-                        장르:
-                        <div className="bold_text">
-                            {gameDetail?.category}
-                        </div>
-                        작가:
-                        <Link
-                            to={`/profile/${gameDetail?.creator?._id}`}
-                            className="bold_text"
-                        >
-                            {gameDetail?.creator?.nickname?.substr(0, 20)}
+                    <div className="detailPage__info_bar">
+                        {gameDetail?.creator?._id?.toString() === user?.userData?._id &&
+                            <Link
+                                to={`/admin/${gameId}`}
+                                className="admin_btn"
+                            >
+                                스토리 미니맵
                         </Link>
-                        <span
-                            className="link_bttn"
-                            onClick={(e) => {
-                                pasteLink();
-                            }}>
-                            <FontAwesomeIcon
-                                icon={faLink}
-                            />
+                        }
+                        <div className="detailPage__interaction">
+                            <div className="detailPage__view">
+                                {view}
+                                <FontAwesomeIcon icon={faEye} style={{ marginLeft: "3px" }} />
+                            </div>
+                            <div
+                                onClick={onClick_thumbsUp}
+                                className="detailPage__like"
+                            >
+                                {thumbsUp}
+                                {thumbsUpClicked ?
+                                    <FontAwesomeIcon style={{ color: "red", marginLeft: "3px" }} icon={faHeart} />
+                                    :
+                                    <FontAwesomeIcon icon={faHeart} style={{ marginLeft: "3px" }} />
+                                }
+                            </div>
+                            <div
+                                className="link_bttn"
+                                onClick={(e) => {
+                                    pasteLink();
+                                }}>
+                                <FontAwesomeIcon
+                                    icon={faLink}
+                                />
                             초대링크복사
-                        </span>
+                        </div>
+                            <div
+                                className="link_bttn"
+                                onClick={(e) => {
+                                    pasteLink();
+                                }}>
+                                <FontAwesomeIcon
+                                    icon={faLink}
+                                />
+                            버전 추가
+                        </div>
+                        </div>
+
                     </div>
-                    { gameDetail?.creator?._id?.toString() === user?.userData?._id &&
-                        <Link 
-                            to={`/admin/${gameId}`}
-                            className="admin_btn"
-                        >
-                            스토리 미니맵
-                        </Link>
-                    }
                     <div className="detailPage__description">
                         {gameDetail?.description}
                     </div>
