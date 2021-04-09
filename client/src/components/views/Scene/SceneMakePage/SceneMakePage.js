@@ -48,18 +48,19 @@ const SceneMakePage = (props) => {
     // });
 
     const isMobile = useRef(false);
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) {
+        isMobile.current = true;
+    }
+
     useLayoutEffect(() => {
         const rootDom = document.getElementById("root");
         const footer = rootDom.getElementsByClassName("footer-container");
         if (footer[0])
             footer[0].remove();
+
         const nav = document.getElementById("menu");
         nav.className += " isMake"
-        console.log(123, nav)
-        var filter = "win16|win32|win64|mac";
-        if (navigator.platform) {
-            isMobile.current = filter.indexOf(navigator.platform.toLowerCase()) < 0;
-        }
     }, []);
 
     //! mobile focus event
@@ -752,11 +753,11 @@ const SceneMakePage = (props) => {
         return (
             <div className="wrapper">
                 <div className="title">
-                    <div
+                    {/* <div
                         className="title-btn"
                         onClick={() => setEssetModalState(5)}>
                         게임정보
-                    </div>
+                    </div> */}
                     <div>
                         <span>[{gameDetail?.title}]</span>
                         {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}

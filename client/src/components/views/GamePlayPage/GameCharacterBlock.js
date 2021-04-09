@@ -17,7 +17,8 @@ const GameCharacterBlock = (props) => {
             }}
           >
             <img
-              className="characterImg"
+              className={charSchema.reverse ?
+                "characterImg reverse" : "characterImg"}
               src={charSchema.image}
               alt="img"
             />

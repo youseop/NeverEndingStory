@@ -98,3 +98,9 @@
     padding-left: 5%;
   }
 }
+
+@media (max-width: 850px) {
+  .searchResult-background {
+    top: 52px;
+  }
+}

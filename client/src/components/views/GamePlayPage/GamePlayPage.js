@@ -46,6 +46,13 @@ function useConstructor(callBack = () => { }) {
 
 //! playscreen
 const ProductScreen = (props) => {
+
+  const isMobile = useRef(false);
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  if (isTouch) {
+    isMobile.current = true;
+  }
+
   const { full } = props?.match?.params;
   const location = useLocation();
 
@@ -265,7 +272,7 @@ const ProductScreen = (props) => {
   //* navigation bar and footer control
   useEffect(() => {
     // dispatch(navbarControl(false));
-    dispatch(footerControl(false));
+    // dispatch(footerControl(false));
   }, []);
 
   //* game pause control
@@ -357,6 +364,12 @@ const ProductScreen = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isFullscreen && isMobile.current)
+      window.screen.orientation.lock('landscape')
+    return () => {
+    };
+  }, [isFullscreen]);
 
   if (Scene?.cutList !== undefined) {
     if (i == 0 && isFirstCut) playMusic(0);

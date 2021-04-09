@@ -10,7 +10,6 @@
   height: calc(100vh + 15%);
   position: absolute;
   top: -15%;
-  /* background-color: aqua; */
 }
 .gamePlay__container_fullscreen{
   width: 100vw;
@@ -102,4 +101,10 @@
   object-fit: cover;
   margin:0;
   border-radius: 0;
+}
+
+@media (max-width:850px) {
+  .app{
+    background-color: aqua;
+  }
 }

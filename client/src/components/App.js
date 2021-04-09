@@ -55,13 +55,6 @@ function App() {
     })
   })
 
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    }
-  }, [isPortrait])
-
   if (loaded) {
     return (
       <Suspense fallback={(<div>Loading...</div>)}>
@@ -76,7 +69,7 @@ function App() {
             <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
             <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
             <Route path="/gameplay/:full" component={Valid(Auth(GamePlayPage, null))} />
-            <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />
+            <Route path="/gameplay" component={Auth(GamePlayPage, null)} />
             <Route path="/admin/:gameId" component={Auth(AdminPage, true)} />
             <Route exact path="/scene/make" component={isPortrait ? PortraitWarning : Valid(Auth(SceneMakePage, true))} />
           </Switch>
