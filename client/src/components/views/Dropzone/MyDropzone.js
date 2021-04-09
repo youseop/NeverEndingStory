@@ -21,7 +21,6 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL, type, icon }) 
         onDrop={onDrop}
         multiple={multiple}
         maxSize={maxSize} // 10MB + 1
-
         accept={accept}
     >
 

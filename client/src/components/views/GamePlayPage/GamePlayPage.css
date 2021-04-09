@@ -131,9 +131,8 @@
     position: fixed !important;
   }
   .gamePlay__container{
-    height: calc(100vh);
+    height: calc(52px + 56vw) !important;
     top: 0%;
-    /* background-color: orange; */
   }
 
   .gamePlay__btn_container {
