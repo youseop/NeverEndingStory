@@ -46,6 +46,19 @@ const SceneMakePage = (props) => {
     //     // Chrome에서는 returnValue 설정이 필요함
     //     event.returnValue = '';
     // });
+    const [isPortrait, setIsPortrait] = useState(window.matchMedia('(orientation: portrait)').matches);
+    const handleResize = () => {
+        const newState = window.matchMedia('(orientation: portrait)').matches;
+        if (newState !== isPortrait)
+            setIsPortrait(window.matchMedia('(orientation: portrait)').matches);
+    }
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, [isPortrait])
 
     const isMobile = useRef(false);
     const isTouch = window.matchMedia('(pointer: coarse)').matches;

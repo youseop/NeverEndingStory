@@ -39,14 +39,14 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .gamePlay__btn {
   all: unset;
   color: rgb(182, 182, 182);
-  padding: 0px 10px;
+  padding: 0px 5px;
   border-radius: 3px;
-  margin: 2px;
+  margin: 0.35vh;
   font-size: bold;
   transition-duration: 0.2s;
   font-size: 0.9rem;
@@ -58,9 +58,9 @@
 .gamePlay__btnClicked {
   all: unset;
   color: rgb(179, 149, 149);
-  padding: 5px 10px;
+  padding: 0px 5px;
   border-radius: 3px;
-  margin: 2px;
+  margin: 0.35vh;
   font-size: bold;
   transition-duration: 0.2s;
   font-size: 0.9rem;
@@ -103,8 +103,58 @@
   border-radius: 0;
 }
 
-@media (max-width:850px) {
-  .app{
-    background-color: aqua;
+.gamePlay__btn.sound{
+  /* font-size: 0rem; */
+}
+.gamePlay__btn.sound>svg{
+  width:1.2rem;
+  vertical-align: -0.4rem;
+  color: rgb(182, 182, 182) !important;
+}
+
+.gamePlay__btn.full{
+  font-size: 1.1rem;
+}
+@media (max-width:850px) and (orientation:landscape){
+  .menu.isPlay{
+    position: absolute !important;
+  }
+
+  .backgroundImg_container {
+    width:70vw !important;
+    height: 39vw !important;
+  }
+}    
+
+@media (max-width:850px) and (orientation:portrait){    
+  .menu.isPlay{
+    position: fixed !important;
+  }
+  .gamePlay__container{
+    height: calc(100vh);
+    top: 0%;
+    /* background-color: orange; */
+  }
+
+  .gamePlay__btn_container {
+    /* background-color: yellow; */
+  }
+  .gamePlay__btn {
+    padding: 0px 0px;
+    /* background-color: blueviolet; */
+  }
+  .gamePlay__btn.full{
+    margin-right: 1vh;
+  }
+  .gamePlay__btnClicked {
+    padding: 0px 0px;
+  }
+
+  .backgroundImg_container {
+    position: fixed;
+    transform: translateY(0%);
+    top:52px;
+    width:100vw !important;
+    height: 56vw !important;
   }
 }

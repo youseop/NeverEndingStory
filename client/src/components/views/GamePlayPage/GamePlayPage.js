@@ -2,7 +2,7 @@ import "./GamePlayPage.css";
 import "./GamePlaySlider.css";
 import GameCharacterBlock from "./GameCharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
 import HistoryMapPopup from "./HistoryMap";
@@ -52,6 +52,11 @@ const ProductScreen = (props) => {
   if (isTouch) {
     isMobile.current = true;
   }
+  useLayoutEffect(() => {
+    const nav = document.getElementById("menu");
+    nav.className += " isPlay"
+  }, []);
+
 
   const { full } = props?.match?.params;
   const location = useLocation();
@@ -361,12 +366,14 @@ const ProductScreen = (props) => {
     return () => {
       bgm_audio.pause();
       sound_audio.pause();
+      const nav = document.getElementById("menu");
+      nav.className = "menu"
     };
   }, []);
 
   useEffect(() => {
-    if (isFullscreen && isMobile.current)
-      window.screen.orientation.lock('landscape')
+    // if (isFullscreen && isMobile.current)
+    // window.screen.orientation.lock('landscape')
     return () => {
     };
   }, [isFullscreen]);
@@ -449,28 +456,25 @@ const ProductScreen = (props) => {
               i={i}
             />
             <div className="gamePlay__btn_container">
-              <div
-                className="gamePlay__btn"
-                onClick={(e) => { mute(); e.stopPropagation() }}
-              >
-                {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-              </div>
               <div>
-                {i === Scene.cutList.length - 1 &&
-                  <>
-                    <button
-                      className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
-                      onClick={(e) => { onClick_thumbsUp(); e.stopPropagation() }}
-                    >
-                      좋아요: {thumbsUp}
-                    </button>
-                    <button
-                      className="gamePlay__btn gameView"
-                    >
-                      조회수: {view}
-                    </button>
-                  </>
-                }
+                <button
+                  className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
+                  onClick={(e) => { onClick_thumbsUp(); e.stopPropagation() }}
+                >
+                  좋아요: {thumbsUp}
+                </button>
+                <button
+                  className="gamePlay__btn gameView"
+                >
+                  조회수: {view}
+                </button>
+                <button
+                  className="gamePlay__btn"
+                  onClick={(e) => { setDislike((state) => !state); e.stopPropagation() }}
+                >
+                  신고
+                </button>
+              </div><div>
                 <button
                   className="gamePlay__btn"
                   onClick={(e) => { setHistoryMap((state) => !state); e.stopPropagation() }}
@@ -483,35 +487,35 @@ const ProductScreen = (props) => {
                 >
                   대화기록
                 </button>
-                <button
-                  className="gamePlay__btn"
-                  onClick={(e) => { setDislike((state) => !state); e.stopPropagation() }}
+                <div
+                  className="gamePlay__btn sound"
+                  onClick={(e) => { mute(); e.stopPropagation() }}
                 >
-                  신고
-                </button>
+                  {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+                </div>
+                {errorMessage ? (
+                  <button
+                    onClick={(e) => {
+                      alert(
+                        "Fullscreen is unsupported by this browser, please try another browser."
+                      );
+                      e.stopPropagation()
+                    }
+                    }
+                    className="gamePlay__btn"
+                  >
+                    {errorMessage}
+                  </button>
+                ) : isFullscreen ? (
+                  <button onClick={(e) => { handleExitFullscreen(); e.stopPropagation() }} className="gamePlay__btn full">
+                    <FontAwesomeIcon icon={faCompress} />
+                  </button>
+                ) : (
+                  <button ref={fullButton} onClick={(e) => { setIsFullscreen(); e.stopPropagation() }} className="gamePlay__btn full">
+                    <FontAwesomeIcon icon={faExpand} />
+                  </button>
+                )}
               </div>
-              {errorMessage ? (
-                <button
-                  onClick={(e) => {
-                    alert(
-                      "Fullscreen is unsupported by this browser, please try another browser."
-                    );
-                    e.stopPropagation()
-                  }
-                  }
-                  className="gamePlay__btn"
-                >
-                  {errorMessage}
-                </button>
-              ) : isFullscreen ? (
-                <button onClick={(e) => { handleExitFullscreen(); e.stopPropagation() }} className="gamePlay__btn">
-                  <FontAwesomeIcon icon={faCompress} />
-                </button>
-              ) : (
-                <button ref={fullButton} onClick={(e) => { setIsFullscreen(); e.stopPropagation() }} className="gamePlay__btn">
-                  <FontAwesomeIcon icon={faExpand} />
-                </button>
-              )}
             </div>
             {/* <DislikePopup
               sceneId={sceneId}

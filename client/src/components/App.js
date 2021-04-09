@@ -24,7 +24,6 @@ import SearchResult from "./views/NavBar/Sections/SearchResult.tsx"
 import { LOCAL_HOST } from './Config';
 import './App.css';
 import AdminPage from './views/GameDetailPage/AdminPage';
-import PortraitWarning from './views/Etc/PortraitWarning';
 import { useConstructor } from './functions/useConstructor';
 import { useDispatch } from 'react-redux';
 import { auth } from '../_actions/user_actions';
@@ -42,18 +41,12 @@ window.onpopstate = () => {
 function App() {
   const [loaded, setloaded] = useState(false);
   const dispatch = useDispatch();
-  const [isPortrait, setIsPortrait] = useState(window.matchMedia('(orientation: portrait)').matches);
-  const handleResize = () => {
-    const newState = window.matchMedia('(orientation: portrait)').matches;
-    if (newState !== isPortrait)
-      setIsPortrait(window.matchMedia('(orientation: portrait)').matches);
-  }
-
   useConstructor(async () => {
     dispatch(auth()).then(() => {
       setloaded(true);
     })
   })
+
 
   if (loaded) {
     return (
@@ -71,7 +64,7 @@ function App() {
             <Route path="/gameplay/:full" component={Valid(Auth(GamePlayPage, null))} />
             <Route path="/gameplay" component={Auth(GamePlayPage, null)} />
             <Route path="/admin/:gameId" component={Auth(AdminPage, true)} />
-            <Route exact path="/scene/make" component={isPortrait ? PortraitWarning : Valid(Auth(SceneMakePage, true))} />
+            <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage, true))} />
           </Switch>
           < SearchResult />
         </div>
