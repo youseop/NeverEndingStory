@@ -549,10 +549,11 @@ router.get("/simple-scene-info", check, async (req, res) => {
 
 router.post("/search-game", async (req, res) => {
     try {
-        const game = await Game.find({ title: { $regex: req.body.input, $options: 'm' } }, ["title", "category", "thumbnail"])
-            .sort({ "sceneCnt": -1 })
+        const game = await Game.find({ title: { $regex: req.body.input, $options: 'm' },first_scene:{$exists:true} },
+        ["title", "category", "thumbnail"])
+            .sort({ sceneCnt: -1 })
             .limit(10);
-        return res.status(200).json({ success: true, games: game });
+        return res.status(200).json({ success: true, games: game });  
     } catch (err) {
         console.log(err);
         return res.status(400).json({ success: false });
@@ -560,8 +561,8 @@ router.post("/search-game", async (req, res) => {
 });
 
 router.get("/popular-games", (req, res) => {
-    Game.find()
-        .sort({ "view": -1 })
+    Game.find({first_scene:{$exists:true}})
+        .sort({ view: -1 })
         .limit(8)
         .exec((err, games) => {
             if (err) return res.status(400).send(err);

@@ -29,7 +29,7 @@ interface ContainerProps {
     rank: boolean;
 }
 
-function ContainerToRight(target: Data) {
+function ContainerToRight(target: Data, width: number) {
     if (target.pos < target.limit - 1) {
         //* bar
         var bar = document.getElementById(
@@ -49,7 +49,7 @@ function ContainerToRight(target: Data) {
         if (container === null) {
             throw Error("can not find target container")
         } else {
-            container.style.transform = `translate(${-1360 * target.pos}px, 0px)`;
+            container.style.transform = `translate(${(-width + 80) * target.pos}px, 0px)`;
         }
         //* bar
         bar = document.getElementById(
@@ -80,7 +80,7 @@ function ContainerToRight(target: Data) {
     }
 }
 
-function ContainerToLeft(target: Data) {
+function ContainerToLeft(target: Data, width: number) {
     if (target.pos > 0) {
         //* bar
         var bar = document.getElementById(
@@ -100,7 +100,7 @@ function ContainerToLeft(target: Data) {
         if (container === null) {
             throw Error("can not find target container")
         } else {
-            container.style.transform = `translate(${-1360 * target.pos}px, 0px)`;
+            container.style.transform = `translate(${(-width + 80) * target.pos}px, 0px)`;
         }
         //* bar
         bar = document.getElementById(
@@ -209,13 +209,19 @@ function mouseOffEvent(target: Data) {
 
 export function GameList(props: ContainerProps) {
     const { data, games, rank } = props;
-    let width = window.innerWidth
+    let width = Math.min(window.innerWidth, 1440)
+    const isTouchScreen = window.matchMedia('(pointer: coarse)').matches;
     let style = {}
+    let game_style = {}
+    let arrow_style = {}
 
-    //* game list
     if (width < 767) {
         style = { height: width * 0.9 * 9 / 16 + "px" }
+    } else {
+        game_style = { width: (width - 80) / 4 + "px", height: (width - 80) / 4 * 5 / 7 + "px" }
+        style = { height: (width - 80) / 4 * 0.95 * 9 / 16 + "px" }
     }
+    //* game list
     data.length = 0;
     const gameList = games.map((game: Game, index: number) => {
         if (game?.first_scene) {
@@ -228,7 +234,7 @@ export function GameList(props: ContainerProps) {
                 thumbnailPath = `${config.STORAGE}/${game.thumbnail}`
             if (rank) {
                 return (
-                    <div className="gamelist-game" key={game._id}>
+                    <div className="gamelist-game" key={game._id} style={game_style} >
                         <Link to={`/game/${game._id}`}>
                             <img className="game-image" src={thumbnailPath} alt={game.title}
                                 style={style} />
@@ -241,7 +247,7 @@ export function GameList(props: ContainerProps) {
                 );
             } else {
                 return (
-                    <div className="gamelist-game" key={game._id}>
+                    <div className="gamelist-game" key={game._id} style={game_style}>
                         <Link to={`/game/${game._id}`}>
                             <img className="game-image" src={thumbnailPath} alt={game.title}
                                 style={style} />
@@ -259,6 +265,13 @@ export function GameList(props: ContainerProps) {
     });
 
     data.limit = Math.round((data.length / 4) + 0.49)
+    
+    //* arrow
+    if (isTouchScreen && data.limit > 1) {
+        arrow_style = { display: "block", height: (width - 80) / 4 * 0.95 * 9 / 16 + "px" }
+    }else{
+        arrow_style = { height: (width - 80) / 4 * 0.95 * 9 / 16 + "px" }
+    }
 
     //* bars
     const bars = [];
@@ -279,7 +292,7 @@ export function GameList(props: ContainerProps) {
     if (width < 767) {
         return (
             <div className="box-container game-box"
-                style={{ height: width * 1.35 * 9 / 16 * data.length + "px" }}
+                style={{ height: width * 1.4 * 9 / 16 * data.length + "px" }}
             >
                 <div className="box-title">{data.category}</div>
                 <div className="box-gameList">
@@ -305,17 +318,17 @@ export function GameList(props: ContainerProps) {
                 onMouseLeave={() => { mouseOffEvent(data) }}
             >
                 <div id={`${data.id}_gameList`} className="gamelist-container"
-                    style={{ width: data.length * 340 + "px" }}>
+                    style={{ width: data.length * (width - 80) / 4 + "px" }}>
                     {gameList}
                 </div>
 
                 <div id={`${data.id}_left_arrow`} className="gamelist-left-arrow"
-                    onClick={() => { ContainerToLeft(data); }} >
+                    onClick={() => { ContainerToLeft(data, width); }} style={style}>
                     <SVG src="arrow_1" width="100%" height="100%" color="#F5F5F5" />
                 </div>
 
                 <div id={`${data.id}_right_arrow`} className="gamelist-right-arrow"
-                    onClick={() => { ContainerToRight(data); }} >
+                    onClick={() => { ContainerToRight(data, width); }} style={arrow_style}>
                     <SVG src="arrow_1" width="100%" height="100%" color="#F5F5F5" />
                 </div>
             </div>

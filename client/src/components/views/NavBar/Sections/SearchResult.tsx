@@ -27,7 +27,7 @@ export default function SearchResult() {
 
     useEffect(() => {
         document.documentElement.scrollTop = 0;
-        if (searchOn.length >= 2) {
+        if (searchOn.length >= 1) {
             Axios.post("/api/game/search-game", { input: searchOn })
                 .then(response => {
                     if (response.data.games.length) {

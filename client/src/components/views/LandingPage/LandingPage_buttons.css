@@ -1,18 +1,19 @@
-.button-newgame {
+.main1-button1 {
   all: unset;
 
   position: absolute;
-  top: 70%;
+  top: 75%;
   right: 5%;
-  width: 189px;
-  height: 47px;
+  width: 20%;
+  height: 10%;
 
   background: #f05454;
   border-radius: 10px;
 
   font-family: Noto Sans KR;
   font-weight: bold;
-  font-size: 20px;
+  font-size: min(1.5rem,2vw);
+
   text-align: center;
 
   color: #ffffff;
@@ -21,4 +22,13 @@
 .button-newgame:hover {
   background: #e74a4a;
   cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .main1-button1 {
+    left: 30%;
+    width: 40%;
+    height: 15%;
+    font-size: 0.8rem;
+  }
 }

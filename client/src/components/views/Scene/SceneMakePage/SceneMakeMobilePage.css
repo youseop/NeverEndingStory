@@ -2,51 +2,11 @@
 @import '../../../App.css';
 
 /* 추후에 리팩토링 하겠습니다 UI 바꾸면서 다시짜겠음*/
-@media (max-width:850px) and (orientation:landscape){
-    .menu{
-        height: calc(105vh/9) !important;
-    }
-    .menu__logo {
-        width: 15vh !important;
-        float: left;
-      }
-    .menu__logo>a{
-        height:0px;
-    }
-    .menu__logo>a>svg {
-        width:15vh;
-        height:7.5vh;
-    }
-    .search-container-off {
-    position: absolute;
-    width: 80px;
-    top: 20% !important;
-    right: 15% !important;
-    transition: all 0.4s ease-in-out;
-    /* background-color: aqua; */
-    }
-    .search-container-on {
-    position: absolute;
-    width: 80px;
-    top: 20% !important;
-    right: 15% !important;
-    transition: all 0.4s ease-in-out;
-    }
-    .search-icon {
-    /* position:absolute; */
-    width: 25px;
-    height: 30px;
-    left: 50%;
-    /* padding-left: 10%; */
-    /* background-color: aqua; */
-    cursor: pointer;
-    }
-    .app {
-        padding-top: calc(105vh/9);
-      }
+
+@media (max-width:850px) and (orientation:landscape){    
     .wrapper {
         width : calc(1440vh/9);
-        height: calc(760vh/9);
+        height: calc(790vh/9);
         margin: auto;
         display: grid;
         grid-template-columns: calc(50vh/9) calc(280vh/9) calc(520vh/9) calc(50vh/9) calc(50vh/9) calc(405vh/9) calc(85vh/9);

@@ -4,3 +4,8 @@
   /* min-height: calc(100vh - 80px); */
   background: #222831;
 }
+@media (max-width: 850px) {
+  .app {
+    padding-top: 52px;
+  }
+}

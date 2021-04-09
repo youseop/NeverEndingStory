@@ -153,17 +153,6 @@ export default function GameDetailPage(props) {
         document.body.removeChild(urlInput);
         message.info("링크가 복사되었습니다.")
     }
-
-    const [isDelete, setIsDelete] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    const onClick_deleteToggle = () => {
-        setIsDelete((state) => !state)
-    }
-
-    const onClick_adminToggle = () => {
-        setIsAdmin((state) => !state)
-    }
     if (query.invitation === "true") {
         return (
             <Invitaion
@@ -187,6 +176,7 @@ export default function GameDetailPage(props) {
                                 `${config.SERVER}/${gameDetail?.thumbnail}`}
                         alt="thumbnail"
                     />
+                    <div className="detailPage__gradation"></div>
                     <div className="detailPage__contributer_container">
                         <div className="detailPage__contributer_title"> {ContributerCnt}명이 함께하는 이야기</div>
                         <TopRatingContributer
@@ -224,7 +214,6 @@ export default function GameDetailPage(props) {
                             {isPlayed ? "이어하기" : "시작하기"}
                         </div>
                     </div>
-                    <div className="detailPage__gradation"></div>
                     <div className="detailPage__UPTitle">
                         {gameDetail?.title}
                     </div>

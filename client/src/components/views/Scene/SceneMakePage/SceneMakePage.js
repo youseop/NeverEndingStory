@@ -373,8 +373,7 @@ const SceneMakePage = (props) => {
     };
 
     const displayCut = (index) => {
-        console.log("character LIST: ",CutList[index]?.characterList)
-        dispatch(setCharacterList({ CharacterList: [...CutList[index]?.characterList] }));
+        dispatch(setCharacterList({ CharacterList: CutList[index]?.characterList }));
         setBackgroundImg(CutList[index]?.background);
         setScript(CutList[index]?.script);
         setName(CutList[index]?.name);
@@ -436,7 +435,6 @@ const SceneMakePage = (props) => {
         if (CutNumber < CutList.length - 1) {
             displayCut(CutNumber + 1);
         } else {
-            console.log("**",CutNumber,CutList)
             setCutList(cutList => cutList)
             dispatch(setCharacterList({ CharacterList: CharacterList.length ? [...CharacterList] : []}));
             setScript("");
