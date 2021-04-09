@@ -28,7 +28,7 @@ function Character(props) {
   
   let pivot = [0, 0];
   let drag = false;
-  const isPortrait = window.matchMedia('(pointer: coarse)').matches;
+  // const isPortrait = window.matchMedia('(pointer: coarse)').matches;
 
 
   useEffect(() => {
@@ -211,15 +211,13 @@ function Character(props) {
                 onClickOrder("")
               }}
             />
-            {!isPortrait &&
-              <div
-                className={`${sizing ? "bttn btn_sizing_clicked" : "bttn btn_sizing"}`}
-                onMouseOver={onMouseOver}
-                onMouseOut={onMouseOut}
-                onMouseDown={(e) => {onMouseDown(e,"mouse")}}
-                style={{ left: `${imgWidth - 3}px` }}
-              ></div>
-            }
+            <div
+              className={`${sizing ? "bttn btn_sizing_clicked" : "bttn btn_sizing"}`}
+              onMouseOver={onMouseOver}
+              onMouseOut={onMouseOut}
+              onMouseDown={(e) => {onMouseDown(e,"mouse")}}
+              style={{ left: `${imgWidth - 3}px` }}
+            ></div>
           </>
         }
       </div>

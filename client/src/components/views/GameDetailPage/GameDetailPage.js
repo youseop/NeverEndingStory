@@ -132,12 +132,14 @@ export default function GameDetailPage(props) {
                 userId: user.userData._id,
                 objectId: gameId
             }
-            Axios.post("/api/thumbsup/", variable).then((response) => {
-                if (response.data.success) {
-                    setThumbsUp(response.data.thumbsup);
-                    setThumbsUpClicked(response.data.isClicked);
+            setThumbsUp((state) => {
+                if(thumbsUpClicked){
+                    return state-1;
                 }
-            })
+                return state+1;
+            });
+            setThumbsUpClicked((state) => !state);
+            Axios.post("/api/thumbsup/", variable);
         }
         else {
             message.error("로그인이 필요합니다.")

@@ -26,11 +26,15 @@ const connect = mongoose.connect(config.mongoURI,
   .then(() => logger.info("mongoose connected...!"))
   .catch(err => console.log(err));
 
-const redisClient = redis.createClient({
+
+let redisClient;
+if(process.env.NODE_ENV === 'production'){
+  redisClient  = redis.createClient({
     url : `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
     password :process.env.REDIS_PASSWORD,
   })
-
+}
+  
 
 if (process.env.NODE_ENV === 'production') {
   app.use(morgan('combined'));
