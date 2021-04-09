@@ -89,7 +89,7 @@
   opacity: 0.9;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .searchResult-game {
     width: 50%;
     height: 25%;

@@ -464,7 +464,7 @@
   opacity: 90%;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
 .detailPage__container {
   width: 100%;
 }

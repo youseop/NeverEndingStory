@@ -566,8 +566,8 @@ const ProductScreen = (props) => {
             </div>
           </div>
         </div>
-        <div className="detail_relative_container" />
         {/* //! detail pages */}
+        <div className="detail_relative_container" />
 
         <div className="detailPage__info_container">
           <div className="detailPage__genre">

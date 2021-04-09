@@ -82,7 +82,7 @@
 }
 .backgroundImg_container {
   position: absolute;
-  transform: translateY(10%);
+  transform: translateY(15%);
   transform-origin: center center;
   overflow: hidden;
   transition-duration: 0.05s;
@@ -115,11 +115,17 @@
 .gamePlay__btn.full{
   font-size: 1.1rem;
 }
+.detail_relative_container{
+  height:95vh;
+}
+
 @media (max-width:850px) and (orientation:landscape){
   .menu.isPlay{
     position: absolute !important;
   }
-
+  .detail_relative_container{
+    height: calc(39vw);
+  }
   .backgroundImg_container {
     width:70vw !important;
     height: 39vw !important;
@@ -129,6 +135,9 @@
 @media (max-width:850px) and (orientation:portrait){    
   .menu.isPlay{
     position: fixed !important;
+  }
+  .detail_relative_container{
+    height: calc(56vw);
   }
   .gamePlay__container{
     height: calc(52px + 56vw) !important;

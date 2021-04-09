@@ -69,7 +69,7 @@ export function Banner_main({ replace }: Props_type) {
     arrowStyle = { opacity: 0.5 }
   }
 
-  if (width > 767){
+  if (width > 850){
     bannerStyle = { height: width * 3/7}
   }
 
