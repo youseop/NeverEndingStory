@@ -18,7 +18,7 @@ const likeSchema = Schema({
   }
 })
 
-treeDataSchema.index({ userId: 1, gameId: 1 });
+likeSchema.index({ userId: 1, gameId: 1 });
 
 
 const Like = mongoose.model('Like', likeSchema);

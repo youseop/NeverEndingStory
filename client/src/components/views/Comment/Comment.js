@@ -22,7 +22,7 @@ function Comment({gameId}) {
   const FETCHNIG_CNT = 8;
   const [fetching, setFetching] = useState(false);
   const [totalComment, setTotalComment] = useState([]);
-  const [contentNumber, setContentNumber] = useState(0);
+  const [contentNumber, setContentNumber] = useState(FETCHNIG_CNT);
 
   const fetchNextData = async () => {
     setFetching(true);
@@ -50,11 +50,7 @@ function Comment({gameId}) {
   });
  
   const updateToggle = () => {
-    setUpdate((state) => !state);
-  }
-
-  useEffect(() => {
-    axios.post('/api/comment/get-comment', {gameId: gameId}).then(response => {
+    axios.get(`/api/comment/${gameId}`).then(response => {
       if (response.data.success) {
         setTotalComment(response.data.result);
         setComments(response.data.result.slice(0,contentNumber));
@@ -62,7 +58,18 @@ function Comment({gameId}) {
         message.error('댓글을 불러오는데 실패했습니다.')
       }
     })
-  }, [update])
+  }
+
+  useEffect(() => {
+    axios.get(`/api/comment/${gameId}`).then(response => {
+      if (response.data.success) {
+        setTotalComment(response.data.result);
+        setComments(response.data.result.slice(0,contentNumber));
+      } else {
+        message.error('댓글을 불러오는데 실패했습니다.')
+      }
+    })
+  }, [])
 
   const onChange_comment = (event) => {
     setCommentContent(event.currentTarget.value);
@@ -83,7 +90,7 @@ function Comment({gameId}) {
 
     axios.post('/api/comment/save-comment', variables).then(response => {
       if(response.data.success) {
-        message.success('댓글 감사합니다!');
+        message.success('댓글 감사합니다.');
         updateToggle();
         setCommentContent("");
       } else {

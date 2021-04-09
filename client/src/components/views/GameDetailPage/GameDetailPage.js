@@ -1,6 +1,6 @@
 import { message } from "antd";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Comment from '../Comment/Comment.js';
 import { socket } from "../../App";
 import { SVG } from "../../svg/icon";
@@ -69,14 +69,16 @@ export default function GameDetailPage(props) {
     }
 
     useEffect(() => {
-        Axios.post("/api/game/detail", variable).then((response) => {
+        Axios.get(`/api/game/detail/${gameId}`).then((response) => {
             if (response.data.success) {
-                setGameDetail(response.data.gameDetail);
+                const gameDetail = response.data.gameDetail;
+                setGameDetail(gameDetail);
+                setView(gameDetail.view);
             } else {
                 message.error("스토리 정보를 로딩하는데 실패했습니다.");
             }
         });
-        Axios.post("/api/game/rank", variable).then((response) => {
+        Axios.get(`/api/game/rank/${gameId}`).then((response) => {
             if (response.data.success) {
                 setContributerList(response.data.topRank);
                 setContributerCnt(response.data.contributerCnt);
@@ -94,25 +96,20 @@ export default function GameDetailPage(props) {
             }
         });
     }, []);
+    
+    const updateFlag = useRef(true);
 
     useEffect(() => {
-        if (user && user.userData) {
-            let variable = {
-                userId: user.userData._id,
-                objectId: gameId
-            }
-            Axios.post("/api/view/", variable).then((response) => {
-                if (response.data.success) {
-                    setView(response.data.view);
-                }
-            })
-            Axios.get(`/api/thumbsup/${gameId}/${user.userData._id}`).then((response) => {
+        if (user && user.userData && updateFlag.current) {
+            updateFlag.current = false;
+            const userId = user.userData._id;
+            Axios.get(`/api/thumbsup/${gameId}/${userId}`).then((response) => {
                 if (response.data.success) {
                     setThumbsUp(response.data.thumbsup);
                     setThumbsUpClicked(response.data.isClicked);
                 }
             })
-            Axios.post("/api/users/game-visit", { userId: user.userData._id }).then((response) => {
+            Axios.post("/api/users/game-visit", { userId: userId }).then((response) => {
                 if (response.data.success) {
                     const sceneIdLength = response.data?.gamePlaying?.sceneIdList?.length;
                     if (sceneIdLength > 1)

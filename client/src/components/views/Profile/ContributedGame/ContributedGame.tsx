@@ -44,7 +44,7 @@ function ContributedGame(props: any) {
   const [view, setView] = useState<number>(0);
   
   useEffect(() => {
-    Axios.post("/api/game/detail", {gameId: new ObjectId(gameId)}).then((response) => {
+    Axios.get(`/api/game/detail/${gameId}`).then((response) => {
       const gameDetail=response.data.gameDetail;
       setGameDetail(gameDetail);
       setView(gameDetail.view);
