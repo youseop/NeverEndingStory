@@ -4,7 +4,10 @@
   margin: auto;
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: 600px 300px 300px;
+  /* grid-template-rows: 600px 300px 300px; */
+  grid-template-rows: min(600px,50vw) repeat(2, min(300px,25vw));
+
+
   gap: 5px;
   background: #222831;
 }

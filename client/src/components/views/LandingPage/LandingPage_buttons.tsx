@@ -92,7 +92,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
 
     return (
         <>
-            <button className="button-newgame" onClick={handleClick}>
+            <button className="main1-button1" onClick={handleClick}>
                 NEW 스토리 만들기
             </button>
 

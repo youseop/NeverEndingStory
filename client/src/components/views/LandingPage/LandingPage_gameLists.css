@@ -109,11 +109,12 @@
 }
 
 .game-title {
-  width: 50%;
+  width: 60%;
   margin-top: 2%;
   padding-left: 3%;
 
-  font-size: 1.1rem;
+  font-size: min(1.1rem, 1.5vw);
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -122,11 +123,12 @@
 .game-writerNum {
   position: absolute;
   width: 100%;
-  bottom: 8%;
+  bottom: 2%;
   padding-right: 20px;
   white-space: nowrap;
 
-  font-size: 1rem;
+  font-size: min(1rem, 1vw);
+
   text-align: right;
 }
 
@@ -135,17 +137,18 @@
   margin-top: 1%;
   padding-left: 3%;
 
-  font-size: 0.7rem;
+  font-size: 0.6rem;
+
   opacity: 0.9;
 }
 
 .game-rank {
   position: absolute;
   width: 10%;
-  bottom: 2%;
+  top: 80%;
   font-family: Bai Jamjuree;
 
-  font-size: 2rem;
+  font-size: min(1.8rem, 3vw);
   font-weight: bold;
 }
 
@@ -175,12 +178,17 @@
     margin-top: 0px;
     left: 0px;
   }
+  .game-title {
+    font-size: 1rem;
+  }
 
   .game-writerNum {
-    bottom: 0%;
+    font-size: 0.8rem;
+    top: 85%;
   }
 
   .game-rank {
-    bottom: -2%;
+    top: 80%;
+    font-size: 2rem;
   }
 }

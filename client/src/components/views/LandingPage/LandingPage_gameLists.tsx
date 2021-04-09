@@ -220,11 +220,6 @@ export function GameList(props: ContainerProps) {
     } else {
         game_style = { width: (width - 80) / 4 + "px", height: (width - 80) / 4 * 5 / 7 + "px" }
         style = { height: (width - 80) / 4 * 0.95 * 9 / 16 + "px" }
-        if (isTouchScreen) {
-            arrow_style = { display: "block", height: (width - 80) / 4 * 0.95 * 9 / 16 + "px" }
-        }else{
-            arrow_style = { height: (width - 80) / 4 * 0.95 * 9 / 16 + "px" }
-        }
     }
     //* game list
     data.length = 0;
@@ -270,6 +265,13 @@ export function GameList(props: ContainerProps) {
     });
 
     data.limit = Math.round((data.length / 4) + 0.49)
+    
+    //* arrow
+    if (isTouchScreen && data.limit > 1) {
+        arrow_style = { display: "block", height: (width - 80) / 4 * 0.95 * 9 / 16 + "px" }
+    }else{
+        arrow_style = { height: (width - 80) / 4 * 0.95 * 9 / 16 + "px" }
+    }
 
     //* bars
     const bars = [];
@@ -290,7 +292,7 @@ export function GameList(props: ContainerProps) {
     if (width < 767) {
         return (
             <div className="box-container game-box"
-                style={{ height: width * 1.35 * 9 / 16 * data.length + "px" }}
+                style={{ height: width * 1.4 * 9 / 16 * data.length + "px" }}
             >
                 <div className="box-title">{data.category}</div>
                 <div className="box-gameList">

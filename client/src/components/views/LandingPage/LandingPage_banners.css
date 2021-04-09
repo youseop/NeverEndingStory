@@ -1,7 +1,7 @@
 .banner-container {
   position: relative;
   width: 300%;
-  height: 580px;
+  /* height: 580px; */
   border-radius: 5px;
 
   overflow: hidden;
@@ -27,6 +27,7 @@
 }
 
 .banner-main-button {
+  all:unset;
   position: absolute;
 
   background: #e74a4a;
@@ -67,12 +68,12 @@
 .main1-slogan1 {
   top: 15%;
   left: 5%;
-  font-size: 8rem;
+  font-size: min(8rem,10vw);
 }
 .main1-slogan2 {
   top: 45%;
   left: 5.2%;
-  font-size: 6rem;
+  font-size: min(6rem,8vw);
 }
 
 /* second banner */
@@ -82,17 +83,19 @@
 .main2-slogan1 {
   top: 15%;
   text-align: center;
-  font-size: 6rem;
+  font-size: min(6rem,8vw);
 }
 .main2-slogan2 {
   top: 40%;
   text-align: center;
   font-size: 3rem;
+  font-size: min(3rem,4vw);
+
 }
 .main2-emoji1 {
   top: -60%;
   text-align: center;
-  font-size: 50rem;
+  font-size: min(50rem,70vw);
   opacity: 0.06;
 }
 .main2-button1 {
@@ -101,12 +104,12 @@
   width: 20%;
   height: 10%;
 
-  font-size: 1.5rem;
+  font-size: min(1.5rem,2vw);
 }
 
 @media (max-width: 767px) {
   .banner-container {
-    height: 240px;
+    height: 260px;
   }
 
   .banner-main-button {
