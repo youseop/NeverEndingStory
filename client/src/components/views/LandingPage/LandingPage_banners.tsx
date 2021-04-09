@@ -22,7 +22,7 @@ export function Banner_main({ replace }: Props_type) {
   let bannerStyle = {}
   let arrowStyle = {}
 
-  const TimerID = useRef<any>(undefined)
+  const TimerID = useRef<any>([])
 
   const stopBanner = () => {
     for (let i = 0 ; i <TimerID.current.length ; i ++) {

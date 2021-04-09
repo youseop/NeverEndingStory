@@ -161,6 +161,7 @@ const SceneMakePage = (props) => {
         })
 
         return () => {
+            console.log("socket off")
             socket.off("timeout_making")
         }
 
