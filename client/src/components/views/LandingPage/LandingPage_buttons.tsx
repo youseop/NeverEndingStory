@@ -31,6 +31,16 @@ export function NewGameButton({ replace }: newGameButtonProps) {
 
     const uploadGameFrame = async (title: String, description: any) => {
         // tmp scene create
+        if(!title.length){
+            message.error("제목을 입력해주세요.")
+            return;
+        }
+        if(!description.length){
+            message.error("스토리 설명을 입력해주세요.")
+            return;
+        }
+        
+        
         const gameResponse: responseTypes = await Axios.post("/api/game/uploadgameframe", { title, description, category });
 
         if (!gameResponse.data.success) {
@@ -53,7 +63,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
         }
 
         message.success(
-            "첫 Scene을 생성해주세요. 오른쪽의 버튼을 활용해 이미지들을 추가할 수 있습니다."
+            "이야기를 시작해주세요. 오른쪽의 버튼을 활용해 이미지들을 추가할 수 있습니다."
         );
 
         setTimeout(() => {
@@ -82,8 +92,8 @@ export function NewGameButton({ replace }: newGameButtonProps) {
 
     return (
         <>
-            <button className="button-newgame" onClick={handleClick}>
-                NEW 게임 만들기
+            <button className="main1-button1" onClick={handleClick}>
+                NEW 스토리 만들기
             </button>
 
             <TitleModalForm

@@ -27,15 +27,16 @@
     display: flex;
     align-items: center;
     justify-Content: center;
-    width : inherit;
+    width : 100%;
     height : 100%;
+    overflow: hidden;
 
 }
 .thumbnail__img{
-    min-height: 100%; 
-    object-fit : contain;
-    width : inherit;
-    height : inherit;
+    /* min-height: 100%;  */
+    object-fit : cover;
+    width : 100% !important;
+    /* height : inherit; */
     
 }
 .thumbnail__msg{

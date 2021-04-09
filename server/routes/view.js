@@ -11,7 +11,6 @@ const {View} = require("../models/View");
 router.post('/', (req,res) => {
   const userId = req.body.userId;
   const objectId = req.body.objectId;
-  console.log(objectId, userId)
   View.findOne({"objectId" : objectId})
   .exec((err, view) => {
     if(err) return res.status(400).send(err);

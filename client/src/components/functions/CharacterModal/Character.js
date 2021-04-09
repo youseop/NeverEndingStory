@@ -71,13 +71,12 @@ function Character(props) {
   function mouseMove(e, option) {
     if(e.cancelable){
       let page;
-      console.log(e)
       if (option === 'mouse'){
         page = [e.pageX, e.pageY];
       } else {
         page = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
       }
-      if (drag && clicked && moving && e.changedTouches.length === 1) {
+      if (drag && clicked && moving) {
         if (pivot[0] - page[0] > 3 || pivot[1] - page[1] > 3 || pivot[0] - page[0] < -3 || pivot[1] - page[1] < -3) {
           const background_width = background_element.offsetWidth;
           const background_height = background_element.offsetHeight;

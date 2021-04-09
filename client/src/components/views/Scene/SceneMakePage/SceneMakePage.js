@@ -156,10 +156,14 @@ const SceneMakePage = (props) => {
             socket.emit("leave room", { room: user.userData?._id?.toString() });
             socket.emit("room", { room: user.userData?._id?.toString() });
         }
-        socket.off("timeout_making")
         socket.on("timeout_making", data => {
             props.history.replace("/")
         })
+
+        return () => {
+            console.log("socket off")
+            socket.off("timeout_making")
+        }
 
     }, [user])
 
@@ -186,11 +190,12 @@ const SceneMakePage = (props) => {
                 if (scene.isFirst) {
                     isFirstScene.current = true;
                 }
-                setEmptyCutList(Array.from({ length: 30-scene.cutList.length }, () => 0))
+
                 // 임시저장된 녀석 불러오기
+                setEmptyCutList(Array.from({ length: 30 - scene.cutList.length}, () => 0))
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
-                dispatch(setCharacterList({ CharacterList: tmpFirstCut.characterList }));
+                dispatch(setCharacterList({ CharacterList: [...tmpFirstCut.characterList] }));
                 setBackgroundImg(tmpFirstCut.background)
                 setName(tmpFirstCut.name);
                 setScript(tmpFirstCut.script);
@@ -431,6 +436,8 @@ const SceneMakePage = (props) => {
         if (CutNumber < CutList.length - 1) {
             displayCut(CutNumber + 1);
         } else {
+            setCutList(cutList => cutList)
+            dispatch(setCharacterList({ CharacterList: CharacterList.length ? [...CharacterList] : []}));
             setScript("");
         }
         setCutNumber((oldNumber) => oldNumber + 1);
@@ -474,7 +481,6 @@ const SceneMakePage = (props) => {
 
     const setTree = () => {
         Axios.post("/api/treedata/").then((response) => {
-            console.log('treedata successfully added');
         });
     }
 
@@ -508,7 +514,7 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
-        if (isTmp || isEnding || window.confirm("게임 제작을 완료하시겠습니까?")) {
+        if (isTmp || isEnding || window.confirm("스토리 제작을 완료하시겠습니까?")) {
 
             const variable = {
                 cutList: submitCutList,
@@ -527,7 +533,7 @@ const SceneMakePage = (props) => {
                     .loading((isTmp ? "임시 저장 중..." : "게임 업로드 중.."), 1.0)
                     .then(() => {
                         if (!isTmp) {
-                            message.success("게임 제작이 완료되었습니다.", 1.0)
+                            message.success("스토리 제작이 완료되었습니다.", 1.0)
                         }
                         else {
                             message.success("임시 저장 완료.")
@@ -575,7 +581,7 @@ const SceneMakePage = (props) => {
         }
     };
     const onDeleteScene = () => {
-        if (window.confirm("게임 제작을 취소하시겠습니까?")) {
+        if (window.confirm("스토리 제작을 취소하시겠습니까?")) {
             Axios.delete('/api/scene', {
                 data: {
                     gameId: gameId,
@@ -632,7 +638,7 @@ const SceneMakePage = (props) => {
                 if (response.data.success) {
                     setGameDetail(response.data.gameDetail)
                 } else {
-                    alert('게임 정보를 로딩하는데 실패했습니다.')
+                    alert('스토리 정보를 로딩하는데 실패했습니다.')
                 }
             })
     }, [reload, gameId])
@@ -742,7 +748,7 @@ const SceneMakePage = (props) => {
     const [soundMuted, setSoundMuted] = useState(false)
     const tempSoundVolume = useRef(0.5)
 
-    if (gameDetail?.title) {
+    if (gameDetail?._id) {
         return (
             <div className="wrapper">
                 <div className="title">
@@ -822,15 +828,15 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_bgm_name">{BgmFile.name}</div>
                                 </div>
                             ) : (
-                                <div
-                                    className="scene__sound_box"
-                                    onClick={onClick_bgm_box}
-                                >
-                                    <StopOutlined
-                                        className="scene__sound_icon bgm" />
-                                    <div className="scene__sound_bgm_name">BGM</div>
-                                </div>
-                            )}
+                                    <div
+                                        className="scene__sound_box"
+                                        onClick={onClick_bgm_box}
+                                    >
+                                        <StopOutlined
+                                            className="scene__sound_icon bgm" />
+                                        <div className="scene__sound_bgm_name">BGM</div>
+                                    </div>
+                                )}
                             {SoundFile?.name ? (
                                 <div
                                     className="scene__sound_box"
@@ -849,15 +855,15 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_sound_name">{SoundFile.name}</div>
                                 </div>
                             ) : (
-                                <div
-                                    className="scene__sound_box"
-                                    onClick={onClick_sound_box}
-                                >
-                                    <StopOutlined
-                                        className="scene__sound_icon sound" />
-                                    <div className="scene__sound_sound_name">Sound</div>
-                                </div>
-                            )}
+                                    <div
+                                        className="scene__sound_box"
+                                        onClick={onClick_sound_box}
+                                    >
+                                        <StopOutlined
+                                            className="scene__sound_icon sound" />
+                                        <div className="scene__sound_sound_name">Sound</div>
+                                    </div>
+                                )}
                         </div>
                     </div>
 
@@ -938,7 +944,7 @@ const SceneMakePage = (props) => {
                         value={Script}
                         placeholder="대사가 없으면 스크립트 창이 표시되지 않습니다."
                         className="textbox_script"
-                        maxLength={TEXT_MAX_LENGTH + 1}
+                        maxLength={TEXT_MAX_LENGTH}
                         ref={scriptElement}
                     />
                 </div>

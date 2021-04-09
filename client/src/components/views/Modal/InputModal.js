@@ -100,6 +100,11 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   }
 
   const createHandler = () => {
+    if (!sceneTitle.length){
+      message.error("선택지 제목을 입력해주세요")
+      return
+    }
+
     return handleCreate();
   }
 
@@ -112,13 +117,17 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
     //   // setValidated(validated * -1)
     // })
 
-    socket.off("decrease_failed");
     socket.on("decrease_failed", () => {
 
       setVisible(false);
       setDino(0);
       setDino(1);
     })
+
+    return () => {
+      socket.off("decrease_failed");
+
+    }
 
     socket.emit("validate_empty_num", { scene_id })
   }, [scene_id])

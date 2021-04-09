@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import RadialTree from "../TreeVisualization/RadialTree.js";
 import qs from "qs";
 import { Invitaion } from "./Invitation";
+import GameForkButton from "./GameForkButton.js";
 
 const config = require('../../../config/key')
 
@@ -72,7 +73,7 @@ export default function GameDetailPage(props) {
             if (response.data.success) {
                 setGameDetail(response.data.gameDetail);
             } else {
-                message.error("게임 정보를 로딩하는데 실패했습니다.");
+                message.error("스토리 정보를 로딩하는데 실패했습니다.");
             }
         });
         Axios.post("/api/game/rank", variable).then((response) => {
@@ -81,7 +82,7 @@ export default function GameDetailPage(props) {
                 setContributerCnt(response.data.contributerCnt);
                 setTotalSceneCnt(response.data.totalSceneCnt);
             } else {
-                message.error("게임 정보를 로딩하는데 실패했습니다.");
+                message.error("스토리 정보를 로딩하는데 실패했습니다.");
             }
         });
         Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {

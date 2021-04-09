@@ -43,7 +43,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
     };
 
     const onDescriptionChange = (event) => {
-        setDescription(event.currentTarget.value);
+        setDescription(event.currentTarget.value.substr(0, 5000));
     };
 
     const onPrivateChange = (event) => {
@@ -138,7 +138,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
             closable={false}
         >
             <div className="scenemake_uploadmodal_form_container">
-                게임 업로드
+                스토리 업로드
                 <Form onSubmit={upload}>
 
                     <div className="scenemake_uploadmodal_form">
@@ -164,7 +164,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                             <textarea maxLength={30} className="scenemake_uploadmodal_detail_title" onChange={onTitleChange} value={GameTitle} />
                         </div>
                         <div className="scenemake_uploadmodal_detail_description_container">
-                            게임 설명
+                            스토리 설명
                             <textarea maxLength={1000} className="scenemake_uploadmodal_detail_description" rows="4" onChange={onDescriptionChange} value={description} />
                         </div>
 

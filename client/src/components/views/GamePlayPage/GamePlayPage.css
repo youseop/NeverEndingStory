@@ -10,6 +10,7 @@
   height: calc(100vh + 15%);
   position: absolute;
   top: -15%;
+  /* background-color: aqua; */
 }
 .gamePlay__container_fullscreen{
   width: 100vw;
@@ -51,6 +52,9 @@
   transition-duration: 0.2s;
   font-size: 0.9rem;
   height: 1% !important;
+}
+.gameView:hover {
+  color: rgb(182, 182, 182) !important;
 }
 .gamePlay__btnClicked {
   all: unset;

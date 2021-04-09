@@ -84,7 +84,7 @@ const EndingModal = ({ isEnding, visible, setEndingModalState, onSubmit_saveScen
                 <div className="ending_modal_warning_textarea">
                     <h2>주의!</h2>
                     <br></br>
-                    <h3>ENDING 체크 시, 이 게임의 엔딩으로 업로드 됩니다.</h3>
+                    <h3>ENDING 체크 시, 이 스토리의 엔딩으로 업로드 됩니다.</h3>
                     <h3>따라서 이 씬에 연결되는 씬을 더이상 생성할 수 없습니다.</h3>
                 </div>
             </Modal>

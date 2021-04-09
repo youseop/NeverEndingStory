@@ -97,7 +97,7 @@ export function Logo_Icon() {// 1049 * 536 기본
   return (
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       width="70px" height="35px" viewBox="0 0 1049 536" enableBackground="new 0 0 1049 536" xmlSpace="preserve">
-      <image id="image0" width="1049" height="536" x="0" y="0"
+      <image id="logo_icon" width="1049" height="536" x="0" y="0"
         xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBkAAAIYCAQAAACC+vzmAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
                                           AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZ
                                           cwAALEoAACxKAXd6dE0AAAAHdElNRQflBAQOHB7mWVwyAAAoI0lEQVR42u3d4XnTyNoG4Bcu/sen
@@ -304,18 +304,18 @@ export function BAR(props) {
 
 export function Click_Icon(props) {
   return (
-    <svg version="1.1" 
-    id="Capa_1" 
-    xmlns="http://www.w3.org/2000/svg" 
-    xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-    width="50%" 
-    height="100" 
-    viewBox="0 0 450.47 450.47" 
-    // style={{"enable-background":"new 0 0 450.47 450.47"}}
-    xmlSpace="preserve"
-    fill="white">
-    <g>
-    <path d="M237.298,99.533c-0.301-0.34-0.562-0.677-0.916-0.999c-3.937-3.535-4.043-2.491,0.266-6.463
+    <svg version="1.1"
+      id="Capa_1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      width="50%"
+      height="100"
+      viewBox="0 0 450.47 450.47"
+      // style={{"enable-background":"new 0 0 450.47 450.47"}}
+      xmlSpace="preserve"
+      fill="white">
+      <g>
+        <path d="M237.298,99.533c-0.301-0.34-0.562-0.677-0.916-0.999c-3.937-3.535-4.043-2.491,0.266-6.463
 		c3.192-2.929,7.063-5.222,10.574-7.755c9.286-6.711,15.398-15.699,19.529-26.356C276.02,34.033,248.707,17.503,235,3.344
 		c-9.904-10.247-25.496,5.382-15.604,15.604c7.643,7.912,17.489,14.328,24.14,23.123c7.453,9.848-3.901,20.712-11.68,26.194
 		c-12.026,8.473-22.423,19.727-20.02,31.794c-53.971,5.042-103.87,34.623-103.87,86.767V333.2c0,64.664,52.603,117.27,117.27,117.27

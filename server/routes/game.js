@@ -414,14 +414,14 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
                 msg = "해당 씬은 관리자 권한으로 삭제되었습니다."
                 break;
             case 'invalid':
-                msg = "하나의 ID로 한 게임만 즐겨주세요"
+                msg = "하나의 ID로는 한 스토리만 즐겨주세요! 한 스토리 내 장면 간 이동은 미니맵을 이용해주세요!"
                 break;
             default:
                 break;
 
         }
         return res.status(200).json({ success: false, msg });
-    }
+    } 
 });
 
 router.post("/refreshHistory", check, async (req, res) => {
@@ -549,10 +549,11 @@ router.get("/simple-scene-info", check, async (req, res) => {
 
 router.post("/search-game", async (req, res) => {
     try {
-        const game = await Game.find({ title: { $regex: req.body.input, $options: 'm' } }, ["title", "category", "thumbnail"])
-            .sort({ "sceneCnt": -1 })
+        const game = await Game.find({ title: { $regex: req.body.input, $options: 'm' },first_scene:{$exists:true} },
+        ["title", "category", "thumbnail"])
+            .sort({ sceneCnt: -1 })
             .limit(10);
-        return res.status(200).json({ success: true, games: game });
+        return res.status(200).json({ success: true, games: game });  
     } catch (err) {
         console.log(err);
         return res.status(400).json({ success: false });
@@ -560,8 +561,8 @@ router.post("/search-game", async (req, res) => {
 });
 
 router.get("/popular-games", (req, res) => {
-    Game.find()
-        .sort({ "view": -1 })
+    Game.find({first_scene:{$exists:true}})
+        .sort({ view: -1 })
         .limit(8)
         .exec((err, games) => {
             if (err) return res.status(400).send(err);
@@ -603,5 +604,30 @@ router.get("/recent-games", check, async (req, res) => {
     })
 
 })
+
+router.post("/fork", async (req,res) => {
+    //! gameId를 받아서, game 을 검색한다.
+    const {userId, parentGameId, title, description,category} = req.body
+    const parentGame = await Game.findOne({_id:parentGameId})
+    const game= new Game();
+    game.title = sanitize(title);
+    game.description = sanitize(description);
+    game.category = category;
+    game.parentId = parentGameId;
+  
+
+    
+    //! game.background - game.character - game.bgm - game.sound 복사
+    game.background = parentGame.background
+    game.character = parentGame.character;
+    game.bgm = parentGame.bgm;
+    game.sound = parentGame.sound;
+
+    game.save((err,game) => {
+        if(err) return res.json({success: false, err});
+        res.status(200).json({success:true, game})
+    })
+})
+
 
 module.exports = router;

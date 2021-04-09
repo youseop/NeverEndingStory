@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { NewGameButton } from "./LandingPage_buttons";
 import ContactUs from "../Footer/ContactUs"
 import { SVG } from "../../svg/icon";
@@ -17,18 +17,25 @@ export function Banner_main({ replace }: Props_type) {
   const slideRef = React.createRef<HTMLDivElement>();
   const arrowRef = React.createRef<HTMLDivElement>();
 
-  const TimerID = useRef<any>(undefined)
+  let width = Math.min(window.innerWidth, 1440)
+  const isTouchScreen = window.matchMedia('(pointer: coarse)').matches;
+  let bannerStyle = {}
+  let arrowStyle = {}
+
+  const TimerID = useRef<any>([])
+
   const stopBanner = () => {
-    if (TimerID.current !== undefined) {
-      clearTimeout(TimerID.current);
+    for (let i = 0 ; i <TimerID.current.length ; i ++) {
+      clearTimeout(TimerID.current[i])
     }
+    TimerID.current = []
   }
 
   const startBanner = () => {
     const timer = setTimeout(() => {
       nextBanner()
-    }, CurrentSlide == 0 ? 0 : 3000);
-    TimerID.current = timer
+    }, 3000);
+    TimerID.current.push(timer)
   }
 
   const nextBanner = () => {
@@ -48,16 +55,28 @@ export function Banner_main({ replace }: Props_type) {
       }
       slideRef.current.style.transform = `translateX(-${CurrentSlide * 100 / TOTAL_SLIDES}%)`;
     }
-    startBanner()
+    if (!isTouchScreen) {
+      startBanner()
+    }
     return () => {
-      stopBanner()
+      if (!isTouchScreen) {
+        stopBanner()
+      }
     }
   }, [CurrentSlide])
-  
+
+
+  if (isTouchScreen) {
+    arrowStyle = { opacity: 0.5 }
+  }
+
+  if (width > 767){
+    bannerStyle = { height: width * 3/7}
+  }
 
   return (
     <div>
-      <div className="banner-container" ref={slideRef}
+      <div className="banner-container" ref={slideRef} style={bannerStyle}
         onMouseEnter={() => stopBanner()} onMouseLeave={() => startBanner()}>
         <Banner_main1 replace={replace} />
         <Banner_main2 isModalVisible={IsModalVisible} setIsModalVisible={setIsModalVisible} />
@@ -66,7 +85,8 @@ export function Banner_main({ replace }: Props_type) {
       <div
         className="banner-right-arrow"
         ref={arrowRef}
-        onClick={() => { nextBanner(); }}>
+        onClick={() => { nextBanner(); }}
+        style={arrowStyle}>
         <SVG src="arrow_1" width="100%" height="100%" color="#F5F5F5" />
       </div>
     </div>);
