@@ -106,11 +106,7 @@ export default function GameDetailPage(props) {
                     setView(response.data.view);
                 }
             })
-            variable = {
-                objectId: gameId,
-                userId: user.userData._id,
-            }
-            Axios.post("/api/thumbsup/count", variable).then((response) => {
+            Axios.get(`/api/thumbsup/${gameId}/${user.userData._id}`).then((response) => {
                 if (response.data.success) {
                     setThumbsUp(response.data.thumbsup);
                     setThumbsUpClicked(response.data.isClicked);
@@ -130,7 +126,8 @@ export default function GameDetailPage(props) {
         if (user?.userData?.isAuth) {
             const variable = {
                 userId: user.userData._id,
-                objectId: gameId
+                objectId: gameId,
+                flag: "1"
             }
             setThumbsUp((state) => {
                 if(thumbsUpClicked){

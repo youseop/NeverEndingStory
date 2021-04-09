@@ -208,7 +208,8 @@ const ProductScreen = (props) => {
       // setUpdate((state) => state+1);
       const variable = {
         userId: user.userData._id,
-        objectId: sceneId
+        objectId: sceneId,
+        flag: "1"
       }
       Axios.post("/api/thumbsup/", variable).then((response) => {
         if (response.data.success) {
@@ -224,11 +225,7 @@ const ProductScreen = (props) => {
 
   useEffect(() => {
     if (user && user.userData) {
-      const variable_thumbsup = {
-        objectId: sceneId,
-        userId: user.userData._id,
-      }
-      Axios.post("/api/thumbsup/count", variable_thumbsup).then((response) => {
+      Axios.get(`/api/thumbsup/${sceneId}/${user.userData._id}`).then((response) => {
         if (response.data.success) {
           setIsClicked(response.data.isClicked);
           setThumbsUp(response.data.thumbsup);
