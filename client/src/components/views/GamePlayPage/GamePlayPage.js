@@ -1,5 +1,4 @@
 import "./GamePlayPage.css";
-import 'react-rangeslider/lib/index.css'
 import "./GamePlaySlider.css";
 import GameCharacterBlock from "./GameCharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
@@ -21,7 +20,6 @@ import { gamePause } from "../../../_actions/gamePlay_actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
-import Slider from 'react-rangeslider'
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import Complaint from './Complaint.js';
@@ -86,7 +84,7 @@ const ProductScreen = (props) => {
   try {
     [isFullscreen, setIsFullscreen] = useFullscreenStatus(maximizableElement);
   } catch (e) {
-    errorMessage = "Fullscreen not supported";
+    errorMessage = "";
     isFullscreen = false;
     setIsFullscreen = undefined;
   }
@@ -454,7 +452,7 @@ const ProductScreen = (props) => {
                       좋아요: {thumbsUp}
                     </button>
                     <button
-                      className="gamePlay__btn"
+                      className="gamePlay__btn gameView"
                     >
                       조회수: {view}
                     </button>

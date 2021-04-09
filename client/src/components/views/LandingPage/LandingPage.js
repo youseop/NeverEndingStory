@@ -9,14 +9,14 @@ import { navbarControl,footerControl } from "../../../_actions/controlPage_actio
 
 const GameListInfos = {
   recent_games: {
-    category: "최근 플레이한 게임",
+    category: "최근 플레이한 스토리",
     id: "recent",
     length: 0,
     pos: 0,
     limit: 0,
   },
   popular_games: {
-    category: "인기 게임",
+    category: "인기 스토리",
     id: "popular",
     length: 0,
     pos: 0,

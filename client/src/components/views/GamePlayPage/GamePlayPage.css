@@ -52,6 +52,9 @@
   font-size: 0.9rem;
   height: 1% !important;
 }
+.gameView:hover {
+  color: rgb(182, 182, 182) !important;
+}
 .gamePlay__btnClicked {
   all: unset;
   color: rgb(179, 149, 149);

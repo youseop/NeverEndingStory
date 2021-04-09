@@ -63,3 +63,9 @@
   height: 45px;
   border-radius: 5px;
 }
+
+@media (max-width: 767px) {
+.comment__container {
+  width: 100%;
+}
+}

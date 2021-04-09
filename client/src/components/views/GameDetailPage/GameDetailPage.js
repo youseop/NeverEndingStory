@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import RadialTree from "../TreeVisualization/RadialTree.js";
 import qs from "qs";
 import { Invitaion } from "./Invitation";
+import GameForkButton from "./GameForkButton.js";
 
 const config = require('../../../config/key')
 
@@ -25,7 +26,7 @@ export default function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
 
-    
+
     const [gameDetail, setGameDetail] = useState({});
     const [sceneId, setSceneId] = useState([]);
     const [isMaking, setIsMaking] = useState(false);
@@ -72,7 +73,7 @@ export default function GameDetailPage(props) {
             if (response.data.success) {
                 setGameDetail(response.data.gameDetail);
             } else {
-                message.error("게임 정보를 로딩하는데 실패했습니다.");
+                message.error("스토리 정보를 로딩하는데 실패했습니다.");
             }
         });
         Axios.post("/api/game/rank", variable).then((response) => {
@@ -81,7 +82,7 @@ export default function GameDetailPage(props) {
                 setContributerCnt(response.data.contributerCnt);
                 setTotalSceneCnt(response.data.totalSceneCnt);
             } else {
-                message.error("게임 정보를 로딩하는데 실패했습니다.");
+                message.error("스토리 정보를 로딩하는데 실패했습니다.");
             }
         });
         Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
@@ -152,17 +153,6 @@ export default function GameDetailPage(props) {
         document.body.removeChild(urlInput);
         message.info("링크가 복사되었습니다.")
     }
-
-    const [isDelete, setIsDelete] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    const onClick_deleteToggle = () => {
-        setIsDelete((state) => !state)
-    }
-
-    const onClick_adminToggle = () => {
-        setIsAdmin((state) => !state)
-    }
     if (query.invitation === "true") {
         return (
             <Invitaion
@@ -186,6 +176,7 @@ export default function GameDetailPage(props) {
                                 `${config.SERVER}/${gameDetail?.thumbnail}`}
                         alt="thumbnail"
                     />
+                    <div className="detailPage__gradation"></div>
                     <div className="detailPage__contributer_container">
                         <div className="detailPage__contributer_title"> {ContributerCnt}명이 함께하는 이야기</div>
                         <TopRatingContributer
@@ -223,11 +214,11 @@ export default function GameDetailPage(props) {
                             {isPlayed ? "이어하기" : "시작하기"}
                         </div>
                     </div>
-                    <div className="detailPage__gradation"></div>
                     <div className="detailPage__UPTitle">
                         {gameDetail?.title}
                     </div>
                     <div className="detailPage__interaction">
+
                         <div
                             onClick={onClick_thumbsUp}
                             className="detailPage__like"
@@ -277,14 +268,22 @@ export default function GameDetailPage(props) {
                             초대링크복사
                         </span>
                     </div>
-                    { gameDetail?.creator?._id?.toString() === user?.userData?._id &&
-                        <Link 
-                            to={`/admin/${gameId}`}
-                            className="admin_btn"
-                        >
-                            스토리 미니맵
+                    <div className="detailPage__option">
+                        {gameDetail?.creator?._id?.toString() === user?.userData?._id &&
+                            <Link
+                                to={`/admin/${gameId}`}
+                                className="admin_btn"
+                            >
+                                스토리 미니맵
                         </Link>
-                    }
+                        }
+                        <GameForkButton
+                            history={props.history}
+                            user={user}
+                            gameId={gameId}
+                        />
+
+                    </div>
                     <div className="detailPage__description">
                         {gameDetail?.description}
                     </div>

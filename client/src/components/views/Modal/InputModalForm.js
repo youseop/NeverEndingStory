@@ -7,6 +7,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setSceneTitle, remain
     onCreate();
   }
   const onSceneTitleChange = (event) =>{
+
     setSceneTitle(event.currentTarget.value.substr(0, 30));
   }
   useKey("Enter", handleEnter);

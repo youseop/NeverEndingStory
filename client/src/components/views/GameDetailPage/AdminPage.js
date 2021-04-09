@@ -95,7 +95,7 @@ function AdminPage(props) {
         }
         setContributerList(tmp);
       } else {
-        message.error("게임 정보를 로딩하는데 실패했습니다.");
+        message.error("스토리 정보를 로딩하는데 실패했습니다.");
       }
     });
     updateTree();
