@@ -17,18 +17,19 @@ export function Banner_main({ replace }: Props_type) {
   const slideRef = React.createRef<HTMLDivElement>();
   const arrowRef = React.createRef<HTMLDivElement>();
 
-  const TimerID = useRef<any>(undefined)
+  const TimerID = useRef<any>([])
   const stopBanner = () => {
-    if (TimerID.current !== undefined) {
-      clearTimeout(TimerID.current);
+    for (let i = 0 ; i <TimerID.current.length ; i ++) {
+      clearTimeout(TimerID.current[i])
     }
+    TimerID.current = []
   }
 
   const startBanner = () => {
     const timer = setTimeout(() => {
       nextBanner()
-    }, CurrentSlide == 0 ? 0 : 3000);
-    TimerID.current = timer
+    }, 3000);
+    TimerID.current.push(timer)
   }
 
   const nextBanner = () => {

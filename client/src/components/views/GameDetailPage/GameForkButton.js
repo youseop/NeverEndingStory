@@ -7,7 +7,6 @@ import "./GameForkButton.css";
 import { TitleModalForm } from "../Modal/TitleModalForm";
 
 const GameForkButton = ({history, user, gameId}) => {
-    console.log("history :",history)
     const [category, setCategory] = useState("");
     const [visible, setVisible] = useState(false);
     const [gameTitle, setGameTitle] = useState("");

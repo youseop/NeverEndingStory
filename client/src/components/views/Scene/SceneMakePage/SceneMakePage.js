@@ -156,10 +156,13 @@ const SceneMakePage = (props) => {
             socket.emit("leave room", { room: user.userData?._id?.toString() });
             socket.emit("room", { room: user.userData?._id?.toString() });
         }
-        socket.off("timeout_making")
         socket.on("timeout_making", data => {
             props.history.replace("/")
         })
+
+        return () => {
+            socket.off("timeout_making")
+        }
 
     }, [user])
 
@@ -475,7 +478,6 @@ const SceneMakePage = (props) => {
 
     const setTree = () => {
         Axios.post("/api/treedata/").then((response) => {
-            console.log('treedata successfully added');
         });
     }
 

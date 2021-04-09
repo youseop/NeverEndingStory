@@ -83,8 +83,14 @@ function ContributedGame(props: any) {
         <Link to={`/game/${gameId}`}>
           <img
             className="contribute__img"
-            src={`http://${LOCAL_HOST}:5000/${gameDetail.thumbnail}`}
-            alt="https://cdn.crowdpic.net/list-thumb/thumb_l_110F2464CA8958D839ECCBA33E453FDF.jpg"
+            src={process.env.NODE_ENV === "production" ?
+
+            gameDetail.thumbnail
+            :
+            `http://${LOCAL_HOST}:5000/${gameDetail.thumbnail}`}
+            
+            alt="이미지를 찾을 수 없습니다."
+            
             />
           <div className="contribute__icon">
             <div>

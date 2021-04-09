@@ -117,13 +117,17 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
     //   // setValidated(validated * -1)
     // })
 
-    socket.off("decrease_failed");
     socket.on("decrease_failed", () => {
 
       setVisible(false);
       setDino(0);
       setDino(1);
     })
+
+    return () => {
+      socket.off("decrease_failed");
+
+    }
 
     socket.emit("validate_empty_num", { scene_id })
   }, [scene_id])
