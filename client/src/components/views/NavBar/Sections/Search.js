@@ -26,6 +26,12 @@ export default function Search() {
     dispatch(searchControl(textInputRef.current.value));
   };
 
+  const onBlurHandler = () =>{
+    if(searchOn===''){
+      setSearchOn(false);
+    }
+  }
+
   if (SearchOn) {
     return (
       <div className="search-container-on">
@@ -36,6 +42,7 @@ export default function Search() {
           className="search-textinput-on"
           ref={textInputRef}
           onChange={() => onChangeHandler()}
+          onBlur={()=> onBlurHandler()}
         />
         <div className="search-close" onClick={() => offClickHandler()}>
           <SVG src="close_1" width="100%" height="100%" color="#F5F5F5" />

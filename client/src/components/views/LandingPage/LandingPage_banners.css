@@ -30,11 +30,11 @@
   position: absolute;
 
   background: #e74a4a;
-  border-radius: 10px;
+  border-radius: 0.7rem;
 
   font-family: Noto Sans KR;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 1.8rem;
   text-align: center;
   cursor: pointer;
   color: #ffffff;
@@ -67,12 +67,12 @@
 .main1-slogan1 {
   top: 15%;
   left: 5%;
-  font-size: 120px;
+  font-size: 8rem;
 }
 .main1-slogan2 {
   top: 45%;
   left: 5.2%;
-  font-size: 90px;
+  font-size: 6rem;
 }
 
 /* second banner */
@@ -82,17 +82,17 @@
 .main2-slogan1 {
   top: 15%;
   text-align: center;
-  font-size: 100px;
+  font-size: 6rem;
 }
 .main2-slogan2 {
   top: 40%;
   text-align: center;
-  font-size: 50px;
+  font-size: 3rem;
 }
 .main2-emoji1 {
-  top: -90%;
+  top: -60%;
   text-align: center;
-  font-size: 1000px;
+  font-size: 50rem;
   opacity: 0.06;
 }
 .main2-button1 {
@@ -101,7 +101,7 @@
   width: 20%;
   height: 10%;
 
-  font-size: 25px;
+  font-size: 1.5rem;
 }
 
 @media (max-width: 767px) {

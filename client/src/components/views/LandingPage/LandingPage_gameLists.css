@@ -51,9 +51,9 @@
 
 .gamelist-game {
   position: relative;
+  /* width: 340px; */
+  /* height: 235px; */
   flex: 1;
-  width: 340px;
-  height: 235px;
   display: flex;
   flex-direction: column;
   /* background-color: rgba(81, 255, 0, 0.445); */
@@ -66,7 +66,7 @@
   display: none;
   position: absolute;
   width: 40px;
-  height: 180px;
+  /* height: 180px; */
   left: 0px;
   margin-top: 5px;
 
@@ -83,7 +83,7 @@
   display: none;
   position: absolute;
   width: 40px;
-  height: 180px;
+  /* height: 180px; */
   right: 0px;
   margin-top: 5px;
 
@@ -95,7 +95,7 @@
 }
 
 .game-image {
-  width: 320px;
+  width: 95%;
   height: 180px;
   margin-top: 5px;
   border-radius: 5px;
@@ -172,7 +172,6 @@
   }
 
   .game-image {
-    width: 95%;
     margin-top: 0px;
     left: 0px;
   }
