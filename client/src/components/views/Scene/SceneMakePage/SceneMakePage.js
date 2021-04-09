@@ -194,7 +194,7 @@ const SceneMakePage = (props) => {
                 setEmptyCutList(Array.from({ length: 30 - scene.cutList.length}, () => 0))
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
-                dispatch(setCharacterList({ CharacterList: tmpFirstCut.characterList }));
+                dispatch(setCharacterList({ CharacterList: [...tmpFirstCut.characterList] }));
                 setBackgroundImg(tmpFirstCut.background)
                 setName(tmpFirstCut.name);
                 setScript(tmpFirstCut.script);
@@ -373,7 +373,8 @@ const SceneMakePage = (props) => {
     };
 
     const displayCut = (index) => {
-        dispatch(setCharacterList({ CharacterList: CutList[index]?.characterList }));
+        console.log("character LIST: ",CutList[index]?.characterList)
+        dispatch(setCharacterList({ CharacterList: [...CutList[index]?.characterList] }));
         setBackgroundImg(CutList[index]?.background);
         setScript(CutList[index]?.script);
         setName(CutList[index]?.name);
@@ -435,6 +436,9 @@ const SceneMakePage = (props) => {
         if (CutNumber < CutList.length - 1) {
             displayCut(CutNumber + 1);
         } else {
+            console.log("**",CutNumber,CutList)
+            setCutList(cutList => cutList)
+            dispatch(setCharacterList({ CharacterList: CharacterList.length ? [...CharacterList] : []}));
             setScript("");
         }
         setCutNumber((oldNumber) => oldNumber + 1);
