@@ -6,19 +6,19 @@ const { ThumbsUp } = require("../../models/ThumbsUp");
 async function getThumbsUp(objectId, userId){
     const thumbsup = await ThumbsUp.findOne({objectId: objectId});
     let isClicked = false;
-    let thumbsup = 0;
+    let thumbsupCnt = 0;
     if(
     thumbsup?.userList &&
     Object.keys(thumbsup?.userList).includes(userId) && 
     thumbsup.userList[userId] === true
     ){
     isClicked = true;
-    thumbsup = thumbsup.cnt;
+    thumbsupCnt = thumbsup.cnt;
     } else if (thumbsup) {
     isClicked = false;
-    thumbsup = thumbsup.cnt;
+    thumbsupCnt = thumbsup.cnt;
     }
-  return {isClicked, thumbsup}
+  return {isClicked, thumbsupCnt} 
 }
-
+ 
 module.exports = { getThumbsUp };

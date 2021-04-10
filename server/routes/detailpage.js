@@ -11,7 +11,7 @@ router.get('/:gameId/:userId', async (req, res) => {
 
     const {gameDetail} = await getDetail(gameId);
     const {topRank, contributerCnt, sceneCnt} = await getRank(req.params.gameId);
-    const {isClicked, thumbsup} = await getThumbsUp(gameId, userId);
+    const {isClicked, thumbsupCnt} = await getThumbsUp(gameId, userId);
 
     return res.status(200).json({ 
       success: true, 
@@ -20,7 +20,7 @@ router.get('/:gameId/:userId', async (req, res) => {
       totalSceneCnt: sceneCnt,
       gameDetail: gameDetail,
       isClicked: isClicked,
-      thumbsup: thumbsup, 
+      thumbsup: thumbsupCnt, 
     });
   } catch (err) {
     console.log(err);
