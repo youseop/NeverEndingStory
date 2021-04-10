@@ -6,6 +6,7 @@ const { User } = require("../models/User");
 const { sanitize } = require("../lib/sanitize")
 const { auth } = require("../middleware/auth");
 const { check } = require("../middleware/check");
+const { route } = require('./passport');
 
 //=================================
 //             User
@@ -226,5 +227,33 @@ router.post("/send-feedback", async (req, res) => {
         success: true,
     });
 });
+
+router.delete('/contribute-game/:gameId/:userId', async (req,res) => {
+    try{
+        const {gameId, userId} = req.params;
+        console.log(gameId,'aewfa')
+        User.updateOne(
+            {_id: userId},
+            {$pull: { contributedGameList: {gameId: gameId} }}
+        ).exec();
+        return res.status(200).send({ success: true });
+    } catch (err) {
+        return res.status(400).send({ success: false });
+    }
+}) 
+
+router.delete('/contribute-scene/:gameId/:userId', async (req,res) => {
+    try{
+        const {gameId, userId} = req.params;
+        console.log(gameId,'aewafwfeawefwfa')
+        User.updateOne(
+            {_id: userId},
+            {$pull: { contributedSceneList: {gameId: gameId} }}
+        ).exec();
+        return res.status(200).send({ success: true });
+    } catch (err) {
+        return res.status(400).send({ success: false });
+    }
+})
 
 module.exports = router;

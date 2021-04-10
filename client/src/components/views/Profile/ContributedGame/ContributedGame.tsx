@@ -46,9 +46,18 @@ function ContributedGame(props: any) {
   useEffect(() => {
     Axios.get(`/api/game/detail/${gameId}`).then((response) => {
       const gameDetail=response.data.gameDetail;
-      setGameDetail(gameDetail);
-      setView(gameDetail.view);
-      setThumbsUp(gameDetail.thumbsUp);
+      if(gameDetail){
+        setGameDetail(gameDetail);
+        setView(gameDetail.view);
+        setThumbsUp(gameDetail.thumbsUp);
+      } else {
+        //삭제된 게임
+        if(sceneCnt == -1){ //기여한 게임 리스트에서 삭제
+          Axios.delete(`/api/users/contribute-game/${gameId}/${userId}`);
+        } else{ //기여한 스토리 리스트에서 삭제
+          Axios.delete(`/api/users/contribute-scene/${gameId}/${userId}`);
+        }
+      }
     })
   },[])
 
