@@ -9,8 +9,8 @@ const { getThumbsUp } = require('./functions/thumbsup');
 
 router.get('/:objectId/:userId', async (req,res) => {
   const {objectId, userId} = req.params;
-  const {isClicked, thumbsup} = await getThumbsUp(objectId, userId);
-  res.status(200).json({success: true, thumbsup: thumbsup, isClicked: isClicked})
+  const {isClicked, thumbsupCnt} = await getThumbsUp(objectId, userId);
+  res.status(200).json({success: true, thumbsup: thumbsupCnt, isClicked: isClicked})
 })
  
 //<<flag>>
