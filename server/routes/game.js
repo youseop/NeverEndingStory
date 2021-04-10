@@ -25,6 +25,7 @@ const { sanitize } = require("../lib/sanitize")
 const { log } = require("winston");
 const { View } = require("../models/View");
 const { ThumbsUp } = require("../models/ThumbsUp");
+const { getRank, getDetail } = require('./functions/game');
 
 AWS.config.update({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -228,8 +229,8 @@ const updateHistoryFromPlaying = (user) => {
 
 // 저장된 씬 아이디로 들어감..
 // 저장된 씬이 없는 경우 첫 씬
-router.get("/gamestart/:id", check, async (req, res) => {
-    const gameId = mongoose.Types.ObjectId(req.params.id);
+router.get("/start/:gameId", check, async (req, res) => {
+    const gameId = mongoose.Types.ObjectId(req.params.gameId);
     const isMember = req.isMember;
     // makingList에 지금 게임 아이디가 있는 경우..
     // 유효성 검증 이후 할일 하기. (Date.now보다 큰가?)
@@ -238,6 +239,13 @@ router.get("/gamestart/:id", check, async (req, res) => {
         let trashSceneId = mongoose.Types.ObjectId(0);
         if (isMember) {
             user = await User.findOne({ _id: req.user._id });
+            const idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
+            if (idx > -1) {
+                if (user.makingGameList[idx].exp < Date.now()) {
+                    trashSceneId = user.makingGameList[idx].sceneId;
+                    user.makingGameList.splice(idx, 1)
+                }
+            }
         }
         else {
             // could be initialized
@@ -249,65 +257,41 @@ router.get("/gamestart/:id", check, async (req, res) => {
             }
             user = req.session
         }
-
-        if (isMember) {
-            const idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
-            if (idx > -1) {
-                if (user.makingGameList[idx].exp < Date.now()) {
-                    trashSceneId = user.makingGameList[idx].sceneId;
-                    user.makingGameList.splice(idx, 1)
-                }
-            }
-        }
-        // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감. 
-        if (user.gamePlaying.gameId && objCmp(user.gamePlaying.gameId, gameId)) {
+        // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감.
+        const {gamePlaying, gameHistory} = user;
+        if (gamePlaying.gameId && objCmp(gamePlaying.gameId, gameId)) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
-            if (isMember && objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
-                user.gamePlaying.sceneIdList.pop();
-                user.gamePlaying.isMaking = false;
-                user.save((err) => {
-                    if (err) {
-                        console.log(err);
-                        return res.status(400).json({ success: false })
-                    }
-                });
+            if (isMember && objCmp(gamePlaying.sceneIdList[gamePlaying.sceneIdList.length - 1], trashSceneId)) {
+                gamePlaying.sceneIdList.pop();
+                gamePlaying.isMaking = false;
+                await user.save();
             }
-
             return res
                 .status(200)
                 .json({
                     success: true,
-                    sceneId: user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1],
-                    isMaking: user.gamePlaying.isMaking,
+                    sceneId: gamePlaying.sceneIdList[gamePlaying.sceneIdList.length - 1],
+                    isMaking: gamePlaying.isMaking,
                 });
         }
-
         // 아니면 게임 플레임 히스토리에 넣기. 
-        if (user.gamePlaying.gameId) {
+        if (gamePlaying.gameId) {
             updateHistoryFromPlaying(user);
         }
-
         // 히스토리에서 지금 하려는 게임 찾아서 게임 플레잉에 갖고 옴. 
-        for (let i = 0; i < user.gameHistory.length; i++) {
-            if (user.gameHistory[i].gameId && objCmp(user.gameHistory[i].gameId, gameId)) {
-
+        for (let i = 0; i < gameHistory.length; i++) {
+            if (gameHistory[i].gameId && objCmp(gameHistory[i].gameId, gameId)) {
                 // trashSceneId, 히스토리 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
-                if (objCmp(trashSceneId, user.gameHistory[i].sceneIdList[user.gameHistory[i].sceneIdList.length - 1])) {
-                    user.gameHistory[i].sceneIdList.splice(user.gameHistory[i].sceneIdList.length - 1, 1)
-                    user.gameHistory[i].isMaking = false;
-
+                if (objCmp(trashSceneId, gameHistory[i].sceneIdList[gameHistory[i].sceneIdList.length - 1])) {
+                    gameHistory[i].sceneIdList.splice(gameHistory[i].sceneIdList.length - 1, 1)
+                    gameHistory[i].isMaking = false;
                 }
-
                 user.gamePlaying = {
                     gameId: gameId,
                     sceneIdList: user.gameHistory[i].sceneIdList.slice(0, user.gameHistory[i].sceneIdList.length),
                     isMaking: user.gameHistory[i].isMaking
                 };
-
-                user.save((err) => {
-                    if (err) { console.log(err); return res.status(400).json({ success: false }) }
-                });
-
+                await user.save();
                 return res
                     .status(200)
                     .json({
@@ -317,24 +301,19 @@ router.get("/gamestart/:id", check, async (req, res) => {
                     });
             }
         }
-
-        try {
-            // 히스토리에 없으면 게임 플레잉에 새로 만들어서 넣음. 
-            const game = await Game.findOne({ _id: gameId });
-            const sceneId = game.first_scene;
-            user.gamePlaying = {
-                gameId: gameId,
-                sceneIdList: [sceneId],
-                isMaking: false,
-            };
-            if (isMember) {
-                user.save();
-            }
-            return res.status(200).json({ success: true, sceneId, isMaking: user.gamePlaying.isMaking, });
-        } catch (err) {
-            console.log(err);
-            return res.status(400).json({ success: false });
+        // 히스토리에 없으면 게임 플레잉에 새로 만들어서 넣음. 
+        const game = await Game.findOne({ _id: gameId });
+        const sceneId = game.first_scene;
+        user.gamePlaying = {
+            gameId: gameId,
+            sceneIdList: [sceneId],
+            isMaking: false,
+        };
+        if (isMember) {
+            await user.save();
         }
+        return res.status(200).json({ success: true, sceneId, isMaking: user.gamePlaying.isMaking, });
+
     } catch (err) {
         console.log(err);
         return res.status(400).json({ success: false });
@@ -477,44 +456,25 @@ router.post("/updatescenestatus", check, async (req, res) => {
     return;
 });
 
-router.post("/detail", (req, res) => {
-    Game.findOne({ _id: req.body.gameId })
-        .populate("creator")
-        .exec((err, gameDetail) => {
-            if (err) return res.status(400).send(err);
-            return res.status(200).json({ success: true, gameDetail });
-        });
+router.get("/detail/:gameId", async (req, res) => {
+    try{
+        const {gameId} = req.params;
+        const {gameDetail} = await getDetail(gameId);
+        return res.status(200).json({ success: true, gameDetail });
+        } catch (err) {
+        console.log(err);
+        return res.status(400).json({ success: false });
+    }
 });
 
-router.post("/rank", async (req, res) => {
+router.get("/rank/:gameId", async (req, res) => {
     try {
-        const gameDetail = await Game.findOne(
-            { _id: req.body.gameId },
-            { _id: 0, sceneCnt: 1, contributerList: 1 }
-        )
-        const contributerList = gameDetail.contributerList;
-        const contributerCnt = contributerList.length;
-        contributerList.sort(function (a, b) {
-            return a.userSceneCnt < b.userSceneCnt ? 1 : a.userSceneCnt > b.userSceneCnt ? -1 : 0;
-        });
-        const topRank = contributerList.slice(0, 5);
-
-        for (let i = 0; i < topRank.length; i++) {
-            const user = await User.findOne({ _id: mongoose.Types.ObjectId(topRank[i].userId) })
-            topRank[i] = {
-                nickname: user.nickname,
-                email: user.email,
-                image: user.image,
-                userId: user._id,
-                userSceneCnt: topRank[i].userSceneCnt,
-                sceneIdList: topRank[i].sceneIdList
-            }
-        }
+        const {topRank, contributerCnt, sceneCnt} = await getRank(req.params.gameId);
         return res.status(200).json({
             success: true,
             topRank: topRank,
             contributerCnt: contributerCnt,
-            totalSceneCnt: gameDetail.sceneCnt
+            totalSceneCnt: sceneCnt
         });
     } catch (err) {
         console.log(err);

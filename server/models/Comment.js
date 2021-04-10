@@ -21,9 +21,18 @@ const commentSchema = Schema({
   },
   content : {
     type: String
+  },
+  like:{
+    type: Number,
+    default: 0
+  },
+  responseCnt:{
+    type: Number,
+    default: 0
   }
 }, {timestamps: true})
 
+commentSchema.index({ gameId: 1, responseTo: 1 });
 
 const Comment = mongoose.model('Comment', commentSchema);
 

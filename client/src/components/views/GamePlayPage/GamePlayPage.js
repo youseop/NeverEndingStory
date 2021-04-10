@@ -83,7 +83,7 @@ const ProductScreen = (props) => {
   const [lastMotion, setLastMotion] = useState(false)
   const [view, setView] = useState(0);
   const [thumbsUp, setThumbsUp] = useState(0);
-  const [isClicked, setIsClicked] = useState(false);
+  const [thumbsUpClicked, setThumbsUpClicked] = useState(false);
 
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
@@ -217,14 +217,14 @@ const ProductScreen = (props) => {
 
   function onClick_thumbsUp() {
     if (user && user.userData) {
-      // setUpdate((state) => state+1);
       const variable = {
         userId: user.userData._id,
-        objectId: sceneId
+        objectId: sceneId,
+        flag: "1"
       }
       Axios.post("/api/thumbsup/", variable).then((response) => {
         if (response.data.success) {
-          setIsClicked(response.data.isClicked);
+          setThumbsUpClicked(response.data.isClicked);
           setThumbsUp(response.data.thumbsup);
         }
       })
@@ -236,13 +236,9 @@ const ProductScreen = (props) => {
 
   useEffect(() => {
     if (user && user.userData) {
-      const variable_thumbsup = {
-        objectId: sceneId,
-        userId: user.userData._id,
-      }
-      Axios.post("/api/thumbsup/count", variable_thumbsup).then((response) => {
+      Axios.get(`/api/thumbsup/${sceneId}/${user.userData._id}`).then((response) => {
         if (response.data.success) {
-          setIsClicked(response.data.isClicked);
+          setThumbsUpClicked(response.data.isClicked);
           setThumbsUp(response.data.thumbsup);
         }
       })
@@ -464,17 +460,21 @@ const ProductScreen = (props) => {
             />
             <div className="gamePlay__btn_container">
               <div>
-                <button
-                  className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
-                  onClick={(e) => { onClick_thumbsUp(); e.stopPropagation() }}
-                >
-                  좋아요: {thumbsUp}
-                </button>
-                <button
-                  className="gamePlay__btn gameView"
-                >
-                  조회수: {view}
-                </button>
+                {i === Scene.cutList.length - 1 &&
+                  <>
+                    <button
+                      className={thumbsUpClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
+                      onClick={(e)=>{onClick_thumbsUp(); e.stopPropagation()}}
+                    >
+                      좋아요: {thumbsUp}
+                    </button>
+                    <button
+                      className="gamePlay__btn gameView"
+                    >
+                      조회수: {view}
+                    </button>
+                  </>
+                }
                 <button
                   className="gamePlay__btn"
                   onClick={(e) => { setDislike((state) => !state); e.stopPropagation() }}

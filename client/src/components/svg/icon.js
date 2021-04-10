@@ -302,6 +302,14 @@ export function BAR(props) {
   );
 }
 
+export function Circle(props) {
+  return (
+    <svg width="12" height="12" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="8.5" cy="8.5" r="8.5" fill="#ffffff"/>
+    </svg>
+  )
+}
+
 export function Click_Icon(props) {
   return (
     <svg version="1.1"
