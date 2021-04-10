@@ -14,7 +14,7 @@ const commentSchema = Schema({
   },
   sceneId : {
     type: Schema.Types.ObjectId,
-    ref: 'Scene'
+    ref: 'Scene',
   },
   responseTo : {
     type: String
@@ -32,7 +32,7 @@ const commentSchema = Schema({
   }
 }, {timestamps: true})
 
-commentSchema.index({ gameId: 1, responseTo: 1 });
+commentSchema.index({ gameId: 1, responseTo: 1, sceneId: 1 });
 
 const Comment = mongoose.model('Comment', commentSchema);
 

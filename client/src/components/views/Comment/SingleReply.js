@@ -27,7 +27,7 @@ function SingleReply({comment, updateToggle_comment, gameId, setReplyCnt}) {
 
   const onClick_removeComment = () => {
     setIsEdit(false);
-    axios.post('/api/comment/remove-comment', {commentId: comment._id}).then(response => {
+    axios.delete(`/api/comment/${comment._id}/${gameId}`).then(response => {
       if(response.data.success) {
         message.success('댓글이 삭제되었습니다.');
         updateToggle_comment();
@@ -49,9 +49,8 @@ function SingleReply({comment, updateToggle_comment, gameId, setReplyCnt}) {
 
   const onClick_editComment = (e) => {
     e.preventDefault();
-    axios.post('/api/comment/edit-comment', 
-      {commentId: comment._id, comment: editComment}
-    ).then(response => {
+    axios.patch(`/api/comment/${comment._id}/${editComment}`)
+    .then(response => {
       if(response.data.success) {
         message.success('댓글이 수정되었습니다.');
         setContent(editComment)
@@ -102,8 +101,8 @@ function SingleReply({comment, updateToggle_comment, gameId, setReplyCnt}) {
           <div onClick={onClick_like} className="comment_like">좋아요 : {like}</div>
             { comment.writer._id === user_id&&
             <>
-            <div onClick={onClick_toggleEdit} className="comment_option">{isEdit ? "수정 취소" : "댓글 수정"}</div>
-            <div onClick={onClick_removeComment} className="comment_option">댓글 삭제</div>
+            <div onClick={onClick_toggleEdit} className="comment_option">{isEdit ? "수정 취소" : "수정"}</div>
+            <div onClick={onClick_removeComment} className="comment_option">삭제</div>
             </>
             }
           </div>

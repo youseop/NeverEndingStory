@@ -80,15 +80,15 @@ function ContributedGame(props: any) {
           <div className="contribute__icon">
             <div>
               {gameDetail.sceneCnt}
-              <FontAwesomeIcon icon={faFile} style={{ marginLeft: "10px" }} /> 
+              <FontAwesomeIcon icon={faFile} className="specific_icon" /> 
             </div>
             <div>
               {view}
-              <FontAwesomeIcon icon={faEye} style={{ marginLeft: "10px" }} />
+              <FontAwesomeIcon icon={faEye} className="specific_icon" />
             </div>
             <div>
               {thumbsUp} 
-              <FontAwesomeIcon style={{ marginLeft: "10px" }} icon={faHeart} />
+              <FontAwesomeIcon className="specific_icon" icon={faHeart} />
             </div>
           </div>
         </Link>
