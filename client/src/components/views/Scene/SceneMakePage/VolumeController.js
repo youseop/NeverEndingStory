@@ -8,15 +8,15 @@ function VolumeController({ audio, volume, setVolume, muted, setMuted, tempVolum
     const mute = () => {
         if (muted) {
             setMuted(false)
-            volumeControl(tempVolume.current)
+            volumeControl(null, tempVolume.current)
         } else {
             tempVolume.current = volume
             setMuted(true)
-            volumeControl(0)
+            volumeControl(null, 0)
         }
     }
 
-    const volumeControl = (volume) => {
+    const volumeControl = (event, volume) => {
         setVolume(volume)
         volume === 0 ? setMuted(true) : setMuted(false)
         audio.volume = volume
@@ -37,7 +37,7 @@ function VolumeController({ audio, volume, setVolume, muted, setMuted, tempVolum
                     max={1}
                     step={0.02}
                     value={volume}
-                    onChange={handleChange}
+                    onChange={volumeControl}
                 />
             </div>
         </div>

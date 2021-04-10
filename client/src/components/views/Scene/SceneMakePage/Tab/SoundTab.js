@@ -5,7 +5,7 @@ import "../EssetModal.css";
 import "./MusicTab.css";
 
 let sound_audio = new Audio();
-function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, soundBlobList, setSoundBlobNames, soundBlobNames }) {
+function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, soundBlobList, setSoundBlobNames, soundBlobNames, uploadFlag }) {
     const [soundCards, setSoundCards] = useState([]);
     const [blobCards, setBlobCards] = useState([]);
     const [toggle, setToggle] = useState(0);
@@ -85,6 +85,7 @@ function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, so
                     accept="audio/*"
                     type="sound"
                     icon="audio"
+                    uploadFlag={uploadFlag}
                 >
                 </MyDropzone>
             </div>

@@ -37,12 +37,12 @@ export const MS_PER_HR = 360000
 function App() {
   const [loaded, setloaded] = useState(false);
   const dispatch = useDispatch();
+
   useConstructor(async () => {
     dispatch(auth()).then(() => {
       setloaded(true);
     })
   })
-
 
   if (loaded) {
     return (
@@ -57,8 +57,7 @@ function App() {
             <Route exact path="/profile/:userId" component={Auth(Profile, null)} />
             <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
             <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
-            <Route path="/gameplay/:full" component={Valid(Auth(GamePlayPage, null))} />
-            <Route path="/gameplay" component={Auth(GamePlayPage, null)} />
+            <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />
             <Route path="/admin/:gameId" component={Auth(AdminPage, true)} />
             <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage, true))} />
           </Switch>

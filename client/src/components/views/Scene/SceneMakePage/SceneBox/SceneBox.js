@@ -62,7 +62,10 @@ function SceneBox(props) {
         } else if (index === 0 || index === 1 && CutNumber - CutList.length === 0) {
             return (
                 <div className="scene__SceneBox" onClick={onClick_plusBtn} key={`${index}`}>
-                    <div className="sceneBox_plus">+</div>
+                    <div className="sceneBox_plus">
+                        <div className="sceneBox_plus_horizonal" />
+                        <div className="sceneBox_plus_vertical" />
+                    </div>
                 </div>
             );
         } else {

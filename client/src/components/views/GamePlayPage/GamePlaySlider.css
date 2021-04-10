@@ -1,39 +1,59 @@
-/* Rangeslider */
-.rangeslider,
-.rangeslider .rangeslider__fill {
-  display: block;
-  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.4);
+.MuiSlider-colorPrimary{
+  margin-top:7px !important;
 }
-.rangeslider .rangeslider__handle {
-  background: rgb(182, 182, 182);
-  border: 0px solid #ccc;
-  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.4), 0 0px 0px rgba(0, 0, 0, 0.4);
+.MuiSlider-rail{
+  height:8px !important;
+  border-radius: 4px !important;
+  background-color: #999999 !important;
+  opacity: 1 !important;
 }
-
-/* Rangeslider - Horizontal slider */
-.rangeslider-horizontal {
-  height: 10px;
-  border-radius: 7px;
-  cursor: pointer;
+.MuiSlider-track{
+  background-color: #DDDDDD !important;
+  border-radius: 4px !important;
+  height:8px !important;
 }
-.rangeslider-horizontal .rangeslider__fill {
-  background-color: rgb(182, 182, 182);
+.MuiSlider-thumb{
+  margin-top: -2.5px !important;
+  width:13px !important;
+  height:13px !important;
+  background-color: #DDDDDD !important;
+} 
+.MuiSlider-thumbColorPrimary{
+  background-color: #DDDDDD !important;
 }
-.rangeslider-horizontal .rangeslider__handle {
-  width: 15px;
-  height: 15px;
-  border-radius: 13px;
+.MuiSlider-thumb.Mui-focusVisible, 
+.MuiSlider-thumb:hover {
+  box-shadow: 0px 0px 0px 0px rgb(63 81 181 / 16%) !important;
 }
-.rangeslider-horizontal .rangeslider__handle:focus {
-  outline: none;
+.MuiSlider-thumb.MuiSlider-active {
+  box-shadow: 0px 0px 0px 0px rgb(63 81 181 / 16%) !important;
 }
-.rangeslider-horizontal .rangeslider__handle:after {
-  width: 0px;
-}
-.rangeslider .rangeslider__handle-tooltip {
-  width: 0px;
-  font-size: 0px;
-}
-.rangeslider-horizontal .rangeslider__handle-tooltip:after {
-  border-top: 0px;
+@media (max-width:850px) and (orientation:landscape){
+  .MuiSlider-root{
+    height: 0vh !important;
+    margin:0vh !important;
+    padding: 0vh !important;
+  } 
+  .MuiSlider-colorPrimary{
+    margin:0vh !important;
+    padding: 0vh !important;
+  }
+  .MuiSlider-thumb::after{
+    height:0vh !important;
+    width: 0vh !important;
+  }
+  .MuiSlider-rail{
+    margin:0vh !important;
+    padding: 0vh !important;
+    height:1vh !important;
+  }
+  .MuiSlider-track{
+    margin:0vh !important;
+    padding: 0vh !important;
+    height:1vh !important;
+  }
+  .MuiSlider-thumb{
+    height:0vh !important;
+    width: 0vh !important;
+  } 
 }

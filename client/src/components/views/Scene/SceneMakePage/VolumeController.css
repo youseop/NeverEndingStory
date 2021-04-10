@@ -21,30 +21,33 @@
 
 @media (max-width:850px) and (orientation:landscape){
     .volumeController_container{
-        width:75%;
+        width: 10%;
+        /* width:75%; */
         height:100%;
-        /* background-color: red; */
     }
     
     .volumeController_icon_container{
         all:unset;
+        transform: translateX(10%) !important;
         margin-top :calc(0vh/9);
         color: rgb(182, 182, 182);
         padding: calc(0vh/9) calc(0vh/9);
         background-color: tomato;
         cursor: pointer;
+        display: flex; 
+        align-items: center;
     }
     .volumeController_icon{
         position: absolute;
-        font-size: calc(40vh/9) !important;
+        font-size: 4vh !important;        
     }
     
     .volumeController_slide{
-        width:70%;
+        width:0%;
+        /* width:70%; */
+        height:80%;
         margin-left: calc(45vh/9);
-    }
-    .volumeController_slide>.rangeslider-horizontal{
-        margin-top:calc(15vh/9);
-        padding-right: calc(30vh/9);
+        display: flex; 
+        align-items: center;
     }
 }
