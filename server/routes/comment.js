@@ -5,13 +5,23 @@ const { Comment } = require("../models/Comment");
 const { Like } = require('../models/Like');
 
 router.post('/', async (req, res) => {
-  const comment = new Comment({
-    content: req.body.content,
-    writer: req.body.writer,
-    gameId: mongoose.Types.ObjectId(req.body.gameId),
-    sceneId: mongoose.Types.ObjectId(req.body.sceneId),
-    responseTo: req.body.responseTo
-  })
+  let comment;
+  if (req.body.sceneId.length > 0){
+    comment = new Comment({
+      content: req.body.content,
+      writer: req.body.writer,
+      gameId: mongoose.Types.ObjectId(req.body.gameId),
+      sceneId: mongoose.Types.ObjectId(req.body.sceneId),
+      responseTo: req.body.responseTo
+    })
+  } else {
+    comment = new Comment({
+      content: req.body.content,
+      writer: req.body.writer,
+      gameId: mongoose.Types.ObjectId(req.body.gameId),
+      responseTo: req.body.responseTo
+    })
+  }
 
   await comment.save();
   if(req.body.responseTo.length > 0)

@@ -87,6 +87,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
       content: commentContent,
       writer: user.userData._id,
       gameId: gameId,
+      sceneId: "",
       responseTo: comment._id.toString()
     };
 
