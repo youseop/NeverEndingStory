@@ -12,10 +12,13 @@ router.post('/save-comment', async (req, res) => {
   })
 
   await comment.save();
-  Comment.updateOne(
-    {_id: req.body.responseTo},
-    {$inc : {responseCnt: 1}}
-  ).exec();
+  if(req.body.responseTo.length > 0)
+  {
+    Comment.updateOne(
+      {_id: req.body.responseTo},
+      {$inc : {responseCnt: 1}}
+      ).exec();
+  }
   Comment.findOne({ '_id': comment._id })
   .populate('writer')
   .exec((err, result) => {

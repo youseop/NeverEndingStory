@@ -46,7 +46,6 @@ function useConstructor(callBack = () => { }) {
 
 //! playscreen
 const ProductScreen = (props) => {
-
   const isMobile = useRef(false);
   const isTouch = window.matchMedia('(pointer: coarse)').matches;
   if (isTouch) {
@@ -524,12 +523,6 @@ const ProductScreen = (props) => {
                 )}
               </div>
             </div>
-            {/* <DislikePopup
-              sceneId={sceneId}
-              gameId={gameId}
-              trigger={Dislike}
-              setTrigger={setDislike}
-            /> */}
             <Complaint
               sceneId={sceneId}
               gameId={gameId}
@@ -545,9 +538,6 @@ const ProductScreen = (props) => {
       </div>
     );
   } else {
-    // dispatch(gameLoadingPage(0));
-    // dispatch(gameLoadingPage(1));
-
     return (
       <div className="loader_container">
         <div className="loader">Loading...</div>

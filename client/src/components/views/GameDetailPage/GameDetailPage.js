@@ -230,7 +230,7 @@ export default function GameDetailPage(props) {
                                 </div>
                                 </div>
                             </div>
-                            <h1 style={{ "color": "white", "font-size": "50px" }}>|</h1>
+                            <h1 style={{ "color": "white", "fontSize": "50px" }}>|</h1>
                             <div className="detailPage__gamePlay_container">
                                 <div className="detailPage__gamePlay_text">
                                     현재 기여자
