@@ -20,7 +20,7 @@
   position: relative;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 767px) {
   .mainPage_container {
     width: 1;
     min-width: 300px;

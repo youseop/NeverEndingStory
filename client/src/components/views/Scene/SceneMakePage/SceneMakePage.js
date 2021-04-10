@@ -664,7 +664,7 @@ const SceneMakePage = (props) => {
     const [sideBar, setSideBar] = useState([]);
 
     useEffect(() => {
-        Axios.post('/api/game/detail', { gameId: gameId })
+        Axios.get(`/api/game/detail/${gameId}`)
             .then(response => {
                 if (response.data.success) {
                     setGameDetail(response.data.gameDetail)

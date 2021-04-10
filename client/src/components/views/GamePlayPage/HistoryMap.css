@@ -103,6 +103,16 @@
   margin-right: 5vw;
 }
 
+.HistoryMap_explain{
+  position: absolute;
+  width:100%;
+  top: 20%;
+
+  font-size: min(2.5em,4vw);
+  text-align: center;
+  color:white;
+  opacity: 0.8;
+}
 .close_btn {
   position: absolute;
   top: 5%;

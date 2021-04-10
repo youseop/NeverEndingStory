@@ -1,6 +1,6 @@
 import { message } from "antd";
 import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Comment from '../Comment/Comment.js';
 import { socket } from "../../App";
 import { SVG } from "../../svg/icon";
@@ -24,8 +24,6 @@ const config = require('../../../config/key')
 export default function GameDetailPage(props) {
     const query = qs.parse(props.location?.search, { ignoreQueryPrefix: true });
     const gameId = props.match.params.gameId;
-    const variable = { gameId: gameId };
-
 
     const [gameDetail, setGameDetail] = useState({});
     const [sceneId, setSceneId] = useState([]);
@@ -36,12 +34,6 @@ export default function GameDetailPage(props) {
     const [totalSceneCnt, setTotalSceneCnt] = useState(0);
     const [ContributerCnt, setContributerCnt] = useState(0);
     const [contributerList, setContributerList] = useState([]);
-    const [treeData, setTreeData] = useState({
-        name: "",
-        userId: "",
-        complaint: 0,
-        children: []
-    });
     const [isPlayed, setIsPlayed] = useState(false);
 
     const user = useSelector((state) => state.user);
@@ -69,58 +61,48 @@ export default function GameDetailPage(props) {
     }
 
     useEffect(() => {
-        Axios.post("/api/game/detail", variable).then((response) => {
-            if (response.data.success) {
-                setGameDetail(response.data.gameDetail);
-            } else {
-                message.error("스토리 정보를 로딩하는데 실패했습니다.");
-            }
-        });
-        Axios.post("/api/game/rank", variable).then((response) => {
-            if (response.data.success) {
-                setContributerList(response.data.topRank);
-                setContributerCnt(response.data.contributerCnt);
-                setTotalSceneCnt(response.data.totalSceneCnt);
-            } else {
-                message.error("스토리 정보를 로딩하는데 실패했습니다.");
-            }
-        });
-        Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
-            if (response.data.success) {
-                setSceneId(response.data.sceneId);
-                setIsMaking(response.data.isMaking);
-            } else {
-                message.error("로그인 해주세요.");
-            }
-        });
     }, []);
+    
+    const updateFlag = useRef(true);
 
     useEffect(() => {
-        if (user && user.userData) {
-            let variable = {
-                userId: user.userData._id,
-                objectId: gameId
-            }
-            Axios.post("/api/view/", variable).then((response) => {
+        if (user && user.userData && updateFlag.current) {
+            updateFlag.current = false;
+            Axios.get(`/api/game/start/${gameId}`).then((response) => {
                 if (response.data.success) {
-                    setView(response.data.view);
+                    setSceneId(response.data.sceneId);
+                    setIsMaking(response.data.isMaking);
+                } else {
+                    message.error("로그인 해주세요.");
                 }
-            })
-            variable = {
-                objectId: gameId,
-                userId: user.userData._id,
-            }
-            Axios.post("/api/thumbsup/count", variable).then((response) => {
-                if (response.data.success) {
-                    setThumbsUp(response.data.thumbsup);
-                    setThumbsUpClicked(response.data.isClicked);
-                }
-            })
-            Axios.post("/api/users/game-visit", { userId: user.userData._id }).then((response) => {
+            });
+            
+            Axios.get("/api/users/visit").then((response) => {
                 if (response.data.success) {
                     const sceneIdLength = response.data?.gamePlaying?.sceneIdList?.length;
                     if (sceneIdLength > 1)
                         setIsPlayed(true);
+                }
+            })
+            
+            const userId = user.userData._id;
+            Axios.get(`/api/detailpage/${gameId}/${userId}`).then((response) => {
+                if (response.data.success) {
+                    const {
+                        topRank, 
+                        contributerCnt, 
+                        totalSceneCnt, 
+                        gameDetail, 
+                        isClicked, 
+                        thumbsup
+                    } = response.data;
+                    setThumbsUp(thumbsup);
+                    setThumbsUpClicked(isClicked);
+                    setGameDetail(gameDetail);
+                    setView(gameDetail.view);
+                    setContributerList(topRank);
+                    setContributerCnt(contributerCnt);
+                    setTotalSceneCnt(totalSceneCnt);
                 }
             })
         }
@@ -130,14 +112,17 @@ export default function GameDetailPage(props) {
         if (user?.userData?.isAuth) {
             const variable = {
                 userId: user.userData._id,
-                objectId: gameId
+                objectId: gameId,
+                flag: "1"
             }
-            Axios.post("/api/thumbsup/", variable).then((response) => {
-                if (response.data.success) {
-                    setThumbsUp(response.data.thumbsup);
-                    setThumbsUpClicked(response.data.isClicked);
+            setThumbsUp((state) => {
+                if(thumbsUpClicked){
+                    return state-1;
                 }
-            })
+                return state+1;
+            });
+            setThumbsUpClicked((state) => !state);
+            Axios.post("/api/thumbsup/", variable);
         }
         else {
             message.error("로그인이 필요합니다.")
@@ -222,6 +207,7 @@ export default function GameDetailPage(props) {
                         }
                     </div>
                     <div className="detailPage__contributer_container_box">
+                        <div className="detailPage__contributer_container_box fit">
                         <div className="detailPage__contributer_container">
                             <div className="detailPage__contributer_title"> 가장 많은 기여를 한 사람</div>
                             <TopRatingContributer
@@ -244,7 +230,7 @@ export default function GameDetailPage(props) {
                                 </div>
                                 </div>
                             </div>
-                            <h1 style={{ "color": "white" }}>/</h1>
+                            <h1 style={{ "color": "white", "font-size": "50px" }}>|</h1>
                             <div className="detailPage__gamePlay_container">
                                 <div className="detailPage__gamePlay_text">
                                     현재 기여자
@@ -258,6 +244,7 @@ export default function GameDetailPage(props) {
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

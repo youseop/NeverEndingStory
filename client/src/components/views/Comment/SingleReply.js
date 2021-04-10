@@ -4,7 +4,7 @@ import { Input, message } from 'antd';
 import { useSelector } from 'react-redux';
 import './SingleReply.css';
 
-function SingleReply({comment, updateToggle_comment, gameId}) {
+function SingleReply({comment, updateToggle_comment, gameId, setReplyCnt}) {
   const isAuth = useSelector((state) => {
     if (state.user.userData){
       return state.user.userData.isAuth;
@@ -22,27 +22,8 @@ function SingleReply({comment, updateToggle_comment, gameId}) {
 
   const [isEdit, setIsEdit] = useState(false);
   const [editComment, setEditComment] = useState("");
-  const [like, setLike] = useState(0);
-  const [update, setUpdate] = useState(true);
-
-  const updateToggle = () => {
-    setUpdate((state) => !state);
-  }
-
-  useEffect(() => {
-    const like_variable = {
-      gameId: gameId,
-      userId: user_id,
-      commentId: comment._id
-    }
-    axios.post('/api/like/', like_variable).then(response => {
-      if (response.data.success) {
-        setLike(response.data.result.length);
-      } else {
-        message.error('좋아요를 불러오는데 실패했습니다.')
-      }
-    })
-  }, [update])
+  const [like, setLike] = useState(comment.like);
+  const [content, setContent] = useState(comment.content);
 
   const onClick_removeComment = () => {
     setIsEdit(false);
@@ -50,6 +31,7 @@ function SingleReply({comment, updateToggle_comment, gameId}) {
       if(response.data.success) {
         message.success('댓글이 삭제되었습니다.');
         updateToggle_comment();
+        setReplyCnt((state) => state-1)
       } else {
         message.error('댓글 삭제에 실패했습니다.');
       }
@@ -72,7 +54,7 @@ function SingleReply({comment, updateToggle_comment, gameId}) {
     ).then(response => {
       if(response.data.success) {
         message.success('댓글이 수정되었습니다.');
-        updateToggle();
+        setContent(editComment)
       } else {
         message.error('댓글 수정에 실패했습니다.');
       }
@@ -89,9 +71,13 @@ function SingleReply({comment, updateToggle_comment, gameId}) {
       userId: user_id,
       commentId: comment._id
     }
-    axios.post('/api/like/setlike', like_variable).then(response => {
+    axios.post('/api/like/', like_variable).then(response => {
       if (response.data.success) {
-        updateToggle();
+        if(response.data.isClicked){
+          setLike((state) => state+1);
+        } else {
+          setLike((state) => state-1);
+        }
       } else {
         message.error('좋아요를 불러오는데 실패했습니다.')
       }
@@ -110,7 +96,7 @@ function SingleReply({comment, updateToggle_comment, gameId}) {
           <button className="comment__btn" onClick={onClick_editComment}>수정</button>
           </div>
           :
-          <div className="SingleReply__content">{comment.content}</div>
+          <div className="SingleReply__content">{content}</div>
           }
           <div className="SingleReply__comment_info">
           <div onClick={onClick_like} className="comment_like">좋아요 : {like}</div>

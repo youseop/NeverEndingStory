@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { SVG, BAR } from "../../svg/icon";
 import "./LandingPage_gameLists.css"
 import { LOCAL_HOST } from "../../Config";
@@ -209,13 +209,26 @@ function mouseOffEvent(target: Data) {
 
 export function GameList(props: ContainerProps) {
     const { data, games, rank } = props;
-    let width = Math.min(window.innerWidth, 1440)
+    const [width, setWidth] = useState(Math.min(window.innerWidth, 1440));
     const isTouchScreen = window.matchMedia('(pointer: coarse)').matches;
     let style = {}
     let game_style = {}
     let arrow_style = {}
 
-    if (width < 850) {
+    function handleResize() {
+        setWidth(Math.min(window.innerWidth, 1440))
+    }
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        }
+    }, []);
+
+
+    if (width < 767) {
         style = { height: width * 0.9 * 9 / 16 + "px" }
     } else {
         game_style = { width: (width - 80) / 4 + "px", height: (width - 80) / 4 * 5 / 7 + "px" }
@@ -265,11 +278,11 @@ export function GameList(props: ContainerProps) {
     });
 
     data.limit = Math.round((data.length / 4) + 0.49)
-    
+
     //* arrow
     if (isTouchScreen && data.limit > 1) {
         arrow_style = { display: "block", height: (width - 80) / 4 * 0.95 * 9 / 16 + "px" }
-    }else{
+    } else {
         arrow_style = { height: (width - 80) / 4 * 0.95 * 9 / 16 + "px" }
     }
 
@@ -289,7 +302,7 @@ export function GameList(props: ContainerProps) {
         </div>)
 
     //* return component
-    if (width < 850) {
+    if (width < 767) {
         return (
             <div className="box-container game-box"
                 style={{ height: width * 1.4 * 9 / 16 * data.length + "px" }}

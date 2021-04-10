@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
 import { useSelector } from 'react-redux';
-import "./LandingPage_buttons.css"
 import "antd/dist/antd.css";
 import Axios from "axios"
 import { message } from "antd";
@@ -92,7 +91,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
 
     return (
         <>
-            <button className="main1-button1" onClick={handleClick}>
+            <button className="banner-main-button main4-button1" onClick={handleClick}>
                 NEW 스토리 만들기
             </button>
 

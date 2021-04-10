@@ -83,7 +83,7 @@ function AdminPage(props) {
   }
 
   useEffect(() => {
-    Axios.post("/api/game/detail", variable).then((response) => {
+    Axios.get(`/api/game/detail/${gameId}`).then((response) => {
       if (response.data.success) {
         setGameDetail(response.data.gameDetail);
         const tmp = [];
