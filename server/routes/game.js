@@ -229,7 +229,7 @@ const updateHistoryFromPlaying = (user) => {
 
 // 저장된 씬 아이디로 들어감..
 // 저장된 씬이 없는 경우 첫 씬
-router.get("/gamestart/:gameId", check, async (req, res) => {
+router.get("/start/:gameId", check, async (req, res) => {
     const gameId = mongoose.Types.ObjectId(req.params.gameId);
     const isMember = req.isMember;
     // makingList에 지금 게임 아이디가 있는 경우..

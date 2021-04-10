@@ -4,31 +4,17 @@ const mongoose = require('mongoose');
 const { Game } = require('../models/Game');
 
 const {ThumbsUp} = require("../models/ThumbsUp");
+const { getThumbsUp } = require('./functions/thumbsup');
 
 
-router.get('/:objectId/:userId', (req,res) => {
+router.get('/:objectId/:userId', async (req,res) => {
   const {objectId, userId} = req.params;
-  ThumbsUp.findOne({"objectId" : objectId})
-    .exec((err, thumbsup) => {
-      if(err) return res.status(400).send(err);
-      let isClicked = false;
-      if(
-        thumbsup?.userList &&
-        Object.keys(thumbsup?.userList).includes(userId) && 
-        thumbsup.userList[userId] === true
-      ){
-        isClicked = true;
-        res.status(200).json({success: true, thumbsup:thumbsup.cnt, isClicked: isClicked})
-      } else if (thumbsup) {
-        res.status(200).json({success: true, thumbsup: thumbsup.cnt, isClicked: false})
-      } else {
-        res.status(200).json({success: true, thumbsup: 0, isClicked: false})
-      }
-  }) 
+  const {isClicked, thumbsup} = await getThumbsUp(objectId, userId);
+  res.status(200).json({success: true, thumbsup: thumbsup, isClicked: isClicked})
 })
-
+ 
 //<<flag>>
-// "1" : game
+// "1" : game 
 // "2" : scene
 
 router.post('/', async (req,res) => {

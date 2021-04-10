@@ -71,7 +71,7 @@ const ProductScreen = (props) => {
   const [lastMotion, setLastMotion] = useState(false)
   const [view, setView] = useState(0);
   const [thumbsUp, setThumbsUp] = useState(0);
-  const [isClicked, setIsClicked] = useState(false);
+  const [thumbsUpClicked, setThumbsUpClicked] = useState(false);
 
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
 
@@ -205,7 +205,6 @@ const ProductScreen = (props) => {
 
   function onClick_thumbsUp() {
     if (user && user.userData) {
-      // setUpdate((state) => state+1);
       const variable = {
         userId: user.userData._id,
         objectId: sceneId,
@@ -213,7 +212,7 @@ const ProductScreen = (props) => {
       }
       Axios.post("/api/thumbsup/", variable).then((response) => {
         if (response.data.success) {
-          setIsClicked(response.data.isClicked);
+          setThumbsUpClicked(response.data.isClicked);
           setThumbsUp(response.data.thumbsup);
         }
       })
@@ -227,7 +226,7 @@ const ProductScreen = (props) => {
     if (user && user.userData) {
       Axios.get(`/api/thumbsup/${sceneId}/${user.userData._id}`).then((response) => {
         if (response.data.success) {
-          setIsClicked(response.data.isClicked);
+          setThumbsUpClicked(response.data.isClicked);
           setThumbsUp(response.data.thumbsup);
         }
       })
@@ -443,7 +442,7 @@ const ProductScreen = (props) => {
                 {i === Scene.cutList.length - 1 &&
                   <>
                     <button
-                      className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
+                      className={thumbsUpClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
                       onClick={(e)=>{onClick_thumbsUp(); e.stopPropagation()}}
                     >
                       좋아요: {thumbsUp}

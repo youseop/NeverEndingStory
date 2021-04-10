@@ -24,8 +24,6 @@ const config = require('../../../config/key')
 export default function GameDetailPage(props) {
     const query = qs.parse(props.location?.search, { ignoreQueryPrefix: true });
     const gameId = props.match.params.gameId;
-    const variable = { gameId: gameId };
-
 
     const [gameDetail, setGameDetail] = useState({});
     const [sceneId, setSceneId] = useState([]);
@@ -36,12 +34,6 @@ export default function GameDetailPage(props) {
     const [totalSceneCnt, setTotalSceneCnt] = useState(0);
     const [ContributerCnt, setContributerCnt] = useState(0);
     const [contributerList, setContributerList] = useState([]);
-    const [treeData, setTreeData] = useState({
-        name: "",
-        userId: "",
-        complaint: 0,
-        children: []
-    });
     const [isPlayed, setIsPlayed] = useState(false);
 
     const user = useSelector((state) => state.user);
@@ -69,32 +61,6 @@ export default function GameDetailPage(props) {
     }
 
     useEffect(() => {
-        Axios.get(`/api/game/detail/${gameId}`).then((response) => {
-            if (response.data.success) {
-                const gameDetail = response.data.gameDetail;
-                setGameDetail(gameDetail);
-                setView(gameDetail.view);
-            } else {
-                message.error("스토리 정보를 로딩하는데 실패했습니다.");
-            }
-        });
-        Axios.get(`/api/game/rank/${gameId}`).then((response) => {
-            if (response.data.success) {
-                setContributerList(response.data.topRank);
-                setContributerCnt(response.data.contributerCnt);
-                setTotalSceneCnt(response.data.totalSceneCnt);
-            } else {
-                message.error("스토리 정보를 로딩하는데 실패했습니다.");
-            }
-        });
-        Axios.get(`/api/game/gamestart/${gameId}`).then((response) => {
-            if (response.data.success) {
-                setSceneId(response.data.sceneId);
-                setIsMaking(response.data.isMaking);
-            } else {
-                message.error("로그인 해주세요.");
-            }
-        });
     }, []);
     
     const updateFlag = useRef(true);
@@ -102,18 +68,41 @@ export default function GameDetailPage(props) {
     useEffect(() => {
         if (user && user.userData && updateFlag.current) {
             updateFlag.current = false;
-            const userId = user.userData._id;
-            Axios.get(`/api/thumbsup/${gameId}/${userId}`).then((response) => {
+            Axios.get(`/api/game/start/${gameId}`).then((response) => {
                 if (response.data.success) {
-                    setThumbsUp(response.data.thumbsup);
-                    setThumbsUpClicked(response.data.isClicked);
+                    setSceneId(response.data.sceneId);
+                    setIsMaking(response.data.isMaking);
+                } else {
+                    message.error("로그인 해주세요.");
                 }
-            })
-            Axios.post("/api/users/game-visit", { userId: userId }).then((response) => {
+            });
+            
+            Axios.get("/api/users/visit").then((response) => {
                 if (response.data.success) {
                     const sceneIdLength = response.data?.gamePlaying?.sceneIdList?.length;
                     if (sceneIdLength > 1)
                         setIsPlayed(true);
+                }
+            })
+            
+            const userId = user.userData._id;
+            Axios.get(`/api/detailpage/${gameId}/${userId}`).then((response) => {
+                if (response.data.success) {
+                    const {
+                        topRank, 
+                        contributerCnt, 
+                        totalSceneCnt, 
+                        gameDetail, 
+                        isClicked, 
+                        thumbsup
+                    } = response.data;
+                    setThumbsUp(thumbsup);
+                    setThumbsUpClicked(isClicked);
+                    setGameDetail(gameDetail);
+                    setView(gameDetail.view);
+                    setContributerList(topRank);
+                    setContributerCnt(contributerCnt);
+                    setTotalSceneCnt(totalSceneCnt);
                 }
             })
         }

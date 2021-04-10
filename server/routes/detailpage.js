@@ -1,33 +1,31 @@
 const express = require('express');
-const mongoose = require("mongoose");
 const router = express.Router();
 
-const {TreeData} = require("../models/TreeData");
-const { Complaint } = require("../models/Complaint");
+const { getThumbsUp } = require('./functions/thumbsup');
+const { getRank, getDetail } = require('./functions/game');
 
 
 router.get('/:gameId/:userId', async (req, res) => {
   try{
-    const { gameId, userId } = req.param;
-    const complaint = new Complaint({
-      title : req.body.title,
-      description : req.body.description,
-      user : mongoose.Types.ObjectId(req.body.user),
-      sceneId : mongoose.Types.ObjectId(sceneId),
-      gameId : mongoose.Types.ObjectId(gameId),
-    })
-    await complaint.save();
+    const { gameId, userId } = req.params;
 
-    await TreeData.updateOne(
-      {gameId: gameId, sceneId: sceneId},
-      {$inc: {complaintCnt: 1}}
-    );
-    
-    return res.status(200).json({success: true});
+    const {gameDetail} = await getDetail(gameId);
+    const {topRank, contributerCnt, sceneCnt} = await getRank(req.params.gameId);
+    const {isClicked, thumbsup} = await getThumbsUp(gameId, userId);
+
+    return res.status(200).json({ 
+      success: true, 
+      topRank: topRank,
+      contributerCnt: contributerCnt,
+      totalSceneCnt: sceneCnt,
+      gameDetail: gameDetail,
+      isClicked: isClicked,
+      thumbsup: thumbsup, 
+    });
   } catch (err) {
     console.log(err);
     return res.status(400).json({ success: false });
-  }
+  } 
 })
 
 
