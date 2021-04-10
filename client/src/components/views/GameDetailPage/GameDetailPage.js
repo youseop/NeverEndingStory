@@ -184,7 +184,7 @@ export default function GameDetailPage(props) {
                     <div className="detailPage__UPTitle">
                         {gameDetail?.title}
                         <div className="detailPage__genre">
-                            <div style={{"display":"block"}}>
+                            <div style={{ "display": "block" }}>
                                 작가:&nbsp;
                                     <Link
                                     to={`/profile/${gameDetail?.creator?._id}`}
@@ -194,7 +194,7 @@ export default function GameDetailPage(props) {
                                 </Link>&nbsp;&nbsp;
 
                             </div>
-                            <div style={{"display":"block"}}>
+                            <div style={{ "display": "block" }}>
                                 장르:&nbsp;{gameDetail?.category}&nbsp;
                             </div>
                         </div>
@@ -273,19 +273,19 @@ export default function GameDetailPage(props) {
                         }
                         <div className="detailPage__interaction">
                             <div className="detailPage__view">
-                                {view}
                                 <FontAwesomeIcon icon={faEye} style={{ marginLeft: "3px" }} />
+                                {view}회
                             </div>
                             <div
                                 onClick={onClick_thumbsUp}
                                 className="detailPage__like"
                             >
-                                {thumbsUp}
                                 {thumbsUpClicked ?
                                     <FontAwesomeIcon style={{ color: "red", marginLeft: "3px" }} icon={faHeart} />
                                     :
                                     <FontAwesomeIcon icon={faHeart} style={{ marginLeft: "3px" }} />
                                 }
+                                {thumbsUp}개
                             </div>
                             <div
                                 className="link_bttn"
@@ -295,18 +295,13 @@ export default function GameDetailPage(props) {
                                 <FontAwesomeIcon
                                     icon={faLink}
                                 />
-                            초대링크복사
-                        </div>
-                            <div
-                                className="link_bttn"
-                                onClick={(e) => {
-                                    pasteLink();
-                                }}>
-                                <FontAwesomeIcon
-                                    icon={faLink}
-                                />
-                            버전 추가
-                        </div>
+                            초대링크복사&nbsp;
+                            </div>
+                            <GameForkButton
+                                history={props.history}
+                                user={user}
+                                gameId={gameId}
+                            />
                         </div>
 
                     </div>
