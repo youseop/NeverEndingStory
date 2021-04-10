@@ -6,12 +6,16 @@ import "./MusicTab.css";
 
 let bgm_audio = new Audio();
 bgm_audio.loop = true;
-function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList, setBgmBlobNames, bgmBlobNames }) {
+function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlobList, setBgmBlobNames, bgmBlobNames, uploadFlag }) {
     const [bgmCards, setBgmCards] = useState([]);
     const [blobCards, setBlobCards] = useState([]);
     const [toggle, setToggle] = useState(0);
 
     const onDrop = (files) => {
+        console.log(files)
+        if (!files.length) {
+            message.error("지원하지 않는 확장자입니다.");
+        }
         for (var i = 0; i < files.length; i++) {
             if (!files[i]) {
                 message.error("10MB 이하의 음원 파일을 업로드해주세요.");
@@ -87,6 +91,7 @@ function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlo
                     accept="audio/*"
                     type="bgm"
                     icon="audio"
+                    uploadFlag={uploadFlag}
                 >
                 </MyDropzone>
             </div>

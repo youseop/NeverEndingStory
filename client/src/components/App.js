@@ -37,6 +37,7 @@ export const MS_PER_HR = 360000
 function App() {
   const [loaded, setloaded] = useState(false);
   const dispatch = useDispatch();
+
   useConstructor(async () => {
     if (window.navigator.userAgent.indexOf("MSIE")>=0) {
       alert("지원하지 않는 브라우저입니다. 크롬 브라우저 사용을 권장합니다.")
@@ -46,7 +47,6 @@ function App() {
       setloaded(true);
     })
   })
-
 
   if (loaded) {
     return (

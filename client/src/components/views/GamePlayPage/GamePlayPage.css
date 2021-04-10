@@ -6,7 +6,7 @@
   justify-content: center;
 }
 .gamePlay__container{
-  width: 100vw;
+  width: 100%;
   height: calc(100vh + 15%);
   position: absolute;
   top: -15%;
@@ -120,12 +120,12 @@
 }
 
 
-@media (max-width:1000px) and (orientation:landscape){
+@media (max-width:1000px) and (pointer: fine){
   .detail_relative_container{
     height: 60vw;
   }
 }
-@media (max-width:780px) and (orientation:landscape){
+@media (max-width:780px) and (pointer: fine){
   .menu.isPlay{
     position: absolute !important;
   }
@@ -133,6 +133,18 @@
     width:80vw !important;
     height: 44vw !important;
  }
+  .detail_relative_container{
+    height: 52px+39vw;
+  }
+}    
+@media (max-width:850px) and (orientation:landscape) and (pointer:coarse){
+  .menu.isPlay{
+    position: absolute !important;
+  }
+  .backgroundImg_container {
+    width:70vw !important;
+    height: 39vw !important;
+  }
   .detail_relative_container{
     height: 52px+39vw;
   }
@@ -145,7 +157,6 @@
     height: calc(56vw);
   }
   .gamePlay__container{
-    height: calc(52px + 56vw) !important;
     top: 0%;
   }
 

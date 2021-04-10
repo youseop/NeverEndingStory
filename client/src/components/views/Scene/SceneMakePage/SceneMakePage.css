@@ -161,6 +161,7 @@
 .left-arrow>svg{
     width:50px;
     height:50px;
+    transform:translateX(20%);
 }
 .left-arrow:hover{
     background-color: #333942;
@@ -175,6 +176,7 @@
 .right-arrow>svg{
     width:50px;
     height:50px;
+    transform:translateX(20%);
 }
 .right-arrow:hover{
     background-color: #333942;
@@ -277,12 +279,26 @@
     border: 1px solid rgba(70, 70, 70, 0);
 }
 .sceneBox_plus{
-    top:120px;
+    width: 17px;
+    height: 17px;
+    margin-top: 4px;
+    margin-left: 1px;
+}
+.sceneBox_plus_horizonal{
     position: absolute;
-    font-size:26px;
-    font-weight: bold;
-    text-align: center;
-    color: #fff;
+    margin-top:6px;
+    border-radius: 4px;
+    width: 17px;
+    height: 5px;
+    background-color: white;
+}
+.sceneBox_plus_vertical{
+    position: absolute;
+    border-radius: 4px;
+    margin-left:6px;
+    width: 5px;
+    height: 17px;
+    background-color: white;
 }
 
 

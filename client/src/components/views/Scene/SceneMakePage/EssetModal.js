@@ -58,10 +58,13 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => 
     setTag(0)
   }
 
-  let uploadFlag = false;
+  const uploadFlag = useRef(false);
+  const [loading, setLoading] = useState(false);
   const upload = () => {
-    if (!uploadFlag) {
-      uploadFlag = true;
+    if (!uploadFlag.current) {
+      setLoading(true);
+
+      uploadFlag.current = true;
       revokeBlobList();
 
       uploadCharFiles()
@@ -225,6 +228,7 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => 
             charPageNum={charPageNum}
             setCharFileQueue={setCharFileQueue}
             setCharBlobList={setCharBlobList}
+            uploadFlag={uploadFlag}
           />
         }
         {tag === 2 &&
@@ -234,6 +238,7 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => 
             setTypeQueue={setTypeQueue}
             setBackBlobList={setBackBlobList}
             backBlobList={backBlobList}
+            uploadFlag={uploadFlag}
           />
         }
         {tag === 3 &&
@@ -245,6 +250,7 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => 
             bgmBlobList={bgmBlobList}
             setBgmBlobNames={setBgmBlobNames}
             bgmBlobNames={bgmBlobNames}
+            uploadFlag={uploadFlag}
           />
         }
         {tag === 4 &&
@@ -256,6 +262,7 @@ const EssetModal = ({ gameDetail, gameId, visible, setTag, tag, setReload }) => 
             soundBlobList={soundBlobList}
             setSoundBlobNames={setSoundBlobNames}
             soundBlobNames={soundBlobNames}
+            uploadFlag={uploadFlag}
           />
         }
       </div>

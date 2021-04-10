@@ -1,3 +1,15 @@
+.comment__container{
+  margin-bottom: 20px;
+  color: #E5E5E5;
+}
+
+.gamePlay_comment{
+  width: 98vw;  
+  padding-left: 10%;
+  padding-right: 10%;
+  margin: auto;
+}
+
 .comment__commentCnt{
   height: auto;
   font-family: Noto Sans KR;
@@ -15,6 +27,7 @@
   justify-content: space-between;
   margin-bottom: 40px;
 }
+
 
 .comment__btn {
   cursor: pointer;
@@ -60,12 +73,46 @@
   border-radius: 5px;
 }
 
-.comment__container{
-  z-index: 100;
-}
 
 @media (max-width: 850px) {
 .comment__container {
   width: 100%;
 }
+.comment__btn{
+  margin-left: 10px;
+  font-size: 12px;
+  height: 25px;
+  width: 30px !important;
+}
+.comment__btn:hover {
+  cursor: pointer;
+  all: unset;
+  padding: 10px;
+  width: 100px;
+  background-color: #ebebeb;
+  color: #222831;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Noto Sans KR;
+  margin-left: 10px;
+  font-size: 12px;
+  height: 25px;
+}
+.comment__textarea{
+  height: 25px;
+  font-size: 12px;
+  width: calc(100vw - 100px);
+}
+}
+
+
+@media (max-width:850px) and (orientation:portrait){
+  .gamePlay_comment{
+    width: 98vw;  
+    padding-left: 3%;
+    padding-right: 3%;
+    margin: auto;
+  }
 }

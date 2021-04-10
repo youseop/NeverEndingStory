@@ -23,27 +23,20 @@ import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import Complaint from './Complaint.js';
-import { faCheckSquare, faCompress, faExpand, faEye, faHeart, } from "@fortawesome/free-solid-svg-icons";
+import { faCheckSquare, faCompress, faExpand, faEye, faHeart, faLink, } from "@fortawesome/free-solid-svg-icons";
 import Comment from '../Comment/Comment.js';
 import LogPopup from "./LogPopup";
+import { Link } from "react-router-dom";
+import GameForkButton from "../GameDetailPage/GameForkButton";
+import { pasteLink } from "../../functions/pasteLink";
+import GamePlayButtons from './GamePlayButtons';
+import SceneInfo from "./SceneInfo";
 
-//! gamedetail
-// import { Link } from "react-router-dom";
-// import { faEye, faHeart, faLink } from "@fortawesome/free-solid-svg-icons";
-// import GameForkButton from "../GameDetailPage/GameForkButton";
-// import Comment from '../Comment/Comment.js';
 
 const bgm_audio = new Audio();
 bgm_audio.volume = 0.5
 const sound_audio = new Audio();
 sound_audio.volume = 0.5
-
-function useConstructor(callBack = () => { }) {
-  const [hasBeenCalled, setHasBeenCalled] = useState(false);
-  if (hasBeenCalled) return;
-  callBack();
-  setHasBeenCalled(true);
-}
 
 //! playscreen
 const ProductScreen = (props) => {
@@ -79,7 +72,7 @@ const ProductScreen = (props) => {
   const [History, setHistory] = useState({});
   const [HistoryMap, setHistoryMap] = useState(false);
   const [Log, setLog] = useState(false);
-  // const [TreeMap, setTreeMap] = useState(false);
+  const [gameDetail, setGameDetail] = useState({});
   const [lastMotion, setLastMotion] = useState(false)
   const [view, setView] = useState(0);
   const [thumbsUp, setThumbsUp] = useState(0);
@@ -108,6 +101,21 @@ const ProductScreen = (props) => {
         footer[0].remove();
       }
     }
+
+    //* navigation bar and footer control
+    dispatch(navbarControl(true));
+    // dispatch(footerControl(false));
+
+    dispatch(loadEmptyNum({
+      sceneId,
+    }));
+
+    return () => {
+      bgm_audio.pause();
+      sound_audio.pause();
+      const nav = document.getElementById("menu");
+      nav.className = "menu"
+    };
   }, [])
 
 
@@ -236,18 +244,84 @@ const ProductScreen = (props) => {
     }
   }
 
-  const nextSceneFlag = useRef("");
+  const [isClickedGame, setIsClickedGame] = useState(false);
+  const [thumbsupCntGame, setThumbsupCntGame] = useState(0);
 
+  function onClick_thumbsUpGame() {
+    if (user && user.userData) {
+      const variable = {
+        userId: user.userData._id,
+        objectId: gameId,
+        flag: "1"
+      }
+      if(isClickedGame){
+        setIsClickedGame(false);
+        setThumbsupCntGame((state) => state-1);
+      } else {
+        setIsClickedGame(true);
+        setThumbsupCntGame((state) => state+1);
+      }
+      Axios.post("/api/thumbsup/", variable)
+    }
+    else {
+      message.error("로그인이 필요합니다.")
+    }
+  }
+
+  const nextSceneFlag = useRef("");
+  const gameFlag = useRef(true);
   useEffect(() => {
+    const userId = user.userData._id;
     if (user && user.userData && sceneId!=nextSceneFlag.current) {
       nextSceneFlag.current = sceneId;
-      Axios.get(`/api/gameplaypage/${sceneId}/${user.userData._id}`).then((response) => {
+
+      Axios.get(`/api/gameplaypage/sceneinfo/${sceneId}/${userId}`).then((response) => {
         if (response.data.success) {
           setThumbsUpClicked(response.data.isClicked);
           setThumbsUp(response.data.thumbsup);
           setView(response.data.view);
         }
       })
+      
+      setLastMotion(false)
+      Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
+        (response) => {
+          if (response.data.success) {
+            const history = {
+              gameId: gameId,
+              sceneId: response.data.sceneIdList,
+            };
+            setIsTyping(true)
+            setHistory(history);
+            setI(0);
+            bgm_audio.pause();
+            sound_audio.pause();
+            setIsFirstCut(true);
+            setScene(response.data.scene);
+            dispatch(gamePause(false));
+            dispatch(gameLoadingPage(0));
+            // dispatch(gameLoadingPage(6));
+          } else {
+            if (response.data.msg)
+              message.error(response.data.msg);
+            props.history.replace(`/game/${gameId}`);
+          }
+        }
+      )
+    }
+    if(gameFlag.current){
+      gameFlag.current = false;
+      Axios.get(`/api/gameplaypage/gameinfo/${gameId}/${userId}`).then((response) => {
+        if (response.data.success) {
+          const {isClickedGame, thumbsupCntGame, gameDetail} = response.data;
+          setGameDetail(gameDetail);
+          setIsClickedGame(isClickedGame);
+          setThumbsupCntGame(thumbsupCntGame);
+          console.log(gameDetail,isClickedGame,thumbsupCntGame)
+        } else {
+          message.error("게임 정보를 로딩하는데 실패했습니다.");
+        }
+      });
     }
   }, [sceneId, user])
 
@@ -267,12 +341,6 @@ const ProductScreen = (props) => {
 
   }, [sceneId])
 
-  //* navigation bar and footer control
-  useEffect(() => {
-    dispatch(navbarControl(false));
-    dispatch(footerControl(false));
-  }, []);
-
   //* game pause control
   useEffect(() => {
     // if (HistoryMap || Dislike || TreeMap) {
@@ -282,35 +350,6 @@ const ProductScreen = (props) => {
       dispatch(gamePause(false));
     }
   }, [HistoryMap, Dislike, Log]);
-
-  useEffect(() => {
-    setLastMotion(false)
-    Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
-      (response) => {
-        if (response.data.success) {
-          const history = {
-            gameId: gameId,
-            sceneId: response.data.sceneIdList,
-          };
-          setIsTyping(true)
-          setHistory(history);
-          setI(0);
-          bgm_audio.pause();
-          sound_audio.pause();
-          setIsFirstCut(true);
-          setScene(response.data.scene);
-          dispatch(gamePause(false));
-          dispatch(gameLoadingPage(0));
-          dispatch(gameLoadingPage(6));
-        } else {
-          if (response.data.msg)
-            message.error(response.data.msg);
-          props.history.replace(`/game/${gameId}`);
-        }
-      }
-    )
-  }, [sceneId]);
-
 
   useEffect(() => {
     function handleResize() {
@@ -352,19 +391,6 @@ const ProductScreen = (props) => {
   }
 
   useEffect(() => {
-    dispatch(loadEmptyNum({
-      sceneId,
-    }));
-
-    return () => {
-      bgm_audio.pause();
-      sound_audio.pause();
-      const nav = document.getElementById("menu");
-      nav.className = "menu"
-    };
-  }, []);
-
-  useEffect(() => {
     if (isFullscreen && isMobile.current)
       window.screen.orientation.lock('landscape')
     return () => {
@@ -380,6 +406,7 @@ const ProductScreen = (props) => {
   if (Scene?.cutList !== undefined) {
     if (i == 0 && isFirstCut) playMusic(0);
     return (
+      <>
       <div
         className={`${isFullscreen
           ? "gamePlay__container gamePlay__container_fullscreen"
@@ -456,77 +483,24 @@ const ProductScreen = (props) => {
               i={i}
             />
             <div className="gamePlay__btn_container">
-              <div>
-                {i === Scene.cutList.length - 1 &&
-                  <>
-                    <button
-                      className={"gamePlay__btn preventColorChange"}
-                      onClick={(e)=>{onClick_thumbsUp(); e.stopPropagation()}}
-                    >
-                    {thumbsUp}
-                    {thumbsUpClicked ?
-                        <FontAwesomeIcon style={{ color: "red", marginLeft: "3px" }} icon={faHeart} />
-                        :
-                        <FontAwesomeIcon icon={faHeart} style={{ marginLeft: "3px" }} />
-                    }
-                    </button>
-                    <button
-                      className="gamePlay__btn preventColorChange"
-                      style={{ cursor: "unset" }}
-                    >
-                      {view}
-                      <FontAwesomeIcon icon={faEye} style={{ marginLeft: "3px" }} />
-                    </button>
-                  </>
-                }
-                <button
-                  className="gamePlay__btn"
-                  onClick={(e) => { setDislike((state) => !state); e.stopPropagation() }}
-                >
-                  신고
-                </button>
-              </div><div>
-                <button
-                  className="gamePlay__btn"
-                  onClick={(e) => { setHistoryMap((state) => !state); e.stopPropagation() }}
-                >
-                  미니맵
-                </button>
-                <button
-                  className="gamePlay__btn"
-                  onClick={(e) => { setLog((state) => !state); e.stopPropagation() }}
-                >
-                  대화기록
-                </button>
-                <div
-                  className="gamePlay__btn sound"
-                  onClick={(e) => { mute(); e.stopPropagation() }}
-                >
-                  {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-                </div>
-                {errorMessage ? (
-                  <button
-                    onClick={(e) => {
-                      alert(
-                        "Fullscreen is unsupported by this browser, please try another browser."
-                      );
-                      e.stopPropagation()
-                    }
-                    }
-                    className="gamePlay__btn"
-                  >
-                    {errorMessage}
-                  </button>
-                ) : isFullscreen ? (
-                  <button onClick={(e) => { handleExitFullscreen(); e.stopPropagation() }} className="gamePlay__btn full">
-                    <FontAwesomeIcon icon={faCompress} />
-                  </button>
-                ) : (
-                  <button ref={fullButton} onClick={(e) => { setIsFullscreen(); e.stopPropagation() }} className="gamePlay__btn full">
-                    <FontAwesomeIcon icon={faExpand} />
-                  </button>
-                )}
-              </div>
+              <GamePlayButtons 
+                cutList={Scene.cutList}
+                onClick_thumbsUp={onClick_thumbsUp}
+                thumbsUp={thumbsUp}
+                thumbsUpClicked={thumbsUpClicked}
+                view={view}
+                setDislike={setDislike}
+                setHistoryMap={setHistoryMap}
+                setLog={setLog}
+                mute={mute}
+                muted={muted}
+                errorMessage={errorMessage}
+                isFullscreen={isFullscreen}
+                handleExitFullscreen={handleExitFullscreen}
+                setIsFullscreen={setIsFullscreen}
+                fullButton={fullButton}
+                i={i}
+              />
             </div>
             <Complaint
               sceneId={sceneId}
@@ -536,15 +510,24 @@ const ProductScreen = (props) => {
             />
           </div>
         </div>
-        <div className="detail_relative_container">
-          <Comment 
-            sceneId={sceneId}
-            gameId={gameId}
-          />
-        </div>
-
-        {/* //! detail pages */}
       </div>
+      <div className="detail_relative_container"></div>
+      <SceneInfo 
+        gameDetail={gameDetail}
+        view={view}
+        onClick_thumbsUpGame={onClick_thumbsUpGame}
+        isClickedGame={isClickedGame}
+        thumbsupCntGame={thumbsupCntGame}
+        history={props.history}
+        user={user}
+        gameId={gameId}
+        sceneId={sceneId}
+      />
+      <Comment 
+        sceneId={sceneId}
+        gameId={gameId}
+      />
+      </>
     );
   } else {
     return (

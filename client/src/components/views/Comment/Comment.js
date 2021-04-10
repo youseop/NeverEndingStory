@@ -49,17 +49,6 @@ function Comment({gameId, sceneId}) {
   });
  
   const updateToggle = () => {
-    axios.get(`/api/comment/${gameId}`).then(response => {
-      if (response.data.success) {
-        setTotalComment(response.data.result);
-        setComments(response.data.result.slice(0,contentNumber));
-      } else {
-        message.error('댓글을 불러오는데 실패했습니다.')
-      }
-    })
-  }
-
-  useEffect(() => {
     if(sceneId){
       axios.get(`/api/comment/scene/${gameId}/${sceneId}`).then(response => {
         if (response.data.success) {
@@ -79,6 +68,10 @@ function Comment({gameId, sceneId}) {
         }
       })
     }
+  }
+
+  useEffect(() => {
+    updateToggle();
   }, [])
 
   const onChange_comment = (event) => {
@@ -90,13 +83,24 @@ function Comment({gameId, sceneId}) {
     if(commentContent === ""){
       return;
     }
-
-    const variables = {
-      content: commentContent,
-      writer: user.userData._id,
-      gameId: gameId,
-      responseTo : ""
-    };
+    let variables;
+    if(sceneId){
+      variables = {
+        content: commentContent,
+        writer: user.userData._id,
+        gameId: gameId,
+        sceneId: sceneId,
+        responseTo : ""
+      };
+    } else {
+      variables = {
+        content: commentContent,
+        writer: user.userData._id,
+        gameId: gameId,
+        sceneId: "",
+        responseTo : ""
+      };
+    }
 
     axios.post('/api/comment/', variables).then(response => {
       if(response.data.success) {
@@ -123,7 +127,7 @@ function Comment({gameId, sceneId}) {
   })
 
   return (
-    <div className="comment__container">
+    <div className={sceneId ? "comment__container gamePlay_comment" : "comment__container"}>
       <div className="comment__commentCnt">
         댓글 {totalComment.length}개
       </div>

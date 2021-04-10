@@ -12,7 +12,7 @@ async function getRank(gameId){
   contributerList.sort(function (a, b) {
       return a.userSceneCnt < b.userSceneCnt ? 1 : a.userSceneCnt > b.userSceneCnt ? -1 : 0;
   });
-  
+
   const topRank = contributerList.slice(0, 5);
 
   for (let i = 0; i < topRank.length; i++) {
@@ -35,4 +35,12 @@ async function getDetail(gameId){
   return {gameDetail}
 }
 
-module.exports = { getRank, getDetail };
+async function getSpecificDetail(gameId){
+    const gameDetail = await Game.findOne(
+        { _id: gameId },
+        { _id:0, view:1, thumbsUp: 1, sceneCnt: 1, title: 1, description: 1, category: 1}
+    ).populate("creator");
+    return {gameDetail}
+}
+
+module.exports = { getRank, getDetail, getSpecificDetail };

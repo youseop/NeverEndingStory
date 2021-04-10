@@ -27,7 +27,7 @@ function SingleReply({comment, updateToggle_comment, gameId, setReplyCnt}) {
 
   const onClick_removeComment = () => {
     setIsEdit(false);
-    axios.delete(`/api/comment/${comment._id}`).then(response => {
+    axios.delete(`/api/comment/${comment._id}/${gameId}`).then(response => {
       if(response.data.success) {
         message.success('댓글이 삭제되었습니다.');
         updateToggle_comment();

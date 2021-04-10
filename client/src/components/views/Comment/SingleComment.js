@@ -109,7 +109,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
 
   const onClick_removeComment = () => {
     setIsEdit(false);
-    axios.delete(`/api/comment/${comment._id}`).then(response => {
+    axios.delete(`/api/comment/${comment._id}/${gameId}`).then(response => {
       if(response.data.success) {
         message.success('댓글이 삭제되었습니다.');
         updateToggle_comment();
@@ -203,7 +203,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
               </div>
               :
               <div>
-                댓글 {replyCnt}개 보기
+                댓글 {replyCnt}개
               </div>
             }
             </div>
@@ -214,8 +214,8 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
             <div onClick={onClick_writeReply} className="comment_option">{writeReply? "작성 취소" :"댓글 작성"}</div>
             { comment.writer._id === user_id&&
             <>
-            <div onClick={onClick_toggleEdit} className="comment_option">{isEdit ? "수정 취소" : "댓글 수정"}</div>
-            <div onClick={onClick_removeComment} className="comment_option">댓글 삭제</div>
+            <div onClick={onClick_toggleEdit} className="comment_option">{isEdit ? "수정 취소" : "수정"}</div>
+            <div onClick={onClick_removeComment} className="comment_option">삭제</div>
             </>
             }
           </div>
@@ -225,7 +225,6 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
               className="singleComment__textarea"
               onChange={onChange_comment}
               value={commentContent}
-              placeholder="코멘트를 작성해 주세요."
               />
             <button className="comment__btn" onClick={onSubmit_response}>댓글</button>
           </form> 

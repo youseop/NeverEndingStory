@@ -59,6 +59,7 @@
   color: #E5E5E5;
   margin-top: 5px;
   white-space: pre-line;
+  word-break: break-all;
 }
 
 

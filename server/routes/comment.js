@@ -2,12 +2,14 @@ const express = require('express');
 const mongoose = require("mongoose");
 const router = express.Router();
 const { Comment } = require("../models/Comment");
+const { Like } = require('../models/Like');
 
 router.post('/', async (req, res) => {
   const comment = new Comment({
     content: req.body.content,
     writer: req.body.writer,
     gameId: mongoose.Types.ObjectId(req.body.gameId),
+    sceneId: mongoose.Types.ObjectId(req.body.sceneId),
     responseTo: req.body.responseTo
   })
 
@@ -19,12 +21,7 @@ router.post('/', async (req, res) => {
       {$inc : {responseCnt: 1}}
       ).exec();
   }
-  Comment.findOne({ '_id': comment._id })
-  .populate('writer')
-  .exec((err, result) => {
-    if (err) return res.json({ success: false, err })
-    return res.status(200).json({ success: true, result })
-  })
+  return res.status(200).json({ success: true })
 })
 
 
@@ -57,9 +54,9 @@ router.get('/scene/:gameId/:sceneId', async (req, res) => {
     })
 })
 
-router.delete('/:commentId', async (req, res) => {
+router.delete('/:commentId/:gameId', async (req, res) => {
   try {
-    const {commentId} = req.params;
+    const {commentId, gameId} = req.params;
     const comment = await Comment.findOne(
       {_id:  mongoose.Types.ObjectId(commentId)},
       {_id: 0, responseTo: 1}
@@ -73,9 +70,23 @@ router.delete('/:commentId', async (req, res) => {
     Comment.deleteOne(
       { '_id': mongoose.Types.ObjectId(commentId) }
     ).exec();
-    Comment.deleteMany(
-      {responseTo: commentId}
+    Like.deleteOne(
+      { 'commentId': mongoose.Types.ObjectId(commentId) }
     ).exec();
+
+    const replies = await Comment.find(
+      { gameId: gameId, responseTo: commentId },
+      { _id: 1 }
+    );
+    for(let i=0; i<replies.length; i++){
+      Like.deleteOne(
+        { 'commentId': replies[i]._id }
+      ).exec();
+    }
+    Comment.deleteMany(
+      {gameId: gameId, responseTo: commentId}
+    ).exec();
+
     return res.status(200).json({ success: true });
   } catch (err) {
     return res.json({ success: false, err });
