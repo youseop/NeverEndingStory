@@ -39,7 +39,6 @@ function LoginPage(props: LoginPageProps) {
     : undefined;
 
   const kakaoLogin = (login: any) => {
-    console.log("SUCCESS ?", login)
     Axios.post('/api/passport/kakao/oauth', { profile: login.profile })
       .then((res: any) => {
         if (res.data.success) {

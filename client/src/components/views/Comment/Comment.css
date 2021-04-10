@@ -60,6 +60,10 @@
   border-radius: 5px;
 }
 
+.comment__container{
+  z-index: 100;
+}
+
 @media (max-width: 850px) {
 .comment__container {
   width: 100%;

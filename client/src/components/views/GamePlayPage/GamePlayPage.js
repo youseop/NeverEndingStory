@@ -23,7 +23,8 @@ import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import Complaint from './Complaint.js';
-import { faCheckSquare, faCompress, faExpand, } from "@fortawesome/free-solid-svg-icons";
+import { faCheckSquare, faCompress, faExpand, faEye, faHeart, } from "@fortawesome/free-solid-svg-icons";
+import Comment from '../Comment/Comment.js';
 import LogPopup from "./LogPopup";
 
 //! gamedetail
@@ -221,12 +222,14 @@ const ProductScreen = (props) => {
         objectId: sceneId,
         flag: "1"
       }
-      Axios.post("/api/thumbsup/", variable).then((response) => {
-        if (response.data.success) {
-          setThumbsUpClicked(response.data.isClicked);
-          setThumbsUp(response.data.thumbsup);
-        }
-      })
+      if(thumbsUpClicked){
+        setThumbsUpClicked(false);
+        setThumbsUp((state) => state-1);
+      } else {
+        setThumbsUpClicked(true);
+        setThumbsUp((state) => state+1);
+      }
+      Axios.post("/api/thumbsup/", variable)
     }
     else {
       message.error("로그인이 필요합니다.")
@@ -238,7 +241,7 @@ const ProductScreen = (props) => {
   useEffect(() => {
     if (user && user.userData && sceneId!=nextSceneFlag.current) {
       nextSceneFlag.current = sceneId;
-      Axios.get(`/api/scenemakepage/${sceneId}/${user.userData._id}`).then((response) => {
+      Axios.get(`/api/gameplaypage/${sceneId}/${user.userData._id}`).then((response) => {
         if (response.data.success) {
           setThumbsUpClicked(response.data.isClicked);
           setThumbsUp(response.data.thumbsup);
@@ -265,10 +268,10 @@ const ProductScreen = (props) => {
   }, [sceneId])
 
   //* navigation bar and footer control
-  // useEffect(() => {
-  //   dispatch(navbarControl(false));
-  //   dispatch(footerControl(false));
-  // }, []);
+  useEffect(() => {
+    dispatch(navbarControl(false));
+    dispatch(footerControl(false));
+  }, []);
 
   //* game pause control
   useEffect(() => {
@@ -457,15 +460,22 @@ const ProductScreen = (props) => {
                 {i === Scene.cutList.length - 1 &&
                   <>
                     <button
-                      className={thumbsUpClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
+                      className={"gamePlay__btn preventColorChange"}
                       onClick={(e)=>{onClick_thumbsUp(); e.stopPropagation()}}
                     >
-                      좋아요: {thumbsUp}
+                    {thumbsUp}
+                    {thumbsUpClicked ?
+                        <FontAwesomeIcon style={{ color: "red", marginLeft: "3px" }} icon={faHeart} />
+                        :
+                        <FontAwesomeIcon icon={faHeart} style={{ marginLeft: "3px" }} />
+                    }
                     </button>
                     <button
-                      className="gamePlay__btn gameView"
+                      className="gamePlay__btn preventColorChange"
+                      style={{ cursor: "unset" }}
                     >
-                      조회수: {view}
+                      {view}
+                      <FontAwesomeIcon icon={faEye} style={{ marginLeft: "3px" }} />
                     </button>
                   </>
                 }
@@ -526,10 +536,14 @@ const ProductScreen = (props) => {
             />
           </div>
         </div>
+        <div className="detail_relative_container">
+          <Comment 
+            sceneId={sceneId}
+            gameId={gameId}
+          />
+        </div>
 
-        <div className="detail_relative_container" />
         {/* //! detail pages */}
-
       </div>
     );
   } else {

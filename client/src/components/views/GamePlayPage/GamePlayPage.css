@@ -52,7 +52,7 @@
   font-size: 0.9rem;
   height: 1% !important;
 }
-.gameView:hover {
+.preventColorChange:hover {
   color: rgb(182, 182, 182) !important;
 }
 .gamePlay__btnClicked {
@@ -66,8 +66,8 @@
   font-size: 0.9rem;
 }
 .gamePlay__btn:hover {
-  color: rgb(63, 63, 63);
-  transition-duration: 0.2s;
+  color: rgb(149, 149, 149);
+  transition-duration: 0.1s;
   cursor: pointer;
 }
 .gamePlay__btnClicked:hover {

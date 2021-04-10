@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const { Comment } = require("../models/Comment");
 
-router.post('/save-comment', async (req, res) => {
+router.post('/', async (req, res) => {
   const comment = new Comment({
     content: req.body.content,
     writer: req.body.writer,
@@ -29,12 +29,12 @@ router.post('/save-comment', async (req, res) => {
 
 
 router.get('/:gameId', async (req, res) => {
+  const {gameId} = req.params;
   Comment.find({
-    'gameId': mongoose.Types.ObjectId(req.params.gameId)
-    , 'responseTo': ""
+    'gameId': mongoose.Types.ObjectId(gameId), 
+    'responseTo': ""
   })
     .populate('writer')
-    // .sort('createdAt')
     .sort({ createdAt: 'descending' })
     .exec((err, result) => {
       if (err) return res.json({ success: false, err })
@@ -42,9 +42,24 @@ router.get('/:gameId', async (req, res) => {
     })
 })
 
-router.post('/remove-comment', async (req, res) => {
+router.get('/scene/:gameId/:sceneId', async (req, res) => {
+  const {gameId, sceneId} = req.params;
+  Comment.find({
+    'gameId': mongoose.Types.ObjectId(gameId), 
+    'responseTo': "",
+    'sceneId': mongoose.Types.ObjectId(sceneId)
+  })
+    .populate('writer')
+    .sort({ createdAt: 'descending' })
+    .exec((err, result) => {
+      if (err) return res.json({ success: false, err })
+      return res.status(200).json({ success: true, result })
+    })
+})
+
+router.delete('/:commentId', async (req, res) => {
   try {
-    const commentId = req.body.commentId;
+    const {commentId} = req.params;
     const comment = await Comment.findOne(
       {_id:  mongoose.Types.ObjectId(commentId)},
       {_id: 0, responseTo: 1}
@@ -67,11 +82,12 @@ router.post('/remove-comment', async (req, res) => {
   }
 })
 
-router.post('/edit-comment', async (req, res) => {
+router.patch('/:commentId/:comment', async (req, res) => {
+  const {commentId, comment} = req.params;
   try {
     await Comment.updateOne(
-      { _id: mongoose.Types.ObjectId(req.body.commentId) },
-      { $set: {content: req.body.comment}}
+      { _id: mongoose.Types.ObjectId(commentId)},
+      { $set: {content: comment}}
     )
     return res.status(200).json({ success: true })
   } catch {
@@ -82,8 +98,8 @@ router.post('/edit-comment', async (req, res) => {
 router.get('/:gameId/:commentId', async (req, res) => {
   const {gameId, commentId} = req.params;
   Comment.find({
-    'gameId': mongoose.Types.ObjectId(gameId)
-    , 'responseTo': commentId
+    'gameId': mongoose.Types.ObjectId(gameId), 
+    'responseTo': commentId
   })
     .populate('writer')
     .sort('createdAt')

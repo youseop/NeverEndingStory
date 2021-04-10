@@ -1,6 +1,7 @@
 .footer-container-off {
   height: 0px;
   background-color: #222831;
+  z-index: 0;
 }
 
 .footer-container {
@@ -14,6 +15,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 0;
 }
 
 .footer-info {

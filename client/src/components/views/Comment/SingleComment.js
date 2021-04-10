@@ -90,7 +90,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
       responseTo: comment._id.toString()
     };
 
-    axios.post('/api/comment/save-comment', variables).then(response => {
+    axios.post('/api/comment/', variables).then(response => {
       if(response.data.success) {
         message.success('댓글 감사합니다!');
         updateToggle();
@@ -109,11 +109,10 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
 
   const onClick_removeComment = () => {
     setIsEdit(false);
-    axios.post('/api/comment/remove-comment', {commentId: comment._id}).then(response => {
+    axios.delete(`/api/comment/${comment._id}`).then(response => {
       if(response.data.success) {
         message.success('댓글이 삭제되었습니다.');
         updateToggle_comment();
-        console.log('hey')
       } else {
         message.error('댓글 삭제에 실패했습니다.');
       }
@@ -131,9 +130,8 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
 
   const onClick_editComment = (e) => {
     e.preventDefault();
-    axios.post('/api/comment/edit-comment', 
-      {commentId: comment._id, comment: editComment}
-    ).then(response => {
+    axios.patch(`/api/comment/${comment._id}/${editComment}`)
+    .then(response => {
       if(response.data.success) {
         message.success('댓글이 수정되었습니다.');
         updateToggle_comment();

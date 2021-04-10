@@ -7,16 +7,11 @@ import { SVG } from "../../svg/icon";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faHeart, faLink } from "@fortawesome/free-solid-svg-icons";
-import { of, forkJoin, Observable } from "rxjs";
-import { map, tap, flatMap } from "rxjs/operators";
 import TopRatingContributer from "./TopRatingContributer";
 
 import "./GameDetailPage.css";
-import AdminPage from "./AdminPage";
 import { Link } from "react-router-dom";
-import RadialTree from "../TreeVisualization/RadialTree.js";
 import qs from "qs";
-import { Invitaion } from "./Invitation";
 import GameForkButton from "./GameForkButton.js";
 
 const config = require('../../../config/key')
