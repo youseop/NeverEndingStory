@@ -94,12 +94,13 @@ export default function GameDetailPage(props) {
                         totalSceneCnt, 
                         gameDetail, 
                         isClicked, 
-                        thumbsup
+                        thumbsup,
+                        view
                     } = response.data;
                     setThumbsUp(thumbsup);
                     setThumbsUpClicked(isClicked);
                     setGameDetail(gameDetail);
-                    setView(gameDetail.view);
+                    setView(view);
                     setContributerList(topRank);
                     setContributerCnt(contributerCnt);
                     setTotalSceneCnt(totalSceneCnt);

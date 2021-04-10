@@ -233,20 +233,15 @@ const ProductScreen = (props) => {
     }
   }
 
+  const nextSceneFlag = useRef("");
+
   useEffect(() => {
-    if (user && user.userData) {
-      Axios.get(`/api/thumbsup/${sceneId}/${user.userData._id}`).then((response) => {
+    if (user && user.userData && sceneId!=nextSceneFlag.current) {
+      nextSceneFlag.current = sceneId;
+      Axios.get(`/api/scenemakepage/${sceneId}/${user.userData._id}`).then((response) => {
         if (response.data.success) {
           setThumbsUpClicked(response.data.isClicked);
           setThumbsUp(response.data.thumbsup);
-        }
-      })
-      const variable_view = {
-        userId: user.userData._id,
-        objectId: sceneId
-      }
-      Axios.post("/api/view/", variable_view).then((response) => {
-        if (response.data.success) {
           setView(response.data.view);
         }
       })
@@ -270,10 +265,10 @@ const ProductScreen = (props) => {
   }, [sceneId])
 
   //* navigation bar and footer control
-  useEffect(() => {
-    // dispatch(navbarControl(false));
-    // dispatch(footerControl(false));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(navbarControl(false));
+  //   dispatch(footerControl(false));
+  // }, []);
 
   //* game pause control
   useEffect(() => {
