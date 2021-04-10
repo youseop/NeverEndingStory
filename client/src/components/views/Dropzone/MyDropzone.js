@@ -17,7 +17,7 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL, type, icon, up
     }
     if (accept === "audio/*")
         accept = "audio/mpeg, audio/wav, audio/w4a, audio/ogg, audio/flac"
-    if (!uploadFlag.current)
+    if (!uploadFlag || !(uploadFlag?.current))
         return <Dropzone
             onDrop={onDrop}
             multiple={multiple}

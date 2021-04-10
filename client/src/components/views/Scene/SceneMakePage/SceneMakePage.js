@@ -402,6 +402,8 @@ const SceneMakePage = (props) => {
         setSoundFile(CutList[index]?.sound);
         if (CutList[index]?.bgm.music) {
             let cutIdx = bgm_audio.src.lastIndexOf("/") + 1;
+            message.info(bgm_audio.src)
+            message.info(sound_audio.src)
             if (bgm_audio.src.substr(cutIdx) !== CutList[index].bgm.music.substr(cutIdx)) {
                 bgm_audio.src = CutList[index]?.bgm.music;
                 bgm_audio.play();
@@ -513,6 +515,7 @@ const SceneMakePage = (props) => {
         setEndingModalState(true)
     }
 
+    const uploadFlag = useRef(false);
     const onSubmit_saveScene = async (event, isTmp = 0) => {
         if (CutList.length < 1 || (CutList.length === 1 && CutList[CutNumber])) {
             message.error("최소 2개의 컷을 생성해주세요.");
@@ -534,8 +537,11 @@ const SceneMakePage = (props) => {
             submitCut,
             ...CutList.slice(CutNumber + 1, 31),
         ];
-        if (isTmp || isEnding || window.confirm("스토리 제작을 완료하시겠습니까?")) {
 
+        if (isTmp || isEnding.current || window.confirm("스토리 제작을 완료하시겠습니까?")) {
+            uploadFlag.current = true;
+            setReload(reload => reload + 1);
+            message.loading("데이터 전송 중...", 2)
             const variable = {
                 cutList: submitCutList,
                 isEnding: isEnding.current,
@@ -550,7 +556,7 @@ const SceneMakePage = (props) => {
                 setTree();
                 dispatch(detachCharacter());
                 message
-                    .loading((isTmp ? "임시 저장 중..." : "게임 업로드 중.."), 1.0)
+                    .loading((isTmp ? "임시 저장 중..." : "게임 업로드 중..."), 1.0)
                     .then(() => {
                         if (!isTmp) {
                             message.success("스토리 제작이 완료되었습니다.", 1.0)
@@ -583,6 +589,9 @@ const SceneMakePage = (props) => {
                     })
             } else if (response.data.msg === 'expired') {
                 message.error("제작 유효기간이 만료되었습니다..", 1.0);
+                uploadFlag.current = false;
+                setReload(reload => reload + 1);
+
                 props.history.replace({
                     pathname: `/gameplay`,
                     state: {
@@ -594,6 +603,8 @@ const SceneMakePage = (props) => {
             }
             else {
                 message.error("DB에 문제가 있습니다.");
+                uploadFlag.current = false;
+                setReload(reload => reload + 1);
             }
 
         } else {
@@ -1003,6 +1014,7 @@ const SceneMakePage = (props) => {
                         defaultTitle={gameDetail.title}
                         defaultDescription={gameDetail.description}
                         defaultCategory={gameDetail.category}
+                        uploadFlag={uploadFlag}
                     />
                     <EndingModal
                         isEnding={isEnding}
