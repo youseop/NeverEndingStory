@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { useSelector } from 'react-redux';
 import "./LandingPage_buttons.css"
 import "antd/dist/antd.css";
@@ -27,6 +27,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
     const [gameTitle, setGameTitle] = useState<String>("");
     const [gameDescription, setGameDescription] = useState<String>("");
 
+    const uploadFlag = useRef<boolean>(false)
     const user = useSelector<any, any>((state) => state.user);
 
     const uploadGameFrame = async (title: String, description: any) => {
@@ -39,8 +40,10 @@ export function NewGameButton({ replace }: newGameButtonProps) {
             message.error("스토리 설명을 입력해주세요.")
             return;
         }
-        
-        
+        if(uploadFlag.current)
+            return;
+
+        uploadFlag.current = true;
         const gameResponse: responseTypes = await Axios.post("/api/game/uploadgameframe", { title, description, category });
 
         if (!gameResponse.data.success) {
@@ -93,7 +96,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
     return (
         <>
             <button className="main1-button1" onClick={handleClick}>
-                NEW 스토리 만들기
+                새로운 스토리 만들기
             </button>
 
             <TitleModalForm

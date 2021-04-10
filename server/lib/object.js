@@ -4,6 +4,8 @@ const objCmp = (objA, objB) => {
         objB = typeof objB === "string" ? objB : objB.toString()
         if (objA === objB)
             return true;
+        else
+            return false;
     }
     else {
         return false;

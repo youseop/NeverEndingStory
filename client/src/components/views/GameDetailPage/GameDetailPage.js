@@ -10,6 +10,7 @@ import { faEye, faHeart, faLink } from "@fortawesome/free-solid-svg-icons";
 import { of, forkJoin, Observable } from "rxjs";
 import { map, tap, flatMap } from "rxjs/operators";
 import TopRatingContributer from "./TopRatingContributer";
+import { Modal } from "antd";
 
 import "./GameDetailPage.css";
 import AdminPage from "./AdminPage";
@@ -26,9 +27,9 @@ export default function GameDetailPage(props) {
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
 
-
+    const [isWarningVisible, setIsWarningVisible] = useState(false)
     const [gameDetail, setGameDetail] = useState({});
-    const [sceneId, setSceneId] = useState([]);
+    const [sceneId, setSceneId] = useState(null);
     const [isMaking, setIsMaking] = useState(false);
     const [view, setView] = useState(0);
     const [thumbsUp, setThumbsUp] = useState(0);
@@ -50,7 +51,7 @@ export default function GameDetailPage(props) {
         try {
             let response;
             if (isFirst) {
-                response = await Axios.get("/api/users/playing-list/clear");
+                response = await Axios.post("/api/users/playing-list/clear",{gameId});
                 // Not Yet Tested
                 if (user.userData.isAuth && isMaking) {
                     socket.emit("empty_num_increase", { user_id: user.userData._id.toString(), scene_id: response.data.prevOfLastScene.toString() });
@@ -161,7 +162,7 @@ export default function GameDetailPage(props) {
             />
         )
     }
-    else if (totalSceneCnt) {
+    else if (sceneId) {
         return (
             <div className="detailPage__container">
 
@@ -211,7 +212,7 @@ export default function GameDetailPage(props) {
                                     color="#FFF"
                                 />
                             </div>
-                            {isPlayed ? "이어하기" : "시작하기"}
+                            {isPlayed ? (isMaking ? "계속 제작하기" : "이어하기") : "시작하기"}
                         </div>
                     </div>
                     <div className="detailPage__UPTitle">
@@ -236,12 +237,37 @@ export default function GameDetailPage(props) {
                         </div>
                     </div>
                     {isPlayed &&
-                        <div
-                            className="detailPage__gamePlayFromStart_link"
-                            onClick={() => playFirstScene(true)}
-                        >
-                            처음부터 하기
-                        </div>
+                        <>
+                            <div
+                                className="detailPage__gamePlayFromStart_link"
+                                onClick={() => isMaking ? setIsWarningVisible(true) : playFirstScene(true)}
+                            >
+                                처음부터 하기
+                            </div>
+                            <Modal
+                                visible={isWarningVisible}
+                                onOk={() => playFirstScene(true)}
+                                onCancel={() => setIsWarningVisible(false)}
+                                maskClosable={false}
+                                closable={false}
+                                centered={true}
+                                width={650}
+                                bodyStyle={{
+                                    height: "170px",
+                                    display: "flex",
+                                }}
+                                okText="확인"
+                                cancelText="취소"
+                            >
+                                <div className="ending_modal_warning_sign"><svg color="#faad14" viewBox="64 64 896 896" focusable="false" className="" data-icon="exclamation-circle" width="20px" height="20px" fill="currentColor" aria-hidden="true"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M464 688a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"></path></svg></div>
+                                <div className="ending_modal_warning_textarea">
+                                    <h2>주의!</h2>
+                                    <br></br>
+                                    <h3>제작 중인 이야기가 삭제됩니다.</h3>
+                                    <h3>제작 중에도 앞 이야기를 확인할 수 있는 서비스가 준비중입니다...</h3>
+                                </div>
+                            </Modal>
+                        </>
                     }
                 </div>
                 <div className="detailPage__info_container">

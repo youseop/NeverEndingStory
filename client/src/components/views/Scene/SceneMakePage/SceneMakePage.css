@@ -36,7 +36,7 @@
     cursor:default;
 }
 .title-btn{
-    text-align: center;
+    /* text-align: center; */
     width: 65px;
     font-size:15px;
     border: 1px solid rgba(70, 70, 70, 0.26);
@@ -480,3 +480,46 @@
     border-radius: 0;
     position: relative;
   }
+
+
+.scenemake_tooltip_container{
+position: absolute;
+right:0;
+bottom:0px;
+  /* display: inline-block; */
+  border-bottom: 1px dotted black;
+  font-size:14px;
+  
+}
+.scenemake_tooltip_container .scenemake_tooltip_text {
+  visibility: hidden;
+  width: 300px;
+  top: -5px;
+  right: 105%;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  font-size:15px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.scenemake_tooltip_container:hover .scenemake_tooltip_text {
+  visibility: visible;
+  white-space: pre-line;
+}
+
+.scenemake_title_clock{
+    position:absolute;
+    display:inline;
+}
+.scenemake_title_container{
+    width : 95%;
+    position: relative;
+    height:30px;
+    
+}

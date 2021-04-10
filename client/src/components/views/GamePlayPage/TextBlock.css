@@ -80,7 +80,7 @@ a:visited:hover {
 
 .text_line {
     width: 80vmin;
-    word-wrap: break-word;
+    word-wrap: break-word impo !important;
 
 }
 
