@@ -1,5 +1,4 @@
 .log_container {
-    opacity: 90%;
     color: white;
     font-size: 20px;
     position: absolute;
@@ -46,8 +45,7 @@
 }
 
 .HistoryMap_popup.log{
-    background-color: black;
-    opacity: 90%;
+    background-color: rgba(0, 0, 0, 0.89);
     display: flex;
     flex-direction: column;
     align-items: center;
