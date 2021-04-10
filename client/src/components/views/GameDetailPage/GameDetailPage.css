@@ -382,8 +382,7 @@
 }
 @media (max-width : 1000px) {
   .detailPage__container{
-    width: 100%;
-    margin:0;
+    width: 800px;
   }
   .detailPage__gamePlay:before{
     padding-top: 0;
