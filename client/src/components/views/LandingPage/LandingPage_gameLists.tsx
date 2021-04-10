@@ -215,7 +215,7 @@ export function GameList(props: ContainerProps) {
     let game_style = {}
     let arrow_style = {}
 
-    if (width < 767) {
+    if (width < 850) {
         style = { height: width * 0.9 * 9 / 16 + "px" }
     } else {
         game_style = { width: (width - 80) / 4 + "px", height: (width - 80) / 4 * 5 / 7 + "px" }
@@ -289,7 +289,7 @@ export function GameList(props: ContainerProps) {
         </div>)
 
     //* return component
-    if (width < 767) {
+    if (width < 850) {
         return (
             <div className="box-container game-box"
                 style={{ height: width * 1.4 * 9 / 16 * data.length + "px" }}

@@ -53,7 +53,7 @@
   padding-left: 5px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .footer-container {
     min-width: 300px;
     padding: 10px;

@@ -34,11 +34,11 @@
   flex: 1;
   margin-left: 0.5em;
   border-radius: 0.5em;
-  position: relative;
 
   overflow: hidden;
   white-space: normal;
   display: inline;
+
 
   background-color: rgba(1, 1, 90, 0.883);
 
@@ -53,10 +53,15 @@
 
 .HistoryMap_scene_num {
   z-index: 100;
-  font-size: 1.5em;
+  font-size: 1.3vw;
+  width:100%;
   position: absolute;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  font-family: Noto Sans KR;
   top: 0%;
-  left: 0%;
+  left: 3%;
+  color:#DDDDDD;
 
   filter: brightness(100%);
 }
@@ -74,18 +79,28 @@
 
 .HistoryMap_scene_name {
   z-index: 100;
-  font-size: 1em;
+  font-size: 1.3vw;
+  width:100%;
   position: absolute;
-  top: 30%;
-  left: 0%;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  font-family: Noto Sans KR;
+  white-space:nowrap;  
+  color:#DDDDDD;
+  top: 25%;
+  left: 3%;
 }
 
 .HistoryMap_scene_text {
   z-index: 100;
-  font-size: 0.5em;
+  font-size: 1vw;
+  width:100%;
   position: absolute;
-  top: 50%;
-  left: 0;
+  font-family: Noto Sans KR;
+  color:#FFFFFF;
+  top: 53%;
+  left: 5%;
+  margin-right: 5vw;
 }
 
 .close_btn {
@@ -129,4 +144,35 @@
 .HistoryMap-toright_btn:hover {
   transform: scale(1.3);
   transition-duration: 0.7s;
+}
+
+.HistoryMap_scene_num.full{
+  z-index: 100;
+  font-size: 2vw;
+  top: 0%;
+  left: 5%;
+}
+.HistoryMap_scene_name.full{
+  font-size: 2vw;
+  top: 20%;
+  left: 5%;
+}
+.HistoryMap_scene_text.full{
+  font-size: 1.5vw;
+  top: 50%;
+  left: 5%;
+}
+
+.HistoryMap_inner.full{
+  height:10vw;
+  top: 48%;
+}
+
+@media (max-width:850px) and (orientation:portrait){    
+  .HistoryMap-toright_btn.full{
+    top: 45.5%;
+  }
+  .HistoryMap-toleft_btn.full{
+    top: 45.5%;
+  }
 }

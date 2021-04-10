@@ -46,17 +46,34 @@ const SceneMakePage = (props) => {
     //     // Chrome에서는 returnValue 설정이 필요함
     //     event.returnValue = '';
     // });
+    const [isPortrait, setIsPortrait] = useState(window.matchMedia('(orientation: portrait)').matches);
+    const handleResize = () => {
+        const newState = window.matchMedia('(orientation: portrait)').matches;
+        if (newState !== isPortrait)
+            setIsPortrait(window.matchMedia('(orientation: portrait)').matches);
+    }
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, [isPortrait])
 
     const isMobile = useRef(false);
-    const rootDom = document.getElementById("root");
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) {
+        isMobile.current = true;
+    }
+
     useLayoutEffect(() => {
+        const rootDom = document.getElementById("root");
         const footer = rootDom.getElementsByClassName("footer-container");
         if (footer[0])
             footer[0].remove();
-        var filter = "win16|win32|win64|mac";
-        if (navigator.platform) {
-            isMobile.current = filter.indexOf(navigator.platform.toLowerCase()) < 0;
-        }
+
+        const nav = document.getElementById("menu");
+        nav.className += " isMake"
     }, []);
 
     //! mobile focus event
@@ -192,7 +209,7 @@ const SceneMakePage = (props) => {
                 }
 
                 // 임시저장된 녀석 불러오기
-                setEmptyCutList(Array.from({ length: 30 - scene.cutList.length}, () => 0))
+                setEmptyCutList(Array.from({ length: 30 - scene.cutList.length }, () => 0))
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
                 dispatch(setCharacterList({ CharacterList: [...tmpFirstCut.characterList] }));
@@ -437,7 +454,7 @@ const SceneMakePage = (props) => {
             displayCut(CutNumber + 1);
         } else {
             setCutList(cutList => cutList)
-            dispatch(setCharacterList({ CharacterList: CharacterList.length ? [...CharacterList] : []}));
+            dispatch(setCharacterList({ CharacterList: CharacterList.length ? [...CharacterList] : [] }));
             setScript("");
         }
         setCutNumber((oldNumber) => oldNumber + 1);
@@ -752,11 +769,11 @@ const SceneMakePage = (props) => {
         return (
             <div className="wrapper">
                 <div className="title">
-                    <div
+                    {/* <div
                         className="title-btn"
                         onClick={() => setEssetModalState(5)}>
                         게임정보
-                    </div>
+                    </div> */}
                     <div>
                         <span>[{gameDetail?.title}]</span>
                         {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
@@ -828,15 +845,15 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_bgm_name">{BgmFile.name}</div>
                                 </div>
                             ) : (
-                                    <div
-                                        className="scene__sound_box"
-                                        onClick={onClick_bgm_box}
-                                    >
-                                        <StopOutlined
-                                            className="scene__sound_icon bgm" />
-                                        <div className="scene__sound_bgm_name">BGM</div>
-                                    </div>
-                                )}
+                                <div
+                                    className="scene__sound_box"
+                                    onClick={onClick_bgm_box}
+                                >
+                                    <StopOutlined
+                                        className="scene__sound_icon bgm" />
+                                    <div className="scene__sound_bgm_name">BGM</div>
+                                </div>
+                            )}
                             {SoundFile?.name ? (
                                 <div
                                     className="scene__sound_box"
@@ -855,15 +872,15 @@ const SceneMakePage = (props) => {
                                     <div className="scene__sound_sound_name">{SoundFile.name}</div>
                                 </div>
                             ) : (
-                                    <div
-                                        className="scene__sound_box"
-                                        onClick={onClick_sound_box}
-                                    >
-                                        <StopOutlined
-                                            className="scene__sound_icon sound" />
-                                        <div className="scene__sound_sound_name">Sound</div>
-                                    </div>
-                                )}
+                                <div
+                                    className="scene__sound_box"
+                                    onClick={onClick_sound_box}
+                                >
+                                    <StopOutlined
+                                        className="scene__sound_icon sound" />
+                                    <div className="scene__sound_sound_name">Sound</div>
+                                </div>
+                            )}
                         </div>
                     </div>
 

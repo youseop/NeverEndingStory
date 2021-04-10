@@ -16667,7 +16667,7 @@ form:not(.ant-form-vertical) .ant-input-group-wrapper {
     display: none;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .ant-col-sm-24.ant-form-item-label {
     display: block;
     margin: 0;
@@ -19304,7 +19304,7 @@ textarea.ant-mentions {
   text-align: left;
   vertical-align: middle;
 }
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .ant-modal {
     max-width: calc(100vw - 16px);
     margin: 8px auto;

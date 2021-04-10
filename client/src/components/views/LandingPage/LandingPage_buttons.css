@@ -24,7 +24,7 @@
   cursor: pointer;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .main1-button1 {
     left: 30%;
     width: 40%;

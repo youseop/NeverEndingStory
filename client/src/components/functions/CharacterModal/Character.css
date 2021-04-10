@@ -21,6 +21,10 @@
   margin: 2px;
 }
 
+.characterImg.reverse {
+  transform: scaleX(-1);  
+}
+
 /* .characterImg:hover {
   border: 0.22px solid rgb(255, 244, 244);
   transition: 0.1s;
@@ -41,6 +45,9 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none !important;
+}
+.characterImg_clicked.reverse {
+  transform: scaleX(-1);  
 }
 
 .characterImg_clicked:active {

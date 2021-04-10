@@ -6,7 +6,8 @@ import {
   POP_CHARACTER,
   UPDATE_CHARACTER,
   SET_CHARACTER_LIST,
-  ORDER_CHARACTER
+  ORDER_CHARACTER,
+  TOGGLE_CHARACTER,
 } from "./types";
 
 
@@ -122,6 +123,25 @@ export function orderCharacter(dataToSubmit) {
 
   return {
     type: ORDER_CHARACTER,
+    payload: request,
+  };
+}
+
+
+
+export function toggleCharacter(dataToSubmit) {
+  const { oldArray, index } = dataToSubmit;
+  let request;
+  for (let i = 0; i < oldArray.length; i++) {
+    if (oldArray[i].index === index) {
+      oldArray[i].reverse = Math.abs(oldArray[i].reverse - 1);
+      request = [...oldArray]
+      break;
+    }
+  }
+
+  return {
+    type: POP_CHARACTER,
     payload: request,
   };
 }
