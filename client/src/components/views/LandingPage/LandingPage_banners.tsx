@@ -27,7 +27,7 @@ export function Banner_main({ replace }: Props_type) {
   const TimerID = useRef<any>([])
 
   const onClickHandler = (i: number) => {
-    if (i !== 1) {
+    if (CurrentSlide !== 0) {
       let bar = document.getElementById("banner_bar" + String(CurrentSlide));
       if (bar === null) {
         console.log("can not find target bar")

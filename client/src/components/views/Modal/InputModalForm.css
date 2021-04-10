@@ -1,0 +1,6 @@
+.inputmodal p {
+    font-size: min(0.85em,1.2vw);
+    text-align: left;
+    opacity: 0.8;
+    margin-bottom: 0;
+}
