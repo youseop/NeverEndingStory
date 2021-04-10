@@ -73,7 +73,7 @@
 
   display: flex;
   flex-direction: row;
-  
+
   transition: all 0.5s ease-in-out;
   opacity: 0.7;
 }
@@ -87,7 +87,7 @@
   transition-duration: 0.4s;
   cursor: pointer;
 }
-.banner-bar:hover{
+.banner-bar:hover {
   transform: scale(1.3);
 }
 
@@ -101,15 +101,15 @@
 }
 .main1-slogan2 {
   top: 49%;
-  font-size: min(2rem, 3vw);
+  font-size: min(2rem, 2.8vw);
 }
 .main1-button1 {
-  top: 62%;
+  top: 64%;
   left: 40%;
   width: 20%;
   height: 10%;
 
-  font-size: min(1.5rem, 2vw);
+  font-size: min(1.5rem, 1vw);
 }
 
 /* second banner */
@@ -121,7 +121,7 @@
   font-size: min(6rem, 8vw);
 }
 .main2-slogan2 {
-  top: 44%;
+  top: 45%;
   font-size: min(3rem, 4vw);
 }
 .main2-emoji1 {
@@ -130,11 +130,11 @@
   opacity: 0.06;
 }
 .main2-button1 {
-  top: 60%;
+  top: 64%;
   left: 40%;
   width: 20%;
   height: 10%;
-  font-size: min(1.5rem, 2vw);
+  font-size: min(1.5rem, 1vw);
 }
 
 /* third banner */
@@ -148,11 +148,11 @@
 .main3-slogan2 {
   top: 43%;
   font-style: italic;
-  font-size: min(1.8rem, 3vw);
+  font-size: min(1.8rem, 2.5vw);
 }
 .main3-slogan3 {
   top: 52%;
-  font-size: min(1.8rem, 3vw);
+  font-size: min(1.8rem, 2.5vw);
 }
 .main3-button1 {
   top: 65%;
@@ -160,7 +160,7 @@
   width: 20%;
   height: 10%;
 
-  font-size: min(1.5rem, 2vw);
+  font-size: min(1.5rem, 1vw);
 }
 
 /* forth banner */
@@ -174,11 +174,11 @@
 .main4-slogan2 {
   top: 45%;
   font-style: italic;
-  font-size: min(3rem, 4vw);
+  font-size: min(3rem, 3.5vw);
 }
 .main4-slogan3 {
   top: 59%;
-  font-size: min(1.2rem, 2.5vw);
+  font-size: min(1.2rem, 2vw);
 }
 .main4-button1 {
   top: 67%;
@@ -186,10 +186,10 @@
   width: 20%;
   height: 10%;
 
-  font-size: min(1.5rem, 2vw);
+  font-size: min(1.5rem, 1vw);
 }
 
-@media (max-width: 850px) {
+@media (max-width: 767px) {
   .banner-container {
     height: 260px;
   }
@@ -202,5 +202,10 @@
     width: 8%;
     top: 10%;
     right: 0%;
+  }
+
+  .banner-main-button {
+    left:35%;
+    width: 30%;
   }
 }

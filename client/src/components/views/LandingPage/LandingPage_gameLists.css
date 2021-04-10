@@ -152,7 +152,7 @@
   font-weight: bold;
 }
 
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 767px) {
   .game-box {
     display: block;
   }
