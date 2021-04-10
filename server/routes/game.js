@@ -414,14 +414,14 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
                 msg = "해당 씬은 관리자 권한으로 삭제되었습니다."
                 break;
             case 'invalid':
-                msg = "하나의 ID로 한 게임만 즐겨주세요"
+                msg = "하나의 ID로는 한 스토리만 즐겨주세요! 한 스토리 내 장면 간 이동은 미니맵을 이용해주세요!"
                 break;
             default:
                 break;
 
         }
         return res.status(200).json({ success: false, msg });
-    }
+    } 
 });
 
 router.post("/refreshHistory", check, async (req, res) => {

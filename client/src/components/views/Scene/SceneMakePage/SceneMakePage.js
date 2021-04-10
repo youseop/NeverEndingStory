@@ -173,10 +173,14 @@ const SceneMakePage = (props) => {
             socket.emit("leave room", { room: user.userData?._id?.toString() });
             socket.emit("room", { room: user.userData?._id?.toString() });
         }
-        socket.off("timeout_making")
         socket.on("timeout_making", data => {
             props.history.replace("/")
         })
+
+        return () => {
+            console.log("socket off")
+            socket.off("timeout_making")
+        }
 
     }, [user])
 
@@ -208,7 +212,7 @@ const SceneMakePage = (props) => {
                 setEmptyCutList(Array.from({ length: 30 - scene.cutList.length }, () => 0))
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
-                dispatch(setCharacterList({ CharacterList: tmpFirstCut.characterList }));
+                dispatch(setCharacterList({ CharacterList: [...tmpFirstCut.characterList] }));
                 setBackgroundImg(tmpFirstCut.background)
                 setName(tmpFirstCut.name);
                 setScript(tmpFirstCut.script);
@@ -449,6 +453,8 @@ const SceneMakePage = (props) => {
         if (CutNumber < CutList.length - 1) {
             displayCut(CutNumber + 1);
         } else {
+            setCutList(cutList => cutList)
+            dispatch(setCharacterList({ CharacterList: CharacterList.length ? [...CharacterList] : [] }));
             setScript("");
         }
         setCutNumber((oldNumber) => oldNumber + 1);
@@ -492,7 +498,6 @@ const SceneMakePage = (props) => {
 
     const setTree = () => {
         Axios.post("/api/treedata/").then((response) => {
-            console.log('treedata successfully added');
         });
     }
 
@@ -749,8 +754,6 @@ const SceneMakePage = (props) => {
         return () => {
             bgm_audio.pause();
             sound_audio.pause();
-            const nav = document.getElementById("menu");
-            nav.className = "menu"
         };
     }, []);
 

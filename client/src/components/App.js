@@ -34,10 +34,6 @@ const config = require('../config/key');
 export let socket = io(config.SOCKET, { transports: ['websocket'] });
 export const MS_PER_HR = 360000
 
-window.onpopstate = () => {
-  window.location.reload();
-};
-
 function App() {
   const [loaded, setloaded] = useState(false);
   const dispatch = useDispatch();

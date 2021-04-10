@@ -23,20 +23,14 @@ import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import Complaint from './Complaint.js';
+import { faCheckSquare, faCompress, faExpand, } from "@fortawesome/free-solid-svg-icons";
+import LogPopup from "./LogPopup";
 
 //! gamedetail
-import { Link } from "react-router-dom";
-import { faEye, faHeart, faLink } from "@fortawesome/free-solid-svg-icons";
-import GameForkButton from "../GameDetailPage/GameForkButton";
-import Comment from '../Comment/Comment.js';
-
-
-import {
-  faCheckSquare,
-  faCompress,
-  faExpand,
-} from "@fortawesome/free-solid-svg-icons";
-import LogPopup from "./LogPopup";
+// import { Link } from "react-router-dom";
+// import { faEye, faHeart, faLink } from "@fortawesome/free-solid-svg-icons";
+// import GameForkButton from "../GameDetailPage/GameForkButton";
+// import Comment from '../Comment/Comment.js';
 
 const bgm_audio = new Audio();
 bgm_audio.volume = 0.5
@@ -378,247 +372,177 @@ const ProductScreen = (props) => {
   }, []);
 
   useEffect(() => {
-    // if (isFullscreen && isMobile.current)
-    //   window.screen.orientation.lock('landscape')
+    if (isFullscreen && isMobile.current)
+      window.screen.orientation.lock('landscape')
     return () => {
     };
   }, [isFullscreen]);
 
-
-  //! gamedetail
-  const variable = { gameId: gameId };
-  const [gameDetail, setGameDetail] = useState({});
-  useEffect(() => {
-    Axios.post("/api/game/detail", variable).then((response) => {
-      if (response.data.success) {
-        setGameDetail(response.data.gameDetail);
-      } else {
-        message.error("스토리 정보를 로딩하는데 실패했습니다.");
-      }
-    });
-  }, []);
-
-  const pasteLink = () => {
-    const url = window.location.href + "?invitation=true"
-    let urlInput = document.createElement("input");
-    document.body.appendChild(urlInput);
-    urlInput['value'] = url;
-    urlInput.select();
-    document.execCommand("copy");
-    document.body.removeChild(urlInput);
-    message.info("링크가 복사되었습니다.")
-  }
+  {/* //! detail pages */ }
+  // 기존에 playPage에 있던 좋아요는 Scene의 좋아요
+  // DetailPage에 있는 좋아요는 게임의 좋아요 이다.
+  // 사용자 반응 및 적용 후 모습을 보고 추후에 어떻게 통폐합할지 정하자!
 
 
   if (Scene?.cutList !== undefined) {
     if (i == 0 && isFirstCut) playMusic(0);
     return (
-      <div>
+      <div
+        className={`${isFullscreen
+          ? "gamePlay__container gamePlay__container_fullscreen"
+          : `gamePlay__container ${full}`
+          }`}
+        ref={maximizableElement}
+      >
         <div
           className={`${isFullscreen
-            ? "gamePlay__container gamePlay__container_fullscreen"
-            : `gamePlay__container ${full}`
+            ? "gamePlay__mainContainer_fullscreen"
+            : `gamePlay__mainContainer ${full}`
             }`}
-          ref={maximizableElement}
         >
           <div
             className={`${isFullscreen
-              ? "gamePlay__mainContainer_fullscreen"
-              : `gamePlay__mainContainer ${full}`
+              ? "backgroundImg_container_fullscreen"
+              : `backgroundImg_container ${full}`
               }`}
+            style={newScreenSize}
+            onClick={(event) => handleEnter(event)}
           >
-            <div
-              className={`${isFullscreen
-                ? "backgroundImg_container_fullscreen"
-                : `backgroundImg_container ${full}`
-                }`}
-              style={newScreenSize}
-              onClick={(event) => handleEnter(event)}
-            >
-              <LoadingPage />
-              {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
-                <img
-                  className="backgroundImg"
-                  src={Scene.cutList[i]?.background}
-                  alt="Network Error"
-                />
-                : (
-                  <div></div>
-                )}
-              <GameCharacterBlock
-                characterList={Scene?.cutList[i]?.characterList}
+            <LoadingPage />
+            {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
+              <img
+                className="backgroundImg"
+                src={Scene.cutList[i]?.background}
+                alt="Network Error"
               />
+              : (
+                <div></div>
+              )}
+            <GameCharacterBlock
+              characterList={Scene?.cutList[i]?.characterList}
+            />
 
 
-              {i === Scene.cutList.length - 1 ? (
-                <TextBlockChoice
-                  game_id={gameId}
-                  cut_name={Scene.cutList[i]?.name}
-                  cut_script={Scene.cutList[i]?.script}
-                  scene_depth={Scene.depth}
-                  scene_id={Scene._id}
-                  scene_next_list={Scene.nextList}
-                  setIsTyping={setIsTyping}
-                  isTyping={isTyping}
-                  isEnding={Scene.isEnding}
-                  isLastMotion={lastMotion}
-                  theme={Scene.theme}
-                  setScene={setScene}
-                />
-              ) :
-                <TextBlock
-                  cut_name={Scene.cutList[i]?.name}
-                  cut_script={Scene.cutList[i]?.script}
-                  setIsTyping={setIsTyping}
-                  isTyping={isTyping}
-                  theme={Scene.theme}
-                />
-              }
-
-              <HistoryMapPopup
-                userhistory={userHistory}
-                history={History}
-                trigger={HistoryMap}
-                setTrigger={setHistoryMap}
+            {i === Scene.cutList.length - 1 ? (
+              <TextBlockChoice
+                game_id={gameId}
+                cut_name={Scene.cutList[i]?.name}
+                cut_script={Scene.cutList[i]?.script}
+                scene_depth={Scene.depth}
+                scene_id={Scene._id}
+                scene_next_list={Scene.nextList}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
+                isEnding={Scene.isEnding}
+                isLastMotion={lastMotion}
+                theme={Scene.theme}
                 setScene={setScene}
-                isFullscreen={isFullscreen}
               />
-              <LogPopup
-                trigger={Log}
-                setTrigger={setLog}
-                cutList={Scene.cutList}
-                i={i}
+            ) :
+              <TextBlock
+                cut_name={Scene.cutList[i]?.name}
+                cut_script={Scene.cutList[i]?.script}
+                setIsTyping={setIsTyping}
+                isTyping={isTyping}
+                theme={Scene.theme}
               />
-              <div className="gamePlay__btn_container">
-                <div>
-                  <button
-                    className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
-                    onClick={(e) => { onClick_thumbsUp(); e.stopPropagation() }}
-                  >
-                    좋아요: {thumbsUp}
-                  </button>
-                  <button
-                    className="gamePlay__btn gameView"
-                  >
-                    조회수: {view}
-                  </button>
-                  <button
-                    className="gamePlay__btn"
-                    onClick={(e) => { setDislike((state) => !state); e.stopPropagation() }}
-                  >
-                    신고
+            }
+
+            <HistoryMapPopup
+              userhistory={userHistory}
+              history={History}
+              trigger={HistoryMap}
+              setTrigger={setHistoryMap}
+              setScene={setScene}
+              isFullscreen={isFullscreen}
+            />
+            <LogPopup
+              trigger={Log}
+              setTrigger={setLog}
+              cutList={Scene.cutList}
+              i={i}
+            />
+            <div className="gamePlay__btn_container">
+              <div>
+                <button
+                  className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
+                  onClick={(e) => { onClick_thumbsUp(); e.stopPropagation() }}
+                >
+                  좋아요: {thumbsUp}
                 </button>
-                </div><div>
-                  <button
-                    className="gamePlay__btn"
-                    onClick={(e) => { setHistoryMap((state) => !state); e.stopPropagation() }}
-                  >
-                    미니맵
+                <button
+                  className="gamePlay__btn gameView"
+                >
+                  조회수: {view}
                 </button>
-                  <button
-                    className="gamePlay__btn"
-                    onClick={(e) => { setLog((state) => !state); e.stopPropagation() }}
-                  >
-                    대화기록
+                <button
+                  className="gamePlay__btn"
+                  onClick={(e) => { setDislike((state) => !state); e.stopPropagation() }}
+                >
+                  신고
                 </button>
-                  <div
-                    className="gamePlay__btn sound"
-                    onClick={(e) => { mute(); e.stopPropagation() }}
-                  >
-                    {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-                  </div>
-                  {errorMessage ? (
-                    <button
-                      onClick={(e) => {
-                        alert(
-                          "Fullscreen is unsupported by this browser, please try another browser."
-                        );
-                        e.stopPropagation()
-                      }
-                      }
-                      className="gamePlay__btn"
-                    >
-                      {errorMessage}
-                    </button>
-                  ) : isFullscreen ? (
-                    <button onClick={(e) => { handleExitFullscreen(); e.stopPropagation() }} className="gamePlay__btn full">
-                      <FontAwesomeIcon icon={faCompress} />
-                    </button>
-                  ) : (
-                    <button ref={fullButton} onClick={(e) => { setIsFullscreen(); e.stopPropagation() }} className="gamePlay__btn full">
-                      <FontAwesomeIcon icon={faExpand} />
-                    </button>
-                  )}
+              </div><div>
+                <button
+                  className="gamePlay__btn"
+                  onClick={(e) => { setHistoryMap((state) => !state); e.stopPropagation() }}
+                >
+                  미니맵
+                </button>
+                <button
+                  className="gamePlay__btn"
+                  onClick={(e) => { setLog((state) => !state); e.stopPropagation() }}
+                >
+                  대화기록
+                </button>
+                <div
+                  className="gamePlay__btn sound"
+                  onClick={(e) => { mute(); e.stopPropagation() }}
+                >
+                  {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
                 </div>
+                {errorMessage ? (
+                  <button
+                    onClick={(e) => {
+                      alert(
+                        "Fullscreen is unsupported by this browser, please try another browser."
+                      );
+                      e.stopPropagation()
+                    }
+                    }
+                    className="gamePlay__btn"
+                  >
+                    {errorMessage}
+                  </button>
+                ) : isFullscreen ? (
+                  <button onClick={(e) => { handleExitFullscreen(); e.stopPropagation() }} className="gamePlay__btn full">
+                    <FontAwesomeIcon icon={faCompress} />
+                  </button>
+                ) : (
+                  <button ref={fullButton} onClick={(e) => { setIsFullscreen(); e.stopPropagation() }} className="gamePlay__btn full">
+                    <FontAwesomeIcon icon={faExpand} />
+                  </button>
+                )}
               </div>
-              {/* <DislikePopup
+            </div>
+            {/* <DislikePopup
               sceneId={sceneId}
               gameId={gameId}
               trigger={Dislike}
               setTrigger={setDislike}
             /> */}
-              <Complaint
-                sceneId={sceneId}
-                gameId={gameId}
-                isModalVisible={Dislike}
-                setIsModalVisible={setDislike}
-              />
-            </div>
-          </div>
-        </div>
-        {/* //! detail pages */}
-        <div className="detail_relative_container" />
-
-        <div className="detailPage__info_container">
-          <div className="detailPage__genre">
-            장르:
-                        <div className="bold_text">
-              {gameDetail?.category}
-            </div>
-                        작가:
-                        <Link
-              to={`/profile/${gameDetail?.creator?._id}`}
-              className="bold_text"
-            >
-              {gameDetail?.creator?.nickname?.substr(0, 20)}
-            </Link>
-            <span
-              className="link_bttn"
-              onClick={(e) => {
-                pasteLink();
-              }}>
-              <FontAwesomeIcon
-                icon={faLink}
-              />
-                            초대링크복사
-                        </span>
-          </div>
-          <div className="detailPage__option">
-            {gameDetail?.creator?._id?.toString() === user?.userData?._id &&
-              <Link
-                to={`/admin/${gameId}`}
-                className="admin_btn"
-              >
-                스토리 미니맵
-                        </Link>
-            }
-            <GameForkButton
-              history={props.history}
-              user={user}
+            <Complaint
+              sceneId={sceneId}
               gameId={gameId}
+              isModalVisible={Dislike}
+              setIsModalVisible={setDislike}
             />
-
           </div>
-          <div className="detailPage__description">
-            {gameDetail?.description}
-          </div>
-
-          <Comment gameId={gameId} />
         </div>
+
+        <div className="detail_relative_container" />
+        {/* //! detail pages */}
 
       </div>
-
-
     );
   } else {
     // dispatch(gameLoadingPage(0));

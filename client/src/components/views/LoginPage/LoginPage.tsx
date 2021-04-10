@@ -39,6 +39,7 @@ function LoginPage(props: LoginPageProps) {
     : undefined;
 
   const kakaoLogin = (login: any) => {
+    console.log("SUCCESS ?", login)
     Axios.post('/api/passport/kakao/oauth', { profile: login.profile })
       .then((res: any) => {
         if (res.data.success) {
@@ -58,7 +59,7 @@ function LoginPage(props: LoginPageProps) {
       })
 
   }
-  const fail = () => {
+  const fail = (login: any) => {
     props.history.replace({
       pathname: `/login`
     })
@@ -207,7 +208,7 @@ function LoginPage(props: LoginPageProps) {
                       <KakaoLogin
                         token={config.KAKAO_KEY}
                         onSuccess={(login) => kakaoLogin(login)}
-                        onFail={() => { fail() }}
+                        onFail={(login) => { fail(login) }}
                         className="login-button login-kakao">
                         카카오 로그인
 
