@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import SingleReply from './SingleReply';
 import './SingleComment.css';
 
-//Todo : 댓글이 밀린다,,,!
 
 function SingleComment({gameId, comment, updateToggle_comment}) {
   const user = useSelector((state) => state.user);
@@ -26,9 +25,9 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
 
   const reference = useRef();
 
-  const [update, setUpdate] = useState(true);
   const [commentContent, setCommentContent] = useState("");
   const [Replys, setReplys] = useState([]);
+  const [replyCnt, setReplyCnt] = useState(0);
   const [writeReply, setWriteReply] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editComment, setEditComment] = useState("");
@@ -36,35 +35,21 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
   const [like, setLike] = useState(0);
 
   const updateToggle = () => {
-    setUpdate((state) => !state);
+    axios.get(`/api/comment/${gameId}/${comment._id.toString()}`)
+      .then(response => {
+        if (response.data.success) {
+          setReplys(response.data.result);
+        } else {
+          message.error('대댓글을 불러오는데 실패했습니다.')
+        }
+    })
   }
 
   
   useEffect(() => {
-    const comment_variable = {
-      gameId: gameId,
-      responseTo: comment._id.toString()
-    }
-    axios.post('/api/comment/get-reply', comment_variable).then(response => {
-      if (response.data.success) {
-        setReplys(response.data.result);
-      } else {
-        message.error('대댓글을 불러오는데 실패했습니다.')
-      }
-    })
-    const like_variable = {
-      gameId: gameId,
-      userId: user_id,
-      commentId: comment._id
-    }
-    axios.post('/api/like/', like_variable).then(response => {
-      if (response.data.success) {
-        setLike(response.data.result.length);
-      } else {
-        message.error('좋아요를 불러오는데 실패했습니다.')
-      }
-    })
-  }, [update])
+    setLike(comment.like);
+    setReplyCnt(comment.responseCnt);
+  }, [])
 
   const onClick_writeReply = () => {
     setWriteReply((state) => !state);
@@ -76,6 +61,14 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
       setShowComment(false);
       setWriteReply(false);
     } else {
+      axios.get(`/api/comment/${gameId}/${comment._id.toString()}`)
+      .then(response => {
+        if (response.data.success) {
+          setReplys(response.data.result);
+        } else {
+          message.error('대댓글을 불러오는데 실패했습니다.')
+        }
+      })
       reference.current.style.display = 'block'
       setShowComment(true);
     }
@@ -101,6 +94,8 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
       if(response.data.success) {
         message.success('댓글 감사합니다!');
         updateToggle();
+        
+        setReplyCnt((state) => state+1);
         setCommentContent("");
         if (reference.current.style.display !== 'block') {
           reference.current.style.display = 'block'
@@ -118,6 +113,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
       if(response.data.success) {
         message.success('댓글이 삭제되었습니다.');
         updateToggle_comment();
+        console.log('hey')
       } else {
         message.error('댓글 삭제에 실패했습니다.');
       }
@@ -157,9 +153,13 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
       userId: user_id,
       commentId: comment._id
     }
-    axios.post('/api/like/setlike', like_variable).then(response => {
+    axios.post('/api/like/', like_variable).then(response => {
       if (response.data.success) {
-        updateToggle();
+        if(response.data.isClicked){
+          setLike((state) => state+1);
+        } else {
+          setLike((state) => state-1);
+        }
       } else {
         message.error('좋아요를 불러오는데 실패했습니다.')
       }
@@ -173,7 +173,8 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
           <SingleReply
             updateToggle_comment={updateToggle}
             gameId={gameId} 
-            comment={reply}/>
+            comment={reply}
+            setReplyCnt={setReplyCnt}/>
         }
       </div>
     )
@@ -195,7 +196,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
           }
           <div className="comment_info">
             <div onClick={onClick_like} className="comment_like">좋아요 : {like}</div>
-            { Replys.length ? 
+            { replyCnt>0 ? 
             <>
             <div onClick={onClick_displayReply} className="comment_displayReplyToggle">
             { showComment ?
@@ -204,7 +205,7 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
               </div>
               :
               <div>
-                댓글 {Replys.length}개 보기
+                댓글 {replyCnt}개 보기
               </div>
             }
             </div>
