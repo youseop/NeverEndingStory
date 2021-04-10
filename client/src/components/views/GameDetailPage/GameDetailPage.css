@@ -279,7 +279,7 @@
   cursor: pointer;
   font-weight: 100;
   margin-left: 20px;
-  font-size: 20vh;
+  font-size: max(20px, 1.3vmin);
   height: 36px;
   z-index: 2;
   color: rgb(180, 180, 180);
