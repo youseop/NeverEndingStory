@@ -222,6 +222,7 @@ export default function GameDetailPage(props) {
                         }
                     </div>
                     <div className="detailPage__contributer_container_box">
+                        <div className="detailPage__contributer_container_box fit">
                         <div className="detailPage__contributer_container">
                             <div className="detailPage__contributer_title"> 가장 많은 기여를 한 사람</div>
                             <TopRatingContributer
@@ -244,7 +245,7 @@ export default function GameDetailPage(props) {
                                 </div>
                                 </div>
                             </div>
-                            <h1 style={{ "color": "white" }}>/</h1>
+                            <h1 style={{ "color": "white", "font-size": "50px" }}>|</h1>
                             <div className="detailPage__gamePlay_container">
                                 <div className="detailPage__gamePlay_text">
                                     현재 기여자
@@ -258,6 +259,7 @@ export default function GameDetailPage(props) {
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
