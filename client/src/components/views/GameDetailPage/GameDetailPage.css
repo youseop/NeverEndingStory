@@ -78,7 +78,6 @@
 }
 
 .detailPage__contributer_container_box{
-  height: 100%;
   width: 50%;
   display: flex;
   justify-content: flex-end;
@@ -88,7 +87,7 @@
 
 .detailPage__contributer_container {
   width: 290px;
-  height: 55%;
+  height: min(min(30vh,50vmin), 25vw);
   background-color: rgba(8, 8, 8, 0.684);
   border-radius: 5px;
   overflow-y: auto;
@@ -211,7 +210,6 @@
 
 .detailPage__gamePlay {
   width: 100%;
-  height: 64%;
   position: absolute;
   top: 0;
   display: flex;
