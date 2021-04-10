@@ -25,9 +25,9 @@ const LoadingPage = () => {
           className="loading_page"
         >
           <FontAwesomeIcon
-              icon={faSpinner}
-              className="loading_icon"
-            />
+            icon={faSpinner}
+            className="loading_icon"
+          />
         </div>
       );
     case LOADING_TYPE.SLIDELEFT:
@@ -47,7 +47,7 @@ const LoadingPage = () => {
     case LOADING_TYPE.SLIDEUP:
       return (
         <div
-          style={{ animation: "1s ease-out 0s 1 slideUp" }}
+          style={{ animation: "1s ease-out 0s 1 slideRight" }}
           className="loading_page"
         />
       );

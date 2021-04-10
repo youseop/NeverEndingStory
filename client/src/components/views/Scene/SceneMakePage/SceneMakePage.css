@@ -161,6 +161,7 @@
 .left-arrow>svg{
     width:50px;
     height:50px;
+    transform:translateX(20%);
 }
 .left-arrow:hover{
     background-color: #333942;
@@ -175,6 +176,7 @@
 .right-arrow>svg{
     width:50px;
     height:50px;
+    transform:translateX(20%);
 }
 .right-arrow:hover{
     background-color: #333942;

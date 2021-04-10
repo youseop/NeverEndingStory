@@ -308,7 +308,7 @@ const ProductScreen = (props) => {
           setScene(response.data.scene);
           dispatch(gamePause(false));
           dispatch(gameLoadingPage(0));
-          dispatch(gameLoadingPage(6));
+          // dispatch(gameLoadingPage(6));
         } else {
           if (response.data.msg)
             message.error(response.data.msg);
@@ -541,7 +541,6 @@ const ProductScreen = (props) => {
 
         <div className="detail_relative_container" />
         {/* //! detail pages */}
-
       </div>
     );
   } else {
