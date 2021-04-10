@@ -46,20 +46,34 @@ const SceneMakePage = (props) => {
     //     // Chrome에서는 returnValue 설정이 필요함
     //     event.returnValue = '';
     // });
+    const [isPortrait, setIsPortrait] = useState(window.matchMedia('(orientation: portrait)').matches);
+    const handleResize = () => {
+        const newState = window.matchMedia('(orientation: portrait)').matches;
+        if (newState !== isPortrait)
+            setIsPortrait(window.matchMedia('(orientation: portrait)').matches);
+    }
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, [isPortrait])
 
     const isMobile = useRef(false);
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) {
+        isMobile.current = true;
+    }
+
     useLayoutEffect(() => {
         const rootDom = document.getElementById("root");
         const footer = rootDom.getElementsByClassName("footer-container");
         if (footer[0])
             footer[0].remove();
+
         const nav = document.getElementById("menu");
         nav.className += " isMake"
-        console.log(123, nav)
-        var filter = "win16|win32|win64|mac";
-        if (navigator.platform) {
-            isMobile.current = filter.indexOf(navigator.platform.toLowerCase()) < 0;
-        }
     }, []);
 
     //! mobile focus event
@@ -159,10 +173,14 @@ const SceneMakePage = (props) => {
             socket.emit("leave room", { room: user.userData?._id?.toString() });
             socket.emit("room", { room: user.userData?._id?.toString() });
         }
-        socket.off("timeout_making")
         socket.on("timeout_making", data => {
             props.history.replace("/")
         })
+
+        return () => {
+            console.log("socket off")
+            socket.off("timeout_making")
+        }
 
     }, [user])
 
@@ -194,7 +212,7 @@ const SceneMakePage = (props) => {
                 setEmptyCutList(Array.from({ length: 30 - scene.cutList.length }, () => 0))
                 setCutList(scene.cutList);
                 const tmpFirstCut = scene.cutList[0]
-                dispatch(setCharacterList({ CharacterList: tmpFirstCut.characterList }));
+                dispatch(setCharacterList({ CharacterList: [...tmpFirstCut.characterList] }));
                 setBackgroundImg(tmpFirstCut.background)
                 setName(tmpFirstCut.name);
                 setScript(tmpFirstCut.script);
@@ -435,6 +453,8 @@ const SceneMakePage = (props) => {
         if (CutNumber < CutList.length - 1) {
             displayCut(CutNumber + 1);
         } else {
+            setCutList(cutList => cutList)
+            dispatch(setCharacterList({ CharacterList: CharacterList.length ? [...CharacterList] : [] }));
             setScript("");
         }
         setCutNumber((oldNumber) => oldNumber + 1);
@@ -478,7 +498,6 @@ const SceneMakePage = (props) => {
 
     const setTree = () => {
         Axios.post("/api/treedata/").then((response) => {
-            console.log('treedata successfully added');
         });
     }
 
@@ -735,8 +754,6 @@ const SceneMakePage = (props) => {
         return () => {
             bgm_audio.pause();
             sound_audio.pause();
-            const nav = document.getElementById("menu");
-            nav.className = "menu"
         };
     }, []);
 
@@ -752,11 +769,11 @@ const SceneMakePage = (props) => {
         return (
             <div className="wrapper">
                 <div className="title">
-                    <div
+                    {/* <div
                         className="title-btn"
                         onClick={() => setEssetModalState(5)}>
                         게임정보
-                    </div>
+                    </div> */}
                     <div>
                         <span>[{gameDetail?.title}]</span>
                         {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}

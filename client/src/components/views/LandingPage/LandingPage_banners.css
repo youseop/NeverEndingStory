@@ -189,7 +189,6 @@
   font-size: min(1.5rem, 2vw);
 }
 
-
 @media (max-width: 850px) {
   .banner-container {
     height: 260px;

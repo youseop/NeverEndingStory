@@ -1,12 +1,15 @@
 import React from 'react'
 import { LOCAL_HOST } from "../../../../Config";
 
+
+const config = require("../../../../../config/key")
+
 function BackgroundImg({ imgUrl, setBackgroundImg, curImg, setReload }) {
   const onClick_img = () => {
     if (curImg !== imgUrl) {
       setBackgroundImg(imgUrl);
     } else {
-      setBackgroundImg(`http://${LOCAL_HOST}:5000/uploads/defaultBackground.png`);
+      setBackgroundImg(`${config.STORAGE}/defaultBackground.png`);
     }
     setReload(reload => reload + 1);
   }

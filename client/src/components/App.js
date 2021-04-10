@@ -24,7 +24,6 @@ import SearchResult from "./views/NavBar/Sections/SearchResult.tsx"
 import { LOCAL_HOST } from './Config';
 import './App.css';
 import AdminPage from './views/GameDetailPage/AdminPage';
-import PortraitWarning from './views/Etc/PortraitWarning';
 import { useConstructor } from './functions/useConstructor';
 import { useDispatch } from 'react-redux';
 import { auth } from '../_actions/user_actions';
@@ -35,20 +34,9 @@ const config = require('../config/key');
 export let socket = io(config.SOCKET, { transports: ['websocket'] });
 export const MS_PER_HR = 360000
 
-window.onpopstate = () => {
-  window.location.reload();
-};
-
 function App() {
   const [loaded, setloaded] = useState(false);
   const dispatch = useDispatch();
-  const [isPortrait, setIsPortrait] = useState(window.matchMedia('(orientation: portrait)').matches);
-  const handleResize = () => {
-    const newState = window.matchMedia('(orientation: portrait)').matches;
-    if (newState !== isPortrait)
-      setIsPortrait(window.matchMedia('(orientation: portrait)').matches);
-  }
-
   useConstructor(async () => {
     if (window.navigator.userAgent.indexOf("MSIE")>=0) {
       alert("지원하지 않는 브라우저입니다. 크롬 브라우저 사용을 권장합니다.")
@@ -59,12 +47,6 @@ function App() {
     })
   })
 
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    }
-  }, [isPortrait])
 
   if (loaded) {
     return (
@@ -80,9 +62,9 @@ function App() {
             <Route exact path="/game/upload" component={Auth(GameUploadPage, true)} />
             <Route path="/game/:gameId" component={Auth(GameDetailPage, null)} />
             <Route path="/gameplay/:full" component={Valid(Auth(GamePlayPage, null))} />
-            <Route path="/gameplay" component={Valid(Auth(GamePlayPage, null))} />
+            <Route path="/gameplay" component={Auth(GamePlayPage, null)} />
             <Route path="/admin/:gameId" component={Auth(AdminPage, true)} />
-            <Route exact path="/scene/make" component={isPortrait ? PortraitWarning : Valid(Auth(SceneMakePage, true))} />
+            <Route exact path="/scene/make" component={Valid(Auth(SceneMakePage, true))} />
           </Switch>
           < SearchResult />
         </div>

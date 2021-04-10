@@ -49,8 +49,8 @@ const SceneMakePage = (props) => {
     const [uploadModalState, setUploadModalState] = useState(false);
     const [SidBar_script, setSidBar_script] = useState(true);
     const [CharacterList, setCharacterList] = useState([]);
-    const [BackgroundImg, setBackgroundImg] = useState(`${config.STORAGE}/defaultBackground.png`);
     const [Script, setScript] = useState("");
+    const [BackgroundImg, setBackgroundImg] = useState(`${config.STORAGE}/defaultBackground.png`);
     const [Name, setName] = useState("");
     const [BgmFile, setBgmFile] = useState({
         name: "",
@@ -77,10 +77,10 @@ const SceneMakePage = (props) => {
             socket.emit("leave room", { room: user.userData._id?.toString() });
             socket.emit("room", { room: user.userData._id?.toString() });
         }
-        socket.off("timeout_making")
         socket.on("timeout_making", data => {
             props.history.replace("/")
         })
+
     }, [user])
     //! scene save할 때 필요한 정보 갖고오기
     useEffect(() => {

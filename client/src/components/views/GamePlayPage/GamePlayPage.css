@@ -10,7 +10,6 @@
   height: calc(100vh + 15%);
   position: absolute;
   top: -15%;
-  /* background-color: aqua; */
 }
 .gamePlay__container_fullscreen{
   width: 100vw;
@@ -40,14 +39,14 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .gamePlay__btn {
   all: unset;
   color: rgb(182, 182, 182);
-  padding: 0px 10px;
+  padding: 0px 5px;
   border-radius: 3px;
-  margin: 2px;
+  margin: 0.35vh;
   font-size: bold;
   transition-duration: 0.2s;
   font-size: 0.9rem;
@@ -59,9 +58,9 @@
 .gamePlay__btnClicked {
   all: unset;
   color: rgb(179, 149, 149);
-  padding: 5px 10px;
+  padding: 0px 5px;
   border-radius: 3px;
-  margin: 2px;
+  margin: 0.35vh;
   font-size: bold;
   transition-duration: 0.2s;
   font-size: 0.9rem;
@@ -83,7 +82,7 @@
 }
 .backgroundImg_container {
   position: absolute;
-  transform: translateY(10%);
+  transform: translateY(15%);
   transform-origin: center center;
   overflow: hidden;
   transition-duration: 0.05s;
@@ -102,4 +101,73 @@
   object-fit: cover;
   margin:0;
   border-radius: 0;
+}
+
+.gamePlay__btn.sound{
+  /* font-size: 0rem; */
+}
+.gamePlay__btn.sound>svg{
+  width:1.2rem;
+  vertical-align: -0.4rem;
+  color: rgb(182, 182, 182) !important;
+}
+
+.gamePlay__btn.full{
+  font-size: 1.1rem;
+}
+.detail_relative_container{
+  height:95vh;
+}
+
+
+@media (max-width:1000px) and (orientation:landscape){
+  .detail_relative_container{
+    height: 60vw;
+  }
+}
+@media (max-width:780px) and (orientation:landscape){
+  .menu.isPlay{
+    position: absolute !important;
+  }
+  .backgroundImg_container {
+    width:80vw !important;
+    height: 44vw !important;
+ }
+  .detail_relative_container{
+    height: 52px+39vw;
+  }
+}    
+@media (max-width:850px) and (orientation:portrait){    
+  .menu.isPlay{
+    position: fixed !important;
+  }
+  .detail_relative_container{
+    height: calc(56vw);
+  }
+  .gamePlay__container{
+    height: calc(52px + 56vw) !important;
+    top: 0%;
+  }
+
+  .gamePlay__btn_container {
+    /* background-color: yellow; */
+  }
+  .gamePlay__btn {
+    padding: 0px 0px;
+    /* background-color: blueviolet; */
+  }
+  .gamePlay__btn.full{
+    margin-right: 1vh;
+  }
+  .gamePlay__btnClicked {
+    padding: 0px 0px;
+  }
+
+  .backgroundImg_container {
+    position: fixed;
+    transform: translateY(0%);
+    top:52px;
+    width:100vw !important;
+    height: 56vw !important;
+  }
 }

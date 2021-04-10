@@ -23,7 +23,7 @@ export function Banner_main({ replace }: Props_type) {
   let bannerStyle = {}
   let arrowStyle = {}
 
-  const TimerID = useRef<any>(undefined)
+  const TimerID = useRef<any>([])
 
   const onClickHandler = (i: number) => {
     if (i !== 1) {
@@ -38,16 +38,17 @@ export function Banner_main({ replace }: Props_type) {
   }
 
   const stopBanner = () => {
-    if (TimerID.current !== undefined) {
-      clearTimeout(TimerID.current);
+    for (let i = 0 ; i <TimerID.current.length ; i ++) {
+      clearTimeout(TimerID.current[i])
     }
+    TimerID.current = []
   }
 
   const startBanner = () => {
     const timer = setTimeout(() => {
       nextBanner()
     }, CurrentSlide == 0 ? 0 : 10000);
-    TimerID.current = timer
+    TimerID.current.push(timer)
   }
 
   const nextBanner = () => {
@@ -134,8 +135,8 @@ export function Banner_main({ replace }: Props_type) {
 
 export function Banner_main1({ width }: any) {
   return (<div className="banner-main main1-background">
-    <div className="banner-main-slogan main1-slogan1">"이어봐에는 수많은 엔딩이 존재합니다"</div>
-    <div className="banner-main-slogan main1-slogan2">이 순간에도 많은 이야기들이 재생산되고 있습니다. 탐험하세요!🕵️‍♂️</div>
+    <div className="banner-main-slogan main1-slogan1">"이어봐에는 수많은 엔딩이 존재합니다🕵️‍♂️"</div>
+    <div className="banner-main-slogan main1-slogan2">이 순간에도 많은 이야기들이 재생산되고 있습니다. 탐험하세요!</div>
     <button className="banner-main-button main1-button1"
       onClick={() => { window.scrollTo({ top: width * 3 / 7, left: 0, behavior: 'smooth' }) }}>
       스토리 플레이하기
@@ -158,7 +159,7 @@ export function Banner_main2(props: any) {
 
 export function Banner_main3({ width }: any) {
   return (<div className="banner-main main3-background">
-    <div className="banner-main-slogan main3-slogan1">선택의 길과 마주하세요!</div>
+    <div className="banner-main-slogan main3-slogan1">선택의 길과 마주하세요🧭</div>
     <div className="banner-main-slogan main3-slogan2">각각의 선택은 모두 다른 스토리로 이어질 것입니다.</div>
     <div className="banner-main-slogan main3-slogan3">"이야기가 맘에들지 않다구요? 그럼 자신의 스토리로 이어보세요!"</div>
     <button className="banner-main-button main3-button1"

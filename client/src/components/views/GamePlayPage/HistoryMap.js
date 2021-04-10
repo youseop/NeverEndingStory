@@ -52,7 +52,7 @@ let sceneInfo = [];
 let targetScene = 1;
 
 function HistoryMapPopup(props) {
-  const { userhistory, setTrigger, setScene } = props;
+  const { userhistory, setTrigger, setScene, isFullscreen } = props;
   const { gameId, sceneId } = props.history;
   const [SceneInfo, setSceneInfo] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -87,6 +87,8 @@ function HistoryMapPopup(props) {
     setTrigger(false);
   }
 
+  const full = isFullscreen ? "full" : "";
+
   const HistoryMap_scenes = SceneInfo.map((scene, index) => {
     if (index === SceneInfo.length - 1) {
       return (
@@ -95,10 +97,10 @@ function HistoryMapPopup(props) {
           key={index + 1}
           style={{ border: "0.2em orange solid" }}
         >
-          <div className="HistoryMap_scene_num"> #{index + 1}</div>
-          <img className="HistoryMap_scene_img" src={scene.background} />
-          <div className="HistoryMap_scene_name">{scene.name}:</div>
-          <div className="HistoryMap_scene_text">"{scene.script}"</div>
+          <div className={`HistoryMap_scene_num ${full}`}> #{index + 1}</div>
+          <img className={`HistoryMap_scene_img ${full}`} src={scene.background} />
+          <div className={`HistoryMap_scene_name ${full}`}>{scene.name}:</div>
+          <div className={`HistoryMap_scene_text ${full}`}>"{scene.script}"</div>
         </div>
       );
     } else {
@@ -108,10 +110,10 @@ function HistoryMapPopup(props) {
           key={index + 1}
           onClick={() => showModal(index + 1)}
         >
-          <div className="HistoryMap_scene_num"> #{index + 1}</div>
-          <img className="HistoryMap_scene_img" src={scene.background} />
-          <div className="HistoryMap_scene_name">{scene.name}:</div>
-          <div className="HistoryMap_scene_text">"{scene.script}"</div>
+          <div className={`HistoryMap_scene_num ${full}`}> #{index + 1}</div>
+          <img className={`HistoryMap_scene_img ${full}`} src={scene.background} />
+          <div className={`HistoryMap_scene_name ${full}`}>{scene.name}:</div>
+          <div className={`HistoryMap_scene_text ${full}`}>"{scene.script}"</div>
         </div>
       );
     }
@@ -132,7 +134,7 @@ function HistoryMapPopup(props) {
         ></SVG>
       </div>
 
-      <div className="HistoryMap-toleft_btn" onClick={MapToLeft}>
+      <div className={`HistoryMap-toleft_btn ${full}`} onClick={MapToLeft}>
         <SVG
           src="arrow_1"
           width="100%"
@@ -141,7 +143,7 @@ function HistoryMapPopup(props) {
         />
       </div>
 
-      <div className="HistoryMap-toright_btn" onClick={MapToRight}>
+      <div className={`HistoryMap-toright_btn ${full}`} onClick={MapToRight}>
         <SVG
           src="arrow_1"
           width="100%"
@@ -151,7 +153,7 @@ function HistoryMapPopup(props) {
       </div>
 
       <div
-        className="HistoryMap_inner"
+        className={`HistoryMap_inner ${full}`}
         style={{ width: sceneInfo.length * 15 + "%" }}
       >
         {HistoryMap_scenes}

@@ -89,12 +89,18 @@
   opacity: 0.9;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .searchResult-game {
     width: 50%;
     height: 25%;
   }
   .searchResult-flex {
     padding-left: 5%;
+  }
+}
+
+@media (max-width: 850px) {
+  .searchResult-background {
+    top: 52px;
   }
 }

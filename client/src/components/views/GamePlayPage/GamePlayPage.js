@@ -2,7 +2,7 @@ import "./GamePlayPage.css";
 import "./GamePlaySlider.css";
 import GameCharacterBlock from "./GameCharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
 import HistoryMapPopup from "./HistoryMap";
@@ -23,14 +23,14 @@ import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import Complaint from './Complaint.js';
-
-
-import {
-  faCheckSquare,
-  faCompress,
-  faExpand,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheckSquare, faCompress, faExpand, } from "@fortawesome/free-solid-svg-icons";
 import LogPopup from "./LogPopup";
+
+//! gamedetail
+// import { Link } from "react-router-dom";
+// import { faEye, faHeart, faLink } from "@fortawesome/free-solid-svg-icons";
+// import GameForkButton from "../GameDetailPage/GameForkButton";
+// import Comment from '../Comment/Comment.js';
 
 const bgm_audio = new Audio();
 bgm_audio.volume = 0.5
@@ -46,6 +46,18 @@ function useConstructor(callBack = () => { }) {
 
 //! playscreen
 const ProductScreen = (props) => {
+
+  const isMobile = useRef(false);
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  if (isTouch) {
+    isMobile.current = true;
+  }
+  useLayoutEffect(() => {
+    const nav = document.getElementById("menu");
+    nav.className += " isPlay"
+  }, []);
+
+
   const { full } = props?.match?.params;
   const location = useLocation();
 
@@ -265,7 +277,7 @@ const ProductScreen = (props) => {
   //* navigation bar and footer control
   useEffect(() => {
     // dispatch(navbarControl(false));
-    dispatch(footerControl(false));
+    // dispatch(footerControl(false));
   }, []);
 
   //* game pause control
@@ -354,8 +366,22 @@ const ProductScreen = (props) => {
     return () => {
       bgm_audio.pause();
       sound_audio.pause();
+      const nav = document.getElementById("menu");
+      nav.className = "menu"
     };
   }, []);
+
+  useEffect(() => {
+    if (isFullscreen && isMobile.current)
+      window.screen.orientation.lock('landscape')
+    return () => {
+    };
+  }, [isFullscreen]);
+
+  {/* //! detail pages */ }
+  // 기존에 playPage에 있던 좋아요는 Scene의 좋아요
+  // DetailPage에 있는 좋아요는 게임의 좋아요 이다.
+  // 사용자 반응 및 적용 후 모습을 보고 추후에 어떻게 통폐합할지 정하자!
 
 
   if (Scene?.cutList !== undefined) {
@@ -428,6 +454,7 @@ const ProductScreen = (props) => {
               trigger={HistoryMap}
               setTrigger={setHistoryMap}
               setScene={setScene}
+              isFullscreen={isFullscreen}
             />
             <LogPopup
               trigger={Log}
@@ -436,28 +463,25 @@ const ProductScreen = (props) => {
               i={i}
             />
             <div className="gamePlay__btn_container">
-              <div
-                className="gamePlay__btn"
-                onClick={(e) => { mute(); e.stopPropagation() }}
-              >
-                {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-              </div>
               <div>
-                {i === Scene.cutList.length - 1 &&
-                  <>
-                    <button
-                      className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
-                      onClick={(e) => { onClick_thumbsUp(); e.stopPropagation() }}
-                    >
-                      좋아요: {thumbsUp}
-                    </button>
-                    <button
-                      className="gamePlay__btn gameView"
-                    >
-                      조회수: {view}
-                    </button>
-                  </>
-                }
+                <button
+                  className={isClicked ? "gamePlay__btnClicked" : "gamePlay__btn"}
+                  onClick={(e) => { onClick_thumbsUp(); e.stopPropagation() }}
+                >
+                  좋아요: {thumbsUp}
+                </button>
+                <button
+                  className="gamePlay__btn gameView"
+                >
+                  조회수: {view}
+                </button>
+                <button
+                  className="gamePlay__btn"
+                  onClick={(e) => { setDislike((state) => !state); e.stopPropagation() }}
+                >
+                  신고
+                </button>
+              </div><div>
                 <button
                   className="gamePlay__btn"
                   onClick={(e) => { setHistoryMap((state) => !state); e.stopPropagation() }}
@@ -470,35 +494,35 @@ const ProductScreen = (props) => {
                 >
                   대화기록
                 </button>
-                <button
-                  className="gamePlay__btn"
-                  onClick={(e) => { setDislike((state) => !state); e.stopPropagation() }}
+                <div
+                  className="gamePlay__btn sound"
+                  onClick={(e) => { mute(); e.stopPropagation() }}
                 >
-                  신고
-                </button>
+                  {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+                </div>
+                {errorMessage ? (
+                  <button
+                    onClick={(e) => {
+                      alert(
+                        "Fullscreen is unsupported by this browser, please try another browser."
+                      );
+                      e.stopPropagation()
+                    }
+                    }
+                    className="gamePlay__btn"
+                  >
+                    {errorMessage}
+                  </button>
+                ) : isFullscreen ? (
+                  <button onClick={(e) => { handleExitFullscreen(); e.stopPropagation() }} className="gamePlay__btn full">
+                    <FontAwesomeIcon icon={faCompress} />
+                  </button>
+                ) : (
+                  <button ref={fullButton} onClick={(e) => { setIsFullscreen(); e.stopPropagation() }} className="gamePlay__btn full">
+                    <FontAwesomeIcon icon={faExpand} />
+                  </button>
+                )}
               </div>
-              {errorMessage ? (
-                <button
-                  onClick={(e) => {
-                    alert(
-                      "Fullscreen is unsupported by this browser, please try another browser."
-                    );
-                    e.stopPropagation()
-                  }
-                  }
-                  className="gamePlay__btn"
-                >
-                  {errorMessage}
-                </button>
-              ) : isFullscreen ? (
-                <button onClick={(e) => { handleExitFullscreen(); e.stopPropagation() }} className="gamePlay__btn">
-                  <FontAwesomeIcon icon={faCompress} />
-                </button>
-              ) : (
-                <button ref={fullButton} onClick={(e) => { setIsFullscreen(); e.stopPropagation() }} className="gamePlay__btn">
-                  <FontAwesomeIcon icon={faExpand} />
-                </button>
-              )}
             </div>
             {/* <DislikePopup
               sceneId={sceneId}
@@ -514,8 +538,11 @@ const ProductScreen = (props) => {
             />
           </div>
         </div>
-      </div>
 
+        <div className="detail_relative_container" />
+        {/* //! detail pages */}
+
+      </div>
     );
   } else {
     // dispatch(gameLoadingPage(0));

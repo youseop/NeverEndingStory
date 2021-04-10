@@ -15,13 +15,12 @@ function MyDropzone({ onDrop, multiple, maxSize, accept, blobURL, type, icon }) 
     } else if (type === "bgm" || type === "sound") {
         mention = "음원을 업로드 해주세요."
     }
-
+    if (accept === "audio/*")
+        accept = "audio/mp3, audio/wav, audio/w4a, audio/ogg, audio/flac"
     return <Dropzone
         onDrop={onDrop}
         multiple={multiple}
         maxSize={maxSize} // 10MB + 1
-
-        // accept="image/*,audio/*,video/*"
         accept={accept}
     >
 

@@ -93,7 +93,7 @@
 }
 
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .contribute__container{
     min-height: 140px;
     width: 100%;

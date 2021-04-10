@@ -16,8 +16,8 @@ function LogPopup(props) {
     }
 
     function LogContainer() {
-        const log = cutList.slice(0, i + 1).map(item => {
-            return <div className="log">{item?.name}: {item?.script}</div>
+        const log = cutList.slice(0, i + 1).map((item, index) => {
+            return <div className="log" key={index}>{item?.name}: {item?.script}</div>
         })
         return log;
     }
