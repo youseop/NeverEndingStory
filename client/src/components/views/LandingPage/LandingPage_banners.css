@@ -1,6 +1,6 @@
 .banner-container {
   position: relative;
-  width: 300%;
+  width: 500%;
   /* height: 580px; */
   border-radius: 5px;
 
@@ -10,6 +10,9 @@
 }
 .banner-container:hover ~ .banner-right-arrow {
   opacity: 0.5;
+}
+.banner-container:hover ~ .banner-positionBar {
+  opacity: 1;
 }
 
 .banner-main {
@@ -23,11 +26,12 @@
   width: 100%;
   font-family: Noto Sans KR;
   font-weight: bold;
+  text-align: center;
   color: #ffffff;
 }
 
 .banner-main-button {
-  all:unset;
+  all: unset;
   position: absolute;
 
   background: #e74a4a;
@@ -61,19 +65,51 @@
   opacity: 0.9;
 }
 
+.banner-positionBar {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: row;
+  
+  transition: all 0.5s ease-in-out;
+  opacity: 0.7;
+}
+.banner-right-arrow:hover {
+  opacity: 1;
+}
+
+.banner-bar {
+  padding-right: 5px;
+  filter: brightness(50%);
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.banner-bar:hover{
+  transform: scale(1.3);
+}
+
 /* first banner */
 .main1-background {
   background-color: #30475e;
 }
 .main1-slogan1 {
-  top: 15%;
-  left: 5%;
-  font-size: min(8rem,10vw);
+  top: 30%;
+  font-size: min(4rem, 5vw);
 }
 .main1-slogan2 {
-  top: 45%;
-  left: 5.2%;
-  font-size: min(6rem,8vw);
+  top: 49%;
+  font-size: min(2rem, 3vw);
+}
+.main1-button1 {
+  top: 62%;
+  left: 40%;
+  width: 20%;
+  height: 10%;
+
+  font-size: min(1.5rem, 2vw);
 }
 
 /* second banner */
@@ -81,33 +117,80 @@
   background-color: rgb(34, 136, 80);
 }
 .main2-slogan1 {
-  top: 15%;
-  text-align: center;
-  font-size: min(6rem,8vw);
+  top: 22%;
+  font-size: min(6rem, 8vw);
 }
 .main2-slogan2 {
-  top: 40%;
-  text-align: center;
-  font-size: 3rem;
-  font-size: min(3rem,4vw);
-
+  top: 44%;
+  font-size: min(3rem, 4vw);
 }
 .main2-emoji1 {
   top: -60%;
-  text-align: center;
-  font-size: min(50rem,70vw);
+  font-size: min(50rem, 70vw);
   opacity: 0.06;
 }
 .main2-button1 {
-  top: 70%;
+  top: 60%;
+  left: 40%;
+  width: 20%;
+  height: 10%;
+  font-size: min(1.5rem, 2vw);
+}
+
+/* third banner */
+.main3-background {
+  background-color: #6f279044;
+}
+.main3-slogan1 {
+  top: 20%;
+  font-size: min(6rem, 7vw);
+}
+.main3-slogan2 {
+  top: 43%;
+  font-style: italic;
+  font-size: min(1.8rem, 3vw);
+}
+.main3-slogan3 {
+  top: 52%;
+  font-size: min(1.8rem, 3vw);
+}
+.main3-button1 {
+  top: 65%;
   left: 40%;
   width: 20%;
   height: 10%;
 
-  font-size: min(1.5rem,2vw);
+  font-size: min(1.5rem, 2vw);
 }
 
-@media (max-width: 767px) {
+/* forth banner */
+.main4-background {
+  background-color: #09c5c544;
+}
+.main4-slogan1 {
+  top: 25%;
+  font-size: min(5rem, 6vw);
+}
+.main4-slogan2 {
+  top: 45%;
+  font-style: italic;
+  font-size: min(3rem, 4vw);
+}
+.main4-slogan3 {
+  top: 59%;
+  font-size: min(1.2rem, 2.5vw);
+}
+.main4-button1 {
+  top: 67%;
+  right: 40%;
+  width: 20%;
+  height: 10%;
+
+  font-size: min(1.5rem, 2vw);
+}
+
+
+@media (max-width: 850px) {
   .banner-container {
     height: 260px;
   }
@@ -120,31 +203,5 @@
     width: 8%;
     top: 10%;
     right: 0%;
-  }
-
-  /* first banner */
-  .main1-slogan1 {
-    font-size: 2rem;
-  }
-  .main1-slogan2 {
-    font-size: 1.5rem;
-  }
-
-  /* second banner */
-  .main2-slogan1 {
-    font-size: 1.9rem;
-  }
-  .main2-slogan2 {
-    font-size: 0.9rem;
-  }
-  .main2-emoji1 {
-    top: -30%;
-    font-size: 15rem;
-  }
-  .main2-button1 {
-    left: 30%;
-    width: 40%;
-    height: 15%;
-    font-size: 0.8rem;
   }
 }

@@ -50,6 +50,10 @@ function App() {
   }
 
   useConstructor(async () => {
+    if (window.navigator.userAgent.indexOf("MSIE")>=0) {
+      alert("지원하지 않는 브라우저입니다. 크롬 브라우저 사용을 권장합니다.")
+      return null
+    }
     dispatch(auth()).then(() => {
       setloaded(true);
     })
