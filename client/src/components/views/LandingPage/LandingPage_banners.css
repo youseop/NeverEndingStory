@@ -67,7 +67,7 @@
 
 .banner-positionBar {
   position: absolute;
-  top: 90%;
+  /* top: 90%; */
   left: 50%;
   transform: translate(-50%, -50%);
 
@@ -109,7 +109,7 @@
   width: 20%;
   height: 10%;
 
-  font-size: min(1.5rem, 1vw);
+  font-size: min(1.5rem, 2vw);
 }
 
 /* second banner */
@@ -134,7 +134,7 @@
   left: 40%;
   width: 20%;
   height: 10%;
-  font-size: min(1.5rem, 1vw);
+  font-size: min(1.5rem, 2vw);
 }
 
 /* third banner */
@@ -160,7 +160,7 @@
   width: 20%;
   height: 10%;
 
-  font-size: min(1.5rem, 1vw);
+  font-size: min(1.5rem, 2vw);
 }
 
 /* forth banner */
@@ -186,7 +186,7 @@
   width: 20%;
   height: 10%;
 
-  font-size: min(1.5rem, 1vw);
+  font-size: min(1.5rem, 2vw);
 }
 
 @media (max-width: 767px) {

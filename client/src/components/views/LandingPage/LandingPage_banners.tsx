@@ -14,14 +14,15 @@ export function Banner_main({ replace }: Props_type) {
   const [CurrentSlide, setCurrentSlide] = useState(1);
   const [IsModalVisible, setIsModalVisible] = useState(false);
   const [IsLoaded, setIsLoaded] = useState(false);
+  const [width, setWidth] = useState(Math.min(window.innerWidth, 1440));
 
   const slideRef = React.createRef<HTMLDivElement>();
   const arrowRef = React.createRef<HTMLDivElement>();
 
-  let width = Math.min(window.innerWidth, 1440)
   const isTouchScreen = window.matchMedia('(pointer: coarse)').matches;
   let bannerStyle = {}
   let arrowStyle = {}
+  let positionBarStyle = { top: "90%"  }
 
   const TimerID = useRef<any>([])
 
@@ -34,11 +35,15 @@ export function Banner_main({ replace }: Props_type) {
         bar.style.filter = "brightness(50%)";
       }
     }
-    setCurrentSlide(i)
+    if(i==0  && isTouchScreen){
+      setCurrentSlide(1)
+    }else{
+      setCurrentSlide(i)
+    }
   }
 
   const stopBanner = () => {
-    for (let i = 0 ; i <TimerID.current.length ; i ++) {
+    for (let i = 0; i < TimerID.current.length; i++) {
       clearTimeout(TimerID.current[i])
     }
     TimerID.current = []
@@ -58,6 +63,18 @@ export function Banner_main({ replace }: Props_type) {
       onClickHandler(CurrentSlide + 1)
     }
   }
+
+  function handleResize() {
+    setWidth(Math.min(window.innerWidth, 1440))
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   useEffect(() => {
     if (!isTouchScreen) {
@@ -97,6 +114,7 @@ export function Banner_main({ replace }: Props_type) {
 
   if (width > 767) {
     bannerStyle = { height: width * 3 / 7 }
+    positionBarStyle = { top: `${width * 3 / 7 * 0.9}px` }
   }
 
   //* bars
@@ -127,7 +145,7 @@ export function Banner_main({ replace }: Props_type) {
         style={arrowStyle}>
         <SVG src="arrow_1" width="100%" height="100%" color="#F5F5F5" />
       </div>
-      <div className="banner-positionBar">
+      <div className="banner-positionBar" style={positionBarStyle}>
         {bars}
       </div>
     </div>);
