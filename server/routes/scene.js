@@ -9,7 +9,8 @@ const { auth } = require("../middleware/auth");
 const { View } = require('../models/View');
 const { ThumbsUp } = require('../models/ThumbsUp');
 
-const {sanitize} = require("../lib/sanitize")
+const {sanitize} = require("../lib/sanitize");
+const { objCmp } = require('../lib/object');
 
 const MS_PER_HR = 3600000
 
@@ -114,6 +115,7 @@ router.post('/save', auth, async (req, res) => {
   const isEnding = req.body.isEnding;
   // isFirst가 아닐떄만 createdAt이랑 확인해서 저장해도 되는 친구인지 확인, 안되는 친구면 삭제하고, 게임플레잉 마지막 녀석 제거, 이전 씬 응답으로 보내줘서, props.history.replace
   const { isFirst, prevSceneId, createdAt } = scene;
+  
   if (!isFirst && (Date.now() - createdAt >= MS_PER_HR)) {
     const user = await User.findOne({ _id: userId });
     Scene.deleteOne({ _id: sceneId });
@@ -310,42 +312,63 @@ router.post("/scenedetail", (req, res) => {
 
 router.delete('/', async (req, res) => {
   //! 첫번째 씬이면, 게임도 지운다.
-  if (req.body.isFirst) {
-    Game.deleteOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
-      .then(() => "GAME DELETE SUCCESS")
-      .catch((err) => console.log("GAME DELETE ERR ", err))
-  }
-  //! 껍데기 씬 지우기
-  Scene.deleteOne({ _id: mongoose.Types.ObjectId(req.body.sceneId) })
-    .then(() => "SCENE DELETE SUCCESS")
-    .catch((err) => console.log("SCENE DELETE ERR ", err))
-  //! user의 makingGameList & gamePlaying - sceneList, isMaking update
-  const user = await User.findOne({ _id: req.body.userId });
-  const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === req.body.sceneId)
-  if (idx > -1) {
-    user.makingGameList.splice(idx, 1)
-  }
-  else {
-    console.log("THERE IS NO MAKING GAME")
-  }
-  user.gamePlaying.sceneIdList.pop();
-  user.gamePlaying.isMaking = false;
-  user.save((err) => {
-    if (err) {
-      console.log(err)
-      return res.status(400).json({ success: false, err })
+  try{
+
+    if (req.body.isFirst) {
+      Game.deleteOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
+        .then(() => "GAME DELETE SUCCESS")
+        .catch((err) => {throw "GAME DELETE ERR "})
     }
-    return res.status(200).json({
-      success: true,
-      //! 이전 씬은 플레잉 리스트의 마지막 녀석이겠구만!!
-      prevSceneId:
-        req.body.isFirst ?
-          null
-          :
-          user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1]
-    })
-  });
-  //! 이후, 작성중인 사람, 공헌자 목럭에서 삭제하는 로직도 필요하다.
+    //! 껍데기 씬 지우기
+    Scene.deleteOne({ _id: mongoose.Types.ObjectId(req.body.sceneId) })
+      .then(() => "SCENE DELETE SUCCESS")
+      .catch((err) => {throw "GAME SCENE ERR "})
+    //! user의 makingGameList & gamePlaying - sceneList, isMaking update
+    const user = await User.findOne({ _id: req.body.userId });
+    const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === req.body.sceneId)
+    if (idx > -1) {
+      user.makingGameList.splice(idx, 1)
+    }
+    else {
+      console.log("THERE IS NO MAKING GAME")
+    }
+    
+    
+    // 제작 취소 누르는 시점에서 이미 삭제 됐을 수도 있다. playing first scene`
+    
+  
+    const playingIdx = user.gamePlaying.sceneIdList.findIndex(item=>objCmp(item.sceneId, req.body.sceneId))
+    let prevSceneId
+    if(user.gamePlaying.isMaking && (playingIdx === user.gamePlaying.sceneIdList.length-1)){
+      user.gamePlaying.sceneIdList.splice(playingIdx,1)
+      //! 이미 삭제된 녀석의 emptyNum은 올리지 않는다.
+      //! + 제작기간 안지난 녀석만 emptyNum 올린다.
+      if(req.body.exp - Date.now() > 0){  
+        console.log("제작 기간 이내!", req.body.exp - Date.now())
+        prevSceneId = user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1]
+      }
+    }
+    user.gamePlaying.isMaking = false;
+    user.save((err) => {
+      if (err) {
+        console.log(err)
+        return res.status(400).json({ success: false, err })
+      }
+      return res.status(200).json({
+        success: true,
+        //! 이전 씬은 플레잉 리스트의 마지막 녀석이겠구만!!
+        prevSceneId:
+          req.body.isFirst ?
+            null
+            :
+            prevSceneId,
+      })
+    });
+    //! 이후, 작성중인 사람, 공헌자 목럭에서 삭제하는 로직도 필요하다.
+  } catch(err) {
+    console.log(err);
+    return res.status(400).json({ success: false, err })
+  }
 })
 
 router.get("/:sceneId", async (req, res) => {

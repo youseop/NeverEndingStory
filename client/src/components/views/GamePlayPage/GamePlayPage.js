@@ -2,7 +2,7 @@ import "./GamePlayPage.css";
 import "./GamePlaySlider.css";
 import GameCharacterBlock from "./GameCharacterBlock";
 import { TextBlock, TextBlockChoice } from "./TextBlock.js";
-import React, { useEffect, useMemo, useRef, useState, useLayoutEffect } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
 import HistoryMapPopup from "./HistoryMap";
@@ -15,22 +15,15 @@ import { gameLoadingPage } from "../../../_actions/gamePlay_actions";
 import { navbarControl, footerControl } from "../../../_actions/controlPage_actions";
 import useFullscreenStatus from "../../../utils/useFullscreenStatus";
 import { useLocation } from "react-router";
-import TreeMapPopup from "./TreeMap";
 import { gamePause } from "../../../_actions/gamePlay_actions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import VolumeUpIcon from '@material-ui/icons/VolumeUp';
-import VolumeOffIcon from '@material-ui/icons/VolumeOff';
-import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
 import Complaint from './Complaint.js';
-import { faCheckSquare, faCompress, faExpand, faEye, faHeart, faLink, } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import Comment from '../Comment/Comment.js';
 import LogPopup from "./LogPopup";
-import { Link } from "react-router-dom";
-import GameForkButton from "../GameDetailPage/GameForkButton";
-import { pasteLink } from "../../functions/pasteLink";
 import GamePlayButtons from './GamePlayButtons';
 import SceneInfo from "./SceneInfo";
+
 
 
 const bgm_audio = new Audio();
@@ -77,9 +70,12 @@ const ProductScreen = (props) => {
   const [view, setView] = useState(0);
   const [thumbsUp, setThumbsUp] = useState(0);
   const [thumbsUpClicked, setThumbsUpClicked] = useState(false);
+  const [writer, setWriter] = useState({
+    _id: "",
+    nickname: ""
+  });
 
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
-
   const maximizableElement = useRef(null);
 
   const handleExitFullscreen = () => document.exitFullscreen();
@@ -272,6 +268,7 @@ const ProductScreen = (props) => {
 
   const nextSceneFlag = useRef("");
   const gameFlag = useRef(true);
+
   useEffect(() => {
     const userId = user.userData._id;
     if (user && user.userData && sceneId != nextSceneFlag.current) {
@@ -289,6 +286,9 @@ const ProductScreen = (props) => {
       Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
         (response) => {
           if (response.data.success) {
+            setScene(response.data.scene);
+            setWriter(response.data.writer);
+
             const history = {
               gameId: gameId,
               sceneId: response.data.sceneIdList,
@@ -299,7 +299,6 @@ const ProductScreen = (props) => {
             bgm_audio.pause();
             sound_audio.pause();
             setIsFirstCut(true);
-            setScene(response.data.scene);
             dispatch(gamePause(false));
             dispatch(gameLoadingPage(0));
             // dispatch(gameLoadingPage(6));
@@ -431,6 +430,10 @@ const ProductScreen = (props) => {
               style={newScreenSize}
               onClick={(event) => handleEnter(event)}
             >
+              <div className="gamePlay__writer">
+                <FontAwesomeIcon icon={faPencilAlt} style={{ marginRight: "5px" }} />
+
+                <b>작가:&nbsp;{writer.nickname}</b></div>
               <LoadingPage />
               {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
                 <img
@@ -523,7 +526,7 @@ const ProductScreen = (props) => {
           isClickedGame={isClickedGame}
           thumbsupCntGame={thumbsupCntGame}
           history={props.history}
-          user={user}
+          writer={writer}
           gameId={gameId}
           sceneId={sceneId}
         />

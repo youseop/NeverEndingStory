@@ -203,6 +203,7 @@ const SceneMakePage = (props) => {
             const validation = await axios.post(`/api/game/scene/validate`, { sceneId, gameId, isMaking: true })
             if (res.data.success && validation.data.success) { scene = res.data.scene; creator.current = res.data.creator }
             else {
+                message.error("다른 스토리 감상 시도를 감지하였습니다. 다시 시도해주세요.")
                 props.history.replace("/");
                 return;
             }
@@ -631,13 +632,14 @@ const SceneMakePage = (props) => {
                     gameId: gameId,
                     sceneId: sceneId,
                     isFirst: isFirstScene.current,
-                    userId: user.userData._id
+                    userId: user.userData._id,
+                    exp :expTime
                 }
             })
                 .then(response => {
                     if (response.data.success) {
                         //! 다 삭제되면 emptyNum 올려주기
-                        if (isFirstScene.current == false) {
+                        if (response.data.prevSceneId) {
                             socket.emit("empty_num_increase",
                                 {
                                     scene_id: response.data.prevSceneId,

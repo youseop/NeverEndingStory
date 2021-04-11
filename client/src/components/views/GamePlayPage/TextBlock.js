@@ -109,7 +109,7 @@ export const TextBlockChoice = (props) => {
             { isLastMotion &&
                 <div className={`choice_box ${isEnding} ${theme}`}>
                     {isEnding === true ?
-                        <SceneEndingPage gameId={game_id} setScene={setScene} /> :
+                    <SceneEndingPage gameId={game_id} setScene={setScene} sceneId={scene_id} /> :
                         <>
                             {choices}
                             {scene_next_list.length < CHOICE_NUM ?
@@ -119,6 +119,7 @@ export const TextBlockChoice = (props) => {
                                     game_id={game_id}
                                     scene_next_list={scene_next_list}
                                     theme={theme}
+                                    
                                 />
                                 :
                                 (<div > </div>)

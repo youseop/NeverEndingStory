@@ -40,11 +40,20 @@ export default function GameDetailPage(props) {
     const playFirstScene = async (isFirst, isInvitation) => {
         try {
             let response;
+            let nowIsMaking;
             if (isFirst) {
-                response = await Axios.post("/api/users/playing-list/clear", { gameId });
+                response = await Axios.post("/api/users/playing-list/clear", { gameId, sceneId });
                 // Not Yet Tested
-                if (user.userData.isAuth && isMaking) {
-                    socket.emit("empty_num_increase", { user_id: user.userData._id.toString(), scene_id: response.data.prevOfLastScene.toString() });
+                if (response.data.success) {
+                    nowIsMaking = response.data.nowIsMaking
+                    if (user.userData.isAuth && nowIsMaking) {
+                        socket.emit("empty_num_increase", { user_id: user.userData._id.toString(), scene_id: response.data.prevOfLastScene.toString() });
+                    }
+                    else if (response.data.refresh) {
+                        message.error("다른 스토리 감상 시도를 감지하였습니다. 다시 시도해주세요.")
+                        window.location.reload();
+                        return;
+                    }
                 }
             }
             props.history.replace({
@@ -74,14 +83,6 @@ export default function GameDetailPage(props) {
                     message.error("로그인 해주세요.");
                 }
             });
-
-            // Axios.get("/api/users/visit").then((response) => {
-            //     if (response.data.success) {
-            //         const sceneIdLength = response.data?.gamePlaying?.sceneIdList?.length;
-            //         if (sceneIdLength > 1)
-            //             setIsPlayed(true);
-            //     }
-            // })
 
             const userId = user.userData._id;
             Axios.get(`/api/detailpage/${gameId}/${userId}`).then((response) => {

@@ -120,6 +120,15 @@
   height:95vh;
 }
 
+.gamePlay__writer{
+  
+  position: absolute;
+  top:3%;
+  right:3%;
+  /* background-color: antiquewhite !important; */
+  z-index:100;
+  font-size:1.5vh;
+}
 
 @media (max-width:1000px) and (pointer: fine){
   .detail_relative_container{

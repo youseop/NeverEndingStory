@@ -207,7 +207,7 @@ router.post("/putCharDB", (req, res) => {
 
 const updateHistoryFromPlaying = (user) => {
     const {
-        gamePlaying: { gameId, sceneIdList },
+        gamePlaying: { gameId, sceneIdList,isMaking },
         gameHistory,
     } = user;
 
@@ -225,7 +225,7 @@ const updateHistoryFromPlaying = (user) => {
     //     }
     // }
 
-    user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList] });
+    user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList], isMaking});
     user.gamePlaying.sceneIdList = [];
     user.gamePlaying.gameId = null;
     return;
@@ -311,6 +311,7 @@ router.get("/start/:gameId", check, async (req, res) => {
                     sceneIdList: user.gameHistory[i].sceneIdList.slice(0, user.gameHistory[i].sceneIdList.length),
                     isMaking: user.gameHistory[i].isMaking
                 };
+
                 await user.save();
                 
                 if (user.gamePlaying?.sceneIdList?.length > 1){
@@ -392,10 +393,13 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
             user = req.session
         }
 
-        const scene = await Scene.findOne({ _id: sceneId });
+        const scene = await Scene.findOne({ _id: sceneId }).populate("writer","nickname")
+        const writer = scene.writer;
+        // scene.writer = scene.writer._id;    // 안하면 react ERR
+
         if (!scene) {
             throw "noScene"
-        }
+        } 
         const val = await validateScene(user.gamePlaying, sceneId, gameId, false);
         if (!val) {
             throw "invalid"
@@ -414,6 +418,7 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
             .json({
                 success: true,
                 scene,
+                writer,
                 sceneIdList: user.gamePlaying.sceneIdList,
             });
     } catch (err) {
