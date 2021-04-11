@@ -475,6 +475,7 @@
   font-weight: bold;
   max-width: 40%;
   word-break: break-all;
+  text-decoration: underline !important;
 }
 
 .detailPage__description{

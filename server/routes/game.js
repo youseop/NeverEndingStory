@@ -393,6 +393,11 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
         }
 
         const scene = await Scene.findOne({ _id: sceneId });
+        const writerId = scene.writer;
+        const writer = await User.findOne(
+            { _id: writerId },
+            { nickname: 1}
+        );
         if (!scene) {
             throw "noScene"
         }
@@ -414,6 +419,7 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
             .json({
                 success: true,
                 scene,
+                writer,
                 sceneIdList: user.gamePlaying.sceneIdList,
             });
     } catch (err) {
