@@ -114,6 +114,7 @@ router.post('/save', auth, async (req, res) => {
   const isEnding = req.body.isEnding;
   // isFirst가 아닐떄만 createdAt이랑 확인해서 저장해도 되는 친구인지 확인, 안되는 친구면 삭제하고, 게임플레잉 마지막 녀석 제거, 이전 씬 응답으로 보내줘서, props.history.replace
   const { isFirst, prevSceneId, createdAt } = scene;
+  
   if (!isFirst && (Date.now() - createdAt >= MS_PER_HR)) {
     const user = await User.findOne({ _id: userId });
     Scene.deleteOne({ _id: sceneId });
