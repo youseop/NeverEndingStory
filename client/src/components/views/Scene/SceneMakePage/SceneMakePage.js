@@ -129,6 +129,7 @@ const SceneMakePage = (props) => {
     const [essetModalState, setEssetModalState] = useState(0);
     const [uploadModalState, setUploadModalState] = useState(false);
     const [endingModalState, setEndingModalState] = useState(false);
+    const [infoModalState, setInfoModalState] = useState(false);
     const [reload, setReload] = useState(0);
 
     const [SidBar_script, setSidBar_script] = useState(true);
@@ -786,10 +787,10 @@ const SceneMakePage = (props) => {
                 <div className="wrapper">
                     <div className="title">
                         {/* <div
-                        className="title-btn"
-                        onClick={() => setEssetModalState(5)}>
-                        게임정보
-                    </div> */}
+                            className="title-btn"
+                            onClick={() => infoModalState(true)}>
+                            게임정보
+                        </div> */}
                         <div>
                             <span>[{gameDetail?.title}]</span>
                             {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
