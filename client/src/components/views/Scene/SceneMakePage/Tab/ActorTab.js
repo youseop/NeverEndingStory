@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 
 function ActorTab({ gameDetail }) {
     const characterCards = gameDetail.character.map((character, index) => {
-        console.log(character, index)
         return (
-            <div className="actorTab_character_card">
+            <div className="actorTab_character_card" key={index}>
                 <div className="actorTab_profile_image">
                     <img
                         src={character.image_array[0]}
@@ -14,11 +13,15 @@ function ActorTab({ gameDetail }) {
                 </div>
                 <div className="actorTab_textarea" >
                     <textarea
-                        value={character.name}
-                        className="actorTab_profile_text name" />
+                        className="actorTab_profile_text name"
+                        defaultValue={character.name}
+                        placeholder="???"
+                        readOnly />
                     <textarea
-                        value={character.description}
-                        className="actorTab_profile_text description" />
+                        className="actorTab_profile_text description"
+                        defaultValue={character.description}
+                        placeholder="???"
+                        readOnly />
                 </div>
             </div>
 
@@ -27,7 +30,10 @@ function ActorTab({ gameDetail }) {
 
     return (
         <div className="gameInfoTab__padding">
-            <div className="actorTab__container">{characterCards}</div>
+            {gameDetail?.character?.length > 0 ?
+                <div className="actorTab__container">{characterCards}</div>
+                : <div className="actorTab__warning">{"업로드 된 캐릭터가 없습니다 :<"}</div>
+            }
         </div>
     );
 }

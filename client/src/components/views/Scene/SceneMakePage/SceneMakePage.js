@@ -86,6 +86,8 @@ const SceneMakePage = (props) => {
         if (isMobile.current) {
             const focusMobileText = (event) => {
                 if (event.target.tagName === "TEXTAREA" || event.target.tagName === "INPUT") {
+                    if (event.target.className.split(' ')[0] === "actorTab_profile_text")
+                        return;
                     if (document.body.style.zoom !== "180%")
                         document.body.style.zoom = "180%"
                 } else {
@@ -795,14 +797,14 @@ const SceneMakePage = (props) => {
         if ((isFirstScene.current && gameDetail?._id) || (!isFirstScene.current && sceneTitle)) {
             return (
                 <div className="wrapper">
-                    <div className="title">
-                        {/* {!isFirstScene.current && */}
+                    {!isFirstScene.current &&
                         <div
-                            className="title-btn"
+                            className="info_btn"
                             onClick={() => setGameInfoModalState(true)}>
                             게임정보
                             </div>
-                        {/* } */}
+                    }
+                    <div className="title">
                         <div className="scenemake_title_container">
                             {isFirstScene.current ?
                                 <span>[{gameDetail?.title}]</span>

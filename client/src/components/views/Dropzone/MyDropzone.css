@@ -24,9 +24,6 @@
 }
 
 .thumbnail__container{
-    display: flex;
-    align-items: center;
-    justify-Content: center;
     width : 100%;
     height : 100%;
     overflow: hidden;
@@ -34,8 +31,9 @@
 }
 .thumbnail__img{
     /* min-height: 100%;  */
-    object-fit : cover;
-    width : 100% !important;
+    position: relative;
+    width : 100%;
+    object-fit: cover;    
     /* height : inherit; */    
 }
 .thumbnail__msg{

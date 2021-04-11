@@ -325,7 +325,14 @@
     margin: auto;
     height:560px;
   }
-
+  .actorTab__warning{
+      position: absolute;
+    font-family: Noto Sans KR;
+    top:300px;
+    right:200px;
+    text-align: center;
+    font-size: 45px;
+    }
 .actorTab_character_card{
     flex-flow: row;
     height: 300px;
@@ -382,7 +389,6 @@
     color:black;
     font-size: 18px;    
     background-color: #ffffff;
-    cursor:default;
 }
 .actorTab_profile_text::-webkit-scrollbar {
     width: 10px;
@@ -592,6 +598,13 @@
     margin: auto;
     height:calc(560vh/9);
   }
+  .actorTab__warning{
+        position: absolute;
+      top:calc(300vh/9);
+      right:calc(200vh/9);
+      text-align: center;
+      font-size: calc(45vh/9);
+  }
 
 .actorTab_character_card{
     flex-flow: row;
@@ -649,7 +662,6 @@
     color:black;
     font-size: calc(18vh/9);    
     background-color: #ffffff;
-    cursor:default;
 }
 .actorTab_profile_text::-webkit-scrollbar {
     width: calc(10vh/9);
