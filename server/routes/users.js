@@ -110,7 +110,6 @@ router.post("/playing-list/clear", check, async (req, res) => {
             // }
             //! 당분간 while문으로 갈겨놔야할 듯?
             let idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
-            console.log(idx)
             while (idx > - 1) {
                 user.makingGameList.splice(idx, 1)
                 idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
@@ -253,7 +252,6 @@ router.post("/send-feedback", async (req, res) => {
 router.delete('/contribute-game/:gameId/:userId', async (req,res) => {
     try{
         const {gameId, userId} = req.params;
-        console.log(gameId,'aewfa')
         User.updateOne(
             {_id: userId},
             {$pull: { contributedGameList: {gameId: gameId} }}
@@ -267,7 +265,6 @@ router.delete('/contribute-game/:gameId/:userId', async (req,res) => {
 router.delete('/contribute-scene/:gameId/:userId', async (req,res) => {
     try{
         const {gameId, userId} = req.params;
-        console.log(gameId,'aewafwfeawefwfa')
         User.updateOne(
             {_id: userId},
             {$pull: { contributedSceneList: {gameId: gameId} }}

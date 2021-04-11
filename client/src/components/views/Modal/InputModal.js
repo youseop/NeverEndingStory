@@ -144,10 +144,10 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
         (scene_next_list?.length < 4) &&
         <>
           <div
-            className={`text_line_choice ${theme}`}
+            className={`text_line_choice text_line_empty ${theme}`}
             onClick={emptyNum > 0 ? onClickHandler : null}
           >
-            이야기를 이어봐! (남은 빈 선택지 {emptyNum}개)
+            이야기를 이어봐!&nbsp;&nbsp;<p>(남은 빈 선택지 {emptyNum}개)</p>
             </div>
         </>
       }

@@ -29,7 +29,7 @@ a:visited:hover {
     z-index: 99;
     background-color: rgba(0, 0, 0, 0.815);
     color: rgb(255, 255, 255);
-    padding: 5%;
+    padding: 8%;
     border-radius: 0.3vmin;
     bottom: 8%;
     height: 24%;
@@ -85,15 +85,33 @@ a:visited:hover {
 }
 
 .text_line_choice {
+
     background-color: rgba(0, 0, 0, 0.747);
-    border: rgba(255, 255, 0, 0) solid 0.2vmin;
+    border: rgba(209, 199, 179, 0.808) solid 0.4vmin;
     border-radius: 0.4vmin;
     margin-top: 3%;
+    color: rgb(224, 223, 223) !important;
     width: 45%;
     height: 7%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.text_line_empty{
+    border: none;
+    display:flex;    
+    align-content:center;
+    justify-content: center;
+}
+.text_line_empty:hover{
+    /* border: dashed; */
+    cursor: pointer;
+    border: rgb(0, 187, 16) solid 0.4vmin !important;
+}
+
+.text_line_empty>p{
+    font-size : 1.5vmin;
+    margin-bottom: 0;
 }
 
 @media(max-width:800px){
@@ -108,7 +126,7 @@ a:visited:hover {
 
 .text_line_choice:hover {
     cursor: pointer;
-    border: yellow solid 0.2vmin;
+    border: yellow solid 0.4vmin;
 }
 
 .choice_box {
@@ -116,7 +134,7 @@ a:visited:hover {
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.363);
-    color: aliceblue;
+    color: rgb(224, 223, 223);
     font-size: 2vmin;
     font-weight: 600;
     display: flex;

@@ -120,6 +120,18 @@
   height:95vh;
 }
 
+.gamePlay__writer{
+  
+  position: absolute;
+  top:3%;
+  right:3%;
+  /* background-color: antiquewhite !important; */
+  z-index:100;
+              /* style={{"position":"absolute", 
+            "top":"2%",
+            "right":"3%",
+          "z-index" : "96"}} */
+}
 
 @media (max-width:1000px) and (pointer: fine){
   .detail_relative_container{

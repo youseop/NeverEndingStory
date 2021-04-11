@@ -9,7 +9,7 @@ function BackgroundImg({ imgUrl, setBackgroundImg, curImg, setReload }) {
     if (curImg !== imgUrl) {
       setBackgroundImg(imgUrl);
     } else {
-      setBackgroundImg(`${config.STORAGE}/defaultBackground.png`);
+      setBackgroundImg(`${config.STORAGE}/uploads/defaultBackground.png`);
     }
     setReload(reload => reload + 1);
   }

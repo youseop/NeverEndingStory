@@ -23,7 +23,7 @@ import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import Complaint from './Complaint.js';
-import { faCheckSquare, faCompress, faExpand, faEye, faHeart, faLink, } from "@fortawesome/free-solid-svg-icons";
+import { faCheckSquare, faCompress, faExpand, faEye, faHeart, faLink, faPencilAlt, } from "@fortawesome/free-solid-svg-icons";
 import Comment from '../Comment/Comment.js';
 import LogPopup from "./LogPopup";
 import { Link } from "react-router-dom";
@@ -31,6 +31,7 @@ import GameForkButton from "../GameDetailPage/GameForkButton";
 import { pasteLink } from "../../functions/pasteLink";
 import GamePlayButtons from './GamePlayButtons';
 import SceneInfo from "./SceneInfo";
+
 
 
 const bgm_audio = new Audio();
@@ -79,7 +80,7 @@ const ProductScreen = (props) => {
   const [thumbsUpClicked, setThumbsUpClicked] = useState(false);
 
   const prevSceneId = useSelector(state => state.sync.prevSceneId);
-
+  const writer = useRef(null)
   const maximizableElement = useRef(null);
 
   const handleExitFullscreen = () => document.exitFullscreen();
@@ -300,6 +301,7 @@ const ProductScreen = (props) => {
             sound_audio.pause();
             setIsFirstCut(true);
             setScene(response.data.scene);
+            writer.current = response.data.writer;
             dispatch(gamePause(false));
             dispatch(gameLoadingPage(0));
             // dispatch(gameLoadingPage(6));
@@ -431,6 +433,10 @@ const ProductScreen = (props) => {
             style={newScreenSize}
             onClick={(event) => handleEnter(event)}
           >
+            <div className="gamePlay__writer">
+                <FontAwesomeIcon icon={faPencilAlt} style={{marginRight:"5px"}}/>
+
+                 <b>작가:&nbsp;{writer.current}</b></div>
             <LoadingPage />
             {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
               <img

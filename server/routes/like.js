@@ -18,7 +18,6 @@ router.post('/', async(req,res) => {
         {_id : commentId},
         {$inc : {like : -1}}
       ).exec();
-      console.log(like._id)
       Like.deleteOne({_id: like._id}).exec();
     } else {
       Comment.updateOne(

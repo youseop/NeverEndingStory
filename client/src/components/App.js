@@ -50,7 +50,7 @@ function App() {
 
   if (loaded) {
     return (
-      <Suspense fallback={(<div>Loading...</div>)}>
+      <Suspense fallback={(<div></div>)}>
         <NavBar />
         <div className="app">
           <Switch>
