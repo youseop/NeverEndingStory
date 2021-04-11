@@ -77,11 +77,6 @@ function SceneInfo(props) {
                     />
                 초대링크복사&nbsp;
                 </div> 
-                <GameForkButton
-                    history={history}
-                    user={user}
-                    gameId={gameId}
-                />
             </div>
 
         </div>

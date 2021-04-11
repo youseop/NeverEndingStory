@@ -56,7 +56,7 @@ router.get('/:gameId', async (req, res) => {
 router.get('/scene/:gameId/:sceneId', async (req, res) => {
   const {gameId, sceneId} = req.params;
   Comment.find({
-    'gameId': mongoose.Types.ObjectId(gameId), 
+    'gameId': mongoose.Types.ObjectId(gameId),  
     'responseTo': "",
     'sceneId': mongoose.Types.ObjectId(sceneId)
   })

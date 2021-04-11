@@ -4,7 +4,6 @@ const router = express.Router();
 
 const { getThumbsUp } = require('./functions/thumbsup');
 const { getView } = require('./functions/view');
-const { getSpecificDetail } = require('./functions/game');
 
 
 router.get('/sceneinfo/:sceneId/:userId', async (req, res) => {
