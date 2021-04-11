@@ -89,10 +89,12 @@ function SoundTab({ gameDetail, setFileQueue, setTypeQueue, setSoundBlobList, so
                 >
                 </MyDropzone>
             </div>
-            <div className="bgmTab_Box">
-                {soundCards !== 0 && <div>{soundCards}</div>}
-                {blobCards !== 0 && <div>{blobCards}</div>}
-            </div>
+            {(gameDetail?.sound.length > 0 || soundBlobList?.length > 0) &&
+                <div className="bgmTab_Box">
+                    {soundCards !== 0 && <div>{soundCards}</div>}
+                    {blobCards !== 0 && <div>{blobCards}</div>}
+                </div>
+            }
         </div>
     );
 }

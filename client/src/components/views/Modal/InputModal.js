@@ -66,7 +66,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
     if (user.userData.isAuth) {
       dispatch(gamePause(true));
       clearTimeout(decreaseTimer.current);
-      let tick = 30;
+      let tick = 300;
 
       setRemainTime(tick);
       decTimer = setInterval(() => {
@@ -100,9 +100,9 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   }
 
   const createHandler = () => {
-    if (!sceneTitle.length){
-      message.error("선택지 제목을 입력해주세요")
-      return
+    if (!sceneTitle.length && visible){
+      message.error("내용을 입력해주세요");
+      return;
     }
 
     return handleCreate();
@@ -124,12 +124,12 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
       setDino(1);
     })
 
+    socket.emit("validate_empty_num", { scene_id })
+
     return () => {
       socket.off("decrease_failed");
-
     }
 
-    socket.emit("validate_empty_num", { scene_id })
   }, [scene_id])
 
   useEffect(() => {
@@ -147,7 +147,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
             className={`text_line_choice ${theme}`}
             onClick={emptyNum > 0 ? onClickHandler : null}
           >
-            선택지 추가 (+{emptyNum})
+            이야기를 이어봐! (남은 빈 선택지 {emptyNum}개)
             </div>
         </>
       }

@@ -16,7 +16,7 @@
   width: 100%;
   height: 200px;
   position: absolute;
-  bottom: 0;
+  bottom: -2px;
   background: linear-gradient( to top, #222831 , #22283100);
   z-index: 1;
 }
@@ -30,7 +30,7 @@
   line-height: 36px;
   width: 50%;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
   text-align: left;
@@ -50,7 +50,7 @@
   object-fit : contain;
   position: absolute;
   top:0;
-  left: 0;;
+  left: 0;
   margin-bottom: 6vmin;
   overflow: hidden;
 }

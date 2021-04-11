@@ -1,14 +1,668 @@
-.gameInfoTab_container{
-
-    background-color: aqua;
+.gameInfoTab__padding{
+    padding-top: 100px;
+    width:100%;
+    overflow-y: scroll;
+    overflow-x:hidden;
 }
-.gameInfoTab_image_box{    
-    width:100px;
-    height:100px;
+.gameInfoTab__container {
+    position:relative;
+    width: 80% ;    
+    color: #FFFFFF;
+    margin: auto;
+    height:560px;
+  }
+  .gameInfoTab__padding::-webkit-scrollbar {
+    width: 10px;
+  }
+  .gameInfoTab__padding::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  .gameInfoTab__padding::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
+  
+  .gameInfoTab__container:before{
+    content: "";
+    display:block;
+    padding-top: 56%;
+  }
+  
+  .gameInfoTab__gradation {
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    bottom: -2px;
+    background: linear-gradient( to top, #222831 , #22283100);
+    z-index: 1;
+  }
+  
+  .gameInfoTab__UPTitle {
+    z-index: 2;
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 36px;
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    text-align: left;
+  }
+  
+  .gameInfoTab__thumbnail_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 38px;
+    line-height: 36px;
+    color: #E5E5E5;
+    object-fit : contain;
+    position: absolute;
+    top:0;
+    left: 0;
+    margin-bottom: 6vmin;
+    overflow: hidden;
+  }
+  .gameInfoTab__thumbnail_container::before{
+    content: "";
+    display:block;
+    padding-top: 56%;
+  }
+  
+  .gameInfoTab__thumbnail {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    overflow: hidden;
+    object-fit: cover;
+  }
+  
+  .gameInfoTab__contributer_title {
+    color: white;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 100%;
+    text-align: center;
+    padding-top: 10px;
+  }
+  
+  .gameInfoTab__contributer_container_box{
+    width: 400px;
+    height:350px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-direction: column;
+  }
+  .gameInfoTab__contributer_container_box.fit{
+    width: auto;
+    background-color: rgba(8, 8, 8, 0.507);
+    border-radius: 8px;
+  }
+  
+  .gameInfoTab__contributer_container {
+    width: 290px;
+    height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  .gameInfoTab__contributer_container::-webkit-scrollbar {
+    width: 10px;
+  }
+  .gameInfoTab__contributer_container::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  .gameInfoTab__contributer_container::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
+  
+  .gameInfoTab__contributer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition-duration: 0.5s;
+  }
+  
+  .gameInfoTab__contributer_rankNum {
+    color:white;
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: bold;
+    margin-left: 20px;
+    font-size: 20px;
+  }
+  
+  .gameInfoTab__contributer_img {
+    width: 60px;
+    border-radius: 50%;
+  }
+  
+  .gameInfoTab__creater_nickname {
+    cursor: pointer;
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 22px;
+    border-radius: 5px;
+    padding: 2px;
+    color: rgb(230, 5, 5) !important;
+  }
+  
+  .gameInfoTab__creater_nickname:hover {
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 22px;
+    border-radius: 5px;
+    padding: 2px;
+    color: rgb(230, 5, 5) !important;
+  }
+  
+  .gameInfoTab__contributer_nickname {
+    cursor: pointer;
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 22px;
+    color: white;
+  }
+  
+  .gameInfoTab__contributer_nickname:hover {
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 22px;
+    color: white;
+  }
+  
+  .gameInfoTab__contributer_graph{
+    width: 150px;
+    height: 20px;
+    margin: 5px 0 5px;
+    /* background: rgb(255, 255, 255); */
+    border-radius: 20px;
+    line-height: 20px;
+    text-align: right;
+    box-sizing: border-box;
+  }
+  
+  .gameInfoTab__graph{
+    padding-right: 4px;
+    width: 100%;
+    color: white;
+    background-color: #6e6e6e;
+    animation: stack 2s 1;
+    border-radius: 9px;
+    font-size: 8px;
+    height: 20px;
+  }
+  
+  .gameInfoTab__gamePlay {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-left: 3%;
+    padding-right: 1%;
+  
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-size: 15px;
+    line-height: 22px;
+    text-align: center;
+    z-index: 2;
+  }
+  .gameInfoTab__gamePlay::before {
+    content: "";
+    display:block;
+    padding-top: 56%;
+  }
+  .gameInfoTab__gamePlay_container_box{
+    margin-top: 20px;
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-bottom: 10px;
+  }
+  .gameInfoTab__gamePlay_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .gameInfoTab__gamePlay_text {
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+  }
+  
+  .gameInfoTab__gamePlay_sceneCntContainer {
+  
+    width: 100px;
+    height: 50px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  
+  .gameInfoTab__gamePlay_sceneCnt {
+    font-size: 50px;
+    margin-bottom: 13px;
+    padding-right: 5px;
+  }
+  .gameInfoTab__gamePlay_bar{
+    color:white;
+    font-size: 50px;
+}
+  .gameInfoTab__genre {
+    width: 100%;
+    margin-top: 20px;
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-size: 20px;
+    font-weight: 100;
+    color: #E5E5E5;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    word-break:keep-all;
+  } 
+
+.gameInfoTab__description_title{
+    font-size: 30px;
+    font-family: Noto Sans KR;
+    font-weight: bold;
+    color:black;
+    padding-top: 15px;
+    padding-bottom: 10px;
 }
 
-.gameInfoTab_image{
+.gameInfoTab__description{
+    all: unset;
+    white-space: pre-line;
+    width: 100%;
+    height: auto;
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-size: 25px;
+    font-weight: 500;
+    color: black;
+}
+
+.actorTab__container {
+    position:relative;
+    width: 80% ;
+    max-width: 1180px;
+    color: #FFFFFF;
+    margin: auto;
+    height:560px;
+  }
+
+.actorTab_character_card{
+    flex-flow: row;
+    height: 300px;
+}
+
+.actorTab_profile_image{
+    display: inline-block;
+    width:250px;
+    height:250px;    
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 30px;
+    /* margin: 10px 16px 10px 50px; */
+    background-color: #ffffff;
+    border: 5px solid #AAAAAA;
+    border-radius: 8px;
+}
+
+.actorTab_image{
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover;    
+}
+.actorTab_textarea{
+    display: inline-block;
+    position: relative;
+    left: 30px;
+    bottom:50px;
+    height: 300px;
+    width:100px;
+}
+.actorTab_profile_text.name{
+    all:unset;    
+    display: inline-block;
+    position: relative;
+    font-family: Noto Sans KR;
+    font-size: 18px;
+    width:260px;
+    height: 30px;
+    color:black;
+    padding-left:15px;
+    font-weight: bold;
+    background-color: #ffffff;
+}
+.actorTab_profile_text.description{
+    all:unset;
+    display: inline-block;
+    position: relative;
+    font-family: Noto Sans KR;
+    width:450px;
+    height:135px;
+    margin: 10px 50px 10px 0px;
+    padding: 15px 15px 0px 15px;
+    color:black;
+    font-size: 18px;    
+    background-color: #ffffff;
+    cursor:default;
+}
+.actorTab_profile_text::-webkit-scrollbar {
+    width: 10px;
+  }
+.actorTab_profile_text::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.actorTab_profile_text::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+}
+
+@media (max-width:850px) and (orientation:landscape){    
+    .gameInfoTab__padding{
+        padding-top: calc(100vh/9);
+    }
+    .gameInfoTab__container {
+        max-width: calc(1180vh/9);
+        height:calc(560vh/9);
+      }
+      .gameInfoTab__padding::-webkit-scrollbar {
+        width: calc(10vh/9);
+      }
+      .gameInfoTab__padding::-webkit-scrollbar-thumb {
+        border-radius: calc(10vh/9);
+        border: calc(2vh/9) solid transparent;
+      }
+      .gameInfoTab__padding::-webkit-scrollbar-track {
+        border-radius: calc(10vh/9);
+        box-shadow: inset calc(0vh/9) calc(0vh/9) calc(5vh/9) white;
+      }
+      
+      .gameInfoTab__gradation {
+        height: calc(200vh/9);
+        bottom: calc(-2vh/9);
+      }
+      
+      .gameInfoTab__UPTitle {
+        font-size: calc(45vh/9);
+        line-height: calc(36vh/9);
+      }
+      
+      .gameInfoTab__thumbnail_container{
+        font-size: calc(38vh/9);
+        line-height: calc(36vh/9);
+      }
+      
+      .gameInfoTab__contributer_title {
+        font-size: calc(25vh/9);
+        padding-top: calc(10vh/9);
+        padding-bottom: calc(10vh/9);
+      }
+      
+      .gameInfoTab__contributer_container_box{
+        width: calc(400vh/9);
+        height:calc(350vh/9);
+      }
+      .gameInfoTab__contributer_container_box.fit{
+        border-radius: calc(8vh/9);
+      }
+      
+      .gameInfoTab__contributer_container {
+        width: calc(290vh/9);
+        height: calc(350vh/9);
+      }
+      
+      .gameInfoTab__contributer_container::-webkit-scrollbar {
+        width: calc(10vh/9);
+      }
+      .gameInfoTab__contributer_container::-webkit-scrollbar-thumb {
+        border-radius: calc(10vh/9);
+        border: calc(2vh/9) solid transparent;
+      }
+      .gameInfoTab__contributer_container::-webkit-scrollbar-track {
+        border-radius: calc(10vh/9);
+        box-shadow: inset calc(0vh/9) calc(0vh/9) calc(5vh/9) white;
+      }
+      
+      .gameInfoTab__contributer_rankNum {
+        margin-left: calc(20vh/9);
+        font-size: calc(20vh/9);
+      }
+      
+      .gameInfoTab__contributer_img {
+        width: calc(60vh/9);
+      }
+      
+      .gameInfoTab__creater_nickname {
+        font-size: calc(15vh/9);
+        line-height: calc(22vh/9);
+        border-radius: calc(5vh/9);
+        padding: calc(2vh/9);
+      }
+      
+      .gameInfoTab__creater_nickname:hover {
+        font-size: calc(15vh/9);
+        line-height: calc(22vh/9);
+        border-radius: calc(5vh/9);
+        padding: calc(2vh/9);
+      }
+      
+      .gameInfoTab__contributer_nickname {
+        font-size: calc(15vh/9);
+        line-height: calc(22vh/9);
+      }
+      
+      .gameInfoTab__contributer_nickname:hover {
+        font-size: calc(15vh/9);
+        line-height: calc(22vh/9);
+      }
+      
+      .gameInfoTab__contributer_graph{
+        width: calc(150vh/9);
+        height: calc(20vh/9);
+        margin: calc(5vh/9) 0 calc(5vh/9);
+        border-radius: calc(20vh/9);
+        line-height: calc(20vh/9);
+      }
+      
+      .gameInfoTab__graph{
+        padding-right: calc(4vh/9);
+        border-radius: calc(9vh/9);
+        font-size: calc(8vh/9);
+        height: calc(20vh/9);
+      }
+      
+      .gameInfoTab__gamePlay {
+        font-size: calc(15vh/9);
+        line-height: calc(22vh/9);
+      }
+      .gameInfoTab__gamePlay_container_box{
+        margin-top: calc(20vh/9);
+        padding-bottom: calc(10vh/9);
+      }
+      
+      .gameInfoTab__gamePlay_text {
+        font-size: calc(25vh/9);
+        line-height: calc(22vh/9);
+      }
+      
+      .gameInfoTab__gamePlay_sceneCntContainer {      
+        width: calc(100vh/9);
+        height: calc(50vh/9);
+      }
+      
+      .gameInfoTab__gamePlay_sceneCnt {
+        font-size: calc(50vh/9);
+        margin-bottom: calc(13vh/9);
+        padding-right: calc(5vh/9);
+      }
+      .gameInfoTab__gamePlay_bar{
+        font-size: calc(50vh/9);
+      }
+    
+      .gameInfoTab__genre {
+        margin-top: calc(20vh/9);
+        font-size: calc(30vh/9);
+      } 
+    
+    .gameInfoTab__description_title{
+        font-size: calc(30vh/9);
+        padding-top: calc(15vh/9);
+        padding-bottom: calc(10vh/9);
+    }
+    
+    .gameInfoTab__description{
+        font-size: calc(30vh/9);
+    }
+    .detailPage__contributer_rankNum.true {
+        margin-left: calc(20vh/9);
+        font-size: calc(20vh/9);
+    }
+    .detailPage__contributer_img.true {
+        width: calc(60vh/9);
+    }
+    .detailPage__contributer_graph.true{
+        width:90%;
+    }
+    .detailPage__graph.true{
+        width:100%;
+        padding-right: calc(4vh/9);
+        border-radius: calc(9vh/9);
+        font-size: calc(25vh/9);
+        height: calc(20vh/9);
+      }
+
+    .detailPage__contributer_info.true{
+        width:60%;
+    }
+    .detailPage__creater_nickname.true{
+        font-size: calc(25vh/9);
+        line-height: calc(22vh/9);
+        border-radius: calc(5vh/9);
+        padding: calc(2vh/9);
+    }
+
+    
+.actorTab__container {
+    position:relative;
+    width: 80% ;
+    max-width: calc(1180vh/9);
+    color: #FFFFFF;
+    margin: auto;
+    height:calc(560vh/9);
+  }
+
+.actorTab_character_card{
+    flex-flow: row;
+    height: calc(300vh/9);
+}
+
+.actorTab_profile_image{
+    display: inline-block;
+    width:calc(250vh/9);
+    height:calc(250vh/9);    
+    overflow: hidden;
+    position: relative;
+    margin-bottom: calc(30vh/9);
+    /* margin: 10vh/9) 16vh/9) 10vh/9) 50vh/9); */
+    background-color: #ffffff;
+    border: calc(5vh/9) solid #AAAAAA;
+    border-radius: calc(8vh/9);
+}
+
+.actorTab_image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    
+}
+.actorTab_textarea{
+    display: inline-block;
+    position: relative;
+    left: calc(30vh/9);
+    bottom:calc(50vh/9);
+    height: calc(300vh/9);
+    width:calc(100vh/9);
+}
+.actorTab_profile_text.name{
+    all:unset;    
+    display: inline-block;
+    position: relative;
+    font-family: Noto Sans KR;
+    font-size: calc(18vh/9);
+    width:calc(260vh/9);
+    height: calc(30vh/9);
+    color:black;
+    padding-left:calc(15vh/9);
+    font-weight: bold;
+    background-color: #ffffff;
+}
+.actorTab_profile_text.description{
+    all:unset;
+    display: inline-block;
+    position: relative;
+    font-family: Noto Sans KR;
+    width:calc(450vh/9);
+    height:calc(135vh/9);
+    margin: calc(10vh/9) calc(50vh/9) calc(10vh/9) calc(0vh/9);
+    padding: calc(15vh/9) calc(15vh/9) calc(0vh/9) calc(15vh/9);
+    color:black;
+    font-size: calc(18vh/9);    
+    background-color: #ffffff;
+    cursor:default;
+}
+.actorTab_profile_text::-webkit-scrollbar {
+    width: calc(10vh/9);
+  }
+.actorTab_profile_text::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: calc(10vh/9);
+    background-clip: padding-box;
+    border: calc(2vh/9) solid transparent;
+}
+.actorTab_profile_text::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: calc(10vh/9);
+    box-shadow: inset calc(0vh/9) calc(0vh/9) calc(5vh/9) white;
+}
 }

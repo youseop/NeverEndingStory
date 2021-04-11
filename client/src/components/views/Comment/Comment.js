@@ -102,6 +102,7 @@ function Comment({gameId, sceneId}) {
       };
     }
 
+    message.loading("댓글 저장 중..", 1)
     axios.post('/api/comment/', variables).then(response => {
       if(response.data.success) {
         message.success('댓글 감사합니다.');

@@ -39,12 +39,16 @@ router.get('/:gameId', async (req, res) => {
   const {gameId} = req.params;
   Comment.find({
     'gameId': mongoose.Types.ObjectId(gameId), 
-    'responseTo': ""
+    'responseTo': "",
+    'sceneId': { $exists: false }
   })
     .populate('writer')
     .sort({ createdAt: 'descending' })
     .exec((err, result) => {
-      if (err) return res.json({ success: false, err })
+      if (err) {
+        console.log(err);
+        return res.json({ success: false, err })
+      }
       return res.status(200).json({ success: true, result })
     })
 })
@@ -52,7 +56,7 @@ router.get('/:gameId', async (req, res) => {
 router.get('/scene/:gameId/:sceneId', async (req, res) => {
   const {gameId, sceneId} = req.params;
   Comment.find({
-    'gameId': mongoose.Types.ObjectId(gameId), 
+    'gameId': mongoose.Types.ObjectId(gameId),  
     'responseTo': "",
     'sceneId': mongoose.Types.ObjectId(sceneId)
   })
@@ -123,7 +127,7 @@ router.get('/:gameId/:commentId', async (req, res) => {
     'responseTo': commentId
   })
     .populate('writer')
-    .sort('createdAt')
+    .sort({ createdAt: 'descending' })
     .exec((err, result) => {
       if (err) return res.json({ success: false, err })
       return res.status(200).json({ success: true, result })

@@ -40,26 +40,37 @@
 .image_array__container{
     position: absolute;
     top:170px;
-    width:375px;
+    width:380px;
     height:370px;
     /* border: 1px solid rgb(0,0,0,0.4); */
     /* border-radius: 10px; */
-    margin: 15px 15px 15px 15px;
+    margin: 15px 15px 15px 10px;
     /* background-color: tomato; */
-    overflow: scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
 }
 
 .image_array__container::-webkit-scrollbar {
-    display: none;
+    width: 10px;
   }
-
+.image_array__container::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.image_array__container::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+}
 .image_array__box{
     display: inline-block;
     cursor: pointer;
     overflow: hidden;
     position: relative;
     width: 120px;
-    margin-right: 5px;
+    margin-right: 3px;
     height:100px;
     /* border-radius: 8px; */
     border:5px solid #DDDDDD;

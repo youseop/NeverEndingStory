@@ -31,7 +31,7 @@
 }
 
 .banner-main-button {
-  all: unset;
+  /* all: unset; */
   position: absolute;
 
   background: #e74a4a;

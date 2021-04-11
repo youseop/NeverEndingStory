@@ -81,7 +81,8 @@ router.post('/create', auth, async (req, res) => {
 
   // TODO : 추후 makingGameList 제한 필요
   const exp = Date.now() + MS_PER_HR
-  const newExp = new Date(exp)
+  // const newExp = new Date(exp)
+  // console.log("new Exp !!", newExp)
   user.makingGameList.push({ sceneId: scene._id, gameId: req.body.gameId, exp });
 
   if (req.body.isFirst) {
@@ -320,7 +321,7 @@ router.delete('/', async (req, res) => {
     .catch((err) => console.log("SCENE DELETE ERR ", err))
   //! user의 makingGameList & gamePlaying - sceneList, isMaking update
   const user = await User.findOne({ _id: req.body.userId });
-  const idx = user.makingGameList.findIndex(item => item.gameId.toString() === req.body.gameId)
+  const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === req.body.sceneId)
   if (idx > -1) {
     user.makingGameList.splice(idx, 1)
   }

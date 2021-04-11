@@ -16,9 +16,9 @@
   object-fit: cover;
   height:100%;
   width: auto;
-  cursor: pointer;
   transition: 0.1s;
   margin: 2px;
+  /* cursor: pointer; */
 }
 
 .characterImg.reverse {

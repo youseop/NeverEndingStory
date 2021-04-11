@@ -137,6 +137,7 @@ const SceneMakePage = (props) => {
 
     const [BackgroundImg, setBackgroundImg] = useState(`${config.STORAGE}/uploads/defaultBackground.png`);
     const [Script, setScript] = useState("");
+    const [sceneTitle, setSceneTitle] = useState("");
     const [Name, setName] = useState("");
     const [writer, setWriter] = useState(null);
     const [BgmFile, setBgmFile] = useState({
@@ -157,6 +158,7 @@ const SceneMakePage = (props) => {
     const [EmptyCutList, setEmptyCutList] = useState(
         Array.from({ length: 30 }, () => 0)
     );
+    const submitFlag = useRef(false)
 
     const useConstructor = (cb) => {
         const [isInited, setInit] = useState(false);
@@ -207,6 +209,7 @@ const SceneMakePage = (props) => {
             setWriter(scene.writer);
             const tmpExpTime = new Date(scene.createdAt).getTime() + LIMIT_TO_MS
             setExpTime(tmpExpTime)
+            setSceneTitle(scene.title)
             if (scene.cutList.length) {
 
                 if (scene.isFirst) {
@@ -524,6 +527,9 @@ const SceneMakePage = (props) => {
             return;
         }
 
+        if (submitFlag.current)
+            return;
+
         bgm_audio.pause();
         const submitCut = {
             characterList: CharacterList,
@@ -551,6 +557,9 @@ const SceneMakePage = (props) => {
                 sceneId,
                 isTmp,
             };
+
+            if (!isTmp)
+                submitFlag.current = true;
 
             const response = await Axios.post(`/api/scene/save`, variable)
 
@@ -783,21 +792,35 @@ const SceneMakePage = (props) => {
     const tempSoundVolume = useRef(0.5)
 
     if (!isPortrait) {
-        if (gameDetail?._id) {
+        if ((isFirstScene.current && gameDetail?._id) || (!isFirstScene.current && sceneTitle)) {
             return (
                 <div className="wrapper">
                     <div className="title">
+                        {/* {!isFirstScene.current && */}
                         <div
                             className="title-btn"
                             onClick={() => setGameInfoModalState(true)}>
                             게임정보
-                        </div>
-                        <div>
-                            <span>[{gameDetail?.title}]</span>
-                            {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
-                            {!isFirstScene &&
-                                <Clock format={`HH:mm:ss`} date={expTime} timezone={`Asia/Seoul`}></Clock>
+                            </div>
+                        {/* } */}
+                        <div className="scenemake_title_container">
+                            {isFirstScene.current ?
+                                <span>[{gameDetail?.title}]</span>
+                                :
+                                <>
+                                    <div className="scenemake_title_clock" >
+                                        <span>[{sceneTitle}]</span>
+
+                                    </div>
+                                    <div className="scenemake_tooltip_container">
+                                        <span>제작 마감시간 : </span>
+                                        <span className="scenemake_tooltip_text">{`한 이야기에는 4개의 선택지 제한이 있습니다.\n선택지 독점을 막기 위해\n시간 제한을 두었습니다.`}</span>
+                                        <Clock format={`HH:mm:ss`} date={expTime}></Clock>
+                                    </div>
+                                </>
+
                             }
+                            {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
                         </div>
                     </div>
                     <SceneBox
@@ -985,7 +1008,7 @@ const SceneMakePage = (props) => {
                     </div>
                     <div className="options">
                         <div className="scenemake_volume">
-                            <div className="scenemake_volume_text">BGM</div>
+                            <div className="scenemake_volume_text">배경음</div>
                             <VolumeController
                                 audio={bgm_audio}
                                 volume={bgmVolume}
@@ -996,7 +1019,7 @@ const SceneMakePage = (props) => {
                             />
                         </div>
                         <div className="scenemake_volume">
-                            <div className="scenemake_volume_text">SFX</div>
+                            <div className="scenemake_volume_text">효과음</div>
                             <VolumeController
                                 audio={sound_audio}
                                 volume={soundVolume}
@@ -1016,7 +1039,6 @@ const SceneMakePage = (props) => {
                         defaultTitle={gameDetail.title}
                         defaultDescription={gameDetail.description}
                         defaultCategory={gameDetail.category}
-                        uploadFlag={uploadFlag}
                     />
                     <EndingModal
                         isEnding={isEnding}

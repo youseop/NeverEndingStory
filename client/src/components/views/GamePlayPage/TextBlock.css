@@ -31,7 +31,7 @@ a:visited:hover {
     color: rgb(255, 255, 255);
     padding: 5%;
     border-radius: 0.3vmin;
-    bottom: 5%;
+    bottom: 8%;
     height: 24%;
     width: 100%;
     position: absolute;
@@ -80,7 +80,7 @@ a:visited:hover {
 
 .text_line {
     width: 80vmin;
-    word-wrap: break-word;
+    word-wrap: break-word impo !important;
 
 }
 
@@ -94,6 +94,12 @@ a:visited:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media(max-width:800px){
+    .text_line_choice {
+        width:65%;
+    }
 }
 
 .text_line_choice:first-child {
@@ -234,7 +240,7 @@ a:visited:hover {
     animation: SizeFlicker 0.7s ease-in-out alternate infinite;
     position: absolute;
     right: 3%;
-    bottom: 6%;
+    bottom: 10%;
     z-index: 99;
 }
 

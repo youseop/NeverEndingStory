@@ -17,15 +17,19 @@ const mongoose = require("mongoose");
 const { check } = require("../middleware/check");
 
 const multer = require("multer");
-const multerS3 = require("multer-s3");
+const multerS3 = require("multer-s3"); 
 const AWS = require("aws-sdk");
 const { objCmp } = require("../lib/object");
 const { sanitize } = require("../lib/sanitize")
 
 const { log } = require("winston");
 const { View } = require("../models/View");
-const { ThumbsUp } = require("../models/ThumbsUp");
+const { ThumbsUp, thumbsUpSchema } = require("../models/ThumbsUp");
 const { getRank, getDetail, getSpecificDetail } = require('./functions/game');
+const { Comment } = require('../models/Comment');
+const { Complaint } = require('../models/Complaint');
+const { Like } = require('../models/Like');
+const { TreeData } = require('../models/TreeData');
 
 AWS.config.update({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -256,20 +260,36 @@ router.get("/start/:gameId", check, async (req, res) => {
                 req.session.gameHistory = []
             }
             user = req.session
-        }
+        } 
         // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감.
         const {gamePlaying, gameHistory} = user;
+        let isPlayed = false;
+
         if (gamePlaying.gameId && objCmp(gamePlaying.gameId, gameId)) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
-            if (isMember && objCmp(gamePlaying.sceneIdList[gamePlaying.sceneIdList.length - 1], trashSceneId)) {
-                gamePlaying.sceneIdList.pop();
-                gamePlaying.isMaking = false;
-                await user.save();
+            if (isMember && objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
+                //! 이곳에 들어오지 않았다. -- playing 리스트에서 pop된 적이없다.
+                //! 시간이 지난 쓰레기들이 남아있었고, 가장 앞에 있던 녀석을 찾았다.
+                //! idx가 매칭되지 않아서 playinglist를 pop시키지 못했다.
+                user.gamePlaying.sceneIdList.pop();
+                user.gamePlaying.isMaking = false;
+                user.save((err) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(400).json({ success: false })
+                    }
+                });
             }
+            
+            if (gamePlaying?.sceneIdList?.length > 1){
+                isPlayed = true;
+            }
+
             return res
                 .status(200)
                 .json({
                     success: true,
+                    isPlayed,
                     sceneId: gamePlaying.sceneIdList[gamePlaying.sceneIdList.length - 1],
                     isMaking: gamePlaying.isMaking,
                 });
@@ -292,10 +312,16 @@ router.get("/start/:gameId", check, async (req, res) => {
                     isMaking: user.gameHistory[i].isMaking
                 };
                 await user.save();
+                
+                if (user.gamePlaying?.sceneIdList?.length > 1){
+                    isPlayed = true;
+                }
+
                 return res
                     .status(200)
                     .json({
                         success: true,
+                        isPlayed,
                         sceneId: user.gameHistory[i].sceneIdList[user.gameHistory[i].sceneIdList.length - 1],
                         isMaking: user.gamePlaying.isMaking,
                     });
@@ -312,7 +338,12 @@ router.get("/start/:gameId", check, async (req, res) => {
         if (isMember) {
             await user.save();
         }
-        return res.status(200).json({ success: true, sceneId, isMaking: user.gamePlaying.isMaking, });
+        return res.status(200).json({ 
+            success: true, 
+            sceneId, 
+            isPlayed: false,
+            isMaking: user.gamePlaying.isMaking, 
+        });
 
     } catch (err) {
         console.log(err);
@@ -438,7 +469,6 @@ router.get("/getSceneInfo/:sceneId", async (req, res) => {
     try {
         const scene = await Scene.findOne({ _id: sceneId });
         const game_createor = await Game.findOne({ _id: scene?.gameId }).select("creator");
-
         if (scene === null) {
             return res.status(200).json({ success: false });
         }
@@ -460,12 +490,15 @@ router.get("/detail/:gameId", async (req, res) => {
     try{
         const {gameId} = req.params;
         const {gameDetail} = await getDetail(gameId);
+        if(!gameDetail){
+            return res.status(200).json({ success: true, gameDetail });
+        }
         return res.status(200).json({ success: true, gameDetail });
     } catch (err) {
-    console.log(err);
+        console.log(err);
         return res.status(400).json({ success: false });
     }
-});
+}); 
 
 router.get("/rank/:gameId", async (req, res) => {
     try {
@@ -587,6 +620,33 @@ router.post("/fork", async (req,res) => {
         if(err) return res.json({success: false, err});
         res.status(200).json({success:true, game})
     })
+})
+
+router.delete('/:gameId', async (req,res) => {
+    try{
+        const {gameId} = req.params;
+        const {sceneCnt} = await Game.findOne(
+            {_id: gameId},
+            {_id: 0, sceneCnt: 1}
+        );
+        if (sceneCnt > 1){
+            return res.status(200).json(
+            {   success: true, 
+                messege: "연재된 이야기 개수가 한 개 이상인 이야기는 삭제할 수 없습니다." 
+            });
+        }
+        Comment.deleteMany( {gameId: gameId} ).exec();
+        Complaint.deleteMany( {gameId: gameId} ).exec();
+        Like.deleteMany( {gameId: gameId} ).exec();
+        Scene.deleteMany( {gameId: gameId} ).exec();
+        ThumbsUp.deleteMany( {objectId: gameId} ).exec();
+        TreeData.deleteMany( {gameId: gameId} ).exec();
+        View.deleteMany( {gameId: gameId} ).exec();
+        Game.deleteOne( {_id: gameId} ).exec();
+        return res.status(200).json({ success: true, messege: "삭제되었습니다." });
+    } catch (err) {
+        return res.json({ success: false, err });
+    }
 })
 
 

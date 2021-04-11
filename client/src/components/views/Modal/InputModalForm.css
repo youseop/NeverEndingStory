@@ -1,3 +1,15 @@
+.scenemake_modal_input_container{
+    margin-top:20px !important;
+
+}
+
+.scenemake_modal_input{
+    margin-top:10px !important;
+}
+
+.scenemake_modal_msg{
+    white-space: pre-wrap;
+}
 .inputmodal p {
     font-size: min(0.85em,1.2vw);
     text-align: left;
