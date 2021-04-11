@@ -104,7 +104,7 @@ const ProductScreen = (props) => {
 
     //* navigation bar and footer control
     dispatch(navbarControl(true));
-    // dispatch(footerControl(false));
+    dispatch(footerControl(true));
 
     dispatch(loadEmptyNum({
       sceneId,
