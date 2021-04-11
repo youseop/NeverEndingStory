@@ -264,7 +264,7 @@ router.get("/gamestart/:id", check, async (req, res) => {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
             if (isMember && objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
                 //! 이곳에 들어오지 않았다. -- playing 리스트에서 pop된 적이없다.
-                //! 시간이 지난 쓰레기들이 남아있었고, 가장 앞에 있던 녀석을 찾았다.
+                ! 시간이 지난 쓰레기들이 남아있었고, 가장 앞에 있던 녀석을 찾았다.
                 //! idx가 매칭되지 않아서 playinglist를 pop시키지 못했다.
                 user.gamePlaying.sceneIdList.pop();
                 user.gamePlaying.isMaking = false;
