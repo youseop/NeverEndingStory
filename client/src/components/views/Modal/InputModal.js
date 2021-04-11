@@ -100,9 +100,9 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
   }
 
   const createHandler = () => {
-    if (!sceneTitle.length){
-      message.error("내용을 입력해주세요")
-      return
+    if (!sceneTitle.length && visible){
+      message.error("내용을 입력해주세요");
+      return;
     }
 
     return handleCreate();

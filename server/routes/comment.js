@@ -127,7 +127,7 @@ router.get('/:gameId/:commentId', async (req, res) => {
     'responseTo': commentId
   })
     .populate('writer')
-    .sort('createdAt')
+    .sort({ createdAt: 'descending' })
     .exec((err, result) => {
       if (err) return res.json({ success: false, err })
       return res.status(200).json({ success: true, result })
