@@ -1,8 +1,10 @@
 import { message } from "antd";
 
+const config = require("../../config/key");
+
 export const pasteLink = (gameId) => {
-  const url = window.location.href + "?invitation=true"
-  // const url = `http://${}:3000/game/${gameId}?invitation=true`;
+  // const url = window.location.href + "?invitation=true"
+  const url = `${config.CLIENT}/game/${gameId}`;
   let urlInput = document.createElement("input");
   document.body.appendChild(urlInput);
   urlInput['value'] = url;

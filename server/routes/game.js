@@ -24,8 +24,12 @@ const { sanitize } = require("../lib/sanitize")
 
 const { log } = require("winston");
 const { View } = require("../models/View");
-const { ThumbsUp } = require("../models/ThumbsUp");
+const { ThumbsUp, thumbsUpSchema } = require("../models/ThumbsUp");
 const { getRank, getDetail, getSpecificDetail } = require('./functions/game');
+const { Comment } = require('../models/Comment');
+const { Complaint } = require('../models/Complaint');
+const { Like } = require('../models/Like');
+const { TreeData } = require('../models/TreeData');
 
 AWS.config.update({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -467,12 +471,15 @@ router.get("/detail/:gameId", async (req, res) => {
     try{
         const {gameId} = req.params;
         const {gameDetail} = await getDetail(gameId);
+        if(!gameDetail){
+            return res.status(200).json({ success: true, gameDetail });
+        }
         return res.status(200).json({ success: true, gameDetail });
     } catch (err) {
-    console.log(err);
+        console.log(err);
         return res.status(400).json({ success: false });
     }
-});
+}); 
 
 router.get("/rank/:gameId", async (req, res) => {
     try {
@@ -594,6 +601,33 @@ router.post("/fork", async (req,res) => {
         if(err) return res.json({success: false, err});
         res.status(200).json({success:true, game})
     })
+})
+
+router.delete('/:gameId', async (req,res) => {
+    try{
+        const {gameId} = req.params;
+        const {sceneCnt} = await Game.findOne(
+            {_id: gameId},
+            {_id: 0, sceneCnt: 1}
+        );
+        if (sceneCnt > 1){
+            return res.status(200).json(
+            {   success: true, 
+                messege: "연재된 이야기 개수가 한 개 이상인 이야기는 삭제할 수 없습니다." 
+            });
+        }
+        Comment.deleteMany( {gameId: gameId} ).exec();
+        Complaint.deleteMany( {gameId: gameId} ).exec();
+        Like.deleteMany( {gameId: gameId} ).exec();
+        Scene.deleteMany( {gameId: gameId} ).exec();
+        ThumbsUp.deleteMany( {objectId: gameId} ).exec();
+        TreeData.deleteMany( {gameId: gameId} ).exec();
+        View.deleteMany( {gameId: gameId} ).exec();
+        Game.deleteOne( {_id: gameId} ).exec();
+        return res.status(200).json({ success: true, messege: "삭제되었습니다." });
+    } catch (err) {
+        return res.json({ success: false, err });
+    }
 })
 
 

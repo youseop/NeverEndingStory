@@ -179,6 +179,8 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
     )
   })
 
+  const [hideContents, setHideContents] = useState(true);
+
   return (
     <div className="container_box" id={comment._id}>
       <div className="comment_container">
@@ -191,7 +193,18 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
             <button className="comment__btn" onClick={onClick_editComment}>수정</button>
           </div>
           :
-          <div className="content">{comment.content}</div>
+          <div className="content">
+            {hideContents ?
+            `${comment.content.slice(0,150)}`
+            :
+            `${comment.content}`
+            }
+            {comment.content.length > 150 &&
+              <div onClick={() => {setHideContents((state)=>!state)}}>
+                {hideContents ? "더보기" : "숨기기"}
+              </div>
+            }
+          </div>
           }
           <div className="comment_info">
             <div onClick={onClick_like} className="comment_like">좋아요 : {like}</div>

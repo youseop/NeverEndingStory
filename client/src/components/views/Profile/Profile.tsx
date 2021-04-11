@@ -100,6 +100,7 @@ function Profile(props: any) {
             <ContributedGame 
               gameId={game.gameId}
               sceneCnt={game.sceneCnt}
+              userId={userId}
             />
           </div>
         )
