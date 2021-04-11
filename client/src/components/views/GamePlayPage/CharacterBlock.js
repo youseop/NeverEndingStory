@@ -8,7 +8,6 @@ const CharacterBlock = (props) => {
 
   const CharacterList = useSelector(state => state.character.CharacterList)
   const characterblocks = CharacterList?.map((charSchema, index) => {
-    console.log(charSchema)
     return (
       <div key={charSchema.index}>
         <Character
