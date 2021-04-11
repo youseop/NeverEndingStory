@@ -329,7 +329,23 @@ router.delete('/', async (req, res) => {
   else {
     console.log("THERE IS NO MAKING GAME")
   }
-  user.gamePlaying.sceneIdList.pop();
+  
+  
+  // 제작 취소 누르는 시점에서 이미 삭제 됐을 수도 있다. playing first scene`
+  
+
+  const playingIdx = user.gamePlaying.sceneIdList.findIndex(item=>objCmp(item.sceneId, req.body.sceneId))
+  let prevSceneId
+  if(playingIdx > -1){
+    user.gamePlaying.sceneIdList.splice(playingIdx,1)
+    
+    //! 이미 삭제된 녀석의 emptyNum은 올리지 않는다.
+    //! + 제작기간 안지난 녀석만 emptyNum 올린다.
+    if(req.body.exp - Date.now() > 0){  
+      console.log("제작 기간 이내!", req.body.exp - Date.now())
+      prevSceneId = user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1]
+    }
+  }
   user.gamePlaying.isMaking = false;
   user.save((err) => {
     if (err) {
@@ -343,7 +359,7 @@ router.delete('/', async (req, res) => {
         req.body.isFirst ?
           null
           :
-          user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1]
+          prevSceneId,
     })
   });
   //! 이후, 작성중인 사람, 공헌자 목럭에서 삭제하는 로직도 필요하다.

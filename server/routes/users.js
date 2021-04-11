@@ -111,7 +111,7 @@ router.post("/playing-list/clear", check, async (req, res) => {
             prevOfLastScene = user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 2];
             
             //! 당분간 while문으로 갈겨놔야할 듯?
-            let idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
+            let idx = user.makingGameList.findIndex(item => objCmp(item.sceneId, sceneId))
             while (idx > - 1) {
                 user.makingGameList.splice(idx, 1)
                 idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
