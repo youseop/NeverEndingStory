@@ -393,8 +393,9 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
         }
 
         const scene = await Scene.findOne({ _id: sceneId }).populate("writer","nickname")
-        const nickname = scene.writer.nickname
-        scene.writer = scene.writer._id;    // 안하면 react ERR
+        const writer = scene.writer;
+        // scene.writer = scene.writer._id;    // 안하면 react ERR
+
         if (!scene) {
             throw "noScene"
         } 
@@ -416,8 +417,8 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
             .json({
                 success: true,
                 scene,
+                writer,
                 sceneIdList: user.gamePlaying.sceneIdList,
-                writer : nickname,
             });
     } catch (err) {
         console.log(err);

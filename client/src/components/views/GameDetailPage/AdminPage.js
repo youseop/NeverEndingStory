@@ -1,8 +1,8 @@
 import Axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from 'react-redux';
-import { of, forkJoin, Observable } from "rxjs";
-import { map, tap, flatMap } from "rxjs/operators";
+import { of, forkJoin } from "rxjs";
+import { map, tap, mergeMap } from "rxjs/operators";
 import RadialTree from '../TreeVisualization/RadialTree';
 
 import './AdminPage.css';
@@ -32,7 +32,7 @@ const getRecursive = (managedData, id) => {
       },
       childIds: data.children
     })),
-    flatMap(parentWithChildIds =>
+    mergeMap(parentWithChildIds =>
       forkJoin([
         of(parentWithChildIds.parent),
         ...parentWithChildIds.childIds.map(childId => getRecursive(managedData, childId))

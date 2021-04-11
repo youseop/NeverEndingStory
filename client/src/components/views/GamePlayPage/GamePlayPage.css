@@ -127,10 +127,7 @@
   right:3%;
   /* background-color: antiquewhite !important; */
   z-index:100;
-              /* style={{"position":"absolute", 
-            "top":"2%",
-            "right":"3%",
-          "z-index" : "96"}} */
+  font-size:1.5vh;
 }
 
 @media (max-width:1000px) and (pointer: fine){
