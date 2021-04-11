@@ -7,9 +7,9 @@
   .bgmSidebar_box{
     /* display: inline-block; */
     font-family: Noto Sans KR;
-    font-size: 2px;
+    font-size: 20px;
     padding: 5px;
-    height: 450px;
+    height: 45px;
     font-weight: bold;
     color: #222831;
     overflow: hidden;

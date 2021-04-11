@@ -66,7 +66,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
     if (user.userData.isAuth) {
       dispatch(gamePause(true));
       clearTimeout(decreaseTimer.current);
-      let tick = 30;
+      let tick = 300;
 
       setRemainTime(tick);
       decTimer = setInterval(() => {
@@ -124,12 +124,12 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
       setDino(1);
     })
 
+    socket.emit("validate_empty_num", { scene_id })
+
     return () => {
       socket.off("decrease_failed");
-
     }
 
-    socket.emit("validate_empty_num", { scene_id })
   }, [scene_id])
 
   useEffect(() => {

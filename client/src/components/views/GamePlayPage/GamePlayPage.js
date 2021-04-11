@@ -128,7 +128,6 @@ const ProductScreen = (props) => {
 
 
   useEffect(() => {
-    socket.off("accept_final_change");
     socket.on("accept_final_change", data => {
       const { sceneId, title } = data;
       let newNextList = Scene.nextList ? [...Scene.nextList] : [];
@@ -136,6 +135,9 @@ const ProductScreen = (props) => {
       const newScene = { ...Scene, nextList: newNextList };
       setScene(newScene);
     })
+    return () => {
+      socket.off("accept_final_change");
+    }
   }, [Scene])
 
   const [volume, setVolume] = useState(0.5)
@@ -329,7 +331,6 @@ const ProductScreen = (props) => {
     socket.emit("room", { room: sceneId });
     // socket.emit("exp_val", {room: sceneId});
     dispatch(savePrevScene({ prevSceneId: sceneId }));
-    socket.off("empty_num_changed") //! 매번 열린다.
     socket.on("empty_num_changed", data => {
       dispatch(loadEmptyNum({
         sceneId,
@@ -338,6 +339,9 @@ const ProductScreen = (props) => {
     })
     socket.emit("validate_empty_num", { scene_id: sceneId })
 
+    return () =>{
+      socket.off("empty_num_changed") //! 매번 열린다.
+    }
   }, [sceneId])
 
   //* game pause control
@@ -531,7 +535,7 @@ const ProductScreen = (props) => {
   } else {
     return (
       <div className="loader_container">
-        <div className="loader">Loading...</div>
+        <div className="loader"/>
       </div>
     )
   }

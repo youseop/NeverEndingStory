@@ -102,7 +102,7 @@ const updateCache = async (sceneId, userId, plus, exp) => {
         io.sockets.to(sceneId).emit('empty_num_changed', { emptyNum: scene_cache[sceneId].emptyNum });
         if (idx > -1) scene_cache[sceneId].certificationList.splice(idx, 1)
       }
-    }, 30000)
+    }, 300000)
   }
   const formatCache = trimCache(scene_cache[sceneId])
   Scene.findOneAndUpdate(

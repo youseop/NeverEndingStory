@@ -30,7 +30,7 @@
   line-height: 36px;
   width: 50%;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
   text-align: left;
