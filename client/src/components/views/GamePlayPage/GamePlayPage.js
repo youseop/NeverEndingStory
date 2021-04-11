@@ -531,7 +531,7 @@ const ProductScreen = (props) => {
   } else {
     return (
       <div className="loader_container">
-        <div className="loader">Loading...</div>
+        <div className="loader"/>
       </div>
     )
   }

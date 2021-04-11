@@ -5,13 +5,13 @@ import "./InputModalForm.css"
 
 const ModalFormComponent = ({ visible, onCancel, onCreate, setSceneTitle, remainTime }) => {
   
-  function handleEnter() {
-    onCreate();
-  }
+  // function handleEnter() {
+  //   onCreate();
+  // }
   const onSceneTitleChange = (event) => {
     setSceneTitle(event.currentTarget.value);
   }
-  useKey("Enter", handleEnter);
+  // useKey("Enter", handleEnter);
   const msg = useRef(null)
   let min = parseInt(remainTime/60)
   let sec = parseInt(remainTime%60)
