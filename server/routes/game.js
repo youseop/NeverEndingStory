@@ -263,11 +263,7 @@ router.get("/start/:gameId", check, async (req, res) => {
         } 
         // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감.
         const {gamePlaying, gameHistory} = user;
-
         let isPlayed = false;
-        if (gamePlaying?.sceneIdList?.length > 1){
-            isPlayed = true;
-        }
 
         if (gamePlaying.gameId && objCmp(gamePlaying.gameId, gameId)) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
@@ -284,6 +280,11 @@ router.get("/start/:gameId", check, async (req, res) => {
                     }
                 });
             }
+            
+            if (gamePlaying?.sceneIdList?.length > 1){
+                isPlayed = true;
+            }
+
             return res
                 .status(200)
                 .json({
@@ -311,6 +312,11 @@ router.get("/start/:gameId", check, async (req, res) => {
                     isMaking: user.gameHistory[i].isMaking
                 };
                 await user.save();
+                
+                if (user.gamePlaying?.sceneIdList?.length > 1){
+                    isPlayed = true;
+                }
+
                 return res
                     .status(200)
                     .json({
@@ -335,7 +341,7 @@ router.get("/start/:gameId", check, async (req, res) => {
         return res.status(200).json({ 
             success: true, 
             sceneId, 
-            isPlayed,
+            isPlayed: false,
             isMaking: user.gamePlaying.isMaking, 
         });
 
