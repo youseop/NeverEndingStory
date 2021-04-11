@@ -86,7 +86,7 @@
   background: rgba(254, 229, 0, 0.986) !important;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .loginPage-container {
     width: 100%;
     margin: 0;

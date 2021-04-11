@@ -26,11 +26,15 @@ const connect = mongoose.connect(config.mongoURI,
   .then(() => logger.info("mongoose connected...!"))
   .catch(err => console.log(err));
 
-const redisClient = redis.createClient({
+
+let redisClient;
+if(process.env.NODE_ENV === 'production'){
+  redisClient  = redis.createClient({
     url : `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
     password :process.env.REDIS_PASSWORD,
   })
-
+}
+  
 
 if (process.env.NODE_ENV === 'production') {
   app.use(morgan('combined'));
@@ -62,6 +66,8 @@ app.use('/api/like', require('./routes/like'));
 app.use('/api/view', require('./routes/view'));
 app.use('/api/thumbsup', require('./routes/thumbsup'));
 app.use('/api/treedata', require('./routes/treedata')); 
+app.use('/api/detailpage', require('./routes/detailpage')); 
+app.use('/api/gameplaypage', require('./routes/gameplaypage')); 
 
 //use this to show the image you have in node js server to client (react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client

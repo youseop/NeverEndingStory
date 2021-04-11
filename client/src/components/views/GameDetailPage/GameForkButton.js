@@ -5,8 +5,10 @@ import { message } from "antd";
 import "antd/dist/antd.css";
 import "./GameForkButton.css";
 import { TitleModalForm } from "../Modal/TitleModalForm";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const GameForkButton = ({history, user, gameId}) => {
+const GameForkButton = ({ history, user, gameId }) => {
     const [category, setCategory] = useState("");
     const [visible, setVisible] = useState(false);
     const [gameTitle, setGameTitle] = useState("");
@@ -21,7 +23,7 @@ const GameForkButton = ({history, user, gameId}) => {
             message.error("스토리 설명을 입력해주세요.")
             return;
         }
-        
+
         forkGame()
     }
     const forkGame = async () => {
@@ -29,9 +31,9 @@ const GameForkButton = ({history, user, gameId}) => {
             const variable = {
                 userId: user.userData._id,
                 parentGameId: gameId,
-                title : gameTitle,
-                description : gameDescription,
-                category : category
+                title: gameTitle,
+                description: gameDescription,
+                category: category
             }
 
             const gameResponse = await Axios.post("/api/game/fork", variable)
@@ -74,14 +76,22 @@ const GameForkButton = ({history, user, gameId}) => {
     }
     return (
         <div>
-            <div 
+            {/* <div
                 onClick={() => setVisible(true)}
                 className="detailPage__fork_btn">
                 버전 추가하기
+            </div> */}
+            <div
+                className="link_bttn"
+                onClick={() => setVisible(true)}
+                >
+                <FontAwesomeIcon
+                    icon={faPlus}
+                />버전 추가하기&nbsp;
             </div>
             <TitleModalForm
                 visible={visible}
-                type = "fork"
+                type="fork"
                 onCancel={() => setVisible(false)}
                 onCreate={() => handleCreate()}
                 setGameTitle={setGameTitle}

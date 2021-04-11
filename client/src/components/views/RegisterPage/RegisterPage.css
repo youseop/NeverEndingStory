@@ -71,7 +71,7 @@
   cursor: pointer;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .registerPage-container {
     width: 100%;
   }

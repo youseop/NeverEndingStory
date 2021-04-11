@@ -27,11 +27,6 @@ interface GameDetail {
   first_scene: any;
 }
 
-interface ThumbsUp {
-  like: number;
-  isClick: boolean;
-}
-
 function ContributedGame(props: any) {
   const gameId: string = props.gameId;
   const sceneCnt: number = props.sceneCnt;
@@ -45,25 +40,15 @@ function ContributedGame(props: any) {
     title: "",
     first_scene: null,
   });
-  const [thumbsUp, setThumbsUp] = useState<ThumbsUp>({
-    like: 0,
-    isClick: false,
-  });
+  const [thumbsUp, setThumbsUp] = useState<number>(0);
   const [view, setView] = useState<number>(0);
   
   useEffect(() => {
-    Axios.post("/api/game/detail", {gameId: new ObjectId(gameId)}).then((response) => {
-      setGameDetail(response.data.gameDetail);
-      setView(response.data.gameDetail.view);
-    })
-    Axios.post("/api/thumbsup/count", {
-      objectId: new ObjectId(gameId),
-      userId: userId
-    }).then((response) => {
-      setThumbsUp({
-        isClick: response.data.isClicked,
-        like: response.data.thumbsup
-      });
+    Axios.get(`/api/game/detail/${gameId}`).then((response) => {
+      const gameDetail=response.data.gameDetail;
+      setGameDetail(gameDetail);
+      setView(gameDetail.view);
+      setThumbsUp(gameDetail.thumbsUp);
     })
   },[])
 
@@ -95,15 +80,15 @@ function ContributedGame(props: any) {
           <div className="contribute__icon">
             <div>
               {gameDetail.sceneCnt}
-              <FontAwesomeIcon icon={faFile} style={{ marginLeft: "10px" }} /> 
+              <FontAwesomeIcon icon={faFile} className="specific_icon" /> 
             </div>
             <div>
               {view}
-              <FontAwesomeIcon icon={faEye} style={{ marginLeft: "10px" }} />
+              <FontAwesomeIcon icon={faEye} className="specific_icon" />
             </div>
             <div>
-              {thumbsUp.like} 
-              <FontAwesomeIcon style={{ marginLeft: "10px" }} icon={faHeart} />
+              {thumbsUp} 
+              <FontAwesomeIcon className="specific_icon" icon={faHeart} />
             </div>
           </div>
         </Link>

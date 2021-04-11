@@ -10,7 +10,7 @@
     flex-direction: column;
     align-items: center;
     justify-Content: center;
-    border: 0.1rem solid lightgray;
+    border: 0.1rem solid lightgray;        
 }
 .dropzone:hover{
     opacity: 0.95;
@@ -36,11 +36,81 @@
     /* min-height: 100%;  */
     object-fit : cover;
     width : 100% !important;
-    /* height : inherit; */
-    
+    /* height : inherit; */    
 }
 .thumbnail__msg{
     margin-top : 10px;
     margin-bottom: 10px;
     font-size: medium;
 }
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #30475E;
+    border-color: #30475E transparent #30475E transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+  @keyframes lds-dual-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .upload_text{
+      font-family: Noto Sans KR;
+      font-size: medium;
+      font-weight: bold;
+  }
+  .upload_text_small{
+      visibility:hidden;
+      font-size: 0px;
+  }
+
+  @media (max-width:850px){
+    .lds-dual-ring {
+        display: inline-block;
+        width: calc(80vh/9);
+        height: calc(80vh/9);
+      }
+      .lds-dual-ring:after {
+        content: " ";
+        display: block;
+        width: calc(64vh/9);
+        height: calc(64vh/9);
+        margin: calc(8vh/9);
+        border-radius: 50%;
+        border: calc(6vh/9) solid #30475E;
+        border-color: #30475E transparent #30475E transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+      }
+      @keyframes lds-dual-ring {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    
+      .upload_text{
+          visibility: hidden !important;
+          font-size: 0vh;
+      }
+      .upload_text_small{
+        visibility: visible;
+        font-size: 3vh;
+        font-weight: bold;
+      }
+  }

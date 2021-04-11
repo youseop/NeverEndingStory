@@ -14,18 +14,18 @@ function TextAnimation({ cut_script, setIsTyping }) {
     const [text, { skip }] = useWindupString(
         cut_script,
         {
-            pace: () => 100,
+            pace: () => 50,
             onFinished: () => {
-                if(voice)
+                if (voice)
                     voice.pause()
                 setFlag(true)
             },
             onChar: () => {
                 if ((i == 0 || cut_script[i] === ' ' || cut_script[i] === '.')) {
-                    if(voice)
+                    if (voice)
                         voice.pause()
                 } else {
-                    if(voice)
+                    if (voice)
                         voice.play()
                 }
                 i++;

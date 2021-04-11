@@ -4,7 +4,7 @@ import MyDropzone from "../../../Dropzone/MyDropzone";
 import "../EssetModal.css";
 import "./BackgroundTab.css";
 
-function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList }) {
+function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList, backBlobList, uploadFlag }) {
     const [backgroundCards, setBackgroundCards] = useState("");
     const [blobCards, setBlobCards] = useState("");
     const onDrop = (files) => {
@@ -56,6 +56,7 @@ function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList
                     accept="image/*"
                     type="background"
                     icon="image"
+                    uploadFlag={uploadFlag}
                 >
                 </MyDropzone>
             </div>

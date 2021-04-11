@@ -5,10 +5,9 @@ import "./PortraitWarning.css"
 function PortraitWarning() {
   return (
     <div className="portraitWarning">
-      <p>
-        가로 화면으로 즐겨주세요 <Icon type="smile" />
-      </p>
-    </div>
+    아직 세로 화면은 지원하지 않습니다.<p />
+가로 화면으로 즐겨주시면 감사하겠습니다. <Icon type="smile" />
+</div>
   );
 }
 

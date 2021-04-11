@@ -1,10 +1,10 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Axios from "axios";
 import "./LandingPage.css";
 import { Banner_main } from "./LandingPage_banners";
 import { GameList } from "./LandingPage_gameLists";
-import { navbarControl,footerControl } from "../../../_actions/controlPage_actions"
+import { navbarControl, footerControl } from "../../../_actions/controlPage_actions"
 
 
 const GameListInfos = {
@@ -34,8 +34,8 @@ function LandingPage(props) {
     dispatch(navbarControl(true));
     dispatch(footerControl(true));
 
-    GameListInfos.popular_games.pos=0;
-    GameListInfos.recent_games.pos=0;
+    GameListInfos.popular_games.pos = 0;
+    GameListInfos.recent_games.pos = 0;
 
     Axios.get("/api/game/popular-games").then((response) => {
       if (response.data.success) {
@@ -61,7 +61,7 @@ function LandingPage(props) {
         <Banner_main replace={props.history.replace} />
       </div>
       <GameList data={GameListInfos.popular_games} games={popularGames} rank={true} />
-      <GameList data={GameListInfos.recent_games} games={recentGames} rank={false}/>
+      <GameList data={GameListInfos.recent_games} games={recentGames} rank={false} />
     </div>
   );
 }

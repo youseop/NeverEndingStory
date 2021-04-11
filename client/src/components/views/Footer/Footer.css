@@ -1,10 +1,12 @@
 .footer-container-off {
   height: 0px;
   background-color: #222831;
+  z-index: 0;
 }
 
 .footer-container {
   position: relative;
+  min-width: 100%;
   height: 250px;
   background-color: #222831;
 
@@ -13,6 +15,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 0;
 }
 
 .footer-info {
@@ -52,7 +55,7 @@
   padding-left: 5px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 850px) {
   .footer-container {
     min-width: 300px;
     padding: 10px;

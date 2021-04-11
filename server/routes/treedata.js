@@ -190,7 +190,7 @@ router.delete("/:sceneId/:gameId", async (req,res) => {
     const {prevSceneId} = await Scene.findOne( 
       {_id: mongoose.Types.ObjectId(sceneId)}, 
       {_id: 0, prevSceneId: 1}
-    ); 
+    );
 
     const data = {};
     for (let i=0; i<rawData.length; i++){

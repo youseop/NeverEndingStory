@@ -74,3 +74,56 @@
 .form {
   width: 100%;
 }
+
+@media (max-width: 850px) {
+
+  .container_box {
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 5px;
+    padding: 3px;
+  }
+  
+  .comment_container > .SingleReply__img {
+    width: 38px;
+  }
+  
+  .nickname{
+    font-size: 15px;
+  }
+  
+  .edit_container {
+    display: flex;
+    width: 100%;
+  }
+  .comment_info{
+    font-size: 10px;
+  }
+  .singleComment__textarea{
+    height: 25px;
+    font-size: 10px!important;
+    width: 95%;
+  }
+  .edit_container {
+    display: flex;
+    width: max-content;
+  }
+  .edit_container > .comment__btn{
+    width: 23px;
+  }
+  .singleComment_input{
+    padding: 10px;
+    background: #e7e2d7;
+    color: #222831;
+    width: auto;
+    height: 25px;
+    border-radius: 5px;
+  }
+
+  .edit_container > .comment_input{
+    width: calc(100vw - 200px);
+    height: 25px;
+    font-size: 12px;
+  }
+  
+  }

@@ -210,7 +210,7 @@ router.post("/email-check", (req, res) => {
     });
 });
 
-router.post("/game-visit", check, (req, res) => {
+router.get("/visit", check, (req, res) => {
     let gamePlaying = req.isMember ? req.user.gamePlaying : req.session.gamePlaying;
     return res.status(200).send({
         success: true,

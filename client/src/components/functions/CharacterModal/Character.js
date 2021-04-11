@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import './Character.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { popCharacter, selectCharacter, updateCharacter, orderCharacter } from '../../../_actions/characterSelected_actions';
+import { popCharacter, selectCharacter, updateCharacter, orderCharacter, toggleCharacter } from '../../../_actions/characterSelected_actions';
 import { addEvent, removeAllEvents } from '../handleEventListener';
-import { faAngleDoubleDown, faAngleDown, faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleDown, faAngleDown, faTimes, faTimesCircle, faArrowsAltH } from '@fortawesome/free-solid-svg-icons';
 import { useConstructor } from '../useConstructor';
 
 function Character(props) {
@@ -13,22 +13,22 @@ function Character(props) {
   const CharacterList = useSelector(state => state.character.CharacterList)
 
   const { charSchema, GameCharacterList, index, setName } = props;
-  
+
   const element_X = useRef();
   const element_Y = useRef();
 
-  
+
   const [clicked, setClicked] = useState(true);
   const [moving, setMoving] = useState(true);
   const [sizing, setSizing] = useState(false);
   const [imgWidth, setImgWidth] = useState(0);
   const [zIndex, setZIndex] = useState(96);
-  
+
   const background_element = document.getElementById("backgroundImg_container");
-  
+
   let pivot = [0, 0];
   let drag = false;
-  const isPortrait = window.matchMedia('(pointer: coarse)').matches;
+  // const isPortrait = window.matchMedia('(pointer: coarse)').matches;
 
 
   useEffect(() => {
@@ -45,16 +45,16 @@ function Character(props) {
   }, [CharacterList])
 
 
-  function onMouseDown (e, option) {
+  function onMouseDown(e, option) {
     if (!background_element || e.target !== e.currentTarget) {
       return;
     }
-    if (option === 'mouse'){
-      addEvent(background_element, "mousemove", (e)=>{mouseMove(e,'mouse')}, false);
+    if (option === 'mouse') {
+      addEvent(background_element, "mousemove", (e) => { mouseMove(e, 'mouse') }, false);
       addEvent(background_element, "mouseup", onMouseUp, false);
       pivot = [e.pageX, e.pageY];
     } else {
-      addEvent(background_element, "touchmove", (e)=>{mouseMove(e,'touch')}, false);
+      addEvent(background_element, "touchmove", (e) => { mouseMove(e, 'touch') }, false);
       addEvent(background_element, "touchend", onMouseUp, false);
       pivot = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
     }
@@ -62,16 +62,16 @@ function Character(props) {
     dispatch(selectCharacter({ ...GameCharacterList[charSchema.index], index: charSchema.index }));
     setZIndex(97);
     setName(GameCharacterList[charSchema.index]?.name);
-    if(e.cancelable){
+    if (e.cancelable) {
       e.preventDefault();
     }
   }
 
 
   function mouseMove(e, option) {
-    if(e.cancelable){
+    if (e.cancelable) {
       let page;
-      if (option === 'mouse'){
+      if (option === 'mouse') {
         page = [e.pageX, e.pageY];
       } else {
         page = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
@@ -109,7 +109,7 @@ function Character(props) {
       e.preventDefault()
     }
   }
-  
+
 
   const onMouseUp = (e) => {
     removeAllEvents(background_element, "mousemove");
@@ -163,6 +163,9 @@ function Character(props) {
     dispatch(orderCharacter({ oldArray: CharacterList, index: charSchema.index, num }));
   }
 
+  const onClickToggle = (num) => {
+    dispatch(toggleCharacter({ oldArray: CharacterList, index: charSchema.index }));
+  }
 
   return (
     <div
@@ -180,12 +183,13 @@ function Character(props) {
         }}
       >
         <img
-          className={"characterImg_clicked"}
+          className={charSchema.reverse ?
+            "characterImg_clicked reverse" : "characterImg_clicked"}
           id={`${index}`}
           src={charSchema.image}
           alt="img"
-          onMouseDown={(e) => {onMouseDown(e,"mouse")}}
-          onTouchStart={(e) => {onMouseDown(e,"touch")}}
+          onMouseDown={(e) => { onMouseDown(e, "mouse") }}
+          onTouchStart={(e) => { onMouseDown(e, "touch") }}
         />
         {imgWidth &&
           <>
@@ -211,15 +215,13 @@ function Character(props) {
                 onClickOrder("")
               }}
             />
-            {!isPortrait &&
-              <div
-                className={`${sizing ? "bttn btn_sizing_clicked" : "bttn btn_sizing"}`}
-                onMouseOver={onMouseOver}
-                onMouseOut={onMouseOut}
-                onMouseDown={(e) => {onMouseDown(e,"mouse")}}
-                style={{ left: `${imgWidth - 3}px` }}
-              ></div>
-            }
+            <div
+              className={`${sizing ? "bttn btn_sizing_clicked" : "bttn btn_sizing"}`}
+              onMouseOver={onMouseOver}
+              onMouseOut={onMouseOut}
+              onMouseDown={(e) => {onMouseDown(e,"mouse")}}
+              style={{ left: `${imgWidth - 3}px` }}
+            ></div>
           </>
         }
       </div>

@@ -20,7 +20,7 @@ export const CategoryOptions = [
     { value: 4, label: "병맛" },
 ];
 
-const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene, defaultTitle, defaultDescription, defaultCategory }) => {
+const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene, defaultTitle, defaultDescription, defaultCategory, uploadFlag }) => {
     const user = useSelector((state) => state.user);
     const [GameTitle, setGameTitle] = useState({ defaultTitle });
     const [description, setDescription] = useState({ defaultDescription });
@@ -151,6 +151,7 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                                 blobURL={blobURL}
                                 type="thumbnail"
                                 icon="image"
+                                uploadFlag={uploadFlag}
                             >
                             </MyDropzone>
 
@@ -176,10 +177,10 @@ const UploadModal = ({ gameId, visible, setUploadModalState, onSubmit_saveScene,
                             ))}
                         </select> */}
                         <div className="scenemake_modal_detail_category_container">
-                            <select 
-                                className="scenemake_modal_category" 
+                            <select
+                                className="scenemake_modal_category"
                                 onChange={onCartegoryChange}
-                                defaultValue={{ label:"살아남기", value:"살아남기"}}
+                                defaultValue={{ label: "살아남기", value: "살아남기" }}
                             >
                                 <option value="" disabled hidden>
                                     {category}

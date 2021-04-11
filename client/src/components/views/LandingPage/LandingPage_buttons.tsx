@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useRef } from "react";
 import { useSelector } from 'react-redux';
-import "./LandingPage_buttons.css"
 import "antd/dist/antd.css";
 import Axios from "axios"
 import { message } from "antd";
+import "./LandingPage_banners.css"
 
 const { TitleModalForm }: any = require("../Modal/TitleModalForm")
 interface newGameButtonProps {
@@ -95,7 +95,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
 
     return (
         <>
-            <button className="main1-button1" onClick={handleClick}>
+            <button className="banner-main-button main3-button1" onClick={handleClick}>
                 새로운 스토리 만들기
             </button>
 

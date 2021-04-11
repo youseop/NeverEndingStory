@@ -6,7 +6,7 @@ import "./CharacterTab.css";
 import { SVG } from "../../../../svg/icon";
 import useMouse from "../../../../functions/useMouse";
 
-function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, setCharBlobList }) {
+function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, setCharBlobList, uploadFlag }) {
     const [characterProfile, setCharacterProfile] = useState("");
     const [characterCards, setCharacterCards] = useState("");
     const [isUpdate, setIsUpdate] = useState(0);
@@ -153,6 +153,7 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                             accept="image/*"
                             type="character"
                             icon="image"
+                            uploadFlag={uploadFlag}
                         />
                     </div>
                     {blobGame.character &&
@@ -175,6 +176,7 @@ function CharacterTab({ blobGame, setBlobGame, charPageNum, setCharFileQueue, se
                         accept="image/*"
                         type="character"
                         icon="image"
+                        uploadFlag={uploadFlag}
                     />
                     <div className="characterTab_instruct">
                         캐릭터를 추가해주세요

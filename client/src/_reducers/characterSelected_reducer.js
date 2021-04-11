@@ -5,7 +5,8 @@ import {
   POP_CHARACTER,
   UPDATE_CHARACTER,
   SET_CHARACTER_LIST,
-  ORDER_CHARACTER
+  ORDER_CHARACTER,
+  TOGGLE_CHARACTER,
 } from '../_actions/types';
 
 const initialState = {
@@ -33,6 +34,8 @@ export default function (state = { characterSelected: initialState, CharacterLis
     case SET_CHARACTER_LIST:
       return { ...state, CharacterList: action.payload }
     case ORDER_CHARACTER:
+      return { ...state, CharacterList: action.payload }
+    case TOGGLE_CHARACTER:
       return { ...state, CharacterList: action.payload }
     default:
       return state;

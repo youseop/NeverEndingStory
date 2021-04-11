@@ -290,13 +290,26 @@
         border: calc(1vh/9) solid rgba(70, 70, 70, 0);
     }
     .sceneBox_plus{
-        top:calc(180vh/9);
+        width: calc(20vh/9);
+        height: calc(20vh/9);
+        margin-top: calc(0vh/9);
+        margin-left: calc(0vh/9);
+    }
+    .sceneBox_plus_horizonal{
         position: absolute;
-        font-family: Noto Sans KR;
-        font-size:calc(26vh/9);
-        font-weight: bold;
-        text-align: center;
-        color: #fff;
+        margin-top:calc(7vh/9);
+        border-radius: calc(4vh/9);
+        width: calc(20vh/9);
+        height: calc(6vh/9);
+        background-color: white;
+    }
+    .sceneBox_plus_vertical{
+        position: absolute;
+        border-radius: calc(4vh/9);
+        margin-left:calc(7vh/9);
+        width: calc(6vh/9);
+        height: calc(20vh/9);
+        background-color: white;
     }
     
     
@@ -479,18 +492,19 @@
         margin-top: calc(12vh/9);
         grid-row: 5;
         grid-column: 3/ span 2;
-        justify-content: flex-start;
+        justify-content: flex-end;
         display: inline-flex;
     }
     .scenemake_volume{
         margin-right: calc(0vh/9);
-        width:50%;
+        /* width:50%; */
+        width:20%;
         display: inline-flex;
     }
     .scenemake_volume_text{
         position: relative;
         top:calc(0vh/9);
-        width:25%;
+        width:65%;
         color:#DDDDDD;
         font-family: Noto Sans KR;
         font-size: calc(27vh/9);
@@ -506,7 +520,7 @@
         border-radius: 0;
         position: relative;
       }
-      .characterSidebar__container {
+    .characterSidebar__container {
         all: unset;
         position: absolute;
         top: calc(10vh/9);
