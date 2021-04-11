@@ -24,8 +24,12 @@ const { sanitize } = require("../lib/sanitize")
 
 const { log } = require("winston");
 const { View } = require("../models/View");
-const { ThumbsUp } = require("../models/ThumbsUp");
+const { ThumbsUp, thumbsUpSchema } = require("../models/ThumbsUp");
 const { getRank, getDetail, getSpecificDetail } = require('./functions/game');
+const { Comment } = require('../models/Comment');
+const { Complaint } = require('../models/Complaint');
+const { Like } = require('../models/Like');
+const { TreeData } = require('../models/TreeData');
 
 AWS.config.update({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -256,9 +260,11 @@ router.get("/start/:gameId", check, async (req, res) => {
                 req.session.gameHistory = []
             }
             user = req.session
-        }
+        } 
         // 최신 게임 플레이에 해당하는 게임에 들어가려고 하면 그냥 들어감.
         const {gamePlaying, gameHistory} = user;
+        let isPlayed = false;
+
         if (gamePlaying.gameId && objCmp(gamePlaying.gameId, gameId)) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
             if (isMember && objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
@@ -274,10 +280,16 @@ router.get("/start/:gameId", check, async (req, res) => {
                     }
                 });
             }
+            
+            if (gamePlaying?.sceneIdList?.length > 1){
+                isPlayed = true;
+            }
+
             return res
                 .status(200)
                 .json({
                     success: true,
+                    isPlayed,
                     sceneId: gamePlaying.sceneIdList[gamePlaying.sceneIdList.length - 1],
                     isMaking: gamePlaying.isMaking,
                 });
@@ -300,10 +312,16 @@ router.get("/start/:gameId", check, async (req, res) => {
                     isMaking: user.gameHistory[i].isMaking
                 };
                 await user.save();
+                
+                if (user.gamePlaying?.sceneIdList?.length > 1){
+                    isPlayed = true;
+                }
+
                 return res
                     .status(200)
                     .json({
                         success: true,
+                        isPlayed,
                         sceneId: user.gameHistory[i].sceneIdList[user.gameHistory[i].sceneIdList.length - 1],
                         isMaking: user.gamePlaying.isMaking,
                     });
@@ -320,7 +338,12 @@ router.get("/start/:gameId", check, async (req, res) => {
         if (isMember) {
             await user.save();
         }
-        return res.status(200).json({ success: true, sceneId, isMaking: user.gamePlaying.isMaking, });
+        return res.status(200).json({ 
+            success: true, 
+            sceneId, 
+            isPlayed: false,
+            isMaking: user.gamePlaying.isMaking, 
+        });
 
     } catch (err) {
         console.log(err);
@@ -369,10 +392,13 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
             user = req.session
         }
 
-        const scene = await Scene.findOne({ _id: sceneId });
+        const scene = await Scene.findOne({ _id: sceneId }).populate("writer","nickname")
+        const writer = scene.writer;
+        // scene.writer = scene.writer._id;    // 안하면 react ERR
+
         if (!scene) {
             throw "noScene"
-        }
+        } 
         const val = await validateScene(user.gamePlaying, sceneId, gameId, false);
         if (!val) {
             throw "invalid"
@@ -391,6 +417,7 @@ router.get("/getnextscene/:gameId/:sceneId", check, async (req, res) => {
             .json({
                 success: true,
                 scene,
+                writer,
                 sceneIdList: user.gamePlaying.sceneIdList,
             });
     } catch (err) {
@@ -467,12 +494,15 @@ router.get("/detail/:gameId", async (req, res) => {
     try{
         const {gameId} = req.params;
         const {gameDetail} = await getDetail(gameId);
+        if(!gameDetail){
+            return res.status(200).json({ success: true, gameDetail });
+        }
         return res.status(200).json({ success: true, gameDetail });
     } catch (err) {
-    console.log(err);
+        console.log(err);
         return res.status(400).json({ success: false });
     }
-});
+}); 
 
 router.get("/rank/:gameId", async (req, res) => {
     try {
@@ -594,6 +624,33 @@ router.post("/fork", async (req,res) => {
         if(err) return res.json({success: false, err});
         res.status(200).json({success:true, game})
     })
+})
+
+router.delete('/:gameId', async (req,res) => {
+    try{
+        const {gameId} = req.params;
+        const {sceneCnt} = await Game.findOne(
+            {_id: gameId},
+            {_id: 0, sceneCnt: 1}
+        );
+        if (sceneCnt > 1){
+            return res.status(200).json(
+            {   success: true, 
+                messege: "연재된 이야기 개수가 한 개 이상인 이야기는 삭제할 수 없습니다." 
+            });
+        }
+        Comment.deleteMany( {gameId: gameId} ).exec();
+        Complaint.deleteMany( {gameId: gameId} ).exec();
+        Like.deleteMany( {gameId: gameId} ).exec();
+        Scene.deleteMany( {gameId: gameId} ).exec();
+        ThumbsUp.deleteMany( {objectId: gameId} ).exec();
+        TreeData.deleteMany( {gameId: gameId} ).exec();
+        View.deleteMany( {gameId: gameId} ).exec();
+        Game.deleteOne( {_id: gameId} ).exec();
+        return res.status(200).json({ success: true, messege: "삭제되었습니다." });
+    } catch (err) {
+        return res.json({ success: false, err });
+    }
 })
 
 

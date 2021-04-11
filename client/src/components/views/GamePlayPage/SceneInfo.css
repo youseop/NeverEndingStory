@@ -23,6 +23,14 @@
 .sceneInfo__creater{
 }
 
+@media (max-width:850px) and (min-width: 700px){  
+  .sceneInfo{
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 100px !important;
+  }
+}
+
 @media (max-width:850px) and (orientation:portrait){   
   .sceneInfo{
     padding-left: 3%;

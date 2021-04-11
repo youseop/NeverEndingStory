@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { pasteLink } from '../../functions/pasteLink';
-import GameForkButton from '../GameDetailPage/GameForkButton';
 import './SceneInfo.css';
 
 function SceneInfo(props) {
@@ -14,11 +13,11 @@ function SceneInfo(props) {
     isClickedGame,
     thumbsupCntGame,
     history,
-    user,
+    writer,
     gameId,
     sceneId,
   } = props;
-
+  console.log("********",writer)
   return (
     <div className="sceneInfo">
       <div className="sceneInfo__container">
@@ -39,10 +38,10 @@ function SceneInfo(props) {
             <div>
               현재 스토리에 기여한 작가:&nbsp;
                     <Link
-                    to={`/profile/${user?.userData?._id}`}
+                    to={`/profile/${writer?._id}`}
                     className="bold_text"
                 >
-                    {user?.userData?.nickname?.substr(0, 20)}
+                    {writer?.nickname?.substr(0, 20)}
                 </Link>&nbsp;&nbsp;
             </div>
             <div style={{ "display": "block" }}>
@@ -77,11 +76,6 @@ function SceneInfo(props) {
                     />
                 초대링크복사&nbsp;
                 </div> 
-                <GameForkButton
-                    history={history}
-                    user={user}
-                    gameId={gameId}
-                />
             </div>
 
         </div>

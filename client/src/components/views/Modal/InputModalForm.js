@@ -5,13 +5,13 @@ import "./InputModalForm.css"
 
 const ModalFormComponent = ({ visible, onCancel, onCreate, setSceneTitle, remainTime }) => {
   
-  function handleEnter() {
-    onCreate();
-  }
+  // function handleEnter() {
+  //   onCreate();
+  // }
   const onSceneTitleChange = (event) => {
     setSceneTitle(event.currentTarget.value);
   }
-  useKey("Enter", handleEnter);
+  // useKey("Enter", handleEnter);
   const msg = useRef(null)
   let min = parseInt(remainTime/60)
   let sec = parseInt(remainTime%60)
@@ -35,7 +35,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setSceneTitle, remain
         closable={false}
       >
         <Form layout="vertical">
-          <Form.Item className="scenemake_modal_input_container" label="당신의 답변을 입력해주세요" name="title" rules={[
+          <Form.Item className="scenemake_modal_input_container" name="title" rules={[
             {
               required: true,
               message: "당신의 답변을 입력해주세요",

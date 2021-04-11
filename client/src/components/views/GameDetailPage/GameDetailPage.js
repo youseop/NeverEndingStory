@@ -58,9 +58,6 @@ export default function GameDetailPage(props) {
             console.log(err);
         }
     }
-
-    useEffect(() => {
-    }, []);
     
     const updateFlag = useRef(true);
 
@@ -68,21 +65,15 @@ export default function GameDetailPage(props) {
         if (user && user.userData && updateFlag.current) {
             updateFlag.current = false;
             Axios.get(`/api/game/start/${gameId}`).then((response) => {
-                if (response.data.success) {
-                    setSceneId(response.data.sceneId);
-                    setIsMaking(response.data.isMaking);
+                const {success, sceneId, isMaking, isPlayed} = response.data;
+                if (success) {
+                    setSceneId(sceneId);
+                    setIsMaking(isMaking);
+                    setIsPlayed(isPlayed);
                 } else {
                     message.error("로그인 해주세요.");
                 }
             });
-            
-            Axios.get("/api/users/visit").then((response) => {
-                if (response.data.success) {
-                    const sceneIdLength = response.data?.gamePlaying?.sceneIdList?.length;
-                    if (sceneIdLength > 1)
-                        setIsPlayed(true);
-                }
-            })
             
             const userId = user.userData._id;
             Axios.get(`/api/detailpage/${gameId}/${userId}`).then((response) => {
@@ -309,7 +300,7 @@ export default function GameDetailPage(props) {
     else {
         return (
             <div className="loader_container">
-                <div className="loader">Loading...</div>
+                <div className="loader"/>
             </div>
         )
     }
