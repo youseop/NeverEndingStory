@@ -16,7 +16,7 @@
   width: 100%;
   height: 200px;
   position: absolute;
-  bottom: 0;
+  bottom: -2px;
   background: linear-gradient( to top, #222831 , #22283100);
   z-index: 1;
 }
