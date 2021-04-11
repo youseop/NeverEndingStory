@@ -17,7 +17,6 @@ function SceneInfo(props) {
     gameId,
     sceneId,
   } = props;
-  console.log("********",writer)
   return (
     <div className="sceneInfo">
       <div className="sceneInfo__container">

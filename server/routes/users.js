@@ -92,7 +92,6 @@ router.get("/logout", auth, (req, res) => {
 
 router.post("/playing-list/clear", check, async (req, res) => {
     try {
-        const { gameId } = req.body
         let user;
         if (req.isMember) {
             user = await User.findOne({ _id: req.user._id })
@@ -102,8 +101,9 @@ router.post("/playing-list/clear", check, async (req, res) => {
         }
         //isMaking이었으면 만들던 씬 정리해야함...(똑같은 짓 하는거 찾아보고 합치기 가능하면 합치기)
         const prevOfLastScene = user.gamePlaying.isMaking && user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 2];
-
+        
         if (user.gamePlaying.isMaking) {
+            const { gameId } = req.body
             // const idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
             // if (idx > -1) {
             //     user.makingGameList.splice(idx, 1)

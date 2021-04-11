@@ -18,7 +18,7 @@ const FirstSceneTeleport = ({ gameId, setScene }) => {
 
         if (user) {
             //! auth를 통해서 쿠키에서 유저정보 갖고올 수 있다.
-            Axios.get("/api/users/playing-list/clear").
+            Axios.post("/api/users/playing-list/clear").
                 then(response => {
                     if (response.data.success) {
                         setIsWarningVisible(false)
