@@ -4,7 +4,7 @@ import FirstSceneTeleport from "../SceneTeleport/FirstSceneTeleport";
 import PrevSceneTeleport from "../SceneTeleport/PrevSceneTeleport";
 
 
-const SceneEndingPage = ({ gameId, setScene }) => {
+const SceneEndingPage = ({ gameId, setScene,sceneId }) => {
 
 
     return (
@@ -23,6 +23,7 @@ const SceneEndingPage = ({ gameId, setScene }) => {
                         key={0}
                         gameId={gameId}
                         setScene={setScene}
+                        sceneId={sceneId}
                     />
                     <PrevSceneTeleport
                         key={1}
