@@ -75,14 +75,6 @@ export default function GameDetailPage(props) {
                 }
             });
             
-            // Axios.get("/api/users/visit").then((response) => {
-            //     if (response.data.success) {
-            //         const sceneIdLength = response.data?.gamePlaying?.sceneIdList?.length;
-            //         if (sceneIdLength > 1)
-            //             setIsPlayed(true);
-            //     }
-            // })
-            
             const userId = user.userData._id;
             Axios.get(`/api/detailpage/${gameId}/${userId}`).then((response) => {
                 if (response.data.success) {

@@ -125,11 +125,11 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
     })
 
     socket.emit("validate_empty_num", { scene_id })
-
+    
     return () => {
       socket.off("decrease_failed");
     }
-
+    
   }, [scene_id])
 
   useEffect(() => {
