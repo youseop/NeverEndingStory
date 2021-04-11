@@ -230,12 +230,12 @@ const ProductScreen = (props) => {
         objectId: sceneId,
         flag: "1"
       }
-      if(thumbsUpClicked){
+      if (thumbsUpClicked) {
         setThumbsUpClicked(false);
-        setThumbsUp((state) => state-1);
+        setThumbsUp((state) => state - 1);
       } else {
         setThumbsUpClicked(true);
-        setThumbsUp((state) => state+1);
+        setThumbsUp((state) => state + 1);
       }
       Axios.post("/api/thumbsup/", variable)
     }
@@ -254,12 +254,12 @@ const ProductScreen = (props) => {
         objectId: gameId,
         flag: "1"
       }
-      if(isClickedGame){
+      if (isClickedGame) {
         setIsClickedGame(false);
-        setThumbsupCntGame((state) => state-1);
+        setThumbsupCntGame((state) => state - 1);
       } else {
         setIsClickedGame(true);
-        setThumbsupCntGame((state) => state+1);
+        setThumbsupCntGame((state) => state + 1);
       }
       Axios.post("/api/thumbsup/", variable)
     }
@@ -272,7 +272,7 @@ const ProductScreen = (props) => {
   const gameFlag = useRef(true);
   useEffect(() => {
     const userId = user.userData._id;
-    if (user && user.userData && sceneId!=nextSceneFlag.current) {
+    if (user && user.userData && sceneId != nextSceneFlag.current) {
       nextSceneFlag.current = sceneId;
 
       Axios.get(`/api/gameplaypage/sceneinfo/${sceneId}/${userId}`).then((response) => {
@@ -282,7 +282,7 @@ const ProductScreen = (props) => {
           setView(response.data.view);
         }
       })
-      
+
       setLastMotion(false)
       Axios.get(`/api/game/getnextscene/${gameId}/${sceneId}`).then(
         (response) => {
@@ -309,11 +309,11 @@ const ProductScreen = (props) => {
         }
       )
     }
-    if(gameFlag.current){
+    if (gameFlag.current) {
       gameFlag.current = false;
       Axios.get(`/api/gameplaypage/gameinfo/${gameId}/${userId}`).then((response) => {
         if (response.data.success) {
-          const {isClickedGame, thumbsupCntGame, gameDetail} = response.data;
+          const { isClickedGame, thumbsupCntGame, gameDetail } = response.data;
           setGameDetail(gameDetail);
           setIsClickedGame(isClickedGame);
           setThumbsupCntGame(thumbsupCntGame);
@@ -406,132 +406,132 @@ const ProductScreen = (props) => {
     if (i == 0 && isFirstCut) playMusic(0);
     return (
       <>
-      <div
-        className={`${isFullscreen
-          ? "gamePlay__container gamePlay__container_fullscreen"
-          : `gamePlay__container ${full}`
-          }`}
-        ref={maximizableElement}
-      >
         <div
           className={`${isFullscreen
-            ? "gamePlay__mainContainer_fullscreen"
-            : `gamePlay__mainContainer ${full}`
+            ? "gamePlay__container gamePlay__container_fullscreen"
+            : `gamePlay__container ${full}`
             }`}
+          ref={maximizableElement}
         >
           <div
             className={`${isFullscreen
-              ? "backgroundImg_container_fullscreen"
-              : `backgroundImg_container ${full}`
+              ? "gamePlay__mainContainer_fullscreen"
+              : `gamePlay__mainContainer ${full}`
               }`}
-            style={newScreenSize}
-            onClick={(event) => handleEnter(event)}
           >
-            <LoadingPage />
-            {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
-              <img
-                className="backgroundImg"
-                src={Scene.cutList[i]?.background}
-                alt="Network Error"
+            <div
+              className={`${isFullscreen
+                ? "backgroundImg_container_fullscreen"
+                : `backgroundImg_container ${full}`
+                }`}
+              style={newScreenSize}
+              onClick={(event) => handleEnter(event)}
+            >
+              <LoadingPage />
+              {(Scene.cutList[i] && Scene.cutList[i]?.background) ?
+                <img
+                  className="backgroundImg"
+                  src={Scene.cutList[i]?.background}
+                  alt="Network Error"
+                />
+                : (
+                  <div></div>
+                )}
+              <GameCharacterBlock
+                characterList={Scene?.cutList[i]?.characterList}
               />
-              : (
-                <div></div>
-              )}
-            <GameCharacterBlock
-              characterList={Scene?.cutList[i]?.characterList}
-            />
 
 
-            {i === Scene.cutList.length - 1 ? (
-              <TextBlockChoice
-                game_id={gameId}
-                cut_name={Scene.cutList[i]?.name}
-                cut_script={Scene.cutList[i]?.script}
-                scene_depth={Scene.depth}
-                scene_id={Scene._id}
-                scene_next_list={Scene.nextList}
-                setIsTyping={setIsTyping}
-                isTyping={isTyping}
-                isEnding={Scene.isEnding}
-                isLastMotion={lastMotion}
-                theme={Scene.theme}
+              {i === Scene.cutList.length - 1 ? (
+                <TextBlockChoice
+                  game_id={gameId}
+                  cut_name={Scene.cutList[i]?.name}
+                  cut_script={Scene.cutList[i]?.script}
+                  scene_depth={Scene.depth}
+                  scene_id={Scene._id}
+                  scene_next_list={Scene.nextList}
+                  setIsTyping={setIsTyping}
+                  isTyping={isTyping}
+                  isEnding={Scene.isEnding}
+                  isLastMotion={lastMotion}
+                  theme={Scene.theme}
+                  setScene={setScene}
+                />
+              ) :
+                <TextBlock
+                  cut_name={Scene.cutList[i]?.name}
+                  cut_script={Scene.cutList[i]?.script}
+                  setIsTyping={setIsTyping}
+                  isTyping={isTyping}
+                  theme={Scene.theme}
+                />
+              }
+
+              <HistoryMapPopup
+                userhistory={userHistory}
+                history={History}
+                trigger={HistoryMap}
+                setTrigger={setHistoryMap}
                 setScene={setScene}
-              />
-            ) :
-              <TextBlock
-                cut_name={Scene.cutList[i]?.name}
-                cut_script={Scene.cutList[i]?.script}
-                setIsTyping={setIsTyping}
-                isTyping={isTyping}
-                theme={Scene.theme}
-              />
-            }
-
-            <HistoryMapPopup
-              userhistory={userHistory}
-              history={History}
-              trigger={HistoryMap}
-              setTrigger={setHistoryMap}
-              setScene={setScene}
-              isFullscreen={isFullscreen}
-            />
-            <LogPopup
-              trigger={Log}
-              setTrigger={setLog}
-              cutList={Scene.cutList}
-              i={i}
-            />
-            <div className="gamePlay__btn_container">
-              <GamePlayButtons 
-                cutList={Scene.cutList}
-                onClick_thumbsUp={onClick_thumbsUp}
-                thumbsUp={thumbsUp}
-                thumbsUpClicked={thumbsUpClicked}
-                view={view}
-                setDislike={setDislike}
-                setHistoryMap={setHistoryMap}
-                setLog={setLog}
-                mute={mute}
-                muted={muted}
-                errorMessage={errorMessage}
                 isFullscreen={isFullscreen}
-                handleExitFullscreen={handleExitFullscreen}
-                setIsFullscreen={setIsFullscreen}
-                fullButton={fullButton}
+              />
+              <LogPopup
+                trigger={Log}
+                setTrigger={setLog}
+                cutList={Scene.cutList}
                 i={i}
               />
+              <div className="gamePlay__btn_container">
+                <GamePlayButtons
+                  cutList={Scene.cutList}
+                  onClick_thumbsUp={onClick_thumbsUp}
+                  thumbsUp={thumbsUp}
+                  thumbsUpClicked={thumbsUpClicked}
+                  view={view}
+                  setDislike={setDislike}
+                  setHistoryMap={setHistoryMap}
+                  setLog={setLog}
+                  mute={mute}
+                  muted={muted}
+                  errorMessage={errorMessage}
+                  isFullscreen={isFullscreen}
+                  handleExitFullscreen={handleExitFullscreen}
+                  setIsFullscreen={setIsFullscreen}
+                  fullButton={fullButton}
+                  i={i}
+                />
+              </div>
+              <Complaint
+                sceneId={sceneId}
+                gameId={gameId}
+                isModalVisible={Dislike}
+                setIsModalVisible={setDislike}
+              />
             </div>
-            <Complaint
-              sceneId={sceneId}
-              gameId={gameId}
-              isModalVisible={Dislike}
-              setIsModalVisible={setDislike}
-            />
           </div>
         </div>
-      </div>
-      <div className="detail_relative_container"></div>
-      <SceneInfo 
-        gameDetail={gameDetail}
-        view={view}
-        onClick_thumbsUpGame={onClick_thumbsUpGame}
-        isClickedGame={isClickedGame}
-        thumbsupCntGame={thumbsupCntGame}
-        history={props.history}
-        user={user}
-        gameId={gameId}
-        sceneId={sceneId}
-      />
-      <Comment 
-        sceneId={sceneId}
-        gameId={gameId}
-      />
+        <div className="detail_relative_container"></div>
+        <SceneInfo
+          gameDetail={gameDetail}
+          view={view}
+          onClick_thumbsUpGame={onClick_thumbsUpGame}
+          isClickedGame={isClickedGame}
+          thumbsupCntGame={thumbsupCntGame}
+          history={props.history}
+          user={user}
+          gameId={gameId}
+          sceneId={sceneId}
+        />
+        <Comment
+          sceneId={sceneId}
+          gameId={gameId}
+        />
       </>
     );
   } else {
     return (
       <div className="loader_container">
-        <div className="loader">Loading...</div>
+        <div className="loader" />
       </div>
     )
   }

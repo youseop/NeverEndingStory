@@ -10,6 +10,7 @@ import { useLocation } from "react-router";
 import EssetModal from './EssetModal';
 import UploadModal from './UploadModal';
 import EndingModal from './EndingModal';
+import GameInfoModal from './GameInfoModal';
 import useKey from "../../../functions/useKey";
 import CharacterBlock from "../../GamePlayPage/CharacterBlock";
 import { useDispatch } from "react-redux";
@@ -129,7 +130,7 @@ const SceneMakePage = (props) => {
     const [essetModalState, setEssetModalState] = useState(0);
     const [uploadModalState, setUploadModalState] = useState(false);
     const [endingModalState, setEndingModalState] = useState(false);
-    const [infoModalState, setInfoModalState] = useState(false);
+    const [gameInfoModalState, setGameInfoModalState] = useState(false);
     const [reload, setReload] = useState(0);
 
     const [SidBar_script, setSidBar_script] = useState(true);
@@ -786,11 +787,11 @@ const SceneMakePage = (props) => {
             return (
                 <div className="wrapper">
                     <div className="title">
-                        {/* <div
+                        <div
                             className="title-btn"
-                            onClick={() => infoModalState(true)}>
+                            onClick={() => setGameInfoModalState(true)}>
                             게임정보
-                        </div> */}
+                        </div>
                         <div>
                             <span>[{gameDetail?.title}]</span>
                             {/* <span>제작 유효기간: 2020.01.02 {exp}</span> */}
@@ -1022,6 +1023,11 @@ const SceneMakePage = (props) => {
                         visible={endingModalState}
                         setEndingModalState={setEndingModalState}
                         onSubmit_saveScene={onSubmit_saveScene}
+                    />
+                    <GameInfoModal
+                        visible={gameInfoModalState}
+                        setGameInfoModalState={setGameInfoModalState}
+                        gameDetail={gameDetail}
                     />
                     {
                         essetModalState !== 0 && <EssetModal
