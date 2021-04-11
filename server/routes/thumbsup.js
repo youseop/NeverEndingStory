@@ -59,10 +59,6 @@ router.post('/', async (req,res) => {
     console.log(err)
     return res.json({ success: false, err })
   }
-
-  ThumbsUp.findOne({"objectId" : objectId})
-    .exec((err, thumbsup) => {
-    })
 })
 
 

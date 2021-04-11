@@ -7,17 +7,13 @@ import { SVG } from "../../svg/icon";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faHeart, faLink } from "@fortawesome/free-solid-svg-icons";
-import { of, forkJoin, Observable } from "rxjs";
-import { map, tap, flatMap } from "rxjs/operators";
 import TopRatingContributer from "./TopRatingContributer";
 
 import "./GameDetailPage.css";
-import AdminPage from "./AdminPage";
 import { Link } from "react-router-dom";
-import RadialTree from "../TreeVisualization/RadialTree.js";
 import qs from "qs";
-import { Invitaion } from "./Invitation";
 import GameForkButton from "./GameForkButton.js";
+import { pasteLink } from "../../functions/pasteLink.js";
 
 const config = require('../../../config/key')
 
@@ -94,12 +90,13 @@ export default function GameDetailPage(props) {
                         totalSceneCnt, 
                         gameDetail, 
                         isClicked, 
-                        thumbsup
+                        thumbsup,
+                        view
                     } = response.data;
                     setThumbsUp(thumbsup);
                     setThumbsUpClicked(isClicked);
                     setGameDetail(gameDetail);
-                    setView(gameDetail.view);
+                    setView(view);
                     setContributerList(topRank);
                     setContributerCnt(contributerCnt);
                     setTotalSceneCnt(totalSceneCnt);
@@ -128,27 +125,7 @@ export default function GameDetailPage(props) {
             message.error("로그인이 필요합니다.")
         }
     }
-    const pasteLink = () => {
-        const url = window.location.href + "?invitation=true"
-        let urlInput = document.createElement("input");
-        document.body.appendChild(urlInput);
-        urlInput['value'] = url;
-        urlInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(urlInput);
-        message.info("링크가 복사되었습니다.")
-    }
 
-    const [isDelete, setIsDelete] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    const onClick_deleteToggle = () => {
-        setIsDelete((state) => !state)
-    }
-
-    const onClick_adminToggle = () => {
-        setIsAdmin((state) => !state)
-    }
     if (totalSceneCnt) {
         return (
             <div className="detailPage__container">
@@ -220,17 +197,17 @@ export default function GameDetailPage(props) {
                             <div className="detailPage__gamePlay_container">
                                 <div className="detailPage__gamePlay_text">
                                     현재 스토리
-                            </div>
+                                </div>
                                 <div className="detailPage__gamePlay_sceneCntContainer">
-                                    <div className="detailPage__gamePlay_sceneCnt">
+                                <div className="detailPage__gamePlay_sceneCnt">
                                         {totalSceneCnt}
                                     </div>
                                     <div className="detailPage__gamePlay_cntText">
                                         개
-                                </div>
+                                    </div>
                                 </div>
                             </div>
-                            <h1 style={{ "color": "white", "font-size": "50px" }}>|</h1>
+                            <h1 style={{ "color": "white", "fontSize": "50px" }}>|</h1>
                             <div className="detailPage__gamePlay_container">
                                 <div className="detailPage__gamePlay_text">
                                     현재 기여자
@@ -277,7 +254,7 @@ export default function GameDetailPage(props) {
                             <div
                                 className="link_bttn"
                                 onClick={(e) => {
-                                    pasteLink();
+                                    pasteLink(gameId);
                                 }}>
                                 <FontAwesomeIcon
                                     icon={faLink}

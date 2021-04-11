@@ -218,7 +218,7 @@ function Profile(props: any) {
           className="profile__btn"
           onClick={() => onClick_tab("contributedScene")}
         >
-          만든 스토리 
+          기여한 스토리 
         </div>
         <div 
           className="profile__btn"
@@ -245,7 +245,7 @@ function Profile(props: any) {
         style={{display:"none"}}
       >
         <div className="profile__title">
-          기여한 스토리 {totalGameContribute} 개
+          만든 스토리 {totalGameContribute} 개
         </div>
         {displayContributedGame(user)}
       </div>

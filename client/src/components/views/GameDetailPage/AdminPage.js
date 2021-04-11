@@ -158,38 +158,7 @@ function AdminPage(props) {
 
   return (
     <div className="adminPage__container">
-
-      {/* <div className="adminPage__thumbnail container">
-        <img
-            className="adminPage__thumbnail"
-            src={
-                process.env.NODE_ENV === 'production' ?
-                    gameDetail.thumbnail
-                    :
-                    `${config.SERVER}/${gameDetail?.thumbnail}`}
-            alt="thumbnail"
-        />
-        <div className="adminPage__gradation"></div>
-        <div className="admin">
-          관리자 페이지
-        </div>
-        <div className="adminPage__UPTitle">
-          <div>
-            {gameDetail?.title} 
-            <div className="adminPage_edit">
-              제목 수정
-            </div>
-          </div>
-        </div>
-      </div> */}
       <div className="adminPage__body">
-        {/* <div className="adminPage__description">
-          <div className="adminPage_edit">
-            게임 설명 수정
-          </div>
-          {gameDetail.description}
-        </div> */}
-
         {(treeData.userId !== "" && currUserData?._id === treeData.userId) ?
           <>
             <Link

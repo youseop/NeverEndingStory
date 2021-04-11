@@ -25,7 +25,7 @@ const { sanitize } = require("../lib/sanitize")
 const { log } = require("winston");
 const { View } = require("../models/View");
 const { ThumbsUp } = require("../models/ThumbsUp");
-const { getRank, getDetail } = require('./functions/game');
+const { getRank, getDetail, getSpecificDetail } = require('./functions/game');
 
 AWS.config.update({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -461,8 +461,8 @@ router.get("/detail/:gameId", async (req, res) => {
         const {gameId} = req.params;
         const {gameDetail} = await getDetail(gameId);
         return res.status(200).json({ success: true, gameDetail });
-        } catch (err) {
-        console.log(err);
+    } catch (err) {
+    console.log(err);
         return res.status(400).json({ success: false });
     }
 });

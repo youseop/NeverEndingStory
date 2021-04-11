@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import './Comment.css';
 import SingleComment from './SingleComment';
 
-function Comment({gameId}) {
+function Comment({gameId, sceneId}) {
   const user = useSelector((state) => state.user);
   const isAuth = useSelector((state) => {
     if (state.user.userData){
@@ -15,7 +15,6 @@ function Comment({gameId}) {
     }
   });
   
-  const [update, setUpdate] = useState(true);
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -50,25 +49,29 @@ function Comment({gameId}) {
   });
  
   const updateToggle = () => {
-    axios.get(`/api/comment/${gameId}`).then(response => {
-      if (response.data.success) {
-        setTotalComment(response.data.result);
-        setComments(response.data.result.slice(0,contentNumber));
-      } else {
-        message.error('댓글을 불러오는데 실패했습니다.')
-      }
-    })
+    if(sceneId){
+      axios.get(`/api/comment/scene/${gameId}/${sceneId}`).then(response => {
+        if (response.data.success) {
+          setTotalComment(response.data.result);
+          setComments(response.data.result.slice(0,contentNumber));
+        } else {
+          message.error('댓글을 불러오는데 실패했습니다.')
+        }
+      })
+    } else {
+      axios.get(`/api/comment/${gameId}`).then(response => {
+        if (response.data.success) {
+          setTotalComment(response.data.result);
+          setComments(response.data.result.slice(0,contentNumber));
+        } else {
+          message.error('댓글을 불러오는데 실패했습니다.')
+        }
+      })
+    }
   }
 
   useEffect(() => {
-    axios.get(`/api/comment/${gameId}`).then(response => {
-      if (response.data.success) {
-        setTotalComment(response.data.result);
-        setComments(response.data.result.slice(0,contentNumber));
-      } else {
-        message.error('댓글을 불러오는데 실패했습니다.')
-      }
-    })
+    updateToggle();
   }, [])
 
   const onChange_comment = (event) => {
@@ -80,15 +83,26 @@ function Comment({gameId}) {
     if(commentContent === ""){
       return;
     }
+    let variables;
+    if(sceneId){
+      variables = {
+        content: commentContent,
+        writer: user.userData._id,
+        gameId: gameId,
+        sceneId: sceneId,
+        responseTo : ""
+      };
+    } else {
+      variables = {
+        content: commentContent,
+        writer: user.userData._id,
+        gameId: gameId,
+        sceneId: "",
+        responseTo : ""
+      };
+    }
 
-    const variables = {
-      content: commentContent,
-      writer: user.userData._id,
-      gameId: gameId,
-      responseTo : ""
-    };
-
-    axios.post('/api/comment/save-comment', variables).then(response => {
+    axios.post('/api/comment/', variables).then(response => {
       if(response.data.success) {
         message.success('댓글 감사합니다.');
         updateToggle();
@@ -113,7 +127,7 @@ function Comment({gameId}) {
   })
 
   return (
-    <div className="comment__container">
+    <div className={sceneId ? "comment__container gamePlay_comment" : "comment__container"}>
       <div className="comment__commentCnt">
         댓글 {totalComment.length}개
       </div>

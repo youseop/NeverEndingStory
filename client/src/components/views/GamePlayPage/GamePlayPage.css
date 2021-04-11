@@ -52,7 +52,7 @@
   font-size: 0.9rem;
   height: 1% !important;
 }
-.gameView:hover {
+.preventColorChange:hover {
   color: rgb(182, 182, 182) !important;
 }
 .gamePlay__btnClicked {
@@ -66,8 +66,8 @@
   font-size: 0.9rem;
 }
 .gamePlay__btn:hover {
-  color: rgb(63, 63, 63);
-  transition-duration: 0.2s;
+  color: rgb(149, 149, 149);
+  transition-duration: 0.1s;
   cursor: pointer;
 }
 .gamePlay__btnClicked:hover {
@@ -123,8 +123,6 @@
 @media (max-width:1000px) and (pointer: fine){
   .detail_relative_container{
     height: 60vw;
-    background-color: yellow;
-
   }
 }
 @media (max-width:780px) and (pointer: fine){
@@ -159,7 +157,6 @@
     height: calc(56vw);
   }
   .gamePlay__container{
-    height: calc(52px + 56vw) !important;
     top: 0%;
   }
 

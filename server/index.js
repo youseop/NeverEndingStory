@@ -67,6 +67,7 @@ app.use('/api/view', require('./routes/view'));
 app.use('/api/thumbsup', require('./routes/thumbsup'));
 app.use('/api/treedata', require('./routes/treedata')); 
 app.use('/api/detailpage', require('./routes/detailpage')); 
+app.use('/api/gameplaypage', require('./routes/gameplaypage')); 
 
 //use this to show the image you have in node js server to client (react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client

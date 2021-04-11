@@ -1,0 +1,32 @@
+.sceneInfo{
+  padding-left: 10%;
+  padding-right: 10%;
+  margin: auto;
+  margin-top: 20px !important;
+}
+
+.sceneInfo__container{
+
+}
+
+.sceneInfo__title{
+  font-family: Noto Sans KR;
+  font-size: 2.5em;
+  font-weight: 600;
+  color: #ebebeb;
+}
+
+.sceneInfo__genre{
+  color: #ebebeb;
+}
+
+.sceneInfo__creater{
+}
+
+@media (max-width:850px) and (orientation:portrait){   
+  .sceneInfo{
+    padding-left: 3%;
+    padding-right: 3%;
+    margin: auto;
+  }
+}
