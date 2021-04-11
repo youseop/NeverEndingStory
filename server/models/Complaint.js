@@ -10,7 +10,7 @@ const complaintSchema = mongoose.Schema({
   },
   title : {
     type: String,
-    maxlength: 100
+
   },
   description : {
     type: String

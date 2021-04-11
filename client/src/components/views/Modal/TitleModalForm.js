@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Modal, Form, message, Input } from "antd";
 import "./TitleModalForm.css"
 import { CategoryOptions } from "../Scene/SceneMakePage/UploadModal";
@@ -6,7 +6,7 @@ import { CategoryOptions } from "../Scene/SceneMakePage/UploadModal";
 const ModalFormComponent = ({ type,visible, onCancel, onCreate, setGameTitle, setGameDescription, setCategory }) => {
     
     const onTitleChange = (event) => {
-        setGameTitle(event.currentTarget.value.substr(0, 30));
+        setGameTitle(event.currentTarget.value);
     };
     const onDescriptionChange = (event) => {
         setGameDescription(event.currentTarget.value.substr(0, 5000));
@@ -18,7 +18,7 @@ const ModalFormComponent = ({ type,visible, onCancel, onCreate, setGameTitle, se
 
     const msg = useRef(null)
     if(type === "fork"){
-        msg.current = "이 게임의 모든 캐릭터, 배경사진, 배경음악, 효과음이 복사됩니다."
+        msg.current = `이 스토리의 사진과 음악 자원이 모두 복사됩니다.\n같은 자원을 이용해서 다른 버전의 스토리를 만들어보세요!`
     }
     else if(type === "create"){
         msg.current = "여러분의 스토리를 제작해보세요!"
@@ -32,6 +32,7 @@ const ModalFormComponent = ({ type,visible, onCancel, onCreate, setGameTitle, se
             onCancel={onCancel}
             onOk={onCreate}
             closable={false}
+            centered={true}
             bodyStyle={{
                 height: "515px",
                 fontFamily: "Noto Sans KR",
@@ -39,16 +40,16 @@ const ModalFormComponent = ({ type,visible, onCancel, onCreate, setGameTitle, se
                 fontWeight: "300"
             }}
         >
-            <div>{msg.current}</div>
+            <div className="title_modalform_msg">{msg.current}</div>
             <Form layout="vertical">
                 <Form.Item label="제목" name="title" rules={[
                     { required: true, message: "제목을 입력해주세요!" },
-                    { max: 30, message: '제목은 30자 이내여야 합니다.' },
+                    { max: 20, message: '제목은 20자 이내여야 합니다.' },
                 ]}>
                     <textarea
                         className="title_modalform_title"
                         required="required"
-                        maxLength={31}
+                        maxLength={20}
                         onChange={onTitleChange}
                     />
                 </Form.Item>

@@ -17,7 +17,7 @@ const mongoose = require("mongoose");
 const { check } = require("../middleware/check");
 
 const multer = require("multer");
-const multerS3 = require("multer-s3");
+const multerS3 = require("multer-s3"); 
 const AWS = require("aws-sdk");
 const { objCmp } = require("../lib/object");
 const { sanitize } = require("../lib/sanitize")
@@ -265,10 +265,18 @@ router.get("/start/:gameId", check, async (req, res) => {
         const {gamePlaying, gameHistory} = user;
         if (gamePlaying.gameId && objCmp(gamePlaying.gameId, gameId)) {
             // trashSceneId 플레잉 리스트에서 삭제 -- 삭제 됐으면, 길이 자연스럽게 줄어든다.
-            if (isMember && objCmp(gamePlaying.sceneIdList[gamePlaying.sceneIdList.length - 1], trashSceneId)) {
-                gamePlaying.sceneIdList.pop();
-                gamePlaying.isMaking = false;
-                await user.save();
+            if (isMember && objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], trashSceneId)) {
+                //! 이곳에 들어오지 않았다. -- playing 리스트에서 pop된 적이없다.
+                //! 시간이 지난 쓰레기들이 남아있었고, 가장 앞에 있던 녀석을 찾았다.
+                //! idx가 매칭되지 않아서 playinglist를 pop시키지 못했다.
+                user.gamePlaying.sceneIdList.pop();
+                user.gamePlaying.isMaking = false;
+                user.save((err) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(400).json({ success: false })
+                    }
+                });
             }
             return res
                 .status(200)
@@ -442,7 +450,6 @@ router.get("/getSceneInfo/:sceneId", async (req, res) => {
     try {
         const scene = await Scene.findOne({ _id: sceneId });
         const game_createor = await Game.findOne({ _id: scene?.gameId }).select("creator");
-
         if (scene === null) {
             return res.status(200).json({ success: false });
         }
