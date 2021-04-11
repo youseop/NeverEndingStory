@@ -122,7 +122,7 @@ function HistoryMapPopup(props) {
   return props.trigger ? (
     <div className="HistoryMap_popup">
       <div className="HistoryMap_explain">
-        씬을 누르면 해당 씬으로 돌아갈 수 있습니다.
+        박스를 누르면 해당 이야기로 돌아갈 수 있습니다.
       </div>
       <div className="close_btn" onClick={() => close_button()}>
         <SVG

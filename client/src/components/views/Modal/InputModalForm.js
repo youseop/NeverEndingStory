@@ -35,7 +35,7 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setSceneTitle, remain
         closable={false}
       >
         <Form layout="vertical">
-          <Form.Item className="scenemake_modal_input_container" label="당신의 답변을 입력해주세요" name="title" rules={[
+          <Form.Item className="scenemake_modal_input_container" name="title" rules={[
             {
               required: true,
               message: "당신의 답변을 입력해주세요",

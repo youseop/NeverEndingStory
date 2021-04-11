@@ -16,7 +16,7 @@ function SoundFile({ sound_audio, sound, setSoundFile, setReload }) {
         setReload(reload => reload + 1);
     };
 
-
+ 
     return (
         <div
             className={`bgmSidebar_box ${sound_uri === decodeURI(sound.music.substr(cutIdx))}`}
