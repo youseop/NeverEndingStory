@@ -207,7 +207,7 @@ router.post("/putCharDB", (req, res) => {
 
 const updateHistoryFromPlaying = (user) => {
     const {
-        gamePlaying: { gameId, sceneIdList },
+        gamePlaying: { gameId, sceneIdList,isMaking },
         gameHistory,
     } = user;
 
@@ -225,7 +225,7 @@ const updateHistoryFromPlaying = (user) => {
     //     }
     // }
 
-    user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList] });
+    user.gameHistory.push({ gameId, sceneIdList: [...sceneIdList], isMaking});
     user.gamePlaying.sceneIdList = [];
     user.gamePlaying.gameId = null;
     return;
@@ -311,6 +311,7 @@ router.get("/start/:gameId", check, async (req, res) => {
                     sceneIdList: user.gameHistory[i].sceneIdList.slice(0, user.gameHistory[i].sceneIdList.length),
                     isMaking: user.gameHistory[i].isMaking
                 };
+
                 await user.save();
                 
                 if (user.gamePlaying?.sceneIdList?.length > 1){

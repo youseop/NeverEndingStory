@@ -93,6 +93,9 @@ router.get("/logout", auth, (req, res) => {
 router.post("/playing-list/clear", check, async (req, res) => {
     try {
         let user;
+        let nowIsMaking=false;
+        const { gameId, sceneId } = req.body
+        
         if (req.isMember) {
             user = await User.findOne({ _id: req.user._id })
         }
@@ -100,40 +103,44 @@ router.post("/playing-list/clear", check, async (req, res) => {
             user = req.session
         }
         //isMaking이었으면 만들던 씬 정리해야함...(똑같은 짓 하는거 찾아보고 합치기 가능하면 합치기)
-        const prevOfLastScene = user.gamePlaying.isMaking && user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 2];
-        
-        if (user.gamePlaying.isMaking) {
-            const { gameId } = req.body
-            // const idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
-            // if (idx > -1) {
-            //     user.makingGameList.splice(idx, 1)
-            // }
+        //! 제작취소 -> 처음부터 하기 ( emptyNum 방지 됨)
+        //! 처음부터하기 -> 제작 취소
+        let prevOfLastScene
+        if (objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], sceneId)){
+            nowIsMaking = true;
+            prevOfLastScene = user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 2];
+            
             //! 당분간 while문으로 갈겨놔야할 듯?
             let idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
             while (idx > - 1) {
                 user.makingGameList.splice(idx, 1)
                 idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
             }
+
+
+
+            
+            user.gamePlaying = {
+                ...user.gamePlaying,
+                isMaking: false,
+                sceneIdList: user.gamePlaying.sceneIdList.splice(0, 1)
+            };
+            if (req.isMember) {
+                user.save()
+            }
+            return res.json({
+                success: true,
+                teleportSceneId: user.gamePlaying.sceneIdList[0],
+                prevOfLastScene,
+                nowIsMaking
+            })
         }
-
-
-
-        user.gamePlaying = {
-            ...user.gamePlaying,
-            isMaking: false,
-            sceneIdList: user.gamePlaying.sceneIdList.splice(0, 1)
-        };
-
-
-
-        if (req.isMember) {
-            user.save()
+        else{
+            return res.json({
+                success:true,
+                refresh : true,
+            })
         }
-        return res.json({
-            success: true,
-            teleportSceneId: user.gamePlaying.sceneIdList[0],
-            prevOfLastScene
-        })
     }
     catch (err) {
         return res.json({ success: false, err });
