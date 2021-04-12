@@ -215,11 +215,17 @@ function Character(props) {
                 onClickOrder("")
               }}
             />
+            <FontAwesomeIcon
+              icon={faArrowsAltH}
+              className="bttn btn_character_down"
+              style={{ left: `${imgWidth - 75}px` }}
+              onClick={onClickToggle}
+            />
             <div
               className={`${sizing ? "bttn btn_sizing_clicked" : "bttn btn_sizing"}`}
               onMouseOver={onMouseOver}
               onMouseOut={onMouseOut}
-              onMouseDown={(e) => {onMouseDown(e,"mouse")}}
+              onMouseDown={(e) => { onMouseDown(e, "mouse") }}
               style={{ left: `${imgWidth - 3}px` }}
             ></div>
           </>

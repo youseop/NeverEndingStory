@@ -10,6 +10,7 @@ import { useLocation } from "react-router";
 import EssetModal from './EssetModal';
 import UploadModal from './UploadModal';
 import EndingModal from './EndingModal';
+import GameInfoModal from './GameInfoModal';
 import useKey from "../../../functions/useKey";
 import CharacterBlock from "../../GamePlayPage/CharacterBlock";
 import { useDispatch } from "react-redux";
@@ -85,6 +86,8 @@ const SceneMakePage = (props) => {
         if (isMobile.current) {
             const focusMobileText = (event) => {
                 if (event.target.tagName === "TEXTAREA" || event.target.tagName === "INPUT") {
+                    if (event.target.className.split(' ')[0] === "actorTab_profile_text")
+                        return;
                     if (document.body.style.zoom !== "180%")
                         document.body.style.zoom = "180%"
                 } else {
@@ -129,7 +132,7 @@ const SceneMakePage = (props) => {
     const [essetModalState, setEssetModalState] = useState(0);
     const [uploadModalState, setUploadModalState] = useState(false);
     const [endingModalState, setEndingModalState] = useState(false);
-    const [infoModalState, setInfoModalState] = useState(false);
+    const [gameInfoModalState, setGameInfoModalState] = useState(false);
     const [reload, setReload] = useState(0);
 
     const [SidBar_script, setSidBar_script] = useState(true);
@@ -407,8 +410,6 @@ const SceneMakePage = (props) => {
         setSoundFile(CutList[index]?.sound);
         if (CutList[index]?.bgm.music) {
             let cutIdx = bgm_audio.src.lastIndexOf("/") + 1;
-            message.info(bgm_audio.src)
-            message.info(sound_audio.src)
             if (bgm_audio.src.substr(cutIdx) !== CutList[index].bgm.music.substr(cutIdx)) {
                 bgm_audio.src = CutList[index]?.bgm.music;
                 bgm_audio.play();
@@ -630,7 +631,7 @@ const SceneMakePage = (props) => {
                     sceneId: sceneId,
                     isFirst: isFirstScene.current,
                     userId: user.userData._id,
-                    exp :expTime
+                    exp: expTime
                 }
             })
                 .then(response => {
@@ -796,12 +797,14 @@ const SceneMakePage = (props) => {
         if ((isFirstScene.current && gameDetail?._id) || (!isFirstScene.current && sceneTitle)) {
             return (
                 <div className="wrapper">
-                    <div className="title">
+                    {!isFirstScene.current &&
                         <div
-                            className="title-btn"
-                            onClick={() => setEssetModalState(5)}>
+                            className="info_btn"
+                            onClick={() => setGameInfoModalState(true)}>
                             게임정보
-                    </div>
+                            </div>
+                    }
+                    <div className="title">
                         <div className="scenemake_title_container">
                             {isFirstScene.current ?
                                 <span>[{gameDetail?.title}]</span>
@@ -885,15 +888,15 @@ const SceneMakePage = (props) => {
                                         <div className="scene__sound_bgm_name">{BgmFile.name}</div>
                                     </div>
                                 ) : (
-                                        <div
-                                            className="scene__sound_box"
-                                            onClick={onClick_bgm_box}
-                                        >
-                                            <StopOutlined
-                                                className="scene__sound_icon bgm" />
-                                            <div className="scene__sound_bgm_name">BGM</div>
-                                        </div>
-                                    )}
+                                    <div
+                                        className="scene__sound_box"
+                                        onClick={onClick_bgm_box}
+                                    >
+                                        <StopOutlined
+                                            className="scene__sound_icon bgm" />
+                                        <div className="scene__sound_bgm_name">BGM</div>
+                                    </div>
+                                )}
                                 {SoundFile?.name ? (
                                     <div
                                         className="scene__sound_box"
@@ -912,15 +915,15 @@ const SceneMakePage = (props) => {
                                         <div className="scene__sound_sound_name">{SoundFile.name}</div>
                                     </div>
                                 ) : (
-                                        <div
-                                            className="scene__sound_box"
-                                            onClick={onClick_sound_box}
-                                        >
-                                            <StopOutlined
-                                                className="scene__sound_icon sound" />
-                                            <div className="scene__sound_sound_name">Sound</div>
-                                        </div>
-                                    )}
+                                    <div
+                                        className="scene__sound_box"
+                                        onClick={onClick_sound_box}
+                                    >
+                                        <StopOutlined
+                                            className="scene__sound_icon sound" />
+                                        <div className="scene__sound_sound_name">Sound</div>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -1044,6 +1047,11 @@ const SceneMakePage = (props) => {
                         visible={endingModalState}
                         setEndingModalState={setEndingModalState}
                         onSubmit_saveScene={onSubmit_saveScene}
+                    />
+                    <GameInfoModal
+                        visible={gameInfoModalState}
+                        setGameInfoModalState={setGameInfoModalState}
+                        gameDetail={gameDetail}
                     />
                     {
                         essetModalState !== 0 && <EssetModal

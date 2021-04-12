@@ -28,18 +28,30 @@
     width:630px;
     height:210px;    
     position: absolute;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     left:320px;
     top:310px;
     /* background-color: pink; */
 }
 .characterTab_cards_Box::-webkit-scrollbar {
-    display: none;
+    width: 10px;
   }
+.characterTab_cards_Box::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.characterTab_cards_Box::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+}
 
 .characterTab_cards{
     display: inline-block;
-    width:102px;
+    width:100px;
     height:85px;    
     overflow: hidden;
     margin:0px 3px 3px 0px;
@@ -59,7 +71,7 @@
     left: 320px;
     top: 85px;
     font-size: 18px;
-    width:200px;
+    width:270px;
     height: 30px;
     color:black;
     padding-left:15px;
@@ -83,6 +95,20 @@
     color:black;
     font-size: 18px;    
     background-color: #ffffff;
+}
+.characterTab_profile_text::-webkit-scrollbar {
+    width: 10px;
+  }
+.characterTab_profile_text::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.characterTab_profile_text::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
 }
 .characterTab_profile_text:hover{
     opacity: 0.8;

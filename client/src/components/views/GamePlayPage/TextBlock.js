@@ -10,7 +10,7 @@ import { Click_Icon } from "../../svg/icon"
 const CHOICE_NUM = 4;
 
 export const TextBlock = (props) => {
-    let { cut_name, cut_script, setIsTyping, isTyping, theme } = props;
+    let { cut_name, cut_script, setIsTyping, isTyping, theme, muted } = props;
 
     return <>
         <div className={`text_window ${theme}`} >
@@ -25,6 +25,7 @@ export const TextBlock = (props) => {
                                 isTyping ? < TextAnimation
                                     cut_script={cut_script}
                                     setIsTyping={setIsTyping}
+                                    muted={muted}
                                 /> : cut_script
                             }
                             </div>
@@ -40,6 +41,7 @@ export const TextBlock = (props) => {
                             isTyping ? < TextAnimation
                                 cut_script={" "}
                                 setIsTyping={setIsTyping}
+                                muted={muted}
                             /> : cut_script
                         }
                         </div>

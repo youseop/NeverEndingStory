@@ -94,10 +94,12 @@ function BgmTab({ gameDetail, setFileQueue, setTypeQueue, setBgmBlobList, bgmBlo
                 >
                 </MyDropzone>
             </div>
-            <div className="bgmTab_Box">
-                {bgmCards !== 0 && <div>{bgmCards}</div>}
-                {blobCards !== 0 && <div>{blobCards}</div>}
-            </div>
+            {(gameDetail?.bgm.length > 0 || bgmBlobList?.length > 0) &&
+                <div className="bgmTab_Box">
+                    {bgmCards !== 0 && <div>{bgmCards}</div>}
+                    {blobCards !== 0 && <div>{blobCards}</div>}
+                </div>
+            }
         </div>
     );
 }

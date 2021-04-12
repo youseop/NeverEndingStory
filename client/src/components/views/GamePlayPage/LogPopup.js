@@ -21,6 +21,9 @@ function LogPopup(props) {
         })
         return log;
     }
+    if(!cutList){
+        return <></>
+    }
     return trigger ? (
         <div className="HistoryMap_popup log">
             <div className="close_btn" onClick={() => close_button()}>

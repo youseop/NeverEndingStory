@@ -60,9 +60,11 @@ function BackgroundTab({ gameDetail, setFileQueue, setTypeQueue, setBackBlobList
                 >
                 </MyDropzone>
             </div>
-            <div className="backgroundTab_Box">
-                {backgroundCards} {blobCards}
-            </div>
+            {(backBlobList?.length > 0 || gameDetail.background?.length > 0) &&
+                <div className="backgroundTab_Box">
+                    {backgroundCards} {blobCards}
+                </div>
+            }
         </div>
     );
 }

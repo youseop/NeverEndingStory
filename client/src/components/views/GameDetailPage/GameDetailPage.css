@@ -50,7 +50,7 @@
   object-fit : contain;
   position: absolute;
   top:0;
-  left: 0;;
+  left: 0;
   margin-bottom: 6vmin;
   overflow: hidden;
 }

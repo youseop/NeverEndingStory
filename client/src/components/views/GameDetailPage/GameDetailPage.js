@@ -42,14 +42,14 @@ export default function GameDetailPage(props) {
             let response;
             let nowIsMaking;
             if (isFirst) {
-                response = await Axios.post("/api/users/playing-list/clear",{gameId,sceneId});
+                response = await Axios.post("/api/users/playing-list/clear", { gameId, sceneId });
                 // Not Yet Tested
-                if(response.data.success){
+                if (response.data.success) {
                     nowIsMaking = response.data.nowIsMaking
                     if (user.userData.isAuth && nowIsMaking) {
                         socket.emit("empty_num_increase", { user_id: user.userData._id.toString(), scene_id: response.data.prevOfLastScene.toString() });
                     }
-                    else if (response.data.refresh){
+                    else if (response.data.refresh) {
                         message.error("다른 스토리 감상 시도를 감지하였습니다. 다시 시도해주세요.")
                         window.location.reload();
                         return;
@@ -67,14 +67,14 @@ export default function GameDetailPage(props) {
             console.log(err);
         }
     }
-    
+
     const updateFlag = useRef(true);
 
     useEffect(() => {
         if (user && user.userData && updateFlag.current) {
             updateFlag.current = false;
             Axios.get(`/api/game/start/${gameId}`).then((response) => {
-                const {success, sceneId, isMaking, isPlayed} = response.data;
+                const { success, sceneId, isMaking, isPlayed } = response.data;
                 if (success) {
                     setSceneId(sceneId);
                     setIsMaking(isMaking);
@@ -83,16 +83,16 @@ export default function GameDetailPage(props) {
                     message.error("로그인 해주세요.");
                 }
             });
-            
+
             const userId = user.userData._id;
             Axios.get(`/api/detailpage/${gameId}/${userId}`).then((response) => {
                 if (response.data.success) {
                     const {
-                        topRank, 
-                        contributerCnt, 
-                        totalSceneCnt, 
-                        gameDetail, 
-                        isClicked, 
+                        topRank,
+                        contributerCnt,
+                        totalSceneCnt,
+                        gameDetail,
+                        isClicked,
                         thumbsup,
                         view
                     } = response.data;
@@ -116,10 +116,10 @@ export default function GameDetailPage(props) {
                 flag: "1"
             }
             setThumbsUp((state) => {
-                if(thumbsUpClicked){
-                    return state-1;
+                if (thumbsUpClicked) {
+                    return state - 1;
                 }
-                return state+1;
+                return state + 1;
             });
             setThumbsUpClicked((state) => !state);
             Axios.post("/api/thumbsup/", variable);
@@ -213,43 +213,43 @@ export default function GameDetailPage(props) {
                     </div>
                     <div className="detailPage__contributer_container_box">
                         <div className="detailPage__contributer_container_box fit">
-                        <div className="detailPage__contributer_container">
-                            <div className="detailPage__contributer_title"> 가장 많은 기여를 한 사람</div>
-                            <TopRatingContributer
-                                contributerList={contributerList}
-                                creatorNickname={gameDetail?.creator?.nickname}
-                                totalSceneCnt={totalSceneCnt}
-                            />
-                        </div>
-                        <div className="detailPage__gamePlay_container_box">
-                            <div className="detailPage__gamePlay_container">
-                                <div className="detailPage__gamePlay_text">
-                                    현재 스토리
+                            <div className="detailPage__contributer_container">
+                                <div className="detailPage__contributer_title"> 가장 많은 기여를 한 사람</div>
+                                <TopRatingContributer
+                                    contributerList={contributerList}
+                                    creatorNickname={gameDetail?.creator?.nickname}
+                                    totalSceneCnt={totalSceneCnt}
+                                />
+                            </div>
+                            <div className="detailPage__gamePlay_container_box">
+                                <div className="detailPage__gamePlay_container">
+                                    <div className="detailPage__gamePlay_text">
+                                        현재 스토리
                                 </div>
-                                <div className="detailPage__gamePlay_sceneCntContainer">
-                                <div className="detailPage__gamePlay_sceneCnt">
-                                        {totalSceneCnt}
+                                    <div className="detailPage__gamePlay_sceneCntContainer">
+                                        <div className="detailPage__gamePlay_sceneCnt">
+                                            {totalSceneCnt}
+                                        </div>
+                                        <div className="detailPage__gamePlay_cntText">
+                                            개
                                     </div>
-                                    <div className="detailPage__gamePlay_cntText">
-                                        개
+                                    </div>
+                                </div>
+                                <h1 style={{ "color": "white", "fontSize": "50px" }}>|</h1>
+                                <div className="detailPage__gamePlay_container">
+                                    <div className="detailPage__gamePlay_text">
+                                        현재 기여자
+                            </div>
+                                    <div className="detailPage__gamePlay_sceneCntContainer">
+                                        <div className="detailPage__gamePlay_sceneCnt">
+                                            {ContributerCnt}
+                                        </div>
+                                        <div className="detailPage__gamePlay_cntText">
+                                            명
+                                    </div>
                                     </div>
                                 </div>
                             </div>
-                            <h1 style={{ "color": "white", "fontSize": "50px" }}>|</h1>
-                            <div className="detailPage__gamePlay_container">
-                                <div className="detailPage__gamePlay_text">
-                                    현재 기여자
-                            </div>
-                                <div className="detailPage__gamePlay_sceneCntContainer">
-                                    <div className="detailPage__gamePlay_sceneCnt">
-                                        {ContributerCnt}
-                                    </div>
-                                    <div className="detailPage__gamePlay_cntText">
-                                        명
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -309,7 +309,7 @@ export default function GameDetailPage(props) {
     else {
         return (
             <div className="loader_container">
-                <div className="loader"/>
+                <div className="loader" />
             </div>
         )
     }

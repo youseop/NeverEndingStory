@@ -3,7 +3,6 @@ import React from "react";
 import { LOCAL_HOST } from "../../../../Config"
 
 function BgmFile({ bgm_audio, bgm, setBgmFile, setReload }) {
-    const audio_src = bgm_audio.src;
     let cutIdx = bgm_audio.src.lastIndexOf("/") + 1;
     let bgm_uri = decodeURI(bgm_audio.src.substr(cutIdx))
     const onClick_music = () => {
