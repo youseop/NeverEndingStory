@@ -38,6 +38,7 @@
     color:#fff;
     font-weight: 100;
     overflow: hidden;
+    text-align: center;
     cursor: pointer;
     /* border: 1px solid rgba(70, 70, 70, 0.26); */
 }

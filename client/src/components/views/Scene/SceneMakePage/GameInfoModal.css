@@ -6,7 +6,7 @@
 }
 .gameInfoTab__container {
     position:relative;
-    width: 80% ;    
+    width: 80%;    
     color: #FFFFFF;
     margin: auto;
     height:560px;
@@ -681,4 +681,169 @@
     border-radius: calc(10vh/9);
     box-shadow: inset calc(0vh/9) calc(0vh/9) calc(5vh/9) white;
 }
+}
+
+
+@media (max-width:850px) and (orientation:portrait) {    
+    .scenemake_essetmodal.info.ant-modal{
+        top:30vw;
+        width:90vw !important;
+        height: 0vh;
+      }
+      .scenemake_essetmodal.info>.ant-modal-content{
+        height: 90vw;
+      }
+      .scenemake_essetmodal.info>.ant-modal-content>.ant-modal-body{
+        height: 80vw;
+      }
+      .scenemake_essetmodal.info>.ant-modal-content>.ant-modal-footer{
+        height: 10vw;
+        /* background-color: greenyellow !important; */
+      }
+      
+      .scenemake_essetmodal.info>.ant-modal-content>.ant-modal-footer>div>.ant-btn{
+        height:6vw;
+      }
+      .scenemake_essetmodal.info>.ant-modal-content>.ant-modal-footer>div>.ant-btn.ant-btn-primary{
+      }
+
+    .gameInfoTab__padding{
+        padding-top: calc(190vw/8);
+    }
+    .gameInfoTab__container {
+        width: 80vw;
+        height:45vw;
+      }
+      .gameInfoTab__padding::-webkit-scrollbar {
+        display: none;
+      }
+      
+      .gameInfoTab__gradation {
+        height: calc(200vw/8);
+        bottom: calc(-2vw/8);
+      }
+      
+      .gameInfoTab__UPTitle {
+        font-size: calc(45vw/8);
+        line-height: calc(36vw/8);
+      }
+      
+      .gameInfoTab__thumbnail_container{
+        font-size: calc(38vw/8);
+        line-height: calc(36vw/8);
+      }
+      
+      .gameInfoTab__contributer_title {
+        font-size: calc(25vw/8);
+        padding-top: calc(10vw/8);
+        padding-bottom: calc(10vw/8);
+      }
+      
+      .gameInfoTab__contributer_container_box{
+        height:calc(0vw/8);
+        width:calc(400vw/8);
+      }
+      .gameInfoTab__genre {
+        margin-top: calc(20vw/8);
+        font-size: calc(30vw/8);
+      } 
+      .gameInfoTab__gamePlay {
+        font-size: calc(15vw/8);
+        line-height: calc(22vw/8);
+        padding-right:0%;
+      }
+      .gameInfoTab__gamePlay_container_box{
+        margin-top: calc(20vw/8);
+        margin-right: 5vw;
+        padding-bottom: calc(10vw/8);
+      }
+      
+      .gameInfoTab__gamePlay_text {
+        font-size: calc(25vw/8);
+        line-height: calc(22vw/8);
+      }
+      
+      .gameInfoTab__gamePlay_sceneCntContainer {      
+        width: calc(100vw/8);
+        height: calc(50vw/8);
+      }
+      
+      .gameInfoTab__gamePlay_sceneCnt {
+        font-size: calc(50vw/8);
+        margin-bottom: calc(13vw/8);
+        padding-right: calc(5vw/8);
+      }
+      .gameInfoTab__gamePlay_bar{
+        font-size: calc(50vw/8);
+      }
+      .actorTab__warning{
+      top:calc(300vw/8);
+      right:3vw;
+      font-size: calc(45vw/8);
+    }  
+    .actorTab__container {
+        width: 90% ;
+        max-width: calc(1180vw/11);
+        height:calc(560vw/11);
+      }
+    
+    .actorTab_character_card{
+        height: calc(300vw/11);
+    }
+    
+    .actorTab_profile_image{
+        width:calc(250vw/11);
+        height:calc(250vw/11);    
+        margin-bottom: calc(30vw/11);
+        border: calc(5vw/11) solid #AAAAAA;
+        border-radius: calc(8vw/11);
+    }
+    
+    .actorTab_image{
+        width: 100%;
+        height: 100%;
+    }
+    .actorTab_textarea{
+        left: calc(30vw/11);
+        bottom:calc(50vw/11);
+        height: calc(300vw/11);
+        width:calc(100vw/11);
+    }
+    .actorTab_profile_text.name{
+        font-size: calc(25vw/11);
+        width:calc(400vw/11);
+        height: calc(40vw/11);
+        color:black;
+        padding-left:calc(15vw/11);
+    }
+    .actorTab_profile_text.description{
+        width:calc(450vw/11);
+        height:calc(135vw/11);
+        margin: calc(10vw/11) calc(50vw/11) calc(10vw/11) calc(0vw/11);
+        padding: calc(15vw/11) calc(15vw/11) calc(0vw/11) calc(15vw/11);
+        font-size: calc(28vw/11);    
+    }
+    .actorTab_profile_text::-webkit-scrollbar {
+        width: calc(10vw/11);
+      }
+    .actorTab_profile_text::-webkit-scrollbar-thumb {
+        border-radius: calc(10vw/11);
+        border: calc(2vw/11) solid transparent;
+    }
+    .actorTab_profile_text::-webkit-scrollbar-track {
+        border-radius: calc(10vw/11);
+    }
+    .gameInfoTab__padding.actor::-webkit-scrollbar {
+        display:unset;
+        width: calc(10vw/9);
+      }
+      .gameInfoTab__padding.actor::-webkit-scrollbar-thumb {
+        background-color: #2f3542;
+        border-radius: calc(10vw/9);
+        border: calc(2vw/9) solid transparent;
+      }
+      .gameInfoTab__padding.actor::-webkit-scrollbar-track {
+        border-radius: calc(10vw/9);
+        box-shadow: inset calc(0vw/9) calc(0vw/9) calc(5vw/9) white;
+      }
 }

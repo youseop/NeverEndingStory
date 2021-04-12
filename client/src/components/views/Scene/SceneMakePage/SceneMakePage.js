@@ -1052,6 +1052,7 @@ const SceneMakePage = (props) => {
                         visible={gameInfoModalState}
                         setGameInfoModalState={setGameInfoModalState}
                         gameDetail={gameDetail}
+                        isMake={true}
                     />
                     {
                         essetModalState !== 0 && <EssetModal
