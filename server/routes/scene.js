@@ -119,7 +119,7 @@ router.post('/save', auth, async (req, res) => {
   if (!isFirst && (Date.now() - createdAt >= MS_PER_HR)) {
     const user = await User.findOne({ _id: userId });
     Scene.deleteOne({ _id: sceneId });
-    const playingIdx = user.gamePlaying.sceneIdList.findIndex(sceneId => objCmp(sceneId, req.body.sceneId))
+    const playingIdx = user.gamePlaying.sceneIdList.findIndex(sceneId => objCmp(sceneId, sceneId))
     if (playingIdx === user.gamePlaying.sceneIdList.length-1){
       user.gamePlaying.sceneIdList.pop();
     }
@@ -316,31 +316,31 @@ router.post("/scenedetail", (req, res) => {
 router.delete('/', async (req, res) => {
   //! 첫번째 씬이면, 게임도 지운다.
   try{
+    const {gameId, sceneId, userId} = req.body;
 
     if (req.body.isFirst) {
-      Game.deleteOne({ _id: mongoose.Types.ObjectId(req.body.gameId) })
+      Game.deleteOne({ _id: mongoose.Types.ObjectId(gameId) })
         .then(() => "GAME DELETE SUCCESS")
         .catch((err) => {throw "GAME DELETE ERR "})
     }
     //! 껍데기 씬 지우기
-    Scene.deleteOne({ _id: mongoose.Types.ObjectId(req.body.sceneId) })
+    Scene.deleteOne({ _id: mongoose.Types.ObjectId(sceneId) })
       .then(() => "SCENE DELETE SUCCESS")
       .catch((err) => {throw "GAME SCENE ERR "})
     //! user의 makingGameList & gamePlaying - sceneList, isMaking update
-    const user = await User.findOne({ _id: req.body.userId });
-    const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === req.body.sceneId)
+    const user = await User.findOne({ _id: userId });
+    const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === sceneId)
     if (idx > -1) {
-      user.makingGameList.splice(idx, 1)
-    }
+      user.makingGameList.splice(idx, 1);
+  }
     else {
       console.log("THERE IS NO MAKING GAME")
     }
     
-    
     // 제작 취소 누르는 시점에서 이미 삭제 됐을 수도 있다. playing first scene`
     
   
-    const playingIdx = user.gamePlaying.sceneIdList.findIndex(sceneId=>objCmp(sceneId, req.body.sceneId))
+    const playingIdx = user.gamePlaying.sceneIdList.findIndex(sceneId=>objCmp(sceneId, sceneId))
     let prevSceneId
     if(user.gamePlaying.isMaking && (playingIdx === user.gamePlaying.sceneIdList.length-1)){
       user.gamePlaying.sceneIdList.splice(playingIdx,1)
