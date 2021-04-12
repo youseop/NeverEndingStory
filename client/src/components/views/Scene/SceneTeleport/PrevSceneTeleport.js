@@ -18,7 +18,7 @@ const PrevSceneTeleport = ({ gameId,setScene }) => {
                 then(response => {
                     if (response.data.success) {
                         setScene({})
-                        history.push({
+                        history.replace({
                             pathname: `/gameplay`,
                             state: {
                                 sceneId: response.data.teleportSceneId,

@@ -11,6 +11,13 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setSceneTitle, remain
   const onSceneTitleChange = (event) => {
     setSceneTitle(event.currentTarget.value);
   }
+
+  const isMobile = useRef(false);
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  if (isTouch) {
+    isMobile.current = true;
+  }
+
   // useKey("Enter", handleEnter);
   const msg = useRef(null)
   let min = parseInt(remainTime/60)
@@ -41,7 +48,12 @@ const ModalFormComponent = ({ visible, onCancel, onCreate, setSceneTitle, remain
               message: "당신의 답변을 입력해주세요",
             },
           ]}>
-            <Input className="scenemake_modal_input" onChange={onSceneTitleChange} placeholder={`이곳에 입력하시는 내용이 선택지로 보여집니다.`} maxLength={20} ref={(input) => input && input.focus()} />
+            <Input className="scenemake_modal_input" onChange={onSceneTitleChange} 
+            placeholder={`이곳에 입력하시는 내용이 선택지로 보여집니다.`} 
+            maxLength={20} 
+            ref={(input) => {
+              if(!isMobile.current)
+                input && input.focus()}} />
           </Form.Item>
           <div className="scenemake_modal_msg">
             {msg.current}

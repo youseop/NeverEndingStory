@@ -122,6 +122,12 @@ const ProductScreen = (props) => {
   useKey("Digit3", handleChoice);
   useKey("Digit4", handleChoice);
 
+  message.config({ 
+    maxCount: 2 ,
+    top:70,
+    getContainer: () => document.getElementById("gamePlay__screen")
+  })
+
 
   useEffect(() => {
     socket.on("accept_final_change", data => {
@@ -415,6 +421,7 @@ const ProductScreen = (props) => {
             : `gamePlay__container ${full}`
             }`}
           ref={maximizableElement}
+          id={"gamePlay__screen"}
         >
           <div
             className={`${isFullscreen

@@ -12,7 +12,11 @@ function GameInfoTab({ gameDetail }) {
                 <div className="gameInfoTab__thumbnail_container">
                     <img
                         className="gameInfoTab__thumbnail"
-                        src={`${config.SERVER}/${gameDetail?.thumbnail}`}
+                        src={
+                            process.env.NODE_ENV === 'production' ?
+                                gameDetail?.thumbnail
+                                :
+                                `${config.SERVER}/${gameDetail?.thumbnail}`}
                         alt="thumbnail"
                     />
                     <div className="gameInfoTab__gradation"></div>
