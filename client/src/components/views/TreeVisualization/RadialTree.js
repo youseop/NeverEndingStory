@@ -225,7 +225,7 @@ export default class extends React.Component {
                         return (
                           <LinkRadial
                             data={state}
-                            stroke="#374469"
+                            stroke="#777479"
                             strokeWidth="2"
                             fill="none"
                             key={key}
