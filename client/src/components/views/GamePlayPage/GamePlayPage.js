@@ -97,6 +97,11 @@ const ProductScreen = (props) => {
         footer[0].remove();
       }
     }
+    message.config({
+      maxCount: 2,
+      top: 70,
+      getContainer: () => document.getElementById("gamePlay__screen")
+    })
 
     //* navigation bar and footer control
     dispatch(navbarControl(true));
@@ -111,6 +116,11 @@ const ProductScreen = (props) => {
       sound_audio.pause();
       const nav = document.getElementById("menu");
       nav.className = "menu"
+      message.config({
+        maxCount: 2,
+        top: 70,
+        getContainer: () => document.body
+      })
     };
   }, [])
 
@@ -122,11 +132,7 @@ const ProductScreen = (props) => {
   useKey("Digit3", handleChoice);
   useKey("Digit4", handleChoice);
 
-  message.config({ 
-    maxCount: 2 ,
-    top:70,
-    getContainer: () => document.getElementById("gamePlay__screen")
-  })
+
 
 
   useEffect(() => {

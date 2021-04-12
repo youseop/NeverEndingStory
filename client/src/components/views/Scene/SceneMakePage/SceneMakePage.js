@@ -115,7 +115,7 @@ const SceneMakePage = (props) => {
         window.history.back();
         // return <div></div>;
     }
-    message.config({ maxCount: 2 })
+    // message.config({ maxCount: 2 })
 
     const user = useSelector((state) => state.user);
     const CharacterList = useSelector((state) => state.character.CharacterList);
