@@ -241,7 +241,7 @@ io.on('connection', socket => {
               prevSceneId: mongoose.Types.ObjectId(scene_id),
               writer: mongoose.Types.ObjectId(certToken.userId)
             }).exec().then((err) => { console.log(err) });
-            logger.info("Restart - setting after 1hour:",scene_id,certToken.userId)
+            logger.info("Restart - delete Trash:",scene_id,certToken.userId)
           }
           sceneTmp.emptyNum += 1;
           io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: sceneTmp.emptyNum });
@@ -258,7 +258,7 @@ io.on('connection', socket => {
                   prevSceneId: mongoose.Types.ObjectId(scene_id),
                   writer: mongoose.Types.ObjectId(certToken.userId)
                 }).exec().then((err) => { console.log(err) });
-  
+                logger.info("Restart - setting 1hour:", scene_id, certToken.userId)
               }
   
               scene_cache[scene_id].emptyNum += 1;
