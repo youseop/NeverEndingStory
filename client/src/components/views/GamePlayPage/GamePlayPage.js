@@ -220,7 +220,7 @@ const ProductScreen = (props) => {
   }
 
   function onClick_thumbsUp() {
-    if (user && user.userData) {
+    if (user?.userData?.isAuth) {
       const variable = {
         userId: user.userData._id,
         objectId: sceneId,
@@ -244,7 +244,7 @@ const ProductScreen = (props) => {
   const [thumbsupCntGame, setThumbsupCntGame] = useState(0);
 
   function onClick_thumbsUpGame() {
-    if (user && user.userData) {
+    if (user?.userData?.isAuth) {
       const variable = {
         userId: user.userData._id,
         objectId: gameId,
@@ -514,7 +514,6 @@ const ProductScreen = (props) => {
       <div className="detail_relative_container"></div>
       <SceneInfo 
         gameDetail={gameDetail}
-        view={view}
         onClick_thumbsUpGame={onClick_thumbsUpGame}
         isClickedGame={isClickedGame}
         thumbsupCntGame={thumbsupCntGame}

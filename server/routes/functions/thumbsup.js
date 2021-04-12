@@ -8,9 +8,10 @@ async function getThumbsUp(objectId, userId){
     let isClicked = false;
     let thumbsupCnt = 0;
     if(
+    userId !== "undefined" &&
     thumbsup?.userList &&
     Object.keys(thumbsup?.userList).includes(userId) && 
-    thumbsup.userList[userId] === true
+    thumbsup?.userList[userId] === true
     ){
     isClicked = true;
     thumbsupCnt = thumbsup.cnt;

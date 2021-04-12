@@ -82,7 +82,7 @@ export default class extends React.Component {
     async function onClick_node (node, that) {
       //? 더미 생성 코드
       if(dummy) {
-        const confirmComment='더미 Scene 생성 by 유섭_ 씬만들고 지우기 너무 힘들어서 만들었습니다...(배포시 이 버튼과 scene.js /makedummy router삭제부탁드려요)'
+        const confirmComment='더미 Scene 생성 by 유섭 - 씬만들고 지우기 너무 힘들어서 만들었습니다.'
         if(window.confirm(confirmComment)){
           const resource = {
             prevSceneId: node.data.sceneId,
@@ -91,7 +91,7 @@ export default class extends React.Component {
           }
           await Axios.post('/api/scene/makedummy', resource);
           updateTree();
-          message.info("더미 생성(새로고침하면 반영됩니다. 빡세네요 고치기...)");
+          message.info("더미 생성");
           that.forceUpdate();
         }
         return;

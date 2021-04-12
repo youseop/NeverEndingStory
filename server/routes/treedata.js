@@ -192,7 +192,7 @@ router.delete("/:sceneId/:gameId", async (req,res) => {
       {_id: 0, prevSceneId: 1}
     );
 
-    const data = {};
+    let data = {};
     for (let i=0; i<rawData.length; i++){
       data = { ...data, [rawData[i]._id]: rawData[i]}
     } 
