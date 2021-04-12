@@ -9,7 +9,8 @@ const { auth } = require("../middleware/auth");
 const { View } = require('../models/View');
 const { ThumbsUp } = require('../models/ThumbsUp');
 
-const {sanitize} = require("../lib/sanitize")
+const {sanitize} = require("../lib/sanitize");
+const { objCmp } = require('../lib/object');
 
 const MS_PER_HR = 3600000
 
