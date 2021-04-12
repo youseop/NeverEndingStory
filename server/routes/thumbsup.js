@@ -23,8 +23,6 @@ router.post('/', async (req,res) => {
     const objectId = req.body.objectId;
     const flag = req.body.flag;
 
-    console.log(userId)
-    console.log(typeof userId)
     let inc = 1;
     const thumbsup = await ThumbsUp.findOne({"objectId" : objectId});
     let isClicked = false;
