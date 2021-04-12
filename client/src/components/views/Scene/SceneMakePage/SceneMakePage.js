@@ -410,8 +410,6 @@ const SceneMakePage = (props) => {
         setSoundFile(CutList[index]?.sound);
         if (CutList[index]?.bgm.music) {
             let cutIdx = bgm_audio.src.lastIndexOf("/") + 1;
-            message.info(bgm_audio.src)
-            message.info(sound_audio.src)
             if (bgm_audio.src.substr(cutIdx) !== CutList[index].bgm.music.substr(cutIdx)) {
                 bgm_audio.src = CutList[index]?.bgm.music;
                 bgm_audio.play();
@@ -633,7 +631,7 @@ const SceneMakePage = (props) => {
                     sceneId: sceneId,
                     isFirst: isFirstScene.current,
                     userId: user.userData._id,
-                    exp :expTime
+                    exp: expTime
                 }
             })
                 .then(response => {
