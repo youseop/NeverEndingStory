@@ -10,18 +10,19 @@ import { Click_Icon } from "../../svg/icon"
 const CHOICE_NUM = 4;
 
 export const TextBlock = (props) => {
-    let { cut_name, cut_script, setIsTyping, isTyping, theme, muted } = props;
-
+    let { cut_name, cut_script, setIsTyping, isTyping, theme, muted, isFullscreen, isPlay } = props;
+    const fullStr = isFullscreen ? "full" : ""
+    const playStr = isPlay ? "play" : "make"
     return <>
         <div className={`text_window ${theme}`} >
             {
                 cut_script ?
-                    <div className={`text_container ${theme}`} >
-                        <div className={`name_block ${theme}`} >
+                    <div className={`text_container ${theme} ${playStr} ${fullStr}`} >
+                        <div className={`name_block ${theme} ${playStr} ${fullStr}`} >
                             {cut_name}
                         </div>
-                        <div className={`text_block ${theme}`} >
-                            <div className={`text_line ${theme}`} > {
+                        <div className={`text_block ${theme} ${playStr} ${fullStr}`} >
+                            <div className={`text_line ${theme} ${playStr} ${fullStr}`} > {
                                 isTyping ? < TextAnimation
                                     cut_script={cut_script}
                                     setIsTyping={setIsTyping}
@@ -74,7 +75,9 @@ export const TextBlockChoice = (props) => {
         isEnding,
         isLastMotion,
         theme,
-        setScene
+        setScene,
+        isFullscreen,
+        isPlay
     } = props;
 
     const choices = scene_next_list.map((choice, index) => {
@@ -105,11 +108,13 @@ export const TextBlockChoice = (props) => {
                 setIsTyping={setIsTyping}
                 isTyping={isTyping}
                 theme={theme}
+                isFullscree={isFullscreen}
+                isPlay={isPlay}
             />
             { isLastMotion &&
-                <div className={`choice_box ${isEnding} ${theme}`}>
+                <div className={`choice_box ${isEnding} ${theme} ${isFullscreen}`}>
                     {isEnding === true ?
-                    <SceneEndingPage gameId={game_id} setScene={setScene} sceneId={scene_id} /> :
+                        <SceneEndingPage gameId={game_id} setScene={setScene} sceneId={scene_id} /> :
                         <>
                             {choices}
                             {scene_next_list.length < CHOICE_NUM ?
@@ -119,7 +124,7 @@ export const TextBlockChoice = (props) => {
                                     game_id={game_id}
                                     scene_next_list={scene_next_list}
                                     theme={theme}
-                                    
+
                                 />
                                 :
                                 (<div > </div>)

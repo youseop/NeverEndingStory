@@ -214,44 +214,78 @@
         
       }
 
-      .text_container {
+    .text_container {
         z-index: 99;
         background-color: rgba(0, 0, 0, 0.815);
         color: rgb(255, 255, 255);
         padding: 5%;
         border-radius: 0.3vmin;
-        bottom: 5%;
+        bottom: 10%;
         height: 24%;
         width: 100%;
         position: absolute;
     }
     
-      .name_block {
-        font-size: 2vmin;
-        font-weight: 300;
-        padding: calc(0vh/9) 3%;
-        border: white solid calc(1vh/9);
-        border-radius: calc(5vh/9);
-        background-color: rgba(0, 0, 0, 0.815);
-        top: -1.2vmin;
-        left:10%;
-        position: absolute;
+    .text_container.atorney {
+        opacity: 1;
+        background-image: repeating-linear-gradient(45deg, #000114 25%, transparent 25%, transparent 75%, #000114 75%, #000114), repeating-linear-gradient(45deg, #000114 25%, #282846 25%, #282846 75%, #000114 75%, #000114);
+        background-position: 0 0, 2px 2px;
+        background-size: 4px 4px;
+        border-top: 3px solid rgb(196, 196, 196);
+        border-bottom: 3px solid rgb(196, 196, 196);
+        background-color: #e5e5f7;
     }
     
-    .name_block.atorney {
-        border-top: calc(1vh/9) solid rgb(196, 196, 196);
-        border-bottom: calc(1vh/9) solid rgb(196, 196, 196);
-        border-radius: calc(0vh/9);
-        background-color: #2882B4 !important;
+    .name_block.make {
+        font-size: calc(20vh/9);
+        padding: calc(0vh/9) 3%;
+        border: white solid calc(1vh/9);
+        top: calc(-10vh/9);
+        left: 10%;
+    }
+    
+    .name_block.play {
+        font-size: 3vmin;
+        padding: calc(0vh/9) 3%;
+        border: white solid calc(1vh/9);
         top: -1.2vmin;
-        left:10%;
-        position: absolute;
-    }        
-    
-    .text_line {
-        width: 80vmin;
-        word-wrap: break-word;
-    
+        left: 10%;
+    }
+    .name_block.full {
+        font-size: 3.5vmin;
+        padding: calc(0vh/9) 3%;
+        border: white solid calc(1vh/9);
+        top: -1.7vmin;
+        left: 10%;
+    }
+    .text_block{
+        top: 26%;
+    }
+    .text_block.make {
+        width: 70%;
+        height: calc(60vh/9);
+        font-size: calc(20vh/9);
+        left:15%;
+    }
+    .text_block.play {
+        width: 90%;
+        height: 10vmin;
+        font-size: 3.2vmin;
+    }
+    .text_block.full {
+        width: 90%;
+        height: 11vmin;
+        font-size: 3.7vmin;
+    }
+
+    .text_line.make {
+        width: calc(560vh/9);
+    }
+    .text_line.play{
+        width: 90vmin;
+    }
+    .text_line.full{
+        width: 110vmin;
     }
     
     .scene__SceneBox{
@@ -709,7 +743,7 @@
       .bgmSidebar_box{
         /* display: inline-block; */
         font-family: Noto Sans KR;
-        font-size: calc(20vh/9);
+        font-size: calc(25vh/9);
         padding: calc(5vh/9);
         height: calc(53vh/9);
         font-weight: bold;
@@ -1511,4 +1545,90 @@
 .ending_modal_description:hover {
     opacity: 1.0;
 }
+.gamePlay__writer{  
+    font-size:2vw;
+  }
+  .click_icon_container {
+    bottom: 13%;
+    }
+    .choice_box {
+        font-size: 3vmin;
+    }
+    .choice_box>div>p{
+        font-size:2.5vmin;
+    }
+    .choice_box.true{
+        font-size: 3.5vmin;
+    }
+    .choice_box.true>div>p{
+        font-size:2.8vmin;
+    }
+    .gamePlay__btn:hover {
+        color: #B6B6B6;
+      }
+}
+
+@media (max-width:850px) and (orientation:portrait){    
+    .gamePlay__btn {
+        margin-right:0.7vh;
+      }
+    .gamePlay__btn:hover {
+        color: #B6B6B6;
+      }
+    .choice_box {
+        font-size: 2.5vmin;
+    }
+    .choice_box>div>p{
+        font-size:1.7vmin;
+    }
+    .choice_box.true{
+        font-size: 3vmin;
+    }
+    .choice_box.true>div>p{
+        font-size:2vmin;
+    }
+    .gamePlay__writer{
+        font-size:1.5vh;
+    }
+    .click_icon_container {
+        bottom: 12.5%;
+        right:1.5%;
+    }
+    .text_container {
+        bottom: 12%;
+    }
+    .name_block.play {
+        font-size: 3vmin;
+        padding: calc(0vh/9) 3%;
+        border: white solid calc(1vh/9);
+        top: -2vmin;
+        left: 5%;
+    }
+    .name_block.full {
+        font-size: 3vmin;
+        padding: calc(0vh/9) 3%;
+        border: white solid calc(1vh/9);
+        top: -2vmin;
+        left: 5%;
+    }
+    .text_block{
+        top: 26%;
+    }
+    .text_block.play {
+        width: 85%;
+        height: 10vmin;
+        font-size: 3.2vmin;
+    }
+    .text_block.full {
+        width: 85%;
+        height: 10vmin;
+        font-size: 3.2vmin;
+    }
+
+    .text_line.play{
+        width: 80vmin;
+    }
+    .text_line.full{
+        width: 80vmin;
+    }
 }
