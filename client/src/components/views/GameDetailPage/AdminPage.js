@@ -148,12 +148,24 @@ function AdminPage(props) {
     });
   };
 
-  function handleChange(value) {
+  const handleChange = (value) => {
     setSelectedUser(value);
   }
 
   const onChange_slider = (value) => {
     setSliderInput(value)
+  }
+
+  const GameDelete = () => {
+    const confirmComment= `게임을 정말 삭제하시겠습니까?\n한 번 삭제하면 되돌릴 수 없습니다.\n"게임을 삭제하겠습니다."를 입력창에 입력해주세요.`;
+    if(window.prompt(confirmComment) === "게임을 삭제하겠습니다."){
+      message.loading("게임 삭제 중..", 1)
+      Axios.delete(`/api/game/${gameId}`).then((response) => {
+        message.info(`${response.data.messege}`,1.5);
+        if(response.data.messege === "삭제되었습니다.")
+          props.history.push(`/`);
+      })
+    }
   }
 
   return (
@@ -168,6 +180,12 @@ function AdminPage(props) {
               게임으로 돌아가기
             </Link>
             <div className="admin_title">스토리 미니맵</div>
+              <div
+                onClick={GameDelete}
+                style={{color: "black"}}
+              >
+                게임 삭제
+              </div>
             <div className="dragDrop_container">
               <DragMove
                 onDragMove={handleDragMove}

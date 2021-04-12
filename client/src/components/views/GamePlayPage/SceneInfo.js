@@ -8,14 +8,11 @@ import './SceneInfo.css';
 function SceneInfo(props) {
   const {
     gameDetail,
-    view,
     onClick_thumbsUpGame,
     isClickedGame,
     thumbsupCntGame,
-    history,
     writer,
     gameId,
-    sceneId,
   } = props;
   return (
     <div className="sceneInfo">
@@ -52,7 +49,7 @@ function SceneInfo(props) {
             <div className="detailPage__interaction">
                 <div className="detailPage__view">
                     <FontAwesomeIcon icon={faEye} style={{ marginLeft: "3px" }} />
-                    {view}회
+                    {gameDetail?.view}회
                 </div>
                 <div
                     onClick={onClick_thumbsUpGame}
