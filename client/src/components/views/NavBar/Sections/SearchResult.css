@@ -23,7 +23,7 @@
 
   font-family: Noto Sans KR;
   font-weight: bold;
-  font-size: 4vmin;
+  font-size: min(2rem,6vw);
   color: #dddddd;
 }
 
@@ -70,7 +70,7 @@
   height: 10%;
   top: 81%;
 
-  font-size: 1rem;
+  font-size: min(1.1rem,2vw);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -83,7 +83,7 @@
   height: 5%;
   top: 91%;
 
-  font-size: 1.5vmin;
+  font-size: min(0.5rem,1vw);
   color: #dddddd;
 
   opacity: 0.9;

@@ -36,6 +36,7 @@
 
   background: #e74a4a;
   border-radius: 0.7rem;
+  border-width: 0;
 
   font-family: Noto Sans KR;
   font-weight: bold;
@@ -155,7 +156,7 @@
   font-size: min(1.8rem, 2.5vw);
 }
 .main3-button1 {
-  top: 65%;
+  top: 68%;
   left: 40%;
   width: 20%;
   height: 10%;
@@ -207,5 +208,12 @@
   .banner-main-button {
     left:35%;
     width: 30%;
+  }
+
+  .main4-slogan1 {
+    top: 30%;
+  }
+  .main4-slogan3 {
+    top: 55%;
   }
 }
