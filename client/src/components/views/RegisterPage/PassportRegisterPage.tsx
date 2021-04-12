@@ -11,6 +11,7 @@ import Axios from "axios"
 interface RegisterPageProps {
     history: {
         push: Function;
+        replace:Function;
     }
 
 }
@@ -72,7 +73,7 @@ function PassportRegisterPage(props: RegisterPageProps) {
 
                     await dispatch(registerUser(dataToSubmit)).then((response: RegisterUser) => {
                         if (response.payload.success) {
-                            props.history.push("/");
+                            props.history.replace("/");
                         } else {
                             alert(response.payload.err.errmsg)
                         }

@@ -22,6 +22,7 @@ export default function GameDetailPage(props) {
     const query = qs.parse(props.location?.search, { ignoreQueryPrefix: true });
     const gameId = props.match.params.gameId;
     const variable = { gameId: gameId };
+    message.config({ maxCount: 2 })
 
     const [isWarningVisible, setIsWarningVisible] = useState(false)
     const [gameDetail, setGameDetail] = useState({});
