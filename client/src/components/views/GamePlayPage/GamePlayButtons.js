@@ -30,22 +30,22 @@ function GamePlayButtons(props) {
       {i === cutList.length - 1 &&
         <>
           <button
+            className="gamePlay__btn preventColorChange"
+            style={{ cursor: "unset" }}
+          >
+            <FontAwesomeIcon icon={faEye} style={{ marginLeft: "3px" }} />
+            {view}
+          </button>
+          <button
             className={"gamePlay__btn preventColorChange"}
             onClick={(e)=>{onClick_thumbsUp(); e.stopPropagation()}}
           >
-          {thumbsUp}
           {thumbsUpClicked ?
               <FontAwesomeIcon style={{ color: "red", marginLeft: "3px" }} icon={faHeart} />
               :
               <FontAwesomeIcon icon={faHeart} style={{ marginLeft: "3px" }} />
           }
-          </button>
-          <button
-            className="gamePlay__btn preventColorChange"
-            style={{ cursor: "unset" }}
-          >
-            {view}
-            <FontAwesomeIcon icon={faEye} style={{ marginLeft: "3px" }} />
+          {thumbsUp}
           </button>
         </>
       }

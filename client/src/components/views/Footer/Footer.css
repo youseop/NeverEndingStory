@@ -6,6 +6,7 @@
 
 .footer-container {
   position: relative;
+  bottom: -5%;
   min-width: 100%;
   height: 250px;
   background-color: #222831;
@@ -15,7 +16,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: -1;
+  z-index: 0;
 }
 
 .footer-info {
@@ -34,6 +35,7 @@
   text-align: center;
   border-bottom-style: solid;
   color: #ffffff63;
+  cursor: pointer;
 }
 
 .footer-icons {

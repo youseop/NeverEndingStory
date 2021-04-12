@@ -4,6 +4,7 @@ import "./AdminModalForm.css"
 import Axios from "axios";
 import ContributerCard from "./ContributerCard";
 import ComplaintCard from "./ComplaintCard";
+import LogPopup from "../GamePlayPage/LogPopup";
 
 const ModalFormComponent = ({ visible, onCancel, node }) => {
     const [sceneInfo,setSceneInfo] = useState({
@@ -12,6 +13,8 @@ const ModalFormComponent = ({ visible, onCancel, node }) => {
       totalSceneCnt: 0,
       complaints: []
     });
+    
+    const [Log, setLog] = useState(false);
 
     useEffect(() => {
       if(node){
@@ -60,8 +63,8 @@ const ModalFormComponent = ({ visible, onCancel, node }) => {
             visible={visible}
             title="스토리 정보"
             footer={[
-              <Button key="move" onClick={onCancel}>
-                스토리로 이동하기(todo)
+              <Button key="move" onClick={() => {setLog((state) => !state)}}>
+                대화 내역
               </Button>,
               <Button key="submit" type="primary" onClick={onCancel}>
                 닫기
@@ -118,6 +121,12 @@ const ModalFormComponent = ({ visible, onCancel, node }) => {
                   </div>
                 </div>
                 <div className="complaint_gradation"></div>
+                <LogPopup
+                  trigger={Log}
+                  setTrigger={setLog}
+                  cutList={sceneInfo.cutList}
+                  i={40}
+                />
               </div>
             }
             </Form>

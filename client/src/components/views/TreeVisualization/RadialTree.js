@@ -82,7 +82,7 @@ export default class extends React.Component {
     async function onClick_node (node, that) {
       //? 더미 생성 코드
       if(dummy) {
-        const confirmComment='더미 Scene 생성 by 유섭_ 씬만들고 지우기 너무 힘들어서 만들었습니다...(배포시 이 버튼과 scene.js /makedummy router삭제부탁드려요)'
+        const confirmComment='더미 Scene 생성 by 유섭 - 씬만들고 지우기 너무 힘들어서 만들었습니다.'
         if(window.confirm(confirmComment)){
           const resource = {
             prevSceneId: node.data.sceneId,
@@ -91,14 +91,14 @@ export default class extends React.Component {
           }
           await Axios.post('/api/scene/makedummy', resource);
           updateTree();
-          message.info("더미 생성(새로고침하면 반영됩니다. 빡세네요 고치기...)");
+          message.info("더미 생성");
           that.forceUpdate();
         }
         return;
       }
 
       if (isDelete){
-        const confirmComment= `클릭하신 스토리와 이어지는 스토리들을 모두 삭제하시겠습니까?\n한 번 삭제하면 되돌릴 수 없습니다.\n"삭제하겠습니다."를 입력창에 입력해주세요.`;
+        const confirmComment= `클릭하신 스토리와 이어지는 스토리들을 모두 삭제하시겠습니까?\n한 번 삭제하면 되돌릴 수 없습니다.\n"삭제하겠습니다."를 입력창에 입력해주세요.\n\n(삭제를 중지하길 원하는 경우 오른쪽 하단의 '삭제 중지' 버튼을 눌러주세요.)`;
         if(window.prompt(confirmComment) === "삭제하겠습니다."){
           const {sceneId, gameId} = node.data;
           message
@@ -225,7 +225,7 @@ export default class extends React.Component {
                         return (
                           <LinkRadial
                             data={state}
-                            stroke="#374469"
+                            stroke="#777479"
                             strokeWidth="2"
                             fill="none"
                             key={key}
