@@ -29,7 +29,7 @@ function ActorTab({ gameDetail }) {
     })
 
     return (
-        <div className="gameInfoTab__padding">
+        <div className="gameInfoTab__padding actor">
             {gameDetail?.character?.length > 0 ?
                 <div className="actorTab__container">{characterCards}</div>
                 : <div className="actorTab__warning">{"업로드 된 캐릭터가 없습니다 :<"}</div>

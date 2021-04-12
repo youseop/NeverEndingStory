@@ -24,8 +24,6 @@ import LogPopup from "./LogPopup";
 import GamePlayButtons from './GamePlayButtons';
 import SceneInfo from "./SceneInfo";
 
-
-
 const bgm_audio = new Audio();
 bgm_audio.volume = 0.5
 const sound_audio = new Audio();
@@ -42,7 +40,6 @@ const ProductScreen = (props) => {
     const nav = document.getElementById("menu");
     nav.className += " isPlay"
   }, []);
-
 
   const { full } = props?.match?.params;
   const location = useLocation();
@@ -132,7 +129,11 @@ const ProductScreen = (props) => {
   useKey("Digit3", handleChoice);
   useKey("Digit4", handleChoice);
 
-
+  message.config({
+    maxCount: 2,
+    top: 70,
+    getContainer: () => document.getElementById("gamePlay__screen")
+  })
 
 
   useEffect(() => {

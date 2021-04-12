@@ -5,14 +5,14 @@ import GameInfoTab from "./Tab/GameInfoTab";
 import ActorTab from "./Tab/ActorTab";
 import "./GameInfoModal.css";
 
-const GameInfoModal = ({ visible, setGameInfoModalState, gameDetail }) => {
+const GameInfoModal = ({ visible, setGameInfoModalState, gameDetail, isMake }) => {
     const [tag, setTag] = useState(1);
     const cancel = () => {
         setGameInfoModalState(false)
     }
 
     return (
-        <Modal className="scenemake_essetmodal"
+        <Modal className="scenemake_essetmodal info"
             visible={visible}
             okText="확인"
             cancelText="취소"
@@ -24,6 +24,7 @@ const GameInfoModal = ({ visible, setGameInfoModalState, gameDetail }) => {
                 {tag === 1 &&
                     <GameInfoTab
                         gameDetail={gameDetail}
+                        isMake={isMake}
                     />
                 }
                 {tag === 2 &&

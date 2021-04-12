@@ -4,7 +4,7 @@ import TopRatingContributer from "../../../GameDetailPage/TopRatingContributer";
 import { Link } from "react-router-dom";
 
 const config = require('../../../../../config/key')
-function GameInfoTab({ gameDetail }) {
+function GameInfoTab({ gameDetail, isMake }) {
     //! creator일때와 아닐 때 수정 가능하게 처리
     return (
         <div className="gameInfoTab__padding">
@@ -50,7 +50,7 @@ function GameInfoTab({ gameDetail }) {
                                     contributerList={gameDetail?.contributerList}
                                     creatorNickname={gameDetail?.creator?.nickname}
                                     totalSceneCnt={gameDetail?.sceneCnt}
-                                    isMake={true}
+                                    isMake={isMake}
                                 />
                             </div>
                             <div className="gameInfoTab__gamePlay_container_box">
@@ -85,12 +85,16 @@ function GameInfoTab({ gameDetail }) {
                         </div>
                     </div>
                 </div>
-                <div className="gameInfoTab__description_title">
-                    게임 설명
+                {isMake > 0 &&
+                    <div className="gameInfoTab__description_title">
+                        게임 설명
                 </div>
-                <div className="gameInfoTab__description">
-                    {gameDetail?.description}
-                </div>
+                }
+                {isMake > 0 &&
+                    <div className="gameInfoTab__description">
+                        {gameDetail?.description}
+                    </div>
+                }
             </div>
         </div>
     );
