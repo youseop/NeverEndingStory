@@ -369,8 +369,8 @@
     display: inline-block;
     position: relative;
     font-family: Noto Sans KR;
-    font-size: 18px;
-    width:260px;
+    font-size: 20px;
+    width:300px;
     height: 30px;
     color:black;
     padding-left:15px;
@@ -387,7 +387,7 @@
     margin: 10px 50px 10px 0px;
     padding: 15px 15px 0px 15px;
     color:black;
-    font-size: 18px;    
+    font-size: 20px;    
     background-color: #ffffff;
 }
 .actorTab_profile_text::-webkit-scrollbar {
@@ -569,7 +569,7 @@
         width: calc(60vh/9);
     }
     .detailPage__contributer_graph.true{
-        width:90%;
+        width:45%;
     }
     .detailPage__graph.true{
         width:100%;
@@ -588,7 +588,11 @@
         border-radius: calc(5vh/9);
         padding: calc(2vh/9);
     }
-
+    .detailPage__contributer_nickname.true {
+        font-size: calc(25vh/9);
+        line-height: calc(22vh/9);
+      }
+      
     
 .actorTab__container {
     position:relative;
@@ -642,9 +646,9 @@
     display: inline-block;
     position: relative;
     font-family: Noto Sans KR;
-    font-size: calc(18vh/9);
-    width:calc(260vh/9);
-    height: calc(30vh/9);
+    font-size: calc(25vh/9);
+    width:calc(400vh/9);
+    height: calc(40vh/9);
     color:black;
     padding-left:calc(15vh/9);
     font-weight: bold;
@@ -660,7 +664,7 @@
     margin: calc(10vh/9) calc(50vh/9) calc(10vh/9) calc(0vh/9);
     padding: calc(15vh/9) calc(15vh/9) calc(0vh/9) calc(15vh/9);
     color:black;
-    font-size: calc(18vh/9);    
+    font-size: calc(28vh/9);    
     background-color: #ffffff;
 }
 .actorTab_profile_text::-webkit-scrollbar {

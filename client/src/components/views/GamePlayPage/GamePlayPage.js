@@ -122,6 +122,12 @@ const ProductScreen = (props) => {
   useKey("Digit3", handleChoice);
   useKey("Digit4", handleChoice);
 
+  message.config({ 
+    maxCount: 2 ,
+    top:70,
+    getContainer: () => document.getElementById("gamePlay__screen")
+  })
+
 
   useEffect(() => {
     socket.on("accept_final_change", data => {
@@ -415,6 +421,7 @@ const ProductScreen = (props) => {
             : `gamePlay__container ${full}`
             }`}
           ref={maximizableElement}
+          id={"gamePlay__screen"}
         >
           <div
             className={`${isFullscreen
@@ -463,6 +470,9 @@ const ProductScreen = (props) => {
                   isLastMotion={lastMotion}
                   theme={Scene.theme}
                   setScene={setScene}
+                  isFullscreen={isFullscreen}
+                  isPlay={true}
+
                 />
               ) :
                 <TextBlock
@@ -472,6 +482,8 @@ const ProductScreen = (props) => {
                   isTyping={isTyping}
                   theme={Scene.theme}
                   muted={muted}
+                  isFullscreen={isFullscreen}
+                  isPlay={true}
                 />
               }
 
@@ -518,21 +530,21 @@ const ProductScreen = (props) => {
             </div>
           </div>
         </div>
-      <div className="detail_relative_container"></div>
-      <SceneInfo 
-        gameDetail={gameDetail}
-        onClick_thumbsUpGame={onClick_thumbsUpGame}
-        isClickedGame={isClickedGame}
-        thumbsupCntGame={thumbsupCntGame}
-        history={props.history}
-        writer={writer}
-        gameId={gameId}
-        sceneId={sceneId}
-      />
-      <Comment 
-        sceneId={sceneId}
-        gameId={gameId}
-      />
+        <div className="detail_relative_container"></div>
+        <SceneInfo
+          gameDetail={gameDetail}
+          onClick_thumbsUpGame={onClick_thumbsUpGame}
+          isClickedGame={isClickedGame}
+          thumbsupCntGame={thumbsupCntGame}
+          history={props.history}
+          writer={writer}
+          gameId={gameId}
+          sceneId={sceneId}
+        />
+        <Comment
+          sceneId={sceneId}
+          gameId={gameId}
+        />
       </>
     );
   } else {

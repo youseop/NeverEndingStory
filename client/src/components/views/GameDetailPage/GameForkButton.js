@@ -13,6 +13,7 @@ const GameForkButton = ({ history, user, gameId }) => {
     const [visible, setVisible] = useState(false);
     const [gameTitle, setGameTitle] = useState("");
     const [gameDescription, setGameDescription] = useState("");
+    message.config({ maxCount: 2 })
 
     const handleCreate = () => {
         if (!gameTitle.length) {

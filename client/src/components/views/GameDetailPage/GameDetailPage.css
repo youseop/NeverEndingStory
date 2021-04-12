@@ -145,14 +145,6 @@
 }
 
 .detailPage__creater_nickname:hover {
-  font-family: Noto Sans KR;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 15px;
-  line-height: 22px;
-  border-radius: 5px;
-  padding: 2px;
-  color: rgb(230, 5, 5) !important;
 }
 
 .detailPage__contributer_nickname {
@@ -166,12 +158,6 @@
 }
 
 .detailPage__contributer_nickname:hover {
-  font-family: Noto Sans KR;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 15px;
-  line-height: 22px;
-  color: white;
 }
 
 .detailPage__contributer_graph{
@@ -209,6 +195,9 @@
   border-radius: 9px;
   font-size: 8px;
   height: 20px;
+}
+.detailPage__graph.true{
+  width: 57%;
 }
 
 .detailPage__gamePlay {

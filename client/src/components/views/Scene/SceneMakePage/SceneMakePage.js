@@ -644,11 +644,11 @@ const SceneMakePage = (props) => {
                                     user_id: user.userData._id
                                 })
                             //! 돌아가야할 곳 : game detail 로 가자
-                            props.history.push(`/game/${gameId}`)
+                            props.history.replace(`/game/${gameId}`)
                         }
                         else {
                             //! 들어가야할 곳 : 홈화면
-                            props.history.push(`/`)
+                            props.history.replace(`/`)
                         }
                     }
                 })
