@@ -358,9 +358,14 @@ const SceneMakePage = (props) => {
     };
 
     function handleEnter(event) {
-        if (nameElement.current === document.activeElement)
+        if (!scriptElement?.current){
+            return;
+        }
+        if (nameElement.current === document.activeElement){
+            console.log(scriptElement)
             scriptElement.current.focus();
-        else if (scriptElement.current === document.activeElement)
+        }
+        else if (scriptElement.current === document.activeElement && scriptElement.current)
             onSubmit_nextCut(event);
         else
             scriptElement.current.focus();

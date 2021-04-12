@@ -13,6 +13,7 @@ const thumbsUpSchema = Schema({
   userList: {}
 },{ strict: false });
 
+thumbsUpSchema.index({ objectId: 1 });
 
 const ThumbsUp = mongoose.model('ThumbsUp', thumbsUpSchema);
 

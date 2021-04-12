@@ -9,6 +9,10 @@ const mongoose = require('mongoose');
 const {TreeData} = require("../models/TreeData");
 const { Scene } = require('../models/Scene');
 const { Game } = require('../models/Game');
+const { Comment } = require('../models/Comment');
+const { ThumbsUp } = require('../models/ThumbsUp');
+const { Like } = require('../models/Like');
+const { View } = require('../models/View');
 
 
 function setTreeData (gameId, userId, sceneId, sceneData, parentSceneId ) {
@@ -27,9 +31,30 @@ function setTreeData (gameId, userId, sceneId, sceneData, parentSceneId ) {
 
 const deleteData = async (managedData, id) => {
   const data = managedData[id];
-  const gameId = mongoose.Types.ObjectId(data.gameId);
-  const sceneId = data.sceneId;
-  const userId = mongoose.Types.ObjectId(data.userId);
+  const {sceneId, gameId, userId} = data;
+  const gameId = mongoose.Types.ObjectId(gameId);
+  const userId = mongoose.Types.ObjectId(userId);
+  const comments = await Comment.find(
+    {gameId: gameId, responseTo: "", sceneId: sceneId},
+    {_id: 1}
+  );
+  if(comments){
+    for (let i=0; i<comments.length; i++ ){
+      await Comment.deleteMany({
+        gameId: gameId, 
+        responseTo: comments[i]._id.toString(), 
+        sceneId: sceneId
+      })
+      await Like.deleteOne({
+        userId: userId,
+        gameId: gameId,
+        commentId: comments[i]._id.toString(),
+      })
+    }
+  }
+  await Comment.deleteMany( {gameId: gameId, responseTo: "", sceneId: sceneId} );
+  await View.deleteOne({objectId: sceneId});
+  await ThumbsUp.deleteOne({objectId: mongoose.Types.ObjectId(sceneId)})
   await TreeData.deleteOne({_id: mongoose.Types.ObjectId(data._id)});
   await Scene.deleteOne({_id: mongoose.Types.ObjectId(sceneId)});
   await User.updateOne(

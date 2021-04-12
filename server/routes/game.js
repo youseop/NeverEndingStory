@@ -647,7 +647,7 @@ router.delete('/:gameId', async (req,res) => {
         Scene.deleteMany( {gameId: gameId} ).exec();
         ThumbsUp.deleteMany( {objectId: gameId} ).exec();
         TreeData.deleteMany( {gameId: gameId} ).exec();
-        View.deleteMany( {gameId: gameId} ).exec();
+        View.deleteMany( {objectId: gameId} ).exec();
         Game.deleteOne( {_id: gameId} ).exec();
         return res.status(200).json({ success: true, messege: "삭제되었습니다." });
     } catch (err) {
