@@ -370,8 +370,9 @@ const validateScene = async (gamePlaying, sceneId, gameId, isMaking) => {
 };
 
 router.post("/scene/validate", check, async (req, res) => {
-    const { user, body: { sceneId, gameId, isMaking } } = req;
-    const val = await validateScene(user.gamePlaying, sceneId, gameId, isMaking);
+    const { body: { sceneId, gameId, isMaking } } = req;
+    let gamePlaying = req.isMember ? req.user.gamePlaying : req.session.gamePlaying;
+    const val = await validateScene(gamePlaying, sceneId, gameId, isMaking);
     if (!val) {
         return res.status(200).json({ success: false });
     }

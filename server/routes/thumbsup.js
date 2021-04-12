@@ -22,13 +22,17 @@ router.post('/', async (req,res) => {
     const userId = req.body.userId;
     const objectId = req.body.objectId;
     const flag = req.body.flag;
+
+    console.log(userId)
+    console.log(typeof userId)
     let inc = 1;
     const thumbsup = await ThumbsUp.findOne({"objectId" : objectId});
     let isClicked = false;
     if (thumbsup && thumbsup.userList){
       if(
-        !Object.keys(thumbsup.userList).includes(userId) ||
-        thumbsup.userList[userId] === false
+        typeof userId && 
+        (!Object.keys(thumbsup.userList).includes(userId) ||
+        thumbsup.userList[userId] === false)
       ){
         thumbsup.cnt += 1;
         thumbsup.userList = {
