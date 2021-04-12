@@ -476,6 +476,9 @@ const ProductScreen = (props) => {
                   isLastMotion={lastMotion}
                   theme={Scene.theme}
                   setScene={setScene}
+                  isFullscreen={isFullscreen}
+                  isPlay={true}
+
                 />
               ) :
                 <TextBlock
@@ -485,6 +488,8 @@ const ProductScreen = (props) => {
                   isTyping={isTyping}
                   theme={Scene.theme}
                   muted={muted}
+                  isFullscreen={isFullscreen}
+                  isPlay={true}
                 />
               }
 
@@ -531,21 +536,21 @@ const ProductScreen = (props) => {
             </div>
           </div>
         </div>
-      <div className="detail_relative_container"></div>
-      <SceneInfo 
-        gameDetail={gameDetail}
-        onClick_thumbsUpGame={onClick_thumbsUpGame}
-        isClickedGame={isClickedGame}
-        thumbsupCntGame={thumbsupCntGame}
-        history={props.history}
-        writer={writer}
-        gameId={gameId}
-        sceneId={sceneId}
-      />
-      <Comment 
-        sceneId={sceneId}
-        gameId={gameId}
-      />
+        <div className="detail_relative_container"></div>
+        <SceneInfo
+          gameDetail={gameDetail}
+          onClick_thumbsUpGame={onClick_thumbsUpGame}
+          isClickedGame={isClickedGame}
+          thumbsupCntGame={thumbsupCntGame}
+          history={props.history}
+          writer={writer}
+          gameId={gameId}
+          sceneId={sceneId}
+        />
+        <Comment
+          sceneId={sceneId}
+          gameId={gameId}
+        />
       </>
     );
   } else {
