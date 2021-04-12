@@ -119,7 +119,10 @@ router.post('/save', auth, async (req, res) => {
   if (!isFirst && (Date.now() - createdAt >= MS_PER_HR)) {
     const user = await User.findOne({ _id: userId });
     Scene.deleteOne({ _id: sceneId });
-    user.gamePlaying.sceneIdList.pop();
+    const playingIdx = user.gamePlaying.sceneIdList.findIndex(item => objCmp(item.sceneId, req.body.sceneId))
+    if (playingIdx === user.gamePlaying.sceneIdList.length-1){
+      user.gamePlaying.sceneIdList.pop();
+    }
     user.gamePlaying.isMaking = false;
     const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === sceneId.toString());
     if (idx > -1) user.makingGameList.splice(idx, 1);

@@ -11,6 +11,7 @@ voice.volume = 0.8
 function TextAnimation({ cut_script, setIsTyping, muted }) {
     const [flag, setFlag] = useState(false);
     let i = 0;
+    // muted ? voice.muted = true : voice.muted = false;
     const [text, { skip }] = useWindupString(
         cut_script,
         {
