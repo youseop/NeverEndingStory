@@ -98,7 +98,7 @@ export default class extends React.Component {
       }
 
       if (isDelete){
-        const confirmComment= `클릭하신 스토리와 이어지는 스토리들을 모두 삭제하시겠습니까?\n한 번 삭제하면 되돌릴 수 없습니다.\n"삭제하겠습니다."를 입력창에 입력해주세요.`;
+        const confirmComment= `클릭하신 스토리와 이어지는 스토리들을 모두 삭제하시겠습니까?\n한 번 삭제하면 되돌릴 수 없습니다.\n"삭제하겠습니다."를 입력창에 입력해주세요.\n\n(삭제를 중지하길 원하는 경우 오른쪽 하단의 '삭제 중지' 버튼을 눌러주세요.)`;
         if(window.prompt(confirmComment) === "삭제하겠습니다."){
           const {sceneId, gameId} = node.data;
           message
