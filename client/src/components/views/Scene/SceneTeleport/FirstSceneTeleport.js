@@ -62,6 +62,7 @@ const FirstSceneTeleport = ({ gameId, setScene,sceneId }) => {
                 closable={false}
                 centered={true}
                 width={650}
+                getContainer='.gamePlay__container'
                 bodyStyle={{
                     height: "170px",
                     display: "flex",

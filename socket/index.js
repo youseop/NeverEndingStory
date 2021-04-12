@@ -86,6 +86,7 @@ const updateCache = async (sceneId, userId, plus, exp) => {
             prevSceneId: mongoose.Types.ObjectId(sceneId),
             writer: mongoose.Types.ObjectId(userId)
           }).exec().then((err) => { console.log(err) });
+          logger.info("After 1hour delete ",sceneId, userId)
         }
       }
       return;
@@ -152,7 +153,7 @@ io.on('connection', socket => {
     // 이미 cert에 user가 있는 경우, 예외처리.
     let user_token = {
       userId,
-      exp: Date.now() + 30000,
+      exp: Date.now() + 300000,
       timer: null,
       isMakingScene: false,
     }
@@ -165,7 +166,12 @@ io.on('connection', socket => {
     const userId = data.user_id;
     if (scene_cache[sceneId] === undefined) {
       const sceneTmp = await Scene.findOne({ _id: mongoose.Types.ObjectId(sceneId) }).select("sceneTmp");
-      scene_cache[sceneId] = sceneTmp.sceneTmp;
+      if(sceneTmp){
+        scene_cache[sceneId] = sceneTmp.sceneTmp;
+      }
+      else{
+        return;
+      }
       // cert 리스트의 모든 녀석을 확인하여 exp가 넘은 친구는 제거
     }
 
@@ -235,9 +241,8 @@ io.on('connection', socket => {
               prevSceneId: mongoose.Types.ObjectId(scene_id),
               writer: mongoose.Types.ObjectId(certToken.userId)
             }).exec().then((err) => { console.log(err) });
-  
+            logger.info("Restart - setting after 1hour:",scene_id,certToken.userId)
           }
-  
           sceneTmp.emptyNum += 1;
           io.sockets.to(scene_id).emit('empty_num_changed', { emptyNum: sceneTmp.emptyNum });
         } else {

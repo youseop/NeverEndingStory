@@ -107,17 +107,15 @@ router.post("/playing-list/clear", check, async (req, res) => {
         //! 처음부터하기 -> 제작 취소
         let prevOfLastScene
         if (objCmp(user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1], sceneId)){
-            nowIsMaking = true;
+            nowIsMaking = user.gamePlaying.isMaking;
             prevOfLastScene = user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 2];
             
             //! 당분간 while문으로 갈겨놔야할 듯?
-            let idx = user.makingGameList.findIndex(item => objCmp(item.sceneId, sceneId))
+            let idx = user.makingGameList?.findIndex(item => objCmp(item.sceneId, sceneId))
             while (idx > - 1) {
                 user.makingGameList.splice(idx, 1)
                 idx = user.makingGameList.findIndex(item => objCmp(item.gameId, gameId))
             }
-
-
 
             
             user.gamePlaying = {
@@ -143,6 +141,7 @@ router.post("/playing-list/clear", check, async (req, res) => {
         }
     }
     catch (err) {
+        console.log(err)
         return res.json({ success: false, err });
     }
 })
