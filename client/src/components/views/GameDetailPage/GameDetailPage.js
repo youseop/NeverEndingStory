@@ -105,7 +105,6 @@ export default function GameDetailPage(props) {
                     setContributerList(topRank);
                     setContributerCnt(contributerCnt);
                     setTotalSceneCnt(totalSceneCnt);
-                    console.log(gameDetail)
                     setMetaTag({  title: `이어봐:${gameDetail.title}`,
                     description: `${gameDetail.description.slice(0,20)}...`,
                     imageUrl: process.env.NODE_ENV === 'production' ?

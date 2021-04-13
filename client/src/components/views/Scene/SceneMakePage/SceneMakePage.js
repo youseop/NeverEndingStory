@@ -362,7 +362,6 @@ const SceneMakePage = (props) => {
             return;
         }
         if (nameElement.current === document.activeElement){
-            console.log(scriptElement)
             scriptElement.current.focus();
         }
         else if (scriptElement.current === document.activeElement && scriptElement.current)
