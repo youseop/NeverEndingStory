@@ -10,7 +10,7 @@ import { Click_Icon } from "../../svg/icon"
 const CHOICE_NUM = 4;
 
 export const TextBlock = (props) => {
-    let { cut_name, cut_script, setIsTyping, isTyping, theme, muted, isFullscreen, isPlay } = props;
+    let { cut_name, cut_script, setIsTyping, isTyping, theme, muted, isFullscreen, isPlay, isChoice } = props;
     const fullStr = isFullscreen ? "full" : ""
     const playStr = isPlay ? "play" : "make"
     return <>
@@ -38,7 +38,7 @@ export const TextBlock = (props) => {
                     </div>
                     :
                     <>
-                        <div className={`text_line ${theme}`} > {
+                        <div className={`text_line ${theme} ${playStr} ${fullStr}`} > {
                             isTyping ? < TextAnimation
                                 cut_script={" "}
                                 setIsTyping={setIsTyping}
@@ -48,7 +48,7 @@ export const TextBlock = (props) => {
                         </div>
                     </>
             }
-            {!isTyping &&
+            {!isTyping && !isChoice &&
                 <div className={`click_icon_container ${theme}`}>
                     <Click_Icon />
                     <span>Click!</span>
@@ -79,7 +79,6 @@ export const TextBlockChoice = (props) => {
         isFullscreen,
         isPlay
     } = props;
-
     const choices = scene_next_list.map((choice, index) => {
         return (
             <Link to={
@@ -108,8 +107,9 @@ export const TextBlockChoice = (props) => {
                 setIsTyping={setIsTyping}
                 isTyping={isTyping}
                 theme={theme}
-                isFullscree={isFullscreen}
+                isFullscreen={isFullscreen}
                 isPlay={isPlay}
+                isChoice={true}
             />
             { isLastMotion &&
                 <div className={`choice_box ${isEnding} ${theme} ${isFullscreen}`}>
@@ -131,6 +131,12 @@ export const TextBlockChoice = (props) => {
                             }
                         </>
                     }
+                </div>
+            }
+            {!isLastMotion &&
+                <div className={`click_icon_container ${theme}`}>
+                    <Click_Icon />
+                    <span>Click!</span>
                 </div>
             }
         </div>

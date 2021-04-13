@@ -479,7 +479,6 @@ const ProductScreen = (props) => {
                   setScene={setScene}
                   isFullscreen={isFullscreen}
                   isPlay={true}
-
                 />
               ) :
                 <TextBlock
