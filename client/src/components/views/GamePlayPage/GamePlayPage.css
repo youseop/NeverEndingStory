@@ -130,6 +130,29 @@
   font-size:2vh;
 }
 
+.minimap_icon{
+  position:absolute;
+  width: 7%;
+  bottom: 100%;
+  right:4%;
+  filter: brightness(0.6);
+  animation: 2s ease-out 0s infinite scale ;
+}
+.minimap_icon:hover{
+  filter:brightness(0.8);
+}
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 @media (max-width:1000px) and (pointer: fine){
   .detail_relative_container{
     height: 60vw;
