@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import qs from "qs";
 import GameForkButton from "./GameForkButton.js";
 import { pasteLink } from "../../functions/pasteLink.js";
+import setMetaTag from '../../functions/metaTag'
 
 const config = require('../../../config/key')
 
@@ -104,8 +105,17 @@ export default function GameDetailPage(props) {
                     setContributerList(topRank);
                     setContributerCnt(contributerCnt);
                     setTotalSceneCnt(totalSceneCnt);
+                    setMetaTag({  title: `이어봐:${gameDetail.title}`,
+                    description: `${gameDetail.description.slice(0,20)}...`,
+                    imageUrl: process.env.NODE_ENV === 'production' ?
+                    gameDetail?.thumbnail
+                    :
+                    `${config.SERVER}/${gameDetail?.thumbnail}`})
                 }
             })
+        }
+        return () => {
+            setMetaTag({});
         }
     }, [user])
 

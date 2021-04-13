@@ -93,11 +93,28 @@ export function Ending_Icon() {
   );
 }
 
-export function Logo_Icon() {// 1049 * 536 기본
+export function Logo_Icon() {
+  // 1049 * 536 기본
   return (
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-      width="70px" height="35px" viewBox="0 0 1049 536" enableBackground="new 0 0 1049 536" xmlSpace="preserve">
-      <image id="logo_icon" width="1049" height="536" x="0" y="0"
+    <svg
+      version="1.1"
+      id="Layer_1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      x="0px"
+      y="0px"
+      width="70px"
+      height="35px"
+      viewBox="0 0 1049 536"
+      enableBackground="new 0 0 1049 536"
+      xmlSpace="preserve"
+    >
+      <image
+        id="logo_icon"
+        width="1049"
+        height="536"
+        x="0"
+        y="0"
         xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBkAAAIYCAQAAACC+vzmAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
                                           AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZ
                                           cwAALEoAACxKAXd6dE0AAAAHdElNRQflBAQOHB7mWVwyAAAoI0lEQVR42u3d4XnTyNoG4Bcu/sen
@@ -282,10 +299,10 @@ export function Logo_Icon() {// 1049 * 536 기본
                                           XSuBbnBjAo5nE9O9HrbcRiUwAF0hMsAxrWMS1w1fu43KjhJAd4gMcFzrqBpthn0VE4EB6BKRAY5t
                                           E9N4+eAjlzfxxi0JoGtMf4RSqpjFNM7ufG0bdSw8VAl0kcgAZY1jHJMYRUQdG7cigO76Pw4YZ/4a
                                           Df19AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA0LTA0VDE0OjI4OjMwKzAzOjAwrNqZjwAAACV0
-                                          RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNC0wNFQxNDoyODozMCswMzowMN2HITMAAAAASUVORK5CYII=" />
+                                          RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNC0wNFQxNDoyODozMCswMzowMN2HITMAAAAASUVORK5CYII="
+      />
     </svg>
-
-  )
+  );
 }
 
 export function BAR(props) {
@@ -304,26 +321,37 @@ export function BAR(props) {
 
 export function Circle(props) {
   return (
-    <svg width="12" height="12" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="8.5" cy="8.5" r="8.5" fill="#ffffff"/>
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 17 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="8.5" cy="8.5" r="8.5" fill="#ffffff" />
     </svg>
-  )
+  );
 }
 
 export function Click_Icon(props) {
   return (
-    <svg version="1.1"
+    <svg
+      version="1.1"
       id="Capa_1"
       xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      x="0px"
+      y="0px"
       width="50%"
       height="100"
       viewBox="0 0 450.47 450.47"
       // style={{"enable-background":"new 0 0 450.47 450.47"}}
       xmlSpace="preserve"
-      fill="white">
+      fill="white"
+    >
       <g>
-        <path d="M237.298,99.533c-0.301-0.34-0.562-0.677-0.916-0.999c-3.937-3.535-4.043-2.491,0.266-6.463
+        <path
+          d="M237.298,99.533c-0.301-0.34-0.562-0.677-0.916-0.999c-3.937-3.535-4.043-2.491,0.266-6.463
 		c3.192-2.929,7.063-5.222,10.574-7.755c9.286-6.711,15.398-15.699,19.529-26.356C276.02,34.033,248.707,17.503,235,3.344
 		c-9.904-10.247-25.496,5.382-15.604,15.604c7.643,7.912,17.489,14.328,24.14,23.123c7.453,9.848-3.901,20.712-11.68,26.194
 		c-12.026,8.473-22.423,19.727-20.02,31.794c-53.971,5.042-103.87,34.623-103.87,86.767V333.2c0,64.664,52.603,117.27,117.27,117.27
@@ -332,38 +360,24 @@ export function Click_Icon(props) {
 		c0,52.5-42.705,95.199-95.192,95.199c-52.488,0-95.196-42.699-95.196-95.199V264.73c19.713,5.958,56.817,14.995,100.676,14.995
 		c28.088,0,58.93-3.759,89.713-14.352V333.194z M320.433,241.896c-27.916,10.675-56.424,14.849-82.78,15.415v-135.66
 		c42.569,2.553,82.78,22.969,82.78,65.175V241.896z M206.072,133.429v111.973c-17.153,3.027-67.583-11.094-67.583-11.094
-		C131.049,155.812,160.429,142.005,206.072,133.429z"/>
+		C131.049,155.812,160.429,142.005,206.072,133.429z"
+        />
       </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
-      <g>
-      </g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
     </svg>
   );
 }
@@ -403,6 +417,71 @@ export function SCENE_ICON(props) {
 		c4.142,0,7.5-3.358,7.5-7.5c0-4.142-3.358-7.5-7.5-7.5H239.54v-53.321H290.354z M224.54,260.483h-89.293v-53.321h89.293V260.483z"
         ></path>
       </g>
+    </svg>
+  );
+}
+
+export function Map(props) {
+  return (
+    <svg
+      version="1.1"
+      id="Layer_1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      x="0px"
+      y="0px"
+      viewBox="0 0 504 504"
+      // style={enable-background:new 0 0 504 504}
+      xmlSpace="preserve"
+    >
+      <circle fill="#90DFAA" cx="252" cy="252" r="252" />
+      <polygon
+        fill="#FFFFFF"
+        points="183.7,376 75.4,338.2 149.7,179.5 211.4,190.7 "
+      />
+      <polygon
+        fill="#E6E9EE"
+        points="183.7,376 298.1,338 276.5,179.5 211.4,190.7 "
+      />
+      <polygon
+        fill="#FFFFFF"
+        points="434.8,376 298.1,338 276.5,179.5 344.9,190.7 "
+      />
+      <g>
+        <polygon
+          fill="#84DBFF"
+          points="326,207.4 279.1,198.8 294.3,310.5 382,334 	"
+        />
+        <polygon
+          fill="#84DBFF"
+          points="159.9,201.3 104.9,321.7 187.2,347.2 208.2,210 	"
+        />
+      </g>
+      <polygon
+        fill="#54C0EB"
+        points="279.1,198.8 208.2,210 187.2,347.2 294.3,310.5 "
+      />
+      <path
+        fill="#F1543F"
+        d="M331.8,139.9c0,45-81.5,143.3-81.5,143.3s-81.5-98.3-81.5-143.3s36.5-81.5,81.5-81.5
+ S331.8,94.8,331.8,139.9z"
+      />
+      <circle fill="#FFFFFF" cx="250.2" cy="133.2" r="41.3" />
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
+      <g></g>
     </svg>
   );
 }

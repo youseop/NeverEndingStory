@@ -3,6 +3,7 @@ import { faCompress, faExpand, faEye, faHeart } from '@fortawesome/free-solid-sv
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
+import {Map} from '../../svg/icon'
 
 function GamePlayButtons(props) {
   const {
@@ -47,6 +48,11 @@ function GamePlayButtons(props) {
           }
           {thumbsUp}
           </button>
+          <div className="minimap_icon"
+            onClick={(e) => { setHistoryMap((state) => !state); e.stopPropagation() }}
+          >
+           <Map/>
+          </div>
         </>
       }
       <button
