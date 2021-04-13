@@ -38,7 +38,7 @@ export const TextBlock = (props) => {
                     </div>
                     :
                     <>
-                        <div className={`text_line ${theme}`} > {
+                        <div className={`text_line ${theme} ${playStr} ${fullStr}`} > {
                             isTyping ? < TextAnimation
                                 cut_script={" "}
                                 setIsTyping={setIsTyping}
@@ -108,7 +108,7 @@ export const TextBlockChoice = (props) => {
                 setIsTyping={setIsTyping}
                 isTyping={isTyping}
                 theme={theme}
-                isFullscree={isFullscreen}
+                isFullscreen={isFullscreen}
                 isPlay={isPlay}
             />
             { isLastMotion &&
