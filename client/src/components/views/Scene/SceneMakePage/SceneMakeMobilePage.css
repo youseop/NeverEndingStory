@@ -1564,7 +1564,7 @@
         font-size:2.8vmin;
     }
     .gamePlay__btn:hover {
-        color: #B6B6B6;
+        color: #ffffff;
       }
 }
 
@@ -1573,7 +1573,7 @@
         margin-right:0.7vh;
       }
     .gamePlay__btn:hover {
-        color: #B6B6B6;
+        color: #ffffff;
       }
     .choice_box {
         font-size: 2.5vmin;

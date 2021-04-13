@@ -45,13 +45,14 @@
 }
 .gamePlay__btn {
   all: unset;
-  color: rgb(182, 182, 182);
+  color: #ffffff;
   padding: 0px 5px;
   border-radius: 3px;
   margin: 0.35vh;
   transition-duration: 0.2s;
   font-size: 0.9rem;
   height: 1% !important;
+  background-color: rgba(0,0,0,0.5);
 }
 .preventColorChange:hover {
   color: rgb(182, 182, 182) !important;
@@ -108,9 +109,12 @@
   /* font-size: 0rem; */
 }
 .gamePlay__btn.sound>svg{
-  width:1.2rem;
+  width:1..rem;
   vertical-align: -0.4rem;
-  color: rgb(182, 182, 182) !important;
+  color: #ffffff !important;
+}
+.gamePlay__btn.sound>svg:hover{
+  color: rgb(149, 149, 149)  !important;
 }
 
 .gamePlay__btn.full{
@@ -204,8 +208,11 @@
     /* background-color: yellow; */
   }
   .gamePlay__btn {
-    padding: 0px 0px;
+    padding: 0px calc(3vh/9);
     /* background-color: blueviolet; */
+  }
+  .gamePlay__btn>svg{
+    color:#ffffff;
   }
   .gamePlay__btn.full{
     margin-right: 1vh;

@@ -479,7 +479,6 @@ const ProductScreen = (props) => {
                   setScene={setScene}
                   isFullscreen={isFullscreen}
                   isPlay={true}
-
                 />
               ) :
                 <TextBlock
@@ -525,6 +524,7 @@ const ProductScreen = (props) => {
                   handleExitFullscreen={handleExitFullscreen}
                   setIsFullscreen={setIsFullscreen}
                   fullButton={fullButton}
+                  isLastMotion={lastMotion}
                   i={i}
                 />
               </div>
