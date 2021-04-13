@@ -524,6 +524,7 @@ const ProductScreen = (props) => {
                   handleExitFullscreen={handleExitFullscreen}
                   setIsFullscreen={setIsFullscreen}
                   fullButton={fullButton}
+                  isLastMotion={lastMotion}
                   i={i}
                 />
               </div>
