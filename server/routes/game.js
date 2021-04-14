@@ -569,6 +569,26 @@ router.get("/popular-games", (req, res) => {
         });
 });
 
+router.get("/newest-games", (req, res) => {
+    Game.find({first_scene:{$exists:true}})
+        .sort({ createdAt: -1 })
+        .limit(8)
+        .exec((err, games) => {
+            if (err) return res.status(400).send(err);
+            res.status(200).json({ success: true, games });
+        });
+});
+
+
+router.post("/genre-games/", (req, res) => {
+    Game.find({category:req.body.genre, first_scene:{$exists:true}})
+        .limit(8)
+        .exec((err, games) => {
+            if (err) return res.status(400).send(err);
+            res.status(200).json({ success: true, games });
+        });
+});
+
 router.get("/recent-games", check, async (req, res) => {
     let recent_play = req.isMember ? req.user.gameHistory : req.session.gameHistory;
     let now_play = req.isMember ? req.user.gamePlaying : req.session.gamePlaying;

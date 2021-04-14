@@ -8,6 +8,7 @@
 }
 
 .game-box > div:first-child {
+  margin-top: 20px;
   width: 100%;
   flex: 7;
 }
