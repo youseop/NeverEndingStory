@@ -87,7 +87,7 @@ const InputModal = ({ scene_id, scene_depth, game_id, scene_next_list, theme }) 
       setVisible(true);
     }
     else {
-      message.error("로그인이 필요합니다.")
+      message.error("로그인이 필요합니다.",0.5)
     }
   }
 

@@ -83,7 +83,7 @@ function ContributedGame(props: any) {
             :
             `http://${LOCAL_HOST}:5000/${gameDetail.thumbnail}`}
             
-            alt="이미지를 찾을 수 없습니다."
+            alt=""
             
             />
           <div className="contribute__icon">

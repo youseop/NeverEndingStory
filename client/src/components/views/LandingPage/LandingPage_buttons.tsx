@@ -85,7 +85,7 @@ export function NewGameButton({ replace }: newGameButtonProps) {
             setVisible(true)
         }
         else {
-            message.error("로그인이 필요합니다.")
+            message.error("로그인이 필요합니다.",0.5)
         }
     }
 

@@ -119,7 +119,7 @@ router.post('/save', auth, async (req, res) => {
   if (!isFirst && (Date.now() - createdAt >= MS_PER_HR)) {
     const user = await User.findOne({ _id: userId });
     Scene.deleteOne({ _id: sceneId });
-    const playingIdx = user.gamePlaying.sceneIdList.findIndex(sceneId => objCmp(sceneId, sceneId))
+    const playingIdx = user.gamePlaying.sceneIdList.findIndex(item => objCmp(item, sceneId))
     if (playingIdx === user.gamePlaying.sceneIdList.length-1){
       user.gamePlaying.sceneIdList.pop();
     }
@@ -340,7 +340,7 @@ router.delete('/', async (req, res) => {
     // 제작 취소 누르는 시점에서 이미 삭제 됐을 수도 있다. playing first scene`
     
   
-    const playingIdx = user.gamePlaying.sceneIdList.findIndex(sceneId=>objCmp(sceneId, sceneId))
+    const playingIdx = user.gamePlaying.sceneIdList.findIndex(item=>objCmp(item, sceneId))
     let prevSceneId
     if(user.gamePlaying.isMaking && (playingIdx === user.gamePlaying.sceneIdList.length-1)){
       user.gamePlaying.sceneIdList.splice(playingIdx,1)
