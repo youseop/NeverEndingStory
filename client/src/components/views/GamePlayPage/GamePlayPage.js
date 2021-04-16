@@ -179,16 +179,36 @@ const ProductScreen = (props) => {
       if (
         !(i > 0 && Scene.cutList[i - 1].bgm.music == Scene.cutList[i]?.bgm.music)
       ) {
-        bgm_audio.pause();
         bgm_audio.src = Scene.cutList[i]?.bgm.music;
-        bgm_audio.play();
+        var playPromise = bgm_audio.play();
+
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+            bgm_audio.pause();
+            bgm_audio.play();
+          })
+            .catch(error => {
+              // bgm_audio.src = Scene.cutList[i]?.bgm.music;
+              // bgm_audio.play();
+            });
+        }
       }
     }
     if (Scene?.cutList[i]?.sound.music) {
-      sound_audio.pause();
-
       sound_audio.src = Scene.cutList[i]?.sound.music;
-      sound_audio.play();
+      var playPromise = sound_audio.play();
+
+      if (playPromise !== undefined) {
+        playPromise.then(_ => {
+          sound_audio.pause();
+          // sound_audio.src = Scene.cutList[i]?.sound.music;
+          sound_audio.play();
+        })
+          .catch(error => {
+            // sound_audio.src = Scene.cutList[i]?.sound.music;
+            // sound_audio.play();
+          });
+      }
     }
   }
 
