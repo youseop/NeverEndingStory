@@ -11,23 +11,37 @@ voice.volume = 0.8
 function TextAnimation({ cut_script, setIsTyping, muted }) {
     const [flag, setFlag] = useState(false);
     let i = 0;
-    // muted ? voice.muted = true : voice.muted = false;
+    muted ? voice.muted = true : voice.muted = false;
+
     const [text, { skip }] = useWindupString(
         cut_script,
         {
             pace: () => 50,
             onFinished: () => {
-                if (voice)
-                    voice.pause()
+                var playPromise = voice.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        voice.pause();
+                    })
+                        .catch(error => {
+                        });
+                }
                 setFlag(true)
             },
             onChar: () => {
-                if ((i == 0 || cut_script[i] === ' ' || cut_script[i] === '.')) {
-                    if (voice)
-                        voice.pause()
-                } else {
-                    if (voice)
-                        voice.play()
+                var playPromise = voice.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        if ((i == 0 || cut_script[i] === ' ' || cut_script[i] === '.')) {
+                            voice.pause()
+                        } else {
+                            voice.play()
+                        }
+                    })
+                        .catch(error => {
+                            // voice.play();
+                        });
                 }
                 i++;
             }
