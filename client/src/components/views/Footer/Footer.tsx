@@ -39,7 +39,7 @@ function Footer() {
           <div className="footer-hyunchae" onClick={() => { window.open("https://r4bb1t.dev/cv") }}>
             <img className="user-icon" src="https://i.imgur.com/rF80MBo.png" />
             User Icon made by 
-            <div className="hyunchae">김현채</div>
+            <div className="hyunchae">r4bb1t</div>
           </div>
         </div>
         <div className="footer-icons">
