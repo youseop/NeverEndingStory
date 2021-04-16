@@ -85,7 +85,7 @@ const updateCache = async (sceneId, userId, plus, exp) => {
           Scene.deleteOne({
             prevSceneId: mongoose.Types.ObjectId(sceneId),
             writer: mongoose.Types.ObjectId(userId)
-          }).exec().then((err) => { console.log(err) });
+          }).exec();
           logger.info("After 1hour delete ",sceneId, userId)
         }
       }
@@ -240,7 +240,7 @@ io.on('connection', socket => {
             Scene.deleteOne({
               prevSceneId: mongoose.Types.ObjectId(scene_id),
               writer: mongoose.Types.ObjectId(certToken.userId)
-            }).exec().then((err) => { console.log(err) });
+            }).exec();
             logger.info("Restart - delete Trash:",scene_id,certToken.userId)
           }
           sceneTmp.emptyNum += 1;
@@ -257,7 +257,7 @@ io.on('connection', socket => {
                 Scene.deleteOne({
                   prevSceneId: mongoose.Types.ObjectId(scene_id),
                   writer: mongoose.Types.ObjectId(certToken.userId)
-                }).exec().then((err) => { console.log(err) });
+                }).exec();
                 logger.info("Restart - setting 1hour:", scene_id, certToken.userId)
               }
   

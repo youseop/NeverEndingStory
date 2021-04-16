@@ -179,14 +179,16 @@ const ProductScreen = (props) => {
       if (
         !(i > 0 && Scene.cutList[i - 1].bgm.music == Scene.cutList[i]?.bgm.music)
       ) {
-        bgm_audio.pause();
+        if(!bgm_audio.paused)
+          bgm_audio.pause();
         bgm_audio.src = Scene.cutList[i]?.bgm.music;
         bgm_audio.play();
       }
-    }
+    } 
     if (Scene?.cutList[i]?.sound.music) {
-      sound_audio.pause();
-
+      if(!sound_audio.paused)
+        sound_audio.pause();
+      
       sound_audio.src = Scene.cutList[i]?.sound.music;
       sound_audio.play();
     }

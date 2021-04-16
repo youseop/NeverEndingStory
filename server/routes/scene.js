@@ -119,12 +119,12 @@ router.post('/save', auth, async (req, res) => {
   if (!isFirst && (Date.now() - createdAt >= MS_PER_HR)) {
     const user = await User.findOne({ _id: userId });
     Scene.deleteOne({ _id: sceneId });
-    const playingIdx = user.gamePlaying.sceneIdList.findIndex(sceneId => objCmp(sceneId, sceneId))
+    const playingIdx = user.gamePlaying.sceneIdList.findIndex(item => objCmp(item, sceneId))
     if (playingIdx === user.gamePlaying.sceneIdList.length-1){
       user.gamePlaying.sceneIdList.pop();
     }
     user.gamePlaying.isMaking = false;
-    const idx = user.makingGameList.findIndex(item => item.sceneId.toString() === sceneId.toString());
+    const idx = user.makingGameList.findIndex(item => objCmp(item.sceneId, sceneId));
     if (idx > -1) user.makingGameList.splice(idx, 1);
     user.save((err) => {
       if (err) return res.status(400).json({ success: false, err })
@@ -340,14 +340,13 @@ router.delete('/', async (req, res) => {
     // 제작 취소 누르는 시점에서 이미 삭제 됐을 수도 있다. playing first scene`
     
   
-    const playingIdx = user.gamePlaying.sceneIdList.findIndex(sceneId=>objCmp(sceneId, sceneId))
+    const playingIdx = user.gamePlaying.sceneIdList.findIndex(item=>objCmp(item, sceneId))
     let prevSceneId
     if(user.gamePlaying.isMaking && (playingIdx === user.gamePlaying.sceneIdList.length-1)){
       user.gamePlaying.sceneIdList.splice(playingIdx,1)
       //! 이미 삭제된 녀석의 emptyNum은 올리지 않는다.
-      //! + 제작기간 안지난 녀석만 emptyNum 올린다.
+      //! + 제작기간 안지난 녀석만 emptyNum 올린다. 
       if(req.body.exp - Date.now() > 0){  
-        console.log("제작 기간 이내!", req.body.exp - Date.now())
         prevSceneId = user.gamePlaying.sceneIdList[user.gamePlaying.sceneIdList.length - 1]
       }
     }

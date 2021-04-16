@@ -302,7 +302,7 @@ export default class extends React.Component {
                                 node.data.complaintCnt > threshold ? 
                                 "#ca0011"
                                 : 
-                                "#d65d16"
+                                "greenyellow"
                               }
                               onClick={() => {
                                   onClick_node(node, this);
