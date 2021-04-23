@@ -36,7 +36,6 @@ const getRecursive = (managedData, id, depth) => {
     }),
     mergeMap(parentWithChildIds =>{
       if (depth%100 === 0)
-        console.log(depth)
       return forkJoin([
         of(parentWithChildIds.parent),
         ...parentWithChildIds.childIds.map(childId => getRecursive(managedData, id, depth+1))
