@@ -223,7 +223,7 @@ router.delete("/:sceneId/:gameId", async (req,res) => {
     } 
     const cnt = deleteCnt(data, targetNodeId);
     deleteData(data, targetNodeId);
-
+    console.log(cnt,'cnt check')
     await Game.updateOne( 
       {_id: gameId},
       {$inc: {sceneCnt: cnt}}

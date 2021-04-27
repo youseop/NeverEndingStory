@@ -15,9 +15,10 @@ import { Link } from "react-router-dom";
 const { Option } = Select;
 const config = require('../../../config/key');
 
-const getRecursive = (managedData, id) => {
+const getRecursive = (managedData, id, depth) => {
   return getFromServer(managedData, id).pipe(
-    map(data => ({
+    map(data => {
+      return {
       parent: {
         name: data.name,
         sceneId: data.sceneId,
@@ -31,17 +32,24 @@ const getRecursive = (managedData, id) => {
         children: [],
       },
       childIds: data.children
-    })),
-    mergeMap(parentWithChildIds =>
-      forkJoin([
+    }
+    }),
+    mergeMap(parentWithChildIds =>{
+      if (depth%100 === 0)
+      return forkJoin([
         of(parentWithChildIds.parent),
-        ...parentWithChildIds.childIds.map(childId => getRecursive(managedData, childId))
+        ...parentWithChildIds.childIds.map(childId => getRecursive(managedData, id, depth+1))
       ])
+    }
     ),
     tap(
-      ([parent, ...children]) => (parent.children = children)
+      ([parent, ...children]) => {
+        return (parent.children = children)
+      }
     ),
-    map(([parent]) => parent)
+    map(([parent]) => {
+      return (parent)
+    })
   );
 };
 
@@ -75,7 +83,7 @@ function AdminPage(props) {
         for (let i = 0; i < rawData.length; i++) {
           data = { ...data, [rawData[i]._id]: rawData[i] }
         }
-        getRecursive(data, firstNodeId).subscribe(d => {
+        getRecursive(data, firstNodeId, 0).subscribe(d => {
           setTreeData(d);
         });
       }

@@ -24,13 +24,23 @@ function Footer() {
           <p>
             본 사이트는 SW정글사관학교에서의 교육적 목적으로 제작되었으며, 어떠한 상업적 이익도 취하지 않습니다.
         </p>
-          <p>
-            저작권 등 기타 문의는 <a onClick={() => showModal()}>이곳</a>으로 문의 가능합니다.
+        <p>
+          저작권 등 기타 문의는 <a onClick={() => showModal()}>이곳</a>으로 문의 가능합니다.
         </p>
+        {/* <div>
+          <img className="jg-img" src="https://swjungle.net/static/image/logo.png" />
+        </div> */}
           <ContactUs 
             isModalVisible={isModalVisible} 
             setIsModalVisible={setIsModalVisible} 
           />
+        </div>
+        <div className="footer-icons">
+          <div className="footer-hyunchae" onClick={() => { window.open("https://r4bb1t.dev/cv") }}>
+            <img className="user-icon" src="https://i.imgur.com/rF80MBo.png" />
+            User Icon made by 
+            <div className="hyunchae">r4bb1t</div>
+          </div>
         </div>
         <div className="footer-icons">
           <div className="jg-icon" onClick={() => { window.open("https://swjungle.net/") }}>

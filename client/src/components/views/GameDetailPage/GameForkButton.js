@@ -72,7 +72,7 @@ const GameForkButton = ({ history, user, gameId }) => {
             }, 1000);
         }
         else {
-            message.error("로그인이 필요합니다.")
+            message.error("로그인이 필요합니다.",0.5)
         }
     }
     return (

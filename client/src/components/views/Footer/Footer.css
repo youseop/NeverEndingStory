@@ -57,6 +57,23 @@
   padding-left: 5px;
 }
 
+.footer-hyunchae{
+  color: #ffffff63;
+  gap: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.user-icon{
+  width: 25px;
+  height: 25px;
+}
+.hyunchae{
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 @media (max-width: 850px) {
   .footer-container {
     min-width: 300px;

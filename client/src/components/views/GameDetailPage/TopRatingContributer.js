@@ -9,7 +9,6 @@ function TopRatingContributer(props) {
   const isMake = props.isMake;
 
   const topRateContributer_SceneCnt = contributerList[0]?.userSceneCnt;
-
   const topContributer = contributerList.map((contributer, index) => {
     if (contributer.userSceneCnt === 0) {
       return;

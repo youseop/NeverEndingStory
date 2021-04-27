@@ -271,7 +271,7 @@ const ProductScreen = (props) => {
       Axios.post("/api/thumbsup/", variable)
     }
     else {
-      message.error("로그인이 필요합니다.")
+      message.error("로그인이 필요합니다.",0.5)
     }
   }
 
@@ -295,7 +295,7 @@ const ProductScreen = (props) => {
       Axios.post("/api/thumbsup/", variable)
     }
     else {
-      message.error("로그인이 필요합니다.")
+      message.error("로그인이 필요합니다.",0.5)
     }
   }
 

@@ -4,6 +4,8 @@ import React, { memo, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import SingleReply from './SingleReply';
 import './SingleComment.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 
 function SingleComment({gameId, comment, updateToggle_comment}) {
@@ -207,7 +209,11 @@ function SingleComment({gameId, comment, updateToggle_comment}) {
           </div>
           }
           <div className="comment_info">
-            <div onClick={onClick_like} className="comment_like">좋아요 : {like}</div>
+            <div onClick={onClick_like} className="comment_like">
+              <FontAwesomeIcon className="specific_icon" icon={faHeart} /> 
+              &nbsp;
+              {like}
+            </div>
             { replyCnt>0 ? 
             <>
             <div onClick={onClick_displayReply} className="comment_displayReplyToggle">
