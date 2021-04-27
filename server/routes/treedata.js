@@ -31,8 +31,8 @@ function setTreeData (gameId, userId, sceneId, sceneData, parentSceneId ) {
 
 const deleteData = async (managedData, id) => {
   const data = managedData[id];
-  const {sceneId, gameId, userId} = data;
-  const gameId = mongoose.Types.ObjectId(gameId);
+  const {sceneId, userId} = data;
+  const gameId = mongoose.Types.ObjectId(data.gameId);
   const userId = mongoose.Types.ObjectId(userId);
   const comments = await Comment.find(
     {gameId: gameId, responseTo: "", sceneId: sceneId},
