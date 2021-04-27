@@ -118,7 +118,7 @@ router.post('/', check, async (req,res) => {
       const prevSceneId = sceneList[sceneList.length-2];
       const newTreeData = new TreeData(setTreeData (gameId, req.user._id, sceneId, sceneData, sceneList[sceneList.length-2]));
       await TreeData.updateOne(
-        {gameId: gameId, sceneId: prevSceneId},
+        {gameId: gameId, sceneId: prevSceneId}, 
         {$push: {children: newTreeData._id.toString()}}
         );
       await newTreeData.save();
