@@ -85,7 +85,11 @@
 <br>
 
 <p align="center"><img src="https://user-images.githubusercontent.com/66366941/117543011-ea077c80-b055-11eb-9cb7-d5958f6c03d6.gif"></p>
- 
+
+<br>
+
+<p align="center"><img src="https://user-images.githubusercontent.com/66366941/117543397-9c8c0f00-b057-11eb-81d7-fde602492882.gif"></p>
+
 <br>
 
 
@@ -94,6 +98,7 @@
 - 이야기는 처음부터 새로 만들고 싶지만, 사진과 음악들을 준비하기 귀찮은 분들을 위해 버전 추가하기 기능을 마련했습니다.
 - 마음에 드는 사진과 음악들이 있는 게임에서 버전 추가하기 버튼을 눌러 진해할 수 있습니다. 버전 추가하기는 선택한 게임의 음악과 사진을 상속받습니다.
 
+<p align="center"><img  width="300" src="https://user-images.githubusercontent.com/66366941/117543623-94809f00-b058-11eb-9442-7b96bed979e3.png"></p>
 
 
 
