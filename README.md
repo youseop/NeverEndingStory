@@ -164,15 +164,14 @@
 ![image](https://user-images.githubusercontent.com/73219421/117559498-da714d80-b0c0-11eb-80d5-8298fb450c1e.png)
 - 스토리 관리를 위한 기능 추가   
 (트리 형태로 스토리를 디스플레이, 신고 수 파악을 통한 스토리 관리 기능)
-![image](https://user-images.githubusercontent.com/73219421/117559545-30de8c00-b0c1-11eb-8466-3cdcd0ccce9a.png)
-
+<p align="center"><img  width="300" src="https://user-images.githubusercontent.com/73219421/117559545-30de8c00-b0c1-11eb-8466-3cdcd0ccce9a.png"></p>
+- 유저 유입의 증가로 발전 가능성을 확인. 가장 많은 유입 경로는 op.gg로 저연령층에게서 큰 호흥을 얻음.
+<p align="center"><img  width="300" src="https://user-images.githubusercontent.com/73219421/117559577-7733eb00-b0c1-11eb-8023-cf3899f842b0.png"></p>
 - 피드백
 -> ios 환경에서의 이슈
 -> 스토리 
 -> 스토리를 생성하기 불편한 진입장벽
 -> 다양한 컨텐츠에 대한 피드백
-- 유저 유입의 증가로 발전 가능성을 확인. 가장 많은 유입 경로는 op.gg로 저연령층에게서 큰 호흥을 얻음.
-<p align="center"><img  width="300" src="https://user-images.githubusercontent.com/73219421/117559577-7733eb00-b0c1-11eb-8023-cf3899f842b0.png></p>
 
 <br>
 
