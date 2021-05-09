@@ -153,16 +153,26 @@
 -> 스토리 수정에 대한 필요성
 
 #### 2차 업데이트 (2020.04.12)
+- 제작화면 개선
+- 모바일 반응형 지원 
+- Fork 기능 추가
+- 비회원 플레이와 카카오 로그인 추가 (회원가입시 진행상황 보존)
 - 서비스 이해를 돕기 위한 기능 추가
 (참여자 수 표시, 기여자 랭킹, 프로필에 기여한 작품표시, 랜딩페이지 베너)
-- 스토리 관리를 위한 기능 추가
+![image](https://user-images.githubusercontent.com/73219421/117559477-ae55cc80-b0c0-11eb-9b82-fa6737032864.png)
+![image](https://user-images.githubusercontent.com/73219421/117559491-c75e7d80-b0c0-11eb-9a07-b50cc307d90f.png)
+![image](https://user-images.githubusercontent.com/73219421/117559498-da714d80-b0c0-11eb-80d5-8298fb450c1e.png)
+- 스토리 관리를 위한 기능 추가   
 (트리 형태로 스토리를 디스플레이, 신고 수 파악을 통한 스토리 관리 기능)
-- 모바일 반응형 지원 
+![image](https://user-images.githubusercontent.com/73219421/117559545-30de8c00-b0c1-11eb-8466-3cdcd0ccce9a.png)
+
 - 피드백
 -> ios 환경에서의 이슈
--> 게임을 생성하기 불편한 진입장벽
+-> 스토리 
+-> 스토리를 생성하기 불편한 진입장벽
 -> 다양한 컨텐츠에 대한 피드백
-
+- 유저 유입의 증가로 발전 가능성을 확인. 가장 많은 유입 경로는 op.gg로 저연령층에게서 큰 호흥을 얻음.
+<p align="center"><img  width="300" src="https://user-images.githubusercontent.com/73219421/117559577-7733eb00-b0c1-11eb-8023-cf3899f842b0.png></p>
 
 <br>
 
